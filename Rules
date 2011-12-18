@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
 # A few helpful tips about the Rules file:
 #
@@ -13,9 +14,20 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/stylesheet/' do
-  # don’t filter or layout
+require 'compass'
+require 'susy'
+Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
+
+
+compile '/assets/stylesheets/screen' do
+  filter :sass, Compass.sass_engine_options
 end
+
+compile '/assets/stylesheets/*' do
+
+end
+
+
 
 compile '*' do
   if item.binary?
@@ -26,8 +38,12 @@ compile '*' do
   end
 end
 
-route '/stylesheet/' do
-  '/style.css'
+route '/assets/stylesheets/screen' do
+  '/stylesheets/screen.css'
+end
+
+route '/assets/stylesheets/*' do
+
 end
 
 route '*' do
@@ -40,4 +56,4 @@ route '*' do
   end
 end
 
-layout '*', :erb
+layout '*', :haml

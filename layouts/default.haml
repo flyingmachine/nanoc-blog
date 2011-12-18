@@ -1,0 +1,33 @@
+!!!
+%html{ :lang => "en", "xml:lang" => "en", :xmlns => 'http://www.w3.org/1999/xhtml' }
+  %head
+    %meta{ "http-equiv" => "content-type", "content" => "text/html; charset=utf-8" }
+      - if @item[:description]
+        %meta{ "name" => "description", "content" => @item[:description] }
+    - if @keywords
+      %meta{ "name" => "keywords", "content" => @keywords }
+    %title= @item[:title]
+    %link{ :href => "/stylesheets/screen.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/articles.xml", :rel => "alternate", :type => "application/atom+xml" }
+  %body{ :class => @body_class }
+    #document
+      #main
+        #header
+          .title
+            %a{:href => "/"}= @item[:heading]
+          .utilities
+            %a{:href => "/about"} about
+        = yield
+    %script{ :src => "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.4.min.js" }
+    %script{ :src => "/javascripts/jquery.hotkeys.js" }
+    %script{ :src => "/javascripts/application.js" }
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();

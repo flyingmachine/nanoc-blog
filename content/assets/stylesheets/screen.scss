@@ -1,0 +1,232 @@
+//** SCREEN STYLES **//
+
+// Imports --------------------------------------------------------------
+
+@import "compass/utilities/general/clearfix";
+@import "compass/css3/border-radius";
+@import "compass/typography/vertical_rhythm";
+@import "compass/css3/box-shadow";
+
+/* Layout -------------------------------------------------------------- */
+
+@import "susy";
+@import "base";
+
+// change '.container' to match your HTML container element
+// or @extend it to apply multiple containers on your site.
+body {
+  background:url("../assets/images/ui/light_honeycomb.png");
+}
+
+#document {
+  @include container;
+  background: $background;
+  @include border-radius(0 0 20px);
+  margin-bottom:(2 * $base-line-height);
+  
+  &.showgrid {
+    @include show-grid("images/grid.png");
+  }
+}
+
+#main {
+  @include alpha;
+  @include omega;
+  @include columns(8);
+  padding-top: $base-line-height;
+  padding-bottom: $base-line-height;
+}
+
+#header {
+  @include clearfix;
+  background:$highlight;
+  padding:(0.5 * $base-line-height) $gutter-width;
+  color:white;
+  margin:0 (-2 * $gutter-width) ($base-line-height * 2 - 4);
+  
+  a {
+    color:white;
+    &:visited{
+      color:white;
+    }
+    
+    &:hover {
+      text-decoration:underline;
+    }
+  }
+}
+
+.title {
+  @include adjust-font-size-to(20px);
+  letter-spacing:0.15em;
+  float:left;
+}
+
+.utilities {
+  font-size:100%;
+  float:right;
+}
+
+hr {
+  text-align:center;
+  border:0;
+  border-top:1px solid #555;
+  width:(12 * $gutter-width);
+  @include trailer(1);
+}
+
+h1 {
+  letter-spacing:0.15em;
+  @include leader(1, 21px);
+}
+
+strong {
+  @include adjust-font-size-to(14px);
+  letter-spacing:.05em;
+}
+
+// show-grid loads a 64+16x24 grid image by default
+// For other grid settings, run `compass grid-img 30+10x20`
+// Where 30 is the column width, 10 is the gutter width,
+// and 20 is the (optional) line-height.
+
+/* Styles -------------------------------------------------------------- */
+a {
+  text-decoration:none;
+  
+  &:visited {
+    color:darken($highlight, 13%);
+  }
+  
+  &:hover {
+    color:complement($alt);
+  }
+}
+
+
+
+ol.pages {
+  
+}
+
+ol.pages {
+  list-style:none;
+  margin-left: 0;
+  
+  li {
+    @include leader;
+    @include trailer;
+    border-bottom:1px dotted $dark;
+    
+    h2 {
+      margin-bottom:0;
+    }
+    
+    &:last-child {
+      border-bottom:none;
+      margin-bottom:0;
+    }
+  }
+}
+
+@mixin bottom-separated {
+  border-top:3px double $border;
+  padding-top:($base-line-height - 3px);
+  @include clearfix;
+  margin-top:($base-line-height);
+}
+
+.categories {
+  @include bottom-separated;
+}
+
+#footer {
+  @include bottom-separated;
+  ul{
+    list-style:none;
+    margin-left:0;
+  }
+  h2 {
+    margin-bottom:0;
+  }
+  .index {
+    float:left;
+    margin-right:(2 * $gutter-width);
+  }
+}
+
+.date {
+  font-style:italic;
+  float:right;
+}
+
+#content.page {  
+  h2 {
+    border-bottom:1px solid $border;
+    margin-bottom:($base-line-height - 1px);
+    font-variant:small-caps;
+    text-transform:none;
+    @include adjust-font-size-to(18px);
+  }
+  
+  h3 {
+    font-weight:normal;
+    font-style:italic;
+    letter-spacing:0.05em;
+  }
+  
+  ul {
+    margin-left:0;
+    li {
+      margin:0 0 0 $gutter-width;
+      padding:0;
+    }
+  }
+  
+  ol {
+    h3 {
+      font-weight:normal;
+      margin-bottom:0;
+    }
+    .read_more a, h3 a {
+      text-shadow:none;
+    }
+  }
+  
+  .spaced li {
+    @include trailer;
+  }
+}
+
+.attachment-path {
+  &.source {
+    font-style:italic;
+  }
+}
+
+/* For things that are larger than the document allows */
+.breakout {
+  @include columns(15, 8);
+  @include box-shadow(#333, 0, 0, 4px, 1px);
+  padding:$base-line-height $gutter-width 0;
+  margin-bottom:$base-line-height;
+  background:#fff;
+  margin-left:-50%;
+}
+
+pre.emphasize {
+  background:#fff;
+  padding:($base-line-height - 1px) $gutter-width;
+  border:1px solid #ccc;
+}
+
+p, ol, ul {
+  code {
+    background:#fff;
+    line-height:1px;
+  }
+}
+
+.read_more {
+  margin-top:-1.5em;
+}
