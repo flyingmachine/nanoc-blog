@@ -14,7 +14,7 @@ The learning curve for code libraries is often unnecessarily steep. I frequently
 
 My own work could use better documentation, and that's part of why I've started using "nesta":http://effectif.com/nesta as my blogging engine. Nesta looks like it provides just enough of a framework for me to efficiently write articles which are mainly text. More importantly, there's room for me to easily extend it in order to explore different ideas for creating code documentation efficiently. As a first step, I've written a few lines that will allow me to easily include source code in a "textile":http://textile.thresholdstate.com/ document:
 
-source. custom_tags.rb:4 3-26
+source. custom_tags.rb:4 3-32
 
 Hopefully that will come in handy when I want to include other, less self-referential snippets.
 

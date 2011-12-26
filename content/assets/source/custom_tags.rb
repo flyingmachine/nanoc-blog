@@ -7,21 +7,16 @@ module CustomTags
       start, finish = range.split("-").collect{|i| i.to_i}
       code = code[(start-1)..(finish-1)]
     end
+    start ||= 1
+    
     indentation_level = /^ */.match(code[0])[0].size
     code.collect!{|l| l.sub(/^ {#{indentation_level}}/, '')} #remove indendation
     code = code.join
     
     html = "<div class='attachment-path source'>"
     html << "<a href='/assets/source/#{local_path}'>#{local_path}</a></div><div class='code pygments'>"
-    
-    options = { 
-      :line_numbers => :inline,
-      :wrap         => :div,
-      :bold_every   => false 
-    }
-    options.merge!(:line_number_start => start) if start
 
-    html << IO.popen("pygmentize -O linenos=table -f html -l ruby", 'a+') do |pygmentize|
+    html << IO.popen("pygmentize -O linenos=table,linenostart=#{start} -f html -l ruby", 'a+') do |pygmentize|
       pygmentize.puts code
       pygmentize.close_write
       result = ""

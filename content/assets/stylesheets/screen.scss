@@ -483,9 +483,10 @@ p, ol, ul {
 
 .code.pygments {
   line-height:normal;
-  border-left: 2px solid silver;
-  @include border-radius(0 10px 10px 0);
-  @include columns(8, 8);
+  border: 2px solid silver;
+  @include border-radius(10px);
+  @include columns(12, 8);
+  margin-left: (-2 * $col-width) - $gutter-width;
   margin-bottom:$base-line-height;
   &.grow {
     @include columns(12, 8);
