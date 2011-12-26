@@ -4,7 +4,8 @@ created_at: May 20 23:23:00 -0500 2009
 kind: article
 categories: programming
 summary: A quick way to automatically follow people who follow you on twitter.
-additional_stylesheets: CodeRay
+additional_stylesheets:
+  - pygments
 ---
 
 h1. Follow Your Followers Using Ruby

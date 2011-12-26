@@ -1,5 +1,4 @@
-module CustomTags
-  
+module CustomTags  
   #TODO - allow method specification instead of line numbers
   def source(opts)
     local_path, highlighted, range = /([^ :]*)(?::(\d+))?(?: (\d+-\d+))?/.match(opts[:text])[1..3]
@@ -13,15 +12,27 @@ module CustomTags
     code = code.join
     
     html = "<div class='attachment-path source'>"
-    html << "<a href='/attachments/#{local_path}'>#{local_path}</a></div>"
+    html << "<a href='/assets/source/#{local_path}'>#{local_path}</a></div><div class='code pygments'>"
+    
     options = { 
       :line_numbers => :inline,
       :wrap         => :div,
       :bold_every   => false 
     }
     options.merge!(:line_number_start => start) if start
-    html << CodeRay.scan(code, :ruby).html(options)
 
+    html << IO.popen("pygmentize -O linenos=table -f html -l ruby", 'a+') do |pygmentize|
+      pygmentize.puts code
+      pygmentize.close_write
+      result = ""
+      while (line = pygmentize.gets)
+        result << line
+      end
+      result
+    end
+
+    html << "</div>"
+    
     html
   end
   

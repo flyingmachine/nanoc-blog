@@ -23,21 +23,16 @@ require 'content/assets/source/custom_tags'
 
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
 
-
-compile '/assets/stylesheets/screen' do
-  filter :sass, Compass.sass_engine_options
-end
-
 compile '/assets/stylesheets/*' do
-
-end
-
-route '/assets/stylesheets/screen' do
-  '/stylesheets/screen.css'
+  unless item.identifier.include?("_") || item.identifier.include?("#")
+    filter(:sass, Compass.sass_engine_options)
+  end
 end
 
 route '/assets/stylesheets/*' do
-  # don't output
+  unless item.identifier.include?("_") || item.identifier.include?("#")
+    "/stylesheets/#{File.basename item.identifier}.css" 
+  end
 end
 
 compile '*' do
@@ -45,11 +40,10 @@ compile '*' do
     # don’t filter binary items
   else
     case item.attributes[:filename]
-    when /haml$/ then filter :haml
-    when /html$/ then filter :erb
-    when /textile$/ then filter :redcloth
+    when /haml$/ then filter :haml; layout 'default'
+    when /html$/ then filter :erb; layout 'default'
+    when /textile$/ then filter :redcloth; layout 'default'
     end
-    layout 'default'
   end
 end
 
@@ -59,7 +53,11 @@ route '*' do
     item.identifier.chop + '.' + item[:extension]
   else
     # Write item with identifier /foo/ to /foo/index.html
-    item.identifier + 'index.html'
+    if item.identifier.include? "source"
+      item.identifier.chop + ".rb"
+    else
+      item.identifier + 'index.html'
+    end
   end
 end
 

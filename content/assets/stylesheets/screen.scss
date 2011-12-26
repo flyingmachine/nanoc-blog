@@ -1,18 +1,6 @@
 //** SCREEN STYLES **//
-
-// Imports --------------------------------------------------------------
-
-@import "compass/utilities/general/clearfix";
-@import "compass/css3/border-radius";
-@import "compass/typography/vertical_rhythm";
-@import "compass/css3/box-shadow";
-@import "compass/css3/box-sizing";
 @import "compass/reset";
-
-/* Layout -------------------------------------------------------------- */
-
-@import "susy";
-@import "base";
+@import "imports";
 
 /* begin old file */
 /* Typography -------------------------------------------------------------- */
@@ -491,4 +479,36 @@ p, ol, ul {
 
 .read_more {
   margin-top:-1.5em;
+}
+
+.code.pygments {
+  line-height:normal;
+  border-left: 2px solid silver;
+  @include border-radius(0 10px 10px 0);
+  @include columns(8, 8);
+ 
+  overflow-x:scroll;
+
+  table {
+    td.linenos {
+      width:5%;
+    }
+    td.code {
+      width:95%;
+      overflow-x:auto;
+    }
+    margin:0;
+    padding-bottom:0;
+    border:none;
+    .highlight pre {
+      overflow:hidden;
+      white-space:pre;
+      word-wrap:normal;
+    }
+  }
+  
+  pre {
+    margin-bottom:0;
+  }
+
 }

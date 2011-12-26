@@ -4,7 +4,8 @@ kind: article
 created_at: Mon, 02 Jun 2008 15:34:26 +0000
 categories: programming
 summary: This is meant to save me from having to write the same boilerplate profiling code over and over.
-additional_stylesheets: CodeRay
+additional_stylesheets:
+  - pygments
 ---
 
 h1. RubyProfHelper: Reducing ruby-prof Boilerplate
