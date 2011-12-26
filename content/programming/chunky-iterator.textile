@@ -1,6 +1,7 @@
 ---
 title: "Chunky Iterator: So You Don't have to Load All your AR Objects at Once"
 created_at: Mon, 12 May 2008 22:10:50 +0000
+kind: article
 categories: programming
 summary: "The following code lets you iterate over large collections of Active Record objects without having to load them all at once, thus reducing memory usage. It's allowed me to run cron jobs which iterate over thousands of records without getting the cron'd process killed for using too much of a system's resources."
 additional_stylesheets: CodeRay

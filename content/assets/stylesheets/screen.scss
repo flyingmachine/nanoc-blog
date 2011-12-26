@@ -17,6 +17,7 @@
 /* begin old file */
 /* Typography -------------------------------------------------------------- */
 /* The following classes are for use with @extend. */
+@include establish-baseline;
 
 html {
 text-rendering: optimizeLegibility;
@@ -85,8 +86,9 @@ h2, h3, h4, h5, h6 {
   @include trailer; }
 
 h1 {
-  @include adjust-font-size-to(21px);
-  @include trailer(1, 21px); }
+  @include adjust-font-size-to(21px, 1);
+  @include trailer(1, 21px);
+}
 
 h1 {
   @extend .allcaps; }
@@ -276,7 +278,7 @@ button {
 body {
   background:url("../assets/images/ui/light_honeycomb.png");
 }
-@include establish-baseline;
+
 
 #document {
   @include container;

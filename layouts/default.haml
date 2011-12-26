@@ -14,10 +14,13 @@
       #main
         #header
           .title
-            %a{:href => "/"}= @item[:heading]
+            %a{:href => "/"} Flying Machine Studios
           .utilities
             %a{:href => "/about"} about
-        #content.page= yield
+        #content.page
+          - if article?(@item)
+            .date= format_date(@item[:created_at])
+          = yield
     %script{ :src => "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.4.min.js" }
     %script{ :src => "/javascripts/jquery.hotkeys.js" }
     %script{ :src => "/javascripts/application.js" }

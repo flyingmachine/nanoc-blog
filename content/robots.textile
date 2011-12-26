@@ -1,6 +1,10 @@
+---
+title: Robots!
 created_at: Mon, 14 Jul 2008 16:45:17 +0000
+kind: article
 categories: programming
 summary: I've been learning more about electronics, in part to get a ground-up understanding of computers. In the process I've become interested in learning to build robots.
+---
 
 h1. Robots!
 

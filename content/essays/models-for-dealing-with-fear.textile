@@ -1,6 +1,7 @@
 ---
 title: Models for Dealing with Fear
 created_at: Feb 15 13:53:00 -0500 2010
+kind: article
 summary: The world abounds with wacky models that help actual people actually overcome actual fear. Some people believe their obstacles are put there by God as tests for them to pass. Others believe that mortal life is a game played by immortal energy beings, just for the fun of it. And some folks believe that there is nothing more to life than what we see; when we die, that's the end, so we better make the most of it. Wacky!
 categories: essays
 ---
