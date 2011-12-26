@@ -1,0 +1,16 @@
+---
+title: Control Time Submitted to App Store
+created_at: Jan 1 22:56:00 -0500 2010
+kind: article
+summary: Today I finally wrapped up <a title="Control Time" href="/control-time">Control Time</a> and submitted it to the app store :-). Hopefully they'll publish it soon.
+---
+
+h1. Control Time Submitted to App Store
+
+Today I finally wrapped up <a title="Control Time" href="/control-time">Control Time</a> and submitted it to the app store :-). Hopefully they'll publish it soon.
+
+Thanks to my brother Matt for creating the icon and to everyone who tried out the app along the way. Thanks also to the writing feedback group for helping me write ad copy.
+
+This is the first app I've submitted, but it won't be the last!
+
+*Update (Jan 4):* Wow, the app has already been approved! <a href="itms://itunes.apple.com/us/app/control-time/id348796242?mt=8">You can see it on iTunes.</a>
