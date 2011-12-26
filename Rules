@@ -27,23 +27,25 @@ compile '/assets/stylesheets/*' do
 
 end
 
-
-
-compile '*' do
-  if item.binary?
-    # don’t filter binary items
-  else
-    filter :erb
-    layout 'default'
-  end
-end
-
 route '/assets/stylesheets/screen' do
   '/stylesheets/screen.css'
 end
 
 route '/assets/stylesheets/*' do
+  # don't output
+end
 
+compile '*' do
+  if item.binary?
+    # don’t filter binary items
+  else
+    case item.attributes[:filename]
+    when /haml$/ then filter :haml
+    when /html$/ then filter :erb
+    when /textile$/ then filter :textile
+    end
+    layout 'default'
+  end
 end
 
 route '*' do

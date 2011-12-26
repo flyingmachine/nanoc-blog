@@ -17,7 +17,7 @@
             %a{:href => "/"}= @item[:heading]
           .utilities
             %a{:href => "/about"} about
-        = yield
+        #content.page= yield
     %script{ :src => "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.4.min.js" }
     %script{ :src => "/javascripts/jquery.hotkeys.js" }
     %script{ :src => "/javascripts/application.js" }
