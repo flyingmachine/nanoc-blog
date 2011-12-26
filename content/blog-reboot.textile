@@ -1,7 +1,7 @@
 ---
+title: Blog Reboot
 created_at: Fri Jan 14 13:11:26 -0500 2011
 kind: article
-title: Blog Reboot
 summary: It's been nearly a year since I've added anything to this site. There are a few reasons for that, though for now I'll only mention that I didn't like that the site existed in part to sell an iphone app and possibly future apps. Well, it turns out that I don't really care about overtly selling stuff. What I really want is a place to write about the pursuits I care about most.
 ---
 

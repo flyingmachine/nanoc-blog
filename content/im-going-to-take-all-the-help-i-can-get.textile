@@ -1,0 +1,18 @@
+---
+title: I'm Going to Take All the Help I Can Get
+created_at: Jan 6 7:06:00 -0500 2010
+kind: article
+summary: A few months ago, I was really psyched about some project (don't recall which), and said to myself, "I'm going to finish this thing, and nothing's going to get in my way." Immediately it occurred to me that a better attitude would be, "I'm going to finish this thing -- and I'll take all the help I can get."
+---
+
+h1. I'm Going to Take All the Help I Can Get
+
+A few months ago, I was really psyched about some project (don't recall which), and said to myself, "I'm going to finish this thing, and nothing's going to get in my way." Immediately it occurred to me that a better attitude would be, "I'm going to finish this thing -- and I'll take all the help I can get."
+
+Expecting that I'll get help instead of expecting that I'll encounter conflict and resistance has made me more open about my work. My tendency is to be quite shy about my own work, but I've since tried to go out of my way to share it with people.
+
+For example, recently I created <a title="Hacker News" href="http://news.ycombinator.com/item?id=1005674">a post on Hacker News</a> (and emailed the Boston Ruby Group) asking the folks there if they wanted to start a small group to give and receive writing feedback. The group has 15 members now, and though most appear to be lurkers I've met a few great people and got some really excellent feedback on the copy for <a title="Control Time" href="http://www.learngrowdo.com/control-time">Control Time</a>.
+
+One fellow I met, Aaron Dragushan, has a site similar to this one: <a href="http://www.upgrademe.org/">Upgrade Me</a>. It has some great productivity tips, but aims to be about more than just productivity. Exciting stuff! You should check it out - the content's well written and each post is a pretty quick read.
+
+And by the way, if you're interested in joining the <a href="http://groups.google.com/group/writing-feedback">writing feedback group</a> please do and introduce yourself. We could use some more active members :-)

@@ -1,0 +1,86 @@
+---
+title: How to Get and Stay Motivated
+created_at: Dec 12 22:03:00 -0500 2009
+kind: article
+summary: A lot of people view their motivation as something out of their control. It comes and goes, catlike in its fickleness. By breaking down motivation to its components, however, you'll be able to troubleshoot your lack of motivation and figure out ways to increase it.
+categories: essays
+---
+
+h1. How to Get and Stay Motivated
+
+A lot of people view their motivation as something out of their control. It comes and goes, catlike in its fickleness. By breaking down motivation to its components, however, you'll be able to troubleshoot your lack of motivation and figure out ways to increase it.
+
+But first: what is motivation?
+
+h2. Motivation is Your Emotional Energy for Making The Right Choices
+
+Every few months I get excited about doing barefoot running and tell myself I'm going to do it consistently. Running appeals to me as a way to have more energy, to feel healthy, and to clear my head. I have all the gear: running pants, running shirt, a nifty pair of shoes with virtually no sole. And every few months my excitement peters out and my gear collects dust in the closet again - a scenario I'm sure you're familiar with, in one way or another.
+
+That initial burst of motivation is not enough because changing your lifestyle is not an all-or-nothing proposition. It takes time (some say weeks, some say months) to develop new habits or shed old ones. During that time you're constantly encouraged to not follow through, whether by yourself or others. If you're trying to lose weight, for example, you have to pass by McDonald's and Burger Kings on your drive to work. You have to navigate past countless pastries, candy bars, and other crappy foods when you go grocery shopping. Change is a matter of consistently making the right choices, day in and day out, until making the right choice becomes as easy and habitual as it once was to make the wrong choice.
+
+Resisting the wrong choices and making the right choices takes energy, and motivation is that energy. The reason why I haven't been able to stick with running is that I'm constantly faced with the wrong choices in a very compelling manner ("Running hurts, but watching movies is fun!" or "It's cold outside man! Also did I mention that running hurts?"), draining my motivation. My initial burst of motivation isn't replenished, and my intention to run dies a quiet death.
+
+Instead of just accepting that your motivation will eventually wither, you can deliberately make more. Just like baking a delicious cake, making more motivation requires you know the ingredients. That's right, making yourself more motivated is just like baking a cake.
+
+h2. The Anatomy of Motivation
+
+Motivation has two main components, Incentives and Confidence. Each has a variety of sub-components.
+
+h3. Incentives
+
+An incentive is, circularly enough, any factor which motivates a particular course of of action or counts as a reason for preferring one choice to the alternatives (says <a href="http://en.wikipedia.org/wiki/Incentive">wikipedia</a>). The same incentive will vary in effectiveness depending on how important it is for the individual person. If a gang leader offered to pay you less than minimum wage to risk your life standing on a street corner to sell crack, you would probably decline. <a href="http://www.ted.com/talks/steven_levitt_analyzes_crack_economics.html">Yet there are people who have accepted that offer</a>.
+
+Incentives also differ in their polarity. Positive incentives are incentives that you <em>desire,</em> whereas you <em>avoid</em> negative incentives. You might read to avoid failing a class or to experience the pleasure of expanding your mind. Most people tend to be motivated more by one than the other, and it helps to know which type of incentive works better for you.
+
+There are a few major incentive categories, and it helps to know how you respond to each. In the future I'll write more on each category individually:
+
+* *Social:* Social incentives involve gaining or losing social esteem. An example would be telling your friends that you're going to stop smoking. The need to keep their respect by keeping your word is a strong motivating force.
+* *Moral:* I think this one is pretty self-explanatory
+* *Financial:* This one is too
+* *Personal:* Life goals and personal passions would fall under this category. One thing I want to point out here, which I'll explore more in another post, is that a feeling of worthlessness can be a debilitating form of incentive that completely drains motivation, preventing people from making lifestyle choices.
+
+h3. Confidence
+
+Confidence here refers to your belief that you're <em>capable</em> of making the right choices. People suffering from addiction can often strongly recognize the need to quit - the addiction is destroying his life and the lives of those he love - but feel helpless to fight it.
+
+Confidence depends on many sub-components:
+
+* *Knowledge:* It's easy to give up when you feel confused. Since you don't really know what's right, you settle for what's familiar.
+
+* *Feedback:* Taking "knowledge" one step further, it's essential to get feedback. Chart your progress, get feedback from friends or whoever - whatever works for you.
+
+* *Expectations:* If you underestimate how much time or effort it will take you to do something, it's possible you'll get frustrated and feel like you're not up to the task. On the other hand, if something is easier to do than you expected, it can be a real confidence booster.
+
+* *Other people:* Think of what it's like to have a boss who shoots down your ideas versus one who supports and encourages you. This component's especially important when "other people" have power over you, whether actual or merely perceived.
+
+* *Time:* In my opinion this is a very important part of confidence that's often overlooked. Feeling like you don't have enough time to change your lifestyle is enough to prevent you from trying. The perception that you don't have enough time and don't know how to make it is so detrimental that I've made <a href="http://www.learngrowdo.com/control-time">an iphone app to address those issues</a>.
+	
+* *Self-confidence:* Your overall feeling of self-confidence obviously affects how confident you'll feel about accomplishing a particular goal.
+
+* *Skills &amp; Equipment:* These need the least explaining and are the most straight-forward to acquire.
+
+h2. Troubleshoot Your Lack of Motivation
+
+Now that you understand what comprises motivation, you can begin to ask questions that allow you to uncover why you're not motivated. There are innumerable resources on specific facets of motivation (some of which we'll cover on this site in the future), but the following troubleshooting outline should allow you to figure out what needs fixing and give you a good start in fixing it.
+
+h3. Do you struggle with conflicting incentives?
+
+An example of this would be trying to lose weight but being afraid that you'll lose friends who are uncomfortable with a healthy lifestyle. (It sounds weird, but it happens. People are weird.) You might be able to talk to some friends and work things out, even have them join you; or you might have to decide what's more important, keeping your current friends or being healthy. Or it might be that you have a pantry full of cookies that are always tempting you, in which case you can just throw them out. Either way, it helps to be aware of of the incentives pulling you in the wrong direction.
+
+h3. Are your current incentives important to you?
+
+You might "know" you need to stop smoking because it's destroying your lungs, but that's not an important enough reason to stop. Then you might fall in love with someone who can't stand smoking, and allova sudden you find the motivation to quit. Hooray! You now have an incentive that's important to you.
+
+If a goal is truly important to you, it's even possible to "manufacture" an important incentive. Two that work great are writing your goal down and telling other people your goal. In the first case, your incentive is to not let yourself down, while in the second your incentive is to not let down others. What's most important, however, is knowing what kinds of incentives work for you and structuring your life to include them. How to do so is a topic worthy of a blog post, and in the future I'll provide one.
+
+h3. Where are you lacking confidence?
+
+Go through the list above and ask yourself if you're lacking confidence in that area. There are myriad resources that address each area of confidence, and in time I hope to list some on my site and add some of my own. In the mean time, you can always try the best way to gain confidence:
+
+h3. The Best Way to Gain Confidence is to Join a Group with The Same Goals
+
+Joining like-minded people is bar none the best way to gain confidence. You'll be able to learn from their experience and thus gain knowledge. They'll be able to teach you the skills you need and loan or give you required equipment. They'll help you set realistic expectations because they've already been through what you're trying to go through. They'll provide you with encouragement and feedback. You'll be glad you're not going it alone.
+
+The next time you're lacking motivation, you can pinpoint what's wrong and take the steps necessary to get more motivated.
+
+Now go out there and be somebody!
