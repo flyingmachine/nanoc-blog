@@ -486,6 +486,11 @@ p, ol, ul {
   border-left: 2px solid silver;
   @include border-radius(0 10px 10px 0);
   @include columns(8, 8);
+  margin-bottom:$base-line-height;
+  &.grow {
+    @include columns(12, 8);
+    margin-left:-2 * $col-width;
+  }
  
   overflow-x:scroll;
 
