@@ -1,6 +1,6 @@
 --- 
 title: Home - Flying Machine Studios
-date: Fri Jan 14 13:11:26 -0500 2011
+created_at: Fri Jan 14 13:11:26 -0500 2011
 ---
 
 %h1 Articles
@@ -10,7 +10,7 @@ date: Fri Jan 14 13:11:26 -0500 2011
 
     - sorted_articles.each do |article|
       %li
-        .date= format_date article[:date]
+        .date= format_date article[:created_at]
         %article
           %header
             %a{:href => article.path}= article[:title]
