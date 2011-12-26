@@ -1,7 +1,11 @@
+---
+title: Rails Prototypal Attributes
 created_at: Sat, 05 Apr 2008 15:18:39 +0000
+kind: article
 categories: programming
 summary: Give your models javascript-esque prototypal methods. When accessing an attribute on the prototypal object, the attribute's value is returned if not nil. Otherwise, the "linked" object's attribute value is returned.
 additional_stylesheets: CodeRay
+---
 
 h1. Rails Prototypal Attributes
 

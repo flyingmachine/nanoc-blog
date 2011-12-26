@@ -1,6 +1,10 @@
+---
+title: Announcing Palmist
+kind: article
 created_at: Wed, 14 May 2008 16:34:18 +0000
 categories: programming
 summary: A tool for finding and fixing mysql bottlenecks in Ruby on Rails
+---
 
 h1. Announcing Palmist
 

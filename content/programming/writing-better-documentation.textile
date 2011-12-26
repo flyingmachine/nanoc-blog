@@ -1,7 +1,11 @@
+---
+title: Writing Better Documentation
 created_at: Jan 19 23:23:00 -0500 2011
+kind: article
 categories: programming, design
 summary: The learning curve for code libraries is often unnecessarily steep. I frequently feel that if the author had written better documentation, I'd be able to use his work much more quickly, or at least figure out that it's wrong for me and move on. I'm trying to write better documentation myself.
 additional_stylesheets: CodeRay
+---
 
 h1. Writing Better Documentation
 

@@ -1,6 +1,10 @@
+---
+title: "Higml: Hierarchical, Cascading, Dynamic Configuration"
 created_at: Jan 21 23:23:00 -0500 2011
+kind: article
 categories: programming
 summary: If your configuration is convoluted as all hell, Higml might be for you. Also, this is my first attempt at writing first-class documentation.
+---
 
 h1. Higml: Hierarchical, Cascading, Dynamic Configuration
 
