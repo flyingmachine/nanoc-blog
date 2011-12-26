@@ -16,6 +16,7 @@
 
 require 'compass'
 require 'susy'
+require 'RedCloth' 
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
 
 
@@ -42,7 +43,7 @@ compile '*' do
     case item.attributes[:filename]
     when /haml$/ then filter :haml
     when /html$/ then filter :erb
-    when /textile$/ then filter :textile
+    when /textile$/ then filter :redcloth
     end
     layout 'default'
   end

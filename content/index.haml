@@ -1,9 +1,19 @@
 --- 
-title: Home
+title: Home - Flying Machine Studios
+date: Fri Jan 14 13:11:26 -0500 2011
 ---
 
 %h1 Articles
 
 %section.article
   %ol.pages
+
+    - sorted_articles.each do |article|
+      %li
+        .date= format_date article[:date]
+        %article
+          %header
+            %a{:href => article.path}= article[:title]
+        %p= article[:summary]
+        %p.read_more= link_to("Continue reading", article)
     
