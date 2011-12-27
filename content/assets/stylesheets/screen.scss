@@ -284,7 +284,6 @@ body {
   @include omega;
   @include columns(8);
   padding-top: $base-line-height;
-  padding-bottom: $base-line-height;
 }
 
 #header {
@@ -484,9 +483,8 @@ p, ol, ul {
 .code.pygments {
   line-height:normal;
   border: 2px solid silver;
-  @include border-radius(10px);
-  @include columns(12, 8);
-  margin-left: (-2 * $col-width) - $gutter-width;
+  @include columns(8, 8);
+
   margin-bottom:$base-line-height;
   &.grow {
     @include columns(12, 8);

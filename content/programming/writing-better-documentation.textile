@@ -18,9 +18,9 @@ source. custom_tags.rb:4 3-32
 
 Hopefully that will come in handy when I want to include other, less self-referential snippets.
 
-In the mean time I've also been thinking about what makes good documentation. "Tom Preston-Werner":http://tom.preston-werner.com recently wrote "an article":http://tom.preston-werner.com/2010/08/23/readme-driven-development.html urging developers to write a README before coding, and I think that's advice worth trying, though I haven't tried it myself. Unfortunately, he's not very specific on what should be included in the README. Personally, it'd be a lot easier for me to write a README if there were some formula I could follow. I also believe that other programmers would write better documentation if they had the tools that facilitated the joy and creativity that they experience with programming
+In the mean time I've also been thinking about what makes good documentation. "Tom Preston-Werner":http://tom.preston-werner.com recently wrote "an article":http://tom.preston-werner.com/2010/08/23/readme-driven-development.html urging developers to write a README before coding, and I think that's advice worth trying, though I haven't tried it myself. Unfortunately, he's not very specific on what should be included in the README. Personally, it'd be a lot easier for me to write a README if there were some formula I could follow. I also believe that other programmers would write better documentation if they had the tools that facilitated the joy and creativity that they experience with programming.
 
-My initial thoughts on good documentation is that it should include the following:
+My initial thought on good documentation is that it should include the following:
 
 * The purpose of the code
 * When it should be used and when it shouldn't (i.e. "This authentication library is great if you don't require much customization.")
@@ -32,7 +32,7 @@ My initial thoughts on good documentation is that it should include the followin
 * Other quality libraries which address the same problem
 * A brief tutorial
 
-That... looks like a lot of work. (Googling "what goes in a readme" also reveals that it looks a bit like "this excerpt from Ruby Best Practices":http://books.google.com/books?id=WOyuE3YYjiIC&lpg=PA211&ots=csqyUBZoOq&dq=what%20goes%20in%20a%20readme&pg=PA211#v=onepage&q&f=false) It also looks like it shouldn't all be put in the README.
+That... looks like a lot of work. (Googling "what goes in a readme" also reveals that it looks a bit like "this excerpt from Ruby Best Practices":http://books.google.com/books?id=WOyuE3YYjiIC&lpg=PA211&ots=csqyUBZoOq&dq=what%20goes%20in%20a%20readme&pg=PA211#v=onepage&q&f=false). It also looks like it shouldn't all be put in the README.
 
 In any case, my next little project is to write some documentation for a little library I created. After that I'm sure I'll have a better idea of what makes good documentation.
 
