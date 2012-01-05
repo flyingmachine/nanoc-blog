@@ -1,0 +1,70 @@
+---
+title: A Cognitive Approach to Programming: Memory
+created_at: Thu Jan 5 14:02:00 -0500 2012
+kind: article
+summary: An attempt to describe an approach to programming within a
+coherent framework.
+---
+
+h1. A Cognitive Approach to Programming: Memory
+
+h2. Prelude
+
+The following is the first in a series of articles attempting to
+describe a coherent framework for thinking about programming. My
+belief is that approaching programming from the standpoint cognitive
+psychology will...
+
+Below, I describe the ways in which human memory contributes to
+programming pitfalls and some practices for better accommodating our
+brains. I decribe a mixture of overarching principles and specific
+techniques.
+
+h2. Take Regression Testing, for Example
+
+Why do we write automated regression tests? They make our code more
+reliable, right? With automated regression tests, we can be assured
+that any changes we introduce do not break existing functionality.
+
+But why do we need these tests? Because our memories are imperfect. If
+we had perfect memories, we would not need a test to tell us that
+something has broken. We would not break anything in the first place.
+While writing code, we would instantaneously and effortlessly know
+which other parts of a system would be affected
+
+h2. The Nature of Memory
+
+* Long term
+** Encoding 
+** Retrieval
+** temporal limitation
+* Short term
+** limited space
+** limited temporal
+
+h2. How Metaphor Helps
+
+Increasing information density
+
+h3. Conventions
+* Style
+* Naming
+* File layout
+* 
+
+h3. Visual Form
+
+h3. Documentation
+
+h3. Knowing the Field
+
+h3. Naming
+
+h2. Going forward
+
+Explore our cognitive limits and the processes for working with them.
+
+Comprehension, problem solving
+
+Brain basis: memory, attention, short-term memory
+
