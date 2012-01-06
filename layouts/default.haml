@@ -20,6 +20,8 @@
             %a{:href => "/"} Flying Machine Studios
           .utilities
             %a{:href => "/about"} about
+            %a.feed{:href => "/atom.xml"}
+              %img{:src => "/assets/images/ui/icon_rss.png", :title => "feed"}
         #content.page
           - if article?(@item)
             .date= format_date(@item[:created_at])
