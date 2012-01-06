@@ -9,6 +9,7 @@ created_at: Fri Jan 14 13:11:26 -0500 2011
   %ol.pages
 
     - sorted_articles.each do |article|
+      - next if article[:draft]
       %li
         .date= format_date article[:created_at]
         %article

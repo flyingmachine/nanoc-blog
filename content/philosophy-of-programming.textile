@@ -1,9 +1,9 @@
 ---
-title: A Cognitive Approach to Programming: Memory
+title: "A Cognitive Approach to Programming: Memory"
 created_at: Thu Jan 5 14:02:00 -0500 2012
 kind: article
-summary: An attempt to describe an approach to programming within a
-coherent framework.
+summary: An attempt to describe an approach to programming within a coherent framework.
+draft: true
 ---
 
 h1. A Cognitive Approach to Programming: Memory
@@ -67,4 +67,3 @@ Explore our cognitive limits and the processes for working with them.
 Comprehension, problem solving
 
 Brain basis: memory, attention, short-term memory
-

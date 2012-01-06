@@ -1,0 +1,145 @@
+---
+title: A Cognitive Approach to Programming, Rough Sketch
+created_at: Thu Jan 5 14:02:00 -0500 2012
+kind: article
+summary: An attempt to describe an approach to programming within a coherent framework.
+---
+
+h1. A Cognitive Approach to Programming, Rough Sketch
+
+Below is a first attempt at describing a coherent approach to
+programming. My hope is that it'll give programmers some tools to
+reason about what they do and improve.
+
+There are a lot of gaps. My hope is that I'll get a lot of feedback
+that will help me fill in those gaps.
+
+h2. The Processes
+
+There are three main processes involved in programming:
+
+1. Learning
+2. Problem Solving
+3. Social interaction
+
+This article only address learning.
+
+h2. Learning
+
+We constantly need to learn: existing codebases, new libraries, the problem
+domain, the application environment.
+
+Learning consists of relating new information to existing knowledge.
+
+h2. Memory
+
+Ease of learning is in part determined by short term memory. To learn,
+it is necessary to hold multiple mental objects in short term memory in
+order to compare them to each other and discover the relationships
+between them.
+
+Not all mental objects are created equal. Some take up more "space"
+than others. Familiar objects take up less space than unfamiliar
+objects. For example, the following list is relatively easy to hold in
+memory:
+
+* bed
+* cup
+* light
+
+The following list is harder to hold in memory:
+
+* clorp
+* farg
+* dwesh
+
+Limits of memory: capacity, temporal.
+
+h3. Naming
+
+The nature of memory explains why it is necessary to name things well
+in code. The explanation is two-fold (using method names as an
+example):
+
+* Without proper naming, it is more likely to be necessary to derive
+  the behavior of a method from its constituent parts. This requires
+  loading more items into your short-term memory, possibly resulting
+  in your forgetting why you were looking at the method in the first
+  place. The result is that learning time is increased.
+* Lousy names also take up more "space" in short term memory, making
+  it more difficult to understand how a method relates to the larger
+  system.
+
+h3. Metaphor
+
+Metaphor is at the heart of programming: stacks, queues, pipes,
+memory, objects, domain models. These are all metaphors. 
+Metaphor is at the heart of our craft.
+
+We also use the term "abstraction", but I think "metaphor" is better
+when it comes to naming, as it more directly denotes that we are
+relating new concepts to existing concepts. But the distinction really
+doesn't matter.
+
+Good metaphors allow us to hold more information-dense items in
+memory. They provide more "hooks" which allow for easier retrieval
+from long-term memory.
+
+Other "metaphors":
+
+* Visual form of code. Indentiation stands for hierarchy.
+* Code colorization. Color stands for syntax.
+* Programming style. Shared programming style allows people to derive
+  meaning from the structure of the code.
+
+h3. Visual Aids
+
+Visual aids are information-dense. Our visual brains are pretty
+awesome at processing visual aids. My little treatise on visual
+design: "Clean Up Your Mess":http:/www.visualmess.com .
+
+h3. Documentation
+
+API documentation is not enough. People who use your code have the
+following questions, among others:
+
+* What is the purpose of the system?
+* What are the subsystems, and what are their purposes?
+* How do the parts interact?
+* How do I extend it?
+
+It's not reasonable to expect someone to answer these questions by
+reading code and API documentation. There are too many pieces to have
+to fit into memory for someone to be able to see the relationships
+between them.
+
+h2. Learning Skills
+
+h3. Describe What You Don't Know
+
+Being able to concretely determine what it is you need to know is of
+great value. Learn to quickly transform the emotion of confusion into
+a concrete statement of what you need to learn.
+
+h3. Ask About it Directly
+
+Often, when seeking help, we ask the wrong question. Need examples.
+
+h3. Confirm Your Knowledge
+
+State and restate what you think you know to someone else who can tell
+you whether you're wrong. Often, we make a lot of unconscious
+assumptions when trying to learn, and this process will help you
+uncover those assumptions.
+
+h2. Further Reading
+
+* "Pragmatic Thinking and
+  Learning":http://www.amazon.com/gp/product/1934356050/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356050
+  . Learn how to learn.
+* "Your Brain at AWork: Strategies for Overcoming Distraction,
+  Regaining Focus, and Working Smarter All Day
+  Long":http://www.amazon.com/gp/product/0061771295/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0061771295
+  . This is one of the most useful books I've ever read. It gave me a
+  useful understanding of how my brain works, and how to make use of
+  that knowledge to improve my work life.
