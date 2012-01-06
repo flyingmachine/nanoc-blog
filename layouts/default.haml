@@ -10,7 +10,7 @@
     %link{ :href => "/stylesheets/screen.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
       %link{ :href => "/stylesheets/#{stylesheet}.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    %link{ :href => "/articles.xml", :rel => "alternate", :type => "application/atom+xml" }
+    %link{ :href => "/atom.xml", :rel => "alternate", :type => "application/atom+xml" }
 
   %body{ :class => @body_class }
     #document

@@ -20,8 +20,16 @@ require 'RedCloth'
 require 'CodeRay'
 require 'content/assets/source/custom_tags'
 
-
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
+
+# blog
+compile '/articles/' do
+  filter :haml
+end
+
+route '/atom/' do
+  '/atom.xml'
+end
 
 compile '/assets/stylesheets/*' do
   unless item.identifier.include?("_") || item.identifier.include?("#")

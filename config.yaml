@@ -1,3 +1,8 @@
+base_url: http://www.flyingmachinestudios.com
+author_name: Daniel Higginbotham
+author_uri: http://www.flyingmachinestudios.com
+title: Flying Machine Studios
+
 # A list of file extensions that nanoc will consider to be textual rather than
 # binary. If an item with an extension not in this list is found,  the file
 # will be considered as binary.
