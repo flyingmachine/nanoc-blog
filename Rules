@@ -45,6 +45,7 @@ compile '*' do
     when /haml$/ then filter :haml; layout 'default'
     when /html$/ then filter :erb; layout 'default'
     when /textile$/ then filter :redcloth; layout 'default'
+    when /markdown$/ then filter :kramdown; layout 'default'
     end
   end
 end

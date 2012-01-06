@@ -5,7 +5,7 @@ kind: article
 summary: An attempt to describe an approach to programming within a coherent framework.
 ---
 
-h1. A Cognitive Approach to Programming, Rough Sketch
+# A Cognitive Approach to Programming, Rough Sketch
 
 Below is a first attempt at describing a coherent approach to
 programming. My hope is that it'll give programmers some tools to
@@ -14,7 +14,7 @@ reason about what they do and improve.
 There are a lot of gaps. My hope is that I'll get a lot of feedback
 that will help me fill in those gaps.
 
-h2. The Processes
+## The Processes
 
 There are three main processes involved in programming:
 
@@ -24,14 +24,14 @@ There are three main processes involved in programming:
 
 This article only address learning.
 
-h2. Learning
+## Learning
 
 We constantly need to learn: existing codebases, new libraries, the problem
 domain, the application environment.
 
 Learning consists of relating new information to existing knowledge.
 
-h2. Memory
+## Memory
 
 Ease of learning is in part determined by short term memory. To learn,
 it is necessary to hold multiple mental objects in short term memory in
@@ -55,7 +55,7 @@ The following list is harder to hold in memory:
 
 Limits of memory: capacity, temporal.
 
-h3. Naming
+### Naming
 
 The nature of memory explains why it is necessary to name things well
 in code. The explanation is two-fold (using method names as an
@@ -70,7 +70,7 @@ example):
   it more difficult to understand how a method relates to the larger
   system.
 
-h3. Metaphor
+### Metaphor
 
 Metaphor is at the heart of programming: stacks, queues, pipes,
 memory, objects, domain models. These are all metaphors. 
@@ -92,13 +92,13 @@ Other "metaphors":
 * Programming style. Shared programming style allows people to derive
   meaning from the structure of the code.
 
-h3. Visual Aids
+### Visual Aids
 
 Visual aids are information-dense. Our visual brains are pretty
 awesome at processing visual aids. My little treatise on visual
-design: "Clean Up Your Mess":http:/www.visualmess.com .
+design: [Clean Up Your Mess](http:/www.visualmess.com).
 
-h3. Documentation
+### Documentation
 
 API documentation is not enough. People who use your code have the
 following questions, among others:
@@ -113,33 +113,33 @@ reading code and API documentation. There are too many pieces to have
 to fit into memory for someone to be able to see the relationships
 between them.
 
-h2. Learning Skills
+## Learning Skills
 
-h3. Describe What You Don't Know
+### Describe What You Don't Know
 
 Being able to concretely determine what it is you need to know is of
 great value. Learn to quickly transform the emotion of confusion into
 a concrete statement of what you need to learn.
 
-h3. Ask About it Directly
+### Ask About it Directly
 
 Often, when seeking help, we ask the wrong question. Need examples.
 
-h3. Confirm Your Knowledge
+### Confirm Your Knowledge
 
 State and restate what you think you know to someone else who can tell
 you whether you're wrong. Often, we make a lot of unconscious
 assumptions when trying to learn, and this process will help you
 uncover those assumptions.
 
-h2. Further Reading
+## Further Reading
 
-* "Pragmatic Thinking and
-  Learning":http://www.amazon.com/gp/product/1934356050/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356050
+* [Pragmatic Thinking and
+  Learning](http://www.amazon.com/gp/product/1934356050/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356050)
   . Learn how to learn.
-* "Your Brain at AWork: Strategies for Overcoming Distraction,
+* [Your Brain at Work: Strategies for Overcoming Distraction,
   Regaining Focus, and Working Smarter All Day
-  Long":http://www.amazon.com/gp/product/0061771295/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0061771295
+  Long](http://www.amazon.com/gp/product/0061771295/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0061771295)
   . This is one of the most useful books I've ever read. It gave me a
   useful understanding of how my brain works, and how to make use of
   that knowledge to improve my work life.

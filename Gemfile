@@ -6,6 +6,7 @@ gem "haml"
 gem "sass"
 gem "nanoc"
 gem "RedCloth"
+gem "kramdown"
 gem "coderay"
 
 group :development do
