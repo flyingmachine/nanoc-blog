@@ -10,7 +10,7 @@
     %link{ :href => "/stylesheets/screen.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
       %link{ :href => "/stylesheets/#{stylesheet}.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    %link{ :href => "/atom.xml", :rel => "alternate", :type => "application/atom+xml" }
+    %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
   %body{ :class => @body_class }
     #document
@@ -20,7 +20,7 @@
             %a{:href => "/"} Flying Machine Studios
           .utilities
             %a{:href => "/about"} about
-            %a.feed{:href => "/atom.xml"}
+            %a.feed{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
               %img{:src => "/assets/images/ui/icon_rss.png", :title => "feed"}
         #content.page
           - if article?(@item)
