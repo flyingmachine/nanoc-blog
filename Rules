@@ -23,7 +23,7 @@ require 'content/assets/source/custom_tags'
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
 
 # blog
-compile '/articles/' do
+compile '/atom/' do
   filter :haml
 end
 

@@ -14,6 +14,7 @@ GEM
     cri (2.0.2)
     fssm (0.2.7)
     haml (3.1.4)
+    kramdown (0.13.4)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     nanoc (3.2.3)
@@ -37,6 +38,7 @@ DEPENDENCIES
   compass
   compass-susy-plugin
   haml
+  kramdown
   nanoc
   ruby-debug
   sass
