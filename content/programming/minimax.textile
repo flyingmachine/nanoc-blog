@@ -1,0 +1,40 @@
+---
+title: An Exhaustive Explanation of Minimax, a Staple AI Algorithm
+created_at: Jan 7 15:44:00 -0500 2012
+categories: programming
+kind: article
+---
+
+h1. An Exhaustive Explanation of Minimax, a Staple AI Algorithm
+
+h2. Overview
+
+The minimax algorithm is used to determine which moves a computer player makes in games like tic-tac-toe, checkers, othello, and chess. These kinds of games are called games of perfect information because it is possible to see all possible moves. A game like scrabble is not a game of perfect information because it's not possible to see all of your opponents possible moves.
+
+You can think of the algorithm as similar to the human thought process of saying, "OK, if I make this move, then my opponent can only make two moves, and each of those would let me win. So this is the right move to make."
+
+The rest of the article explains how to represent possible moves and evaluate them. An example command-line tic-tac-toe game is constructed using Ruby.
+
+h2. Representing Moves with the Game Tree Data Structure
+
+Here's an example of a Game Tree for tic-tac-toe:
+
+Representing the game like this allows the computer to evaluate each of its current possible moves by determining whether it will ultimately result in a win or a loss. We'll get into how the computer determines this in the next section, Ranking. Before that, though, we need to clearly define the central concepts defining a Game Tree:
+
+# The board state. Which pieces are in which positions.
+# The current player - the player who will be making the next move.
+# The next available moves. For humans, a move involves placing a game token. For the computer, it's a matter of selecting the next game state. As humans, we never say, "I've selected the next game state", but it's useful to think of it that way in order to understand the minimax algorithm.
+# The game state - the grouping of the three previous concepts.
+
+So, a Game Tree is a structure for organizing all possible (legal) game states by the moves which allow you to transition from one game state to the next. This structure is ideal for allowing the computer to evaluate which moves to make because, by traversing the game tree, a computer can easily "foresee" the outcome of a move and thus "decide" whether to take it.
+
+Next we'll go into detail about how to determine whether a move is good or bad.
+
+h2. Ranking Moves
+
+h3. Game-ending Moves
+
+h3. Intermediary Moves
+
+
+h2. Alpha-beta pruning
