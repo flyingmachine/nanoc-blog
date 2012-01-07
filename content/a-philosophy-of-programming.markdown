@@ -180,6 +180,16 @@ you whether you're wrong. Often, we make a lot of unconscious
 assumptions when trying to learn, and this process will help you
 uncover those assumptions.
 
+## To explore
+
+* How does emotional state affect learning?
+* How is emotion related to certrainty?
+* What is the relationship between testing, memory, and learning?
+* How can teams support learning?
+* Find concrete examples of codebases which support learning
+* How information navigation is related to learning, e.g. including a 
+  table of contents in documentation
+
 ## Further Reading
 
 * [Pragmatic Thinking and
