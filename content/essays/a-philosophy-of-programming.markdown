@@ -33,7 +33,8 @@ There are three main processes involved in programming:
 2. Problem Solving
 3. Social interaction
 
-This article only address learning.
+This article only addresses learning. Future articles will address
+the other two topics.
 
 ## Learning
 
@@ -119,7 +120,7 @@ data structure."
 
 Visual aids are information-dense. Our visual brains are pretty
 awesome at processing visual aids. My little treatise on visual
-design: [Clean Up Your Mess](http:/www.visualmess.com).
+design: [Clean Up Your Mess](http://www.visualmess.com).
 
 ### Documentation
 
