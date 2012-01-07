@@ -26,7 +26,20 @@
           - if article?(@item)
             .date= format_date(@item[:created_at])
           = find_and_preserve yield
-            
+          
+          - if article?(@item)
+            #disqus_thread
+            :javascript
+              /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+              var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+              
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+
     %script{ :src => "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.4.min.js" }
     %script{ :src => "/javascripts/jquery.hotkeys.js" }
     %script{ :src => "/javascripts/application.js" }
