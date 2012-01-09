@@ -32,9 +32,22 @@ Next we'll go into detail about how to determine whether a move is good or bad.
 
 h2. Ranking Moves
 
+The basic approach is to provide a numerical value to a move based on whether it will result in a win, draw, or loss. We'll begin illustrating this concept by showing how it applies to game-ending moves, then show how to apply it to intermediate moves.
+
 h3. Game-ending Moves
 
-h3. Intermediary Moves
+Have a look at this Game Tree:
+
+X has three possible moves, one of which will lead immediately to fictory. It's obvious that an AI should select the winning move. The way we ensure this is to give each move a numerical value based on its board state. Let's use the following rankings:
+
+* Win: 1
+* Draw: 0
+* Lose: -1
+
+Since the lowest-ranked moves correspond with the worst outcomes and highest-ranked moves correspond with the best outcomes, we should choose the move with the highest value. This is the "max" part of "minimax". Below is some code that implements this idea:
+
+h3. Intermediate Moves
+
 
 
 h2. Alpha-beta pruning
