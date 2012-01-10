@@ -39,7 +39,7 @@ class GameState
   end
 
   def draw?
-    board.compact.size == 9
+    board.compact.size == 9 && winner.nil?
   end
 
   def intermediate_state_rank
@@ -55,22 +55,22 @@ class GameState
   def winner
     @winner ||= [
      # horizontal wins
-     [1, 2, 3],
-     [4, 5, 6],
-     [7, 8, 9],
+     [0, 1, 2],
+     [3, 4, 5],
+     [6, 7, 8],
 
      # vertical wins
+     [0, 3, 6],
      [1, 4, 7],
      [2, 5, 8],
-     [3, 6, 9],
 
      # diagonal wins
-     [1, 5, 9],
-     [7, 5, 3]
+     [0, 4, 8],
+     [6, 4, 2]
     ].collect { |positions|
-      ( board[positions[0]] &&
-        board[positions[0]] == board[positions[1]] &&
-        board[positions[1]] == board[positions[2]] ) || nil
+      ( board[positions[0]] == board[positions[1]] &&
+        board[positions[1]] == board[positions[2]] &&
+        board[positions[0]] ) || nil
     }.compact.first
   end
 end
@@ -87,7 +87,7 @@ class GameTree
     game_state.board.each_with_index do |player_at_position, position|
       unless player_at_position
         next_board = game_state.board.dup
-        next_board[position] = next_player
+        next_board[position] = game_state.current_player
 
         next_game_state = GameState.new(next_player, next_board)
         game_state.moves << next_game_state
@@ -99,41 +99,54 @@ end
 
 class Game
   def initialize
-    @game_state = GameTree.new.generate
+    @game_state = @initial_game_state = GameTree.new.generate
   end
 
   def turn
     if @game_state.final_state?
       describe_final_game_state
-      exit
+      puts "Play again? y/n"
+      answer = gets
+      if answer.downcase.strip == 'y'
+        @game_state = @initial_game_state
+        turn
+      else
+        exit
+      end
     end
     
     if @game_state.current_player == 'X'
+      puts "\n==============="
       @game_state = @game_state.next_move
+      puts "X's move:"
       render_board
-      puts "X has moved."
       turn
     else
       get_human_move
       puts "The result of your move:"
       render_board
+      puts ""
       turn
     end
   end
   
   def render_board
+    output = ""
     0.upto(8) do |position|
-      if position > 0 && position % 3 == 0
-        puts "--------"
+      output << " #{@game_state.board[position] || position} "
+      case position % 3
+      when 0, 1 then output << "|"
+      when 2 then output << "\n-----------\n" unless position == 8
       end
     end
+    puts output
   end
 
   def get_human_move
     puts "Enter square # to place your 'O' in:"
     position = gets
 
-    move = @game_state.moves.find{ |game_state| game_state.board[move.to_i] == 'O' }
+    move = @game_state.moves.find{ |game_state| game_state.board[position.to_i] == 'O' }
 
     if move
       @game_state = move
