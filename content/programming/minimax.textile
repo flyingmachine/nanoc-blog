@@ -3,6 +3,7 @@ title: An Exhaustive Explanation of Minimax, a Staple AI Algorithm
 created_at: Jan 7 15:44:00 -0500 2012
 categories: programming
 kind: article
+summary: The minimax algorithm is used to determine which moves a computer player makes in games like tic-tac-toe, checkers, othello, and chess. You can think of the algorithm as similar to the human thought process of saying, "OK, if I make this move, then my opponent can only make two moves, and each of those would let me win. So this is the right move to make."
 additional_stylesheets:
   - pygments
 ---
@@ -21,9 +22,13 @@ h2. Representing Moves with the Game Tree Data Structure
 
 Here's an example of a Game Tree for tic-tac-toe:
 
+!/assets/images/minimax/game-tree.png!
+
+Note that this isn't a full game tree. A full game tree has 900,000+ game states, so that's uh... not really possible to include in an image.
+
 Representing the game like this allows the computer to evaluate each of its current possible moves by determining whether it will ultimately result in a win or a loss. We'll get into how the computer determines this in the next section, Ranking. Before that, though, we need to clearly define the central concepts defining a Game Tree:
 
-# The board state. Which pieces are in which positions.
+# The board state. In this case, where the X's and O's are.
 # The current player - the player who will be making the next move.
 # The next available moves. For humans, a move involves placing a game token. For the computer, it's a matter of selecting the next game state. As humans, we never say, "I've selected the next game state", but it's useful to think of it that way in order to understand the minimax algorithm.
 # The game state - the grouping of the three previous concepts.
