@@ -95,6 +95,8 @@ h2. Ruby Example
 
 Below is a Ruby implementation of Tic-Tac-Toe. It has a few limitations - for example, the computer always plays X. This is beacuse it's meant to illustrate the concepts described here.
 
+To run it, copy it to something like "tictactoe.rb" and run @ruby tictactoe.rb@.
+
 You can "view the repo on github":https://github.com/flyingmachine/minimax-tictactoe. In the future, I might add Common Lisp and C versions of Tic-Tac-Toe, and I'd welcome versions in other languages as well.
 
 source. minimax/tictactoe.rb
