@@ -50,7 +50,7 @@ Have a look at this Game Tree:
 
 !/assets/images/minimax/x-win.png!
 
-It's X's turn, and X has three possible moves, one of which (the middle, blue one) will lead immediately to victory. It's obvious that an AI should select the winning move. The way we ensure this is to give each move a numerical value based on its board state. Let's use the following rankings:
+It's X's turn, and X has three possible moves, one of which (the middle one) will lead immediately to victory. It's obvious that an AI should select the winning move. The way we ensure this is to give each move a numerical value based on its board state. Let's use the following rankings:
 
 * Win: 1
 * Draw: 0
