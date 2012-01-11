@@ -1,6 +1,6 @@
 ---
 title: An Exhaustive Explanation of Minimax, a Staple AI Algorithm
-created_at: Jan 7 15:44:00 -0500 2012
+created_at: Jan 10 21:42:00 -0500 2012
 categories: programming
 kind: article
 summary: The minimax algorithm is used to determine which moves a computer player makes in games like tic-tac-toe, checkers, othello, and chess. You can think of the algorithm as similar to the human thought process of saying, "OK, if I make this move, then my opponent can only make two moves, and each of those would let me win. So this is the right move to make."
@@ -24,9 +24,12 @@ Here's an example of a Game Tree for tic-tac-toe:
 
 !/assets/images/minimax/game-tree.png!
 
-Note that this isn't a full game tree. A full game tree has 900,000+ game states, so that's uh... not really possible to include in an image.
+Note that this isn't a full game tree. A full game tree has hundreds of thousands of game states, so that's uh... not really possible to include in an image. Some of the discrepancies between the example above and a fully-drawn game tree include:
 
-Representing the game like this allows the computer to evaluate each of its current possible moves by determining whether it will ultimately result in a win or a loss. We'll get into how the computer determines this in the next section, Ranking. Before that, though, we need to clearly define the central concepts defining a Game Tree:
+* The first Game State would show nine moves descending from it, one for each of the empty spaces on its board
+* Similarly, the next level of Game States would show eight moves descending from them, and so on for each Game State
+
+Representing the game as a game tree allows the computer to evaluate each of its current possible moves by determining whether it will ultimately result in a win or a loss. We'll get into how the computer determines this in the next section, Ranking. Before that, though, we need to clearly define the central concepts defining a Game Tree:
 
 # The board state. In this case, where the X's and O's are.
 # The current player - the player who will be making the next move.
@@ -39,19 +42,25 @@ Next we'll go into detail about how to determine whether a move is good or bad.
 
 h2. Ranking Game States
 
-The basic approach is to provide a numerical value to a move based on whether it will result in a win, draw, or loss. We'll begin illustrating this concept by showing how it applies to final game states, then show how to apply it to intermediate game states.
+The basic approach is to assign a numerical value to a move based on whether it will result in a win, draw, or loss. We'll begin illustrating this concept by showing how it applies to final game states, then show how to apply it to intermediate game states.
 
 h3. Final Game States
 
 Have a look at this Game Tree:
 
-It's X's turn, and X has three possible moves, one of which will lead immediately to victory. It's obvious that an AI should select the winning move. The way we ensure this is to give each move a numerical value based on its board state. Let's use the following rankings:
+!/assets/images/minimax/x-win.png!
+
+It's X's turn, and X has three possible moves, one of which (the middle, blue one) will lead immediately to victory. It's obvious that an AI should select the winning move. The way we ensure this is to give each move a numerical value based on its board state. Let's use the following rankings:
 
 * Win: 1
 * Draw: 0
 * Lose: -1
 
+These rankings are arbitrary. What's important is that winning corresponds to the highest ranking, losing to the lowest, and a draw's between the two.
+
 Since the lowest-ranked moves correspond with the worst outcomes and highest-ranked moves correspond with the best outcomes, we should choose the move with the highest value. This is the "max" part of "minimax". Below are some more examples of final game states and their numerical values:
+
+!/assets/images/minimax/final-states.png!
 
 You might be wondering whether or not we should apply different rankings based on the player whose turn it is. For now, let's ignore the question entirely and only view things from X's perspective.
 
@@ -59,37 +68,41 @@ Of course, only the most boring game in the world would start out by presenting 
 
 h3. Intermediate Game States
 
-Have a look at the following game tree:
+Have another look at this game tree:
 
-As you can see, in the root Game State, it's X's turn. There are y possible moves, including a winning move. Since this Game State allows X to win, X should select if possible. This Game State is as good as winning, so its rank should be 1. In general, we can say that the rank of an intermediate Game State where X is the current player should be set to the maximum rank of the available moves.
+!/assets/images/minimax/x-win-with-rank.png!
+
+As you can see, it's X's turn in the top Game State. There are 3 possible moves, including a winning move. Since this Game State allows X to win, X should try to get it if possible. This Game State is as good as winning, so its rank should be 1. In general, we can say that the rank of an intermediate Game State where X is the current player should be set to the maximum rank of the available moves.
 
 Now have a look at this game tree:
 
-It's O's turn, and there are y possible moves. One of the moves results in an immediate for O. From X's perspective this Game State is equivalent to a loss, since it allows O to select a move that will cause X to lose. Therefore, its rank should be -1. In general, we can say that the rank of an intermediate Game State where O is the current player should be set to the *minimum* rank of the available moves. That's what the "mini" in "minimax" refers to.
+!/assets/images/minimax/o-win.png!
+
+It's O's turn, and there are 5 possible moves, three of which are shown. One of the moves results in an immediate win for O. From X's perspective this Game State is equivalent to a loss, since it allows O to select a move that will cause X to lose. Therefore, its rank should be -1. In general, we can say that the rank of an intermediate Game State where O is the current player should be set to the *minimum* rank of the available moves. That's what the "mini" in "minimax" refers to.
+
+By the way - the above game tree probably looks ridiculous to you. You might say, "Well of course you shouldn't make such a dumb move. Why would anyone give up a win and allow O to win?" Minimax is our way of giving the computer the ability to "know" that it's a dumb move, too.
 
 To sum up:
 
 * Final Game States are ranked according to whether they're a win, draw, or loss.
 * Intermediate Game States are ranked according to whose turn it is and the available moves.
-** If it's X's turn, set the rank to that of the *maximum* move available. If a move will result in a win, X should take it.
-** If it's O's turn, set the rank to that of the *minimum* move available. If a move will result in a loss, X should avoid it.
+** If it's X's turn, set the rank to that of the *maximum* move available. In other words, if a move will result in a win, X should take it.
+** If it's O's turn, set the rank to that of the *minimum* move available. In other words, If a move will result in a loss, X should avoid it.
 
 And that's the minimax algorithm! Below are more examples illustrating how minimax works, and why it works the way it does.
 
-h2. More Examples
-
-h3. X's Turn, All Moves Result in a Loss for X
-
-Since all moves available to X will result in X losing, this Game State is as good as a loss, and its value should be -1.
-
-h3. O's Turn, All Moves are Wins Result in a Win for X
-
-Since all moves available to O will result in X winning, this Game State is as good as a win for X, and its value should be 1.
-
 h2. Ruby Example
+
+Below is a Ruby implementation of Tic-Tac-Toe. It has a few limitations - for example, the computer always plays X. This is beacuse it's meant to illustrate the concepts described here.
+
+You can "view the repo on github":https://github.com/flyingmachine/minimax-tictactoe. In the future, I might add Common Lisp and C versions of Tic-Tac-Toe, and I'd welcome versions in other languages as well.
 
 source. minimax/tictactoe.rb
 
 h2. The End
 
-I hope that explains the algorithm! If anything's unclear, please let me know in the comments below. I'd like for this post to explain the algorithm completely, and I'll use any feedback to revise it. Thanks!
+I hope that explains the algorithm! If anything's unclear, please let me know in the comments below. I'd like for this post to explain the algorithm completely, and I'll use any feedback to revise it.
+
+h2. P.S.
+
+My motivation for writing all this came from reading "Land of Lisp: Learn to Program in Lisp, One Game at a Time!":http://www.amazon.com/gp/product/1593272812/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1593272812 , which introduced me to minimax. It's one of the best programming books I've read: it was fun to read, and I learned a lot :) It's also the only programming book I know of to have "its own music video":http://landoflisp.com/.
