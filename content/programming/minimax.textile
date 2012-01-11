@@ -89,7 +89,7 @@ To sum up:
 ** If it's X's turn, set the rank to that of the *maximum* move available. In other words, if a move will result in a win, X should take it.
 ** If it's O's turn, set the rank to that of the *minimum* move available. In other words, If a move will result in a loss, X should avoid it.
 
-And that's the minimax algorithm! Below are more examples illustrating how minimax works, and why it works the way it does.
+And that's the minimax algorithm!
 
 h2. Ruby Example
 
