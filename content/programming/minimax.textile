@@ -101,9 +101,11 @@ You can "view the repo on github":https://github.com/flyingmachine/minimax-ticta
 
 source. minimax/tictactoe.rb
 
-h2. The End
+h2. The End... or Is It???
 
 I hope that explains the algorithm! If anything's unclear, please let me know in the comments below. I'd like for this post to explain the algorithm completely, and I'll use any feedback to revise it.
+
+Also, you may have noticed that the algorithm, as written, requires a lot of memory. Tic-Tac-Toe, one of the simplest, most boring games in existence, requires hundreds of thousands of game states in the above, naive Ruby implementation. In the future, I may cover some optimization techniques, like alpha-beta programming. Look for it!
 
 h2. P.S.
 
