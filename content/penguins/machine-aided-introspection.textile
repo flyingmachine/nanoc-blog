@@ -1,0 +1,15 @@
+---
+title: Machine-Aided Introspection
+created_at: Tue, 22 Feb 2012 14:23:17 +0500
+kind: article
+categories: penguins
+summary: In the year 2000, you will know all there is to know about yourself thanks to technology.
+---
+
+h1. Machine-Aided Introspection
+
+What if you had a machine that provided statistics on every part of your life? You could see how many times you've heard a song (not just listened to it on X device), how often you drink coffee, the increase in frequency to trips to your favorite restaurant.
+
+More interestingly -- what if this machine monitored your internal state and correlated it with external events? I mean, what would it be like to have a machine that confirmed that yes, you actually do think that your boss (or neighbor, or friend, or whoever) is actually an asshole? Such a machine could reveal that every time your visual (or auditory or olfactory) system recognizes him, your cortisol levels start rising. Or, what if the device automatically revealed that your feelings of discomfort with a colleague are triggered by some long-buried memory triggered by her glasses rather than anything she's actually said or done?
+
+I find these questions intriguing because I believe that such a device is possible, and possibly inevitable. Biofeedback devices already exist to help people control their anger or prevent migraines. In general, it takes hard work to become aware of your emotional state and to manage it. It'd be interesting to see the effects of machine-aided introspection. What would happen if you made use of a device that could instantly let you know all the pieces about yourself that you wish you knew? Or that you don't want yourself to know?
