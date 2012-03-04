@@ -56,5 +56,5 @@ To get started, I recommend "Land of Lisp: Learn to Program in Lisp, One Game at
 
 * "r/lisp":http://www.reddit.com/r/lisp - It's fun to see what's going on in the lisp world. The community has also been friendly and helpful.
 * "The Common Lisp HyperSpec":http://www.lispworks.com/documentation/HyperSpec/Front/index.htm - The master CL reference.
-* "On Lisp":http://www.paulgraham.com/onlisp.html - Paul Graham's class, for free. I haven't actually started this one yet but I'll be going through it next.
+* "On Lisp":http://www.paulgraham.com/onlisp.html - Paul Graham's classic, for free. I haven't actually started this one yet but I'll be going through it next.
 * "Let Over Lambda":http://www.amazon.com/gp/product/1435712757/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1435712757 - I've only just started this and it's probably too advanced for me, but holy crap is it exciting to read!
