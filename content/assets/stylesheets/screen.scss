@@ -146,8 +146,15 @@ pre {
   word-wrap: break-word; }
 
 blockquote {
-  margin: $base-rhythm-unit;
-  font-style: italic; }
+  margin: $base-rhythm-unit 0;
+  padding: $base-rhythm-unit 1em;
+  background: white;
+  border-left: 1em solid #ccc;
+
+  p:last-child {
+    margin-bottom:0
+  }
+}
 
 /* Replaced -------------------------------------------------------------- */
 
@@ -409,7 +416,12 @@ ol.pages {
   float:right;
 }
 
-#content.page {  
+#content.page {
+  h1 {
+    letter-spacing:0;
+    text-transform:none;
+  }
+  
   h2 {
     border-bottom:1px solid $border;
     margin-bottom:($base-line-height - 1px);
@@ -467,7 +479,7 @@ ol.pages {
 
 pre.emphasize {
   background:#fff;
-  padding:($base-line-height - 1px) $gutter-width;
+  padding:($base-line-height / 2) ($gutter-width / 2);
   border:1px solid #ccc;
 }
 
