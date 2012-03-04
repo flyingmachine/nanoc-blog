@@ -52,7 +52,9 @@ As I write this, I find that I'm not really doing the subject justice. That's pr
 
 h2. Lisp Resources
 
-To get started, I recommend "Land of Lisp: Learn to Program in Lisp, One Game at a Time!":http://www.amazon.com/gp/product/1593272812/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1593272812 . I would say that it rivals _why's book in fun, creativity, and usefulness. As a follow-up, I recommend the aforementioned "Practical Common Lisp":http://www.gigamonkeys.com/book/ . It's similar to the Pickaxe in that it gives a much more thorough and straightforward explanation of the language. It has really helped me fill in the gaps. The following resources are also useful:
+To get started, I recommend "Land of Lisp: Learn to Program in Lisp, One Game at a Time!":http://www.amazon.com/gp/product/1593272812/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1593272812 . I would say that it rivals _why's book in fun, creativity, and usefulness.
+
+As a follow-up, I recommend the aforementioned "Practical Common Lisp":http://www.gigamonkeys.com/book/. It's also a good choice to get started immediately as it's available online for free. (Incidentally, it's quite pleasant to read as the typography is good.) It's similar to the Pickaxe in that it gives a much more thorough and straightforward explanation of the language. It has really helped me fill in the gaps. The following resources are also useful:
 
 * "r/lisp":http://www.reddit.com/r/lisp - It's fun to see what's going on in the lisp world. The community has also been friendly and helpful.
 * "The Common Lisp HyperSpec":http://www.lispworks.com/documentation/HyperSpec/Front/index.htm - The master CL reference.
