@@ -2,7 +2,7 @@
 title: Products
 created_at: Tue Jan 03 7:47:00 -0500 2012
 kind: article
-summary: It's been nearly a year since I've added anything to this site. There are a few reasons for that, though for now I'll only mention that I didn't like that the site existed in part to sell an iphone app and possibly future apps. Well, it turns out that I don't really care about overtly selling stuff. What I really want is a place to write about the pursuits I care about most.
+summary: 
 draft: true
 ---
 
