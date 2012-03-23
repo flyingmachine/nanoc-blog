@@ -1,9 +1,8 @@
 ---
 title: Open Source, Open Heart
-created_at: Tue Jan 03 7:47:00 -0500 2012
+created_at: Fri Mar 23 16:47:00 -0500 2012
 kind: article
 summary: I'm open sourcing an application I've put a lot of time into. This article explains my motivations, both practical and personal.
-draft: true
 ---
 
 Open Source, Open Heart
