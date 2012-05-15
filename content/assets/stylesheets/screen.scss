@@ -74,8 +74,8 @@ h2, h3, h4, h,5 h6 {
   @include trailer; }
 
 h1 {
-  @include adjust-font-size-to(21px, 1);
-  @include trailer(1, 21px);
+  @include adjust-font-size-to(30px, 1);
+  @include trailer(1, 30px);
 }
 
 h1 {
@@ -359,20 +359,14 @@ a {
   }
 }
 
-
-
-ol.pages {
-  
-}
-
 ol.pages {
   list-style:none;
   margin-left: 0;
   
   li {
-    @include leader;
+    padding-top:$base-line-height - 1px;
     @include trailer;
-    border-bottom:1px dotted $dark;
+    border-top:1px dotted $dark;
     
     h2 {
       margin-bottom:0;
@@ -423,11 +417,12 @@ ol.pages {
   }
   
   h2 {
-    border-bottom:1px solid $border;
+    border-bottom:1px dashed $border;
     margin-bottom:($base-line-height - 1px);
     font-variant:small-caps;
     text-transform:none;
-    @include adjust-font-size-to(18px);
+    margin-right:2px;
+    @include adjust-font-size-to(24px);
   }
   
   h3 {
@@ -441,7 +436,7 @@ ol.pages {
   ul {
     margin-left:0;
     li {
-      margin:0 0 0 $gutter-width;
+      margin:0 0 $base-line-height $gutter-width;
       padding:0;
     }
   }
