@@ -454,10 +454,10 @@ ol.pages {
   .spaced li {
     @include trailer;
   }
-}
 
-.dsq-comment {
-  margin-bottom:1em;
+  #dsq-content .dsq-comment {
+    margin-bottom:1em;
+  }
 }
 
 .attachment-path {
