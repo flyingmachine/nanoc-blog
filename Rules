@@ -17,7 +17,6 @@
 require 'compass'
 require 'susy'
 require 'RedCloth'
-require 'CodeRay'
 require 'content/assets/source/custom_tags'
 
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10

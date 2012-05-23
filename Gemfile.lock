@@ -2,39 +2,41 @@ GEM
   remote: http://rubygems.org/
   specs:
     RedCloth (4.2.9)
+    adsf (1.1.1)
+      rack (>= 1.0.0)
+    builder (3.0.0)
     chunky_png (1.2.5)
-    coderay (1.0.4)
     columnize (0.3.6)
-    compass (0.11.6)
+    compass (0.12.1)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
     compass-susy-plugin (0.9)
       compass (>= 0.11.1)
-    cri (2.0.2)
-    fssm (0.2.7)
-    haml (3.1.4)
-    kramdown (0.13.4)
+    cri (2.2.1)
+    fssm (0.2.9)
+    haml (3.1.6)
+    kramdown (0.13.6)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
-    nanoc (3.2.3)
-      nanoc3 (>= 3.2.3)
-    nanoc3 (3.2.3)
-      cri (~> 2.0)
-    rbx-require-relative (0.0.5)
+    nanoc (3.3.6)
+      cri (~> 2.2)
+    rack (1.4.1)
+    rbx-require-relative (0.0.9)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
-    sass (3.1.12)
+    sass (3.1.18)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   RedCloth
-  coderay
+  adsf
+  builder
   compass
   compass-susy-plugin
   haml
