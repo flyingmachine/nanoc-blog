@@ -9,10 +9,40 @@ draft: true
 
 h1. Design: The Art of Reducing Frustration
 
-In this article I attempt to describe a simple, cohesive approach to design. My hope is that those learning design will find in it a conceptual skeleton which they can use to integrate their growing body of design knowledge.
+In this article I attempt to describe a simple, cohesive approach to design. My hope is that those learning design will find in it a conceptual skeleton which they can use to integrate their growing body of design knowledge. Additionally, I want to show that the design "skeleton" is the same for different kinds of design, including visual design and software design.
 
 h2. Why Does Frustration Matter?
 
+Frustration matters because happiness matters. Positive psychologists like Mihaly Csikszentmihalyi argue that a crucial component of happiness is experiencing flow. Frustration is an indication that something is preventing you from experiencing flow.
 
+h2. The General Cause of Frustration
 
-h2. Frustration Results From Your 
+You become frustrated when something prevents you from doing what you want. For example - there's a medical affliction called "Alien Hand Syndrome" where a person will have no control over one of his hands. He might try to button his shirt with his right hand, only to have his left hand unbotton it. He might try to hug his wife with hand, only to have the other hand slap her. You can imagine how frustrating this would be.
+
+A design can cause frustration in the same way. For example, if you're visiting a furniture web site and see a piece you want to buy, you'll look for a way to buy the item. Your brain will make many predictions based on experience: look for an "add to cart" link - ok, that's not there; look for a phone number - and if the site's design does not support your predictions, you will become frustrated. You will have been thwarted in your attempt to buy a Hulk Hogan love seat.
+
+h2. The Specific Causes of Frustration
+
+We can break down the causes of frustration into three categories:
+
+* Latency
+* Unpredictability
+* Incompleteness
+
+I explore each in greater detail below.
+
+h2. Latency (or, Waiting)
+
+Latency is the most basic and immediate of the causes of frustration. No one ever says to himself, "Boy, I hope I get stuck waiting in a line today. There's nothing I love more than standing around staring blankly when I could be doing something else."
+
+What's worse is when you don't know how long you'll need to wait. 
+
+There's not really more to be said about how waiting sucks and causes frustration. However, there has been interesting research into how to improve the experience of waiting.
+
+h2. Unpredictability
+
+h3. Examples in Visual Design
+
+h3. Examples in Software Design
+
+h2.
