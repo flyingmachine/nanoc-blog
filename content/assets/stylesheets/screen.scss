@@ -416,9 +416,10 @@ ol.pages {
   }
   
   h2 {
-    @include trailer(1, 24px);
+    @include trailer(1, 25px);
     text-transform:none;
     margin-right:2px;
+    border-bottom: 1px dotted #aaa;
     @include adjust-font-size-to(24px, 1);
     margin-left: -27px;
     padding-left: 9px;
