@@ -52,17 +52,21 @@ One key to achieving predictability is through consistency. Our brains are great
 
 When you're walking down stairs, your brain makes predictions about where each step will be and uses them to guide your foot placement. Sometimes it's wrong and you miss the last stair and look ridiculous, but your champ of a brain goes on to make more predictions to about where to place your feet and how to wave your arms so that at least you don't fall flat on your face.
 
-h3. Consistency in Visual Design
+h3. Predictability in Visual Design
 
 I wrote a kind of mini-book on using consistency in visual design: "Clean Up Your Mess":http://visualmess.com . But the high-level idea is that you should use visual attributes consistently for the different roles of your visual elements. For example, "Heading 1" is a role, and each "Heading 1" element should be the same size and color and have the same font. A caption is another role, and captions should be styled similarly. (This is a gross oversimplification so please don't send me hate mail if you're a designer.)
 
-h3. Consistency in Code
+h3. Predictability in Code
 
 Whereas in visual design we use visual attributes like size, alignment, color, and space to communicate, with code we primarily use language. And just as an application interface can be rendered frustrating and unpredictable because of inconsistent design choices, our code can be rendered frustrating and unpredictable because of poor language choices.
 
 For example, suppose you have three model classes named "UserModel", "CommentModel", and "PostModel". Then you add a new model named "Attachment". You've created a pattern by adding the "Model" suffix to each classname, then you violate this pattern by leaving it out of "Attachment". Another "user" (programmer) will predict that this is _not_ a model then become confused for an indeterminate amount of time as he puzzles out the true purpose of this class.
 
 One of the great things about the Rails web framework was that it imposed consistency on many levels: file naming, database naming, file organization, test naming and organization in relation to the code they're testing, etc. etc. etc. This kind of consistency is like having a shared language; instead of having 50 different words for the object in front of us, we can all call it "Judge Judy" and move on with our lives.
+
+h3. Predictability in Application Design
+
+Things that similarly should behave similarly. Things that look similar to conventional designs should behavior according to those conventions. Your application shouldn't up and do something your user didn't ask it to. Really, I feel like so much has been "written":http://www.amazon.com/gp/product/0321344758/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321344758 on this I don't think there's much more I can add except to place the ideas within a broader framework.
 
 h2. Incompleteness
 
