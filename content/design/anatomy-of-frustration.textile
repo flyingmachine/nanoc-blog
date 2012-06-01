@@ -84,4 +84,4 @@ h2. Conclusion
 
 I hope this little guide has been useful in helping you organize your thoughts about design, whether visual design or software design or UX design or product design.
 
-Personally, I found it conspicuously lacking - where's the table of contents? Arrrrggghhh!
+Personally, I found it conspicuously incomplete - where's the table of contents? Arrrrggghhh!
