@@ -1,6 +1,6 @@
 ---
 title: "Design: The Art of Reducing Frustration"
-created_at: May 15, 2012
+created_at: May 31, 2012
 kind: article
 categories: design
 summary: What causes frustration? How can we eliminate those causes?

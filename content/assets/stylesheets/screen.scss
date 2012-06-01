@@ -337,7 +337,6 @@ h1 {
 }
 
 strong {
-  @include adjust-font-size-to(14px);
   letter-spacing:.05em;
 }
 
