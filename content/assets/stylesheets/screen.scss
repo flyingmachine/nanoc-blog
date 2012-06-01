@@ -417,12 +417,13 @@ ol.pages {
   }
   
   h2 {
-    border-bottom:1px dashed $border;
-    margin-bottom:($base-line-height - 1px);
-    font-variant:small-caps;
+    @include trailer(1, 24px);
     text-transform:none;
     margin-right:2px;
-    @include adjust-font-size-to(24px);
+    @include adjust-font-size-to(24px, 1);
+    margin-left: -27px;
+    padding-left: 9px;
+    border-left: 18px solid $highlight;
   }
   
   h3 {

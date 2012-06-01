@@ -4,7 +4,6 @@ created_at: May 15, 2012
 kind: article
 categories: design
 summary: What causes frustration? How can we eliminate those causes?
-draft: true
 ---
 
 h1. Design: The Art of Reducing Frustration
@@ -13,21 +12,23 @@ In this article I attempt to describe a simple, cohesive approach to design. My 
 
 h2. Why Does Frustration Matter?
 
-Frustration matters because happiness matters. Positive psychologists like Mihaly Csikszentmihalyi argue that a crucial component of happiness is experiencing flow. Frustration is an indication that something is preventing you from experiencing flow.
+The obvious answer is that frustration is the name we give to an unpleasant experience, and by definition something we should avoid it and avoid creating it in others.
+
+Another way of thinking about it is that frustration matters because happiness matters. Positive psychologists like Mihaly Csikszentmihalyi argue that a crucial component of happiness is experiencing "flow":http://www.ted.com/talks/mihaly_csikszentmihalyi_on_flow.html. Frustration is an indication that something is preventing you from experiencing flow.
 
 h2. The General Cause of Frustration
 
-You become frustrated when something prevents you from doing what you want. For example - there's a medical affliction called "Alien Hand Syndrome" where a person will have no control over one of his hands. He might try to button his shirt with his right hand, only to have his left hand unbotton it. He might try to hug his wife with hand, only to have the other hand slap her. You can imagine how frustrating this would be.
+You become frustrated when something prevents you from doing what you want. For example - there's a medical affliction called "Alien Hand Syndrome" where a person will have no control over one of his hands. He might try to button his shirt with his right hand, only to have his left hand unbotton it. He might try to hug his wife with one hand, only to have the other hand slap her. You can imagine how frustrating this would be.
 
-A design can cause frustration in the same way. For example, if you're visiting a furniture web site and see a piece you want to buy, you'll look for a way to buy the item. Your brain will make many predictions based on experience: look for an "add to cart" link - ok, that's not there; look for a phone number - and if the site's design does not support your predictions, you will become frustrated. You will have been thwarted in your attempt to buy a Hulk Hogan love seat.
+A design can cause frustration in the same way. Well, almost the same way. For example, if you're visiting a furniture web site and see a piece you want to buy, you'll look for a way to buy the item. Your brain will make many predictions based on experience: look for an "add to cart" link - ok, that's not there; look for a phone number - and if the site's design does not support your predictions, you will become frustrated. You will have been thwarted in your attempt to buy a Hulk Hogan love seat.
 
 h2. The Specific Causes of Frustration
 
 We can break down the causes of frustration into three categories:
 
-* Latency
-* Unpredictability
-* Incompleteness
+* *Latency*: The longer something takes, the more frustrating it is. Unless you're a monk or something in which case waiting is the point.
+* *Unpredictability*: We're constantly making unconscious predictions about how the world works in order so that we can generate behavior that meets our goals. That's just what humans _do_. An unpredictable design messes up the whole process of being a human.
+* *Incompleteness*: If something only gets you halfway to where you need to go then leaves you stranded, it's frustrating.
 
 I explore each in greater detail below.
 
@@ -35,14 +36,48 @@ h2. Latency (or, Waiting)
 
 Latency is the most basic and immediate of the causes of frustration. No one ever says to himself, "Boy, I hope I get stuck waiting in a line today. There's nothing I love more than standing around staring blankly when I could be doing something else."
 
-What's worse is when you don't know how long you'll need to wait. 
+What's worse is when you don't know how long you'll need to wait. The five-dollar term for this, by the way, is "liminal zone":http://en.wikipedia.org/wiki/Liminality . See also "kafkaesque":http://www.amazon.com/gp/product/1560978066/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1560978066 .
 
-There's not really more to be said about how waiting sucks and causes frustration. However, there has been interesting research into how to improve the experience of waiting.
+Anyway, not knowing how long you'll need to wait sucks because it makes you feel like you don't have control. You're reluctant to start anything requiring concentration because you think you could be interrupted at any moment. You don't know if you'll have to change other plans you've made for the day as you wait longer, and longer, and longer.
+
+When it comes to application design, one of the best ways to reduce the frustration caused by waiting is to indicate how much longer a user will have to wait and close he is, percentage-wise, to being done. Modern web browsers do their best to show this information with downloads. 3d rendering software will also tell you how far long it is and how much longer it's going to take to render a scene.
+
+When programming, be aware of how much waiting you do while working. Do your tests take five minutes? Are you constantly doing large file transfers? It's not always possible to eliminate these sources of latency, but it's good to be vigilant and attack them where you can.
 
 h2. Unpredictability
 
-h3. Examples in Visual Design
+A "key component of flow":http://en.wikipedia.org/wiki/Flow_(psychology)#Components_of_flow is a sense of personal control over a situation or activity. In order for you to feel a sense of personal control, you must be able to make correct predictions about your current context. This gives you the confidence that the actions you perform will change your environment in the way you desire.
 
-h3. Examples in Software Design
+One key to achieving predictability is through consistency. Our brains are great at detecting patterns and using those to generate predictions. In fact, Jeff Hawkins (creator of the PalmPilot and co-founder of "Numenta, Inc.":http://www.numenta.com/ ) "argues":http://www.amazon.com/On-Intelligence-Jeff-Hawkins/dp/0805078533/ref=sr_1_1?ie=UTF8&qid=1338508112&sr=8-1 that that's pretty much all they do. Our brains are constantly generating predictions about the world and using those patterns to generate behavior.
 
-h2.
+When you're walking down stairs, your brain makes predictions about where each step will be and uses them to guide your foot placement. Sometimes it's wrong and you miss the last stair and look ridiculous, but your champ of a brain goes on to make more predictions to about where to place your feet and how to wave your arms so that at least you don't fall flat on your face.
+
+h3. Consistency in Visual Design
+
+I wrote a kind of mini-book on using consistency in visual design: "Clean Up Your Mess":http://visualmess.com . But the high-level idea is that you should use visual attributes consistently for the different roles of your visual elements. For example, "Heading 1" is a role, and each "Heading 1" element should be the same size and color and have the same font. A caption is another role, and captions should be styled similarly. (This is a gross oversimplification so please don't send me hate mail if you're a designer.)
+
+h3. Consistency in Code
+
+Whereas in visual design we use visual attributes like size, alignment, color, and space to communicate, with code we primarily use language. And just as an application interface can be rendered frustrating and unpredictable because of inconsistent design choices, our code can be rendered frustrating and unpredictable because of poor language choices.
+
+For example, suppose you have three model classes named "UserModel", "CommentModel", and "PostModel". Then you add a new model named "Attachment". You've created a pattern by adding the "Model" suffix to each classname, then you violate this pattern by leaving it out of "Attachment". Another "user" (programmer) will predict that this is _not_ a model then become confused for an indeterminate amount of time as he puzzles out the true purpose of this class.
+
+One of the great things about the Rails web framework was that it imposed consistency on many levels: file naming, database naming, file organization, test naming and organization in relation to the code they're testing, etc. etc. etc. This kind of consistency is like having a shared language; instead of having 50 different words for the object in front of us, we can all call it "Judge Judy" and move on with our lives.
+
+h2. Incompleteness
+
+(This section left intentionally blank)
+
+Ah ha, I kid, I kid.
+
+We experience frustration when something should be present, but isn't. When a manual tells you how to turn on your blender but doesn't tell you how to turn it off, it's frustrating (and noisy).
+
+When a web site is missing a "contact" link, it's frustrating. When the comment you just left has no "delete" button, it's frustrating. When you're looking at legacy code and there's no indication as to the purpose of a class or method, it's frustrating.
+
+These absences prevent us from doing what we want to do and sometimes make us want to go Hulk Smash.
+
+h2. Conclusion
+
+I hope this little guide has been useful in helping you organize your thoughts about design, whether visual design or software design or UX design or product design.
+
+Personally, I found it conspicuously lacking - where's the table of contents? Arrrrggghhh!
