@@ -424,6 +424,7 @@ ol.pages {
     margin-left: -27px;
     padding-left: 9px;
     border-left: 18px solid $highlight;
+    clear:both;
   }
   
   h3 {
@@ -510,6 +511,7 @@ p, ol, ul {
   table {
     td.linenos {
       width:5%;
+      padding-right:0;
     }
     td.code {
       width:95%;

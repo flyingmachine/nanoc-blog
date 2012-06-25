@@ -1,8 +1,13 @@
 module CustomTags  
   #TODO - allow method specification instead of line numbers
-  def source(opts)
+  def source(opts)    
     local_path, highlighted, range = /([^ :]*)(?::(\d+))?(?: (\d+-\d+))?/.match(opts[:text])[1..3]
     code = File.readlines(File.join(File.expand_path(File.dirname(__FILE__)), local_path))
+
+    langs = {"rb" => "ruby", "clj" => "clojure"}
+    lang = langs[File.extname(local_path).gsub(".", "")]
+    
+    
     if range
       start, finish = range.split("-").collect{|i| i.to_i}
       code = code[(start-1)..(finish-1)]
@@ -16,7 +21,7 @@ module CustomTags
     html = "<div class='attachment-path source'>"
     html << "<a href='/assets/source/#{local_path}'>#{local_path}</a></div><div class='code pygments'>"
 
-    html << IO.popen("pygmentize -O linenos=table,linenostart=#{start} -f html -l ruby", 'a+') do |pygmentize|
+    html << IO.popen("pygmentize -O linenos=table,linenostart=#{start} -f html -l #{lang}", 'a+') do |pygmentize|
       pygmentize.puts code
       pygmentize.close_write
       result = ""
