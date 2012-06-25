@@ -486,7 +486,7 @@ pre.emphasize {
 
 p, ol, ul {
   code {
-    background:#fff;
+    background:#eee;
     line-height:1px;
   }
 }
@@ -497,6 +497,7 @@ p, ol, ul {
 
 .code.pygments {
   line-height:normal;
+  font-size: 75%;
   border: 2px solid silver;
   @include columns(8, 8);
 

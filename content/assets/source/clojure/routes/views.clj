@@ -1,4 +1,6 @@
-;; View A
+;;----------
+;; src/url_for_alternative/views/view_a.clj
+;;----------
 (ns url-for-alternative.views.view-a
   (:require [url-for-alternative.views.common :as common]
             [url-for-alternative.views.view-b :as view-b])  
@@ -8,10 +10,11 @@
 (defpage list "/view-a" []
          (common/layout
            [:p "This is View A"]
-           [:a {:href url-for view-b/list} "Go to View B"]))
+           [:a {:href (url-for view-b/list)} "Go to View B"]))
 
-
-;; View B
+;;----------
+;; src/url_for_alternative/views/view_b.clj
+;;----------
 (ns url-for-alternative.views.view-b
   (:require [url-for-alternative.views.common :as common]
             [url-for-alternative.views.view-a :as view-a])
@@ -21,4 +24,4 @@
 (defpage list "/view-b" []
          (common/layout
            [:p "This is View B"]
-           [:a {:href url-for view-b/list} "Go to View A"]))
+           [:a {:href (url-for view-a/list)} "Go to View A"]))
