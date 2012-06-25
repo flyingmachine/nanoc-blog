@@ -3,7 +3,7 @@ title: Global Noir Routes
 created_at: Jun 25 8:30:00 -0500 2012
 kind: article
 categories: programming
-summary: "In noir..."
+summary: "Noir has a helper function, url-for, which you can use to generate URL's when given a named route. The problem arises when you have two different views which need to have links to each other."
 additional_stylesheets:
   - pygments
 ---
@@ -35,4 +35,4 @@ Note that the naming isn't arbitrary. The keywords you choose for your route map
 
 source. clojure/routes/central-route-example.clj
 
-I've only just started writing Clojure a couple weeks ago or so, so I'd love feedback on this. Does it make sense? Is it crazy? Would you use it?
+I've only just started writing Clojure a couple weeks ago or so, so I'd love feedback on this. Does it make sense? Is it crazy? Would you use it? Right now I'm only using it on "OMG! SMACKDOWN!!!":http://omgsmackdown.com

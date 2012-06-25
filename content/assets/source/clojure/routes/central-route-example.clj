@@ -1,5 +1,5 @@
 ;;----------
-;; src/my-awesome-site/views/routes.clj
+;; src/my_awesome_site/views/routes.clj
 ;;----------
 
 ;; url-for-r, defpage-r, other stuff ommitted
@@ -15,7 +15,7 @@
               :books/show          [:get ["/books/:id" :id #"\d+"]]})
 
 ;;----------
-;; src/my-awesome-site/views/admin/books.clj
+;; src/my_awesome_site/views/admin/books.clj
 ;;----------
 (ns url-for-alternative.views.admin.books
   (:require [my-awesome-site.views.common :as common]
