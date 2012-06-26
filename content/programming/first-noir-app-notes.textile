@@ -1,5 +1,5 @@
 ---
-title: First Noir App Notes
+title: Deeper Into the Land of Lisp: First Contact with Noir
 created_at: Jun 25 19:30:00 -0500 2012
 kind: article
 categories: programming
