@@ -3,7 +3,7 @@ title: First Noir App Notes
 created_at: Jun 25 19:30:00 -0500 2012
 kind: article
 categories: programming
-summary: "Clojure and noir are great fun. This post describes some of "
+summary: "Clojure and noir are great fun. This post describes some of the code I wrote and gives some tips and tricks. There's other stuff too but I'm not going to try and summarize it here."
 additional_stylesheets:
   - pygments
 ---
