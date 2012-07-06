@@ -119,3 +119,5 @@ source. clojure/refactoring-to-datamappers/refactored/arena.clj
 h2. The End
 
 Thus ends our exhausting - I mean, exhaustive - tour of this little refactoring. I'd love any feedback on the code!
+
+Special thanks to "Daniel Choi":http://danielchoi.com/software/ for linking to the Rich Hickey talk and to "bostonrb":http://bostonrb.org/ for a great discussion on simplicity.
