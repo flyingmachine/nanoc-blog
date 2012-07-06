@@ -116,6 +116,14 @@ For completeness's sake, here's the refactored arena.clj:
 
 source. clojure/refactoring-to-datamappers/refactored/arena.clj
 
+h2. A Scarier Monster?
+
+Some more doubts about the new code:
+
+* Should the image processing code be somewhere else?
+* Should I write a wrapper around the S3 code, as I did for the monger code? Should I be more explicit about the representation/persistence relationship?
+* How about the @amazon-image-path@ function? Where does that go? In this case, I actually am doing something beyond just mapping data.
+
 h2. The End
 
 Thus ends our exhausting - I mean, exhaustive - tour of this little refactoring. I'd love any feedback on the code!
