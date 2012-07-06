@@ -1,5 +1,5 @@
 ---
-title: Deeper Into the Land of Lisp: First Contact with Noir
+title: "Deeper Into the Land of Lisp: First Contact with Noir"
 created_at: Jun 25 19:30:00 -0500 2012
 kind: article
 categories: programming
@@ -36,7 +36,7 @@ source. clojure/first-contact/config.clj
 
 To get @SERVER_ENV@ into my app on heroku, my Procfile reads as follows:
 
-bc(emphasize). @web: SERVER_ENV=production lein trampoline run -m arenaverse.server@
+bc(emphasize). web: SERVER_ENV=production lein trampoline run -m arenaverse.server
 
 The vars were used a few places. For example, @env@ was used to generate the name of the S3 bucket to store images in. I didn't want my prod and dev images mixing.
 

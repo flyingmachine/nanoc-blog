@@ -7,7 +7,6 @@ module CustomTags
     langs = {"rb" => "ruby", "clj" => "clojure"}
     lang = langs[File.extname(local_path).gsub(".", "")]
     
-    
     if range
       start, finish = range.split("-").collect{|i| i.to_i}
       code = code[(start-1)..(finish-1)]
