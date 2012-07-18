@@ -110,3 +110,7 @@ about it with some of my colleagues and over a couple of days I
 redefined my role to something that I felt would allow me to
 contribute more. After that, I was super happy with what I did.
 
+## That's It for Now
+
+So that's it for now. I'm sure I'll have more to write on this topic
+in the future.
