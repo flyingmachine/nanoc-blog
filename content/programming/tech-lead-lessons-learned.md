@@ -1,6 +1,6 @@
 ---
 title: "Lessons Learned From My First Tech Lead Assignment"
-created_at: Jul 18 18:55:00 -0500 2011
+created_at: Jul 18 18:55:00 -0500 2012
 kind: article
 categories: programming
 summary: What I've learned so far working with a distributed team in an enterprise environment.
