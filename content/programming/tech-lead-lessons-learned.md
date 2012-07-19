@@ -100,7 +100,7 @@ something I've done), but that's not likely to be the case. At the
 very least, have a discussion with incoming team members about their
 understanding of their roles and responsibilities.
 
-## Be Aware of Your Own Level fo Engagement
+## Be Aware of Your Own Level of Engagement
 
 I struggled for a few weeks with a feeling that I didn't really know
 what I was doing and that I wasn't being effective.
