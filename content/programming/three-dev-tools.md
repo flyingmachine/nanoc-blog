@@ -1,6 +1,6 @@
 ---
 title: Three Dev Tools You Probably Already Know
-created_at: Jul 18 18:55:00 -0500 2012
+created_at: Aug 25 18:55:00 -0500 2012
 kind: article
 categories: programming
 summary: "You probably already know about the following tools, but I found it useful to be reminded of them."
@@ -18,7 +18,7 @@ Partitioning is effective as a strategy to combat complexity and scale when two 
 ## Knowledge
 
 Software developers use knowledge of prior problems to help them solve current ones. This knowledge can be implicit know-how or explicitly written down. It can be specific, as in which components work well with others, or general, as in techniques for optimizing a database table layout. It comes in many forms, including books, lectures, pattern descriptions, source code, design documents, or sketches on a whiteboard.
-￼
+
 ## Abstraction
 
 Abstraction can effectively combat complexity and scale because it shrinks problems, and smaller problems are easier to reason about. If you are driving from New York to Los Angeles, you can simplify the navigation problem by considering only highways. By hiding details (excluding the option of driving across fields or parking lots), you have shrunken the number of options to consider, making the problem easier to reason about.
