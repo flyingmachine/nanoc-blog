@@ -1,5 +1,5 @@
 ---
-title: Dissecting The Dumbest Clojure/Noir App Yet
+title: Dissecting The Dumbest Clojure/Noir App In Existence
 created_at: Aug 25 20012 13:23:00 -0500 2012
 kind: article
 categories: programming
