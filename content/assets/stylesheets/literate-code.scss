@@ -1,0 +1,21 @@
+@import "imports";
+
+$total-cols: 10;
+
+#document {
+  @include container;
+}
+
+#main {
+  @include alpha;
+  @include omega;
+  @include columns(10);
+
+  p {
+    width: 36em;
+  }
+
+  li {
+    width: 36em;
+  }
+}
