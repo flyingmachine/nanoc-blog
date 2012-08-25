@@ -37,7 +37,7 @@ h2. Data Mappers
 
 The app's data mappers are at the heart of everything. I've already written a "fairly thorough description":/programming/refactoring-to-datamappers-in-clojure/ . Here I'll focus on a briefer functional explanation so that you'll know what's going on when you see data mapper code elsewhere.
 
-OMGS!!! uses mongodb with access provided "Clojure Monger":http://clojuremongodb.info/, an excellent mongodb library.
+OMGS!!! uses mongodb with access provided by "Clojure Monger":http://clojuremongodb.info/, an excellent mongodb library.
 
 h3. Convenience Functions
 
