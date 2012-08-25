@@ -1,0 +1,36 @@
+---
+title: Dissecting The Dumbest Clojure/Noir App Yet
+created_at: Aug 25 20012 13:23:00 -0500 2012
+kind: article
+categories: programming
+summary: Recently, I released OMG! SMACKDOWN!!!, which is the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
+draft: true
+---
+
+h1. The Dumbest Clojure/Noir App In Existence
+
+Recently, I released "OMG! SMACKDOWN!!!":http://omgsmackdown.com, which is the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
+
+Here's a preview of what you're in for:
+
+* App overview
+* Data mappers
+* Image resizing and storage on S3
+* The (awesome!!!) home page
+* Account creation
+* Authentication with friend
+* Admining
+* Moderating
+* Final thoughts
+
+You can find all source code on "github":https://github.com/flyingmachine/arenaverse . This article, however, has a snapshot of the source, also on github, so that it will continue to make sense long after the app has evolved.
+
+h2. App Overview
+
+I created "OMG! SMACKDOWN!!!":http://omgsmackdown.com, a.k.a. the dumbest Clojure/Noir app on the planet, over a period of three months. Whereas other voting sites like "Hot or Not" and "Kitten War" are focused on trivia, I aspired to build a site for voting on humanity's more pressing questions. Questions like, ""Which deity is more badass?":http://omgsmackdown.com/arenas/deity-bowling" and ""Who loved his mama more?"":http://omgsmackdown.com/arenas/conquerors-57fd and ""Which creature is scarier?":http://omgsmackdown.com/arenas/republicans-vs-monsters". The kind of stuff that has made for many a sleepless night among philosophers and stoners.
+
+OMG! SMACKDOWN!!! lets you create an "arena" which you populate with "fighters". The fighters are shown, two at a time, along with the arena's question. Clicking on a fighter votes for that fighter. Part of the site's (undeniable) charm is that the fighter pairings are completely random, leading to delightful surprise after delightful surprise.
+
+h2. Data Mappers
+
+
