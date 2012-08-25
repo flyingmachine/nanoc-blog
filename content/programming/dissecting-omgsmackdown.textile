@@ -43,7 +43,7 @@ h3. Convenience Functions
 
 One reason for writing the datamappers was to be able to write code like this:
 
-source. clojure/omgsmackdown-dissected/views/battles.clj 69-70
+source. clojure/omgsmackdown-dissected/views/battles.clj 77-78
 
 As you can see, the database details are completely hidden. View code shouldn't have to worry about storage details. Also, I find this code pretty readable - it should be pretty obvious what's going on here. The alternative would be something like:
 
