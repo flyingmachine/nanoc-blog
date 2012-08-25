@@ -15,7 +15,7 @@ $total-cols: 10;
     width: 36em;
   }
 
-  li {
+  > #content > ul > li, #content > ol > li {
     width: 36em;
   }
 }
