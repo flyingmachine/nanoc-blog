@@ -25,7 +25,7 @@ Here's a preview of what you're in for:
 * Handling stylesheets
 * Final thoughts
 
-You can find all source code on "github":https://github.com/flyingmachine/arenaverse . This article, however, has a snapshot of the source, also on github, so that it will continue to make sense long after the app has evolved.
+You can find all source code on "github":https://github.com/flyingmachine/arenaverse . This article, however, has a snapshot of the source, also on "github":https://github.com/flyingmachine/nanoc-blog/tree/master/content/assets/source/clojure/omgsmackdown-dissected, so that it will continue to make sense long after the app has evolved.
 
 h2. App Overview
 
