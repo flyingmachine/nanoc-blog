@@ -15,12 +15,11 @@ Here's a preview of what you're in for:
 
 * App overview
 * Data mappers
-* Image resizing and storage on S3
+* Image resizing and S3 storage
 * The (awesome!!!) home page
 * Account creation
 * Authentication with friend
-* Admining
-* Moderating
+* Admining & Moderating
 * Final thoughts
 
 You can find all source code on "github":https://github.com/flyingmachine/arenaverse . This article, however, has a snapshot of the source, also on github, so that it will continue to make sense long after the app has evolved.
@@ -33,4 +32,32 @@ OMG! SMACKDOWN!!! lets you create an "arena" which you populate with "fighters".
 
 h2. Data Mappers
 
+The app's data mappers are at the heart of everything. I've already written a "fairly thorough description":/programming/refactoring-to-datamappers-in-clojure/ . Here I'll focus on a briefer functional explanation so that you'll know what's going on when you see data mapper code elsewhere.
 
+h3. Convenience Methods
+
+h3. Conventions
+
+h2. Image resizing and S3 storage
+
+h2. The (awesome!!!) home page
+
+h3. Choosing the "main" arena
+
+h3. Randomizing arena order
+
+h3. Randomizing Fighters
+
+h2. Account Creation
+
+h2. Authentication with friend
+
+h3. Logging in automatically after creating an account
+
+h3. Remaining logged in when the server restarts
+
+h2. Admining & Moderating
+
+h3. When it makes sense to use models
+
+h2. Final Thoughts
