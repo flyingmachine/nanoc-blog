@@ -199,4 +199,4 @@ This was my first web site using Clojure and Noir. I've been using Rails for alm
 
 The only major drawback is the lack of libraries compared to Rails. For the time being, I'll continue reaching for Rails for professional work but I'll definitely use Clojure for my own side projects.
 
-Wow, so that's it! I hope you liked this detailed look at the silliest Clojure/Noir web site ever made!
+Wow, so that's it! I hope you liked this detailed look at the silliest Clojure/Noir web site ever made! And if you like the site, please feel free to copy and it and do whatever you want with it. It'd be awesome to hear about it being installed on intranets with battles like "Which employee would win a drinking contest?"
