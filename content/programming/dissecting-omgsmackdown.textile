@@ -176,6 +176,17 @@ source. clojure/omgsmackdown-dissected/server.clj 65-68
 
 3. Add the workflow when adding the @friend/authenticat@ middleware, which you can see above.
 
+h3. Overall Friend Confusion
+
+I have to admit that I don't fully get sessions/cookies/auth in Clojure. With friend & noir, I think the difficulty lies in the fact that friend is meant to work directly with ring, whereas noir provides a little magic on top of ring.
+
+If I understand correctly, ring sessions are perpetuated in a kind of repeating reduce, where the session data for one request is sent to a function. The function then transforms the data, and that's used for the next request. I don't know if I'm explaining it well but I think the key thing is that the session data is never requested and state is never modified.
+
+Noir, on the other hand, somehow stores session data by modifying state. So noir's session and the session variables created by friend exist in two totally different places.
+
+The other way in which noir's "magic" can cause confusion is that, by default, you don't have to care about ring and middlewares. So when you do have to care about middleware, like with ring, it's hard to visualize where it's coming into play and how it's interacting with your other routes.
+
+
 h2. Admining & Moderating
 
 OK this article really is too long now. Check out @models/permissions@ and everything under @views/admin@ and @views/moderate@ to see what's going on.
