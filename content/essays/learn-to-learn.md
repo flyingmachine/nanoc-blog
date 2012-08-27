@@ -1,6 +1,6 @@
 ---
 title: On Learning Skills (A Response to Move Your Feet)
-created_at: Aug 25 20012 13:23:00 -0500 2012
+created_at: Aug 27 20012 11:23:00 -0500 2012
 kind: article
 categories: programming
 summary: "Matt Swanson has shared the secret to improving your running: move your feet! I elaborate on that advice and give a more complete way of figuring out your learning roadblocks and removing them."
