@@ -40,19 +40,23 @@ compile '*' do
       # don't output drafts
     else
       item_layout = "default"
+      use_layout = false
       
       case item.attributes[:filename]
-      when /haml$/ then filter :haml; layout item_layout
-      when /textile$/ then filter :redcloth; layout item_layout
-      when /(markdown|md)$/ then filter :redcarpet, :options => {:fenced_code_blocks => true}, :renderer => RedcarpetSyntaxHighlighter; layout item_layout
+      when /haml$/ then filter :haml; use_layout = true
+      when /textile$/ then filter :redcloth; use_layout = true
+      when /(markdown|md)$/ then filter :redcarpet, :options => {:fenced_code_blocks => true}, :renderer => RedcarpetSyntaxHighlighter; use_layout = true
         
       when /coffee$/ then filter :coffeescript;
       when /scss$/ then filter(:sass, Compass.sass_engine_options)
       end
 
-      if item.attributes[:kind] == "documentation"
-        filter :toc
+      use_layout = false if item.attributes[:nolayout]
+
+      if use_layout
+        layout item_layout
       end
+      
     end
   end
 end

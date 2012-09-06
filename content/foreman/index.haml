@@ -1,0 +1,92 @@
+---
+title: Foreman App
+kind: page
+nolayout: true
+---
+
+!!!
+%html{ :lang => "en", "xml:lang" => "en", :xmlns => 'http://www.w3.org/1999/xhtml' }
+  %head
+    %meta{ "http-equiv" => "content-type", "content" => "text/html; charset=utf-8" }
+      - if @item[:description]
+        %meta{ "name" => "description", "content" => @item[:description] }
+    - if @keywords
+      %meta{ "name" => "keywords", "content" => @keywords }
+    %title Foreman: Quickly Switch Between Groups of Applications
+    %link{ :href => "/stylesheets/foreman.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+  %body
+    #document
+      #main
+        #header
+          .title
+            %a{:href => "/"} Flying Machine Studios
+          .utilities
+            %a{:href => "http://twitter.com/nonrecursive"} @nonrecursive
+        #content.page
+          #hero
+            #icon
+              %img{:src => "/assets/images/foreman/icon_256x256.png"}
+            #hero-text
+              %h1 Foreman
+              %p
+                The app switching app
+                %br
+                that will blow your freaking mind
+          #screen
+            #wow
+              %img{:src => "/assets/images/foreman/foreman.png"}
+            .caption
+              %p Wow! This is totally blowing someone's mind right now!
+              %p Maybe the next mind it blows will be... yours!
+
+          %h2 Download now! Free for a limited time!*
+          %p
+            %a{:href => "/assets/apps/foreman.zip"}Download Foreman for free.
+            *Limited time offer. Because technically speaking, every offer is a limited time offer.
+          
+          %h2 Hark! Foreman: An App For Today!
+          %p Do you need an app today? Do you need it now?
+          %p What if it did something? What if it did something... <strong>AMAZING</strong>?
+          %p Does this sound like something you want? Then this moment is your lucky moment!
+          %p Because there's totally an app that's available now. It does something!
+
+          %h2 Foreman Switches Your Apps Quickly and It's Amazing
+          %p If you do distinct tasks that require different sets of apps to be open, then Foreman will help you.
+          %p You define app groups by dragging them in the space that says "Drag Apps Here To Create New Group".
+          %p Then when you click on an app group, Foreman closes all open applications which aren't in that group. It also opens all the apps in that group if they're not already open.
+          %p <strong>Holy smokes!!!!!</strong>
+
+          %h2 You Can Modify App Groups
+          %p Just drag an app onto an app group to add the app. You can also click on the "x" icon which appears when you hover over an app in order to remove that app.
+          %p <strong>This is why Steve Jobs invented computers.</strong>
+
+          %h2 You can also send me money.
+          %p If you liked this app then you can send me money. My paypal address is nonrecursive@gmail.com . If you are interested in sending me money but don't want to use paypal, please do let me know. If there's enough interest then I'll add more ways for people to send me money.
+
+          %h2 More Mind Blowing Productivity Apps
+          %p If you're looking to turn your brain to viscous goop from having your mind blown so many times, then please do check these out:
+          %p 
+        
+          %h2 Comments
+          #disqus_thread
+          :javascript
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();

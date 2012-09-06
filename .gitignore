@@ -4,3 +4,4 @@ output/*
 *#*
 .bundle
 crash.log
+.DS_Store
