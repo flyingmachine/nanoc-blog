@@ -14,9 +14,11 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-require 'compass'
-require 'susy'
-require 'RedCloth'
+require "rubygems"
+require "bundler/setup"
+Bundler.require(:default)
+
+require "lib/rule_helper"
 require 'content/assets/source/custom_tags'
 
 Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
@@ -30,30 +32,40 @@ route '/atom/' do
   '/atom.xml'
 end
 
-compile '/assets/stylesheets/*' do
-  unless item.identifier.include?("_") || item.identifier.include?("#")
-    filter(:sass, Compass.sass_engine_options)
+compile '*' do
+  unless item.identifier.include?("#") # emacs tmp file
+    if item.binary?
+      # don’t filter binary items
+    elsif item.attributes[:draft]
+      # don't output drafts
+    else
+      item_layout = "default"
+      
+      case item.attributes[:filename]
+      when /haml$/ then filter :haml; layout item_layout
+      when /textile$/ then filter :redcloth; layout item_layout
+      when /(markdown|md)$/ then filter :redcarpet, :options => {:fenced_code_blocks => true}, :renderer => RedcarpetSyntaxHighlighter; layout item_layout
+        
+      when /coffee$/ then filter :coffeescript;
+      when /scss$/ then filter(:sass, Compass.sass_engine_options)
+      end
+
+      if item.attributes[:kind] == "documentation"
+        filter :toc
+      end
+    end
+  end
+end
+
+route '/assets/javascripts/*' do
+  unless item.identifier.include?("#") # emacs tmp file
+    "/javascripts/#{basename(item.attributes[:filename])}.js"
   end
 end
 
 route '/assets/stylesheets/*' do
-  unless item.identifier.include?("_") || item.identifier.include?("#")
-    "/stylesheets/#{File.basename item.identifier}.css" 
-  end
-end
-
-compile '*' do
-  if item.binary?
-    # don’t filter binary items
-  elsif item.attributes[:draft]
-    # don't output drafts
-  else
-    case item.attributes[:filename]
-    when /haml$/ then filter :haml; layout 'default'
-    when /html$/ then filter :erb; layout 'default'
-    when /textile$/ then filter :redcloth; layout 'default'
-    when /(markdown|md)$/ then filter :kramdown; layout 'default'
-    end
+  unless item.identifier.include?("#") # emacs tmp file
+    "/stylesheets/#{basename(item.attributes[:filename])}.css" 
   end
 end
 

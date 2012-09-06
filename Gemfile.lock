@@ -4,31 +4,33 @@ GEM
     RedCloth (4.2.9)
     adsf (1.1.1)
       rack (>= 1.0.0)
-    builder (3.0.0)
-    chunky_png (1.2.5)
-    columnize (0.3.6)
-    compass (0.12.1)
+    blankslate (2.1.2.4)
+    builder (3.1.0)
+    chunky_png (1.2.6)
+    colored (1.2)
+    compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
-    compass-susy-plugin (0.9)
-      compass (>= 0.11.1)
-    cri (2.2.1)
+    cri (2.3.0)
+      colored (>= 1.2)
+    ffi (1.0.11)
     fssm (0.2.9)
-    haml (3.1.6)
-    kramdown (0.13.6)
-    linecache (0.46)
-      rbx-require-relative (> 0.0.4)
-    nanoc (3.3.6)
+    haml (3.1.7)
+    kramdown (0.13.8)
+    nanoc (3.4.0)
       cri (~> 2.2)
+    pygments.rb (0.2.13)
+      rubypython (~> 0.5.3)
     rack (1.4.1)
-    rbx-require-relative (0.0.9)
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
-    sass (3.1.18)
+    redcarpet (2.1.1)
+    rubypython (0.5.3)
+      blankslate (>= 2.1.2.3)
+      ffi (~> 1.0.7)
+    sass (3.2.1)
+    susy (1.0)
+      compass (>= 0.12.2)
+      sass (>= 3.2.0)
 
 PLATFORMS
   ruby
@@ -38,9 +40,10 @@ DEPENDENCIES
   adsf
   builder
   compass
-  compass-susy-plugin
   haml
   kramdown
   nanoc
-  ruby-debug
+  pygments.rb
+  redcarpet
   sass
+  susy

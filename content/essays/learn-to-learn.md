@@ -17,7 +17,7 @@ Here's the summary:
 
 * Programming is a skill
     * You need practice as well knowledge
-    * Learning can be seen as process of bridging your gaps
+    * Learning can be seen as a process of bridging your gaps
     * Performing a new skill requires you to develop new habits, and
       the rules for forming habits apply
 * There are many things you can do to successfully create a new habit
@@ -47,7 +47,7 @@ documenting your code more or you want to start doing daily standup
 with your team or _whatever_. These are all habits, some involving
 just you and some involving your team or organization. Recognizing
 them as habits will allow you to apply techniques for successfully
-developing a new habit. 
+developing a new habit.
 
 One habit that you can start developing now is to identify your
 learning gaps

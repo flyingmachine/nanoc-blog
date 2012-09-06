@@ -1,6 +1,5 @@
 //** SCREEN STYLES **//
-@import "compass/reset";
-@import "imports";
+@import "blog";
 
 /* begin old file */
 /* Typography -------------------------------------------------------------- */
@@ -280,16 +279,10 @@ body {
   background: $background;
   @include border-radius(0 0 20px);
   margin-bottom:(2 * $base-line-height);
-  
-  &.showgrid {
-    @include show-grid("images/grid.png");
-  }
 }
 
 #main {
-  @include alpha;
-  @include omega;
-  @include columns(8);
+  @include span-columns(8 omega);
   padding-top: $base-line-height;
 }
 
@@ -471,7 +464,7 @@ ol.pages {
 
 /* For things that are larger than the document allows */
 .breakout {
-  @include columns(15, 8);
+  @include span-columns(15, 8);
   @include box-shadow(#333, 0, 0, 4px, 1px);
   padding:$base-line-height $gutter-width 0;
   margin-bottom:$base-line-height;
@@ -500,12 +493,12 @@ p, ol, ul {
   line-height:normal;
   font-size: 75%;
   border: 2px solid silver;
-  @include columns(8, 8);
+  @include span-columns(8, 8);
 
   margin-bottom:$base-line-height;
   &.grow {
-    @include columns(12, 8);
-    margin-left:-2 * $col-width;
+    @include span-columns(12, 8);
+    margin-left:-2 * $column-width;
   }
  
   overflow-x:scroll;
