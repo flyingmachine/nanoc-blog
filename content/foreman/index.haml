@@ -36,7 +36,9 @@ nolayout: true
             #wow
               %img{:src => "/assets/images/foreman/foreman.png"}
             .caption
-              %p Wow! This is totally blowing someone's mind right now!
+              %p Click on an app group and Foreman closes all apps not in that group and opens the apps in the group.
+              %p It's great for restoring sanity to command+tab!
+              %p And it's totally blowing someone's mind right now!
               %p Maybe the next mind it blows... will be yours!
 
           %h2 Download now! Free for a limited time!*
@@ -58,6 +60,13 @@ nolayout: true
           %p You define app groups by dragging apps into the space that says "Drag Apps Here To Create New Group".
           %p Then when you click on an app group, Foreman closes all open applications which aren't in that group. It also opens all the apps in that group that aren't already open.
           %p <strong>Holy smokes!!!!!</strong>
+          %p I mean, look at all these open apps:
+          %p
+            %img{:src => "/assets/images/foreman/somanyapps.png"}
+          %p What a pain in the ass! Now, if I just click an app group in Foreman:
+          %p
+            %img{:src => "/assets/images/foreman/phew.png"}
+          %p My heavens! What a relief!
 
           %h2 You Can Modify App Groups
           %p Just drag an app onto an app group to add the app. You can also click on the "x" icon which appears when you hover over an app in order to remove that app.
@@ -75,7 +84,7 @@ nolayout: true
               %a{:href => "http://www.alfredapp.com/"}Alfred
             %li
               %a{:href => "http://click.linksynergy.com/fs-bin/stat?id=R8vGAT3fz6g&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fcolorschemer-studio%252Fid417896628%253Fmt%253D12%2526uo%253D4%2526partnerId%253D30", :target => "itunes_store"} ColorSchemer Studio
-            %il
+            %li
               %a{:href => "http://click.linksynergy.com/fs-bin/stat?id=R8vGAT3fz6g&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fthings%252Fid407951449%253Fmt%253D12%2526uo%253D4%2526partnerId%253D30", :target => "itunes_store"} Things
             %li
               %a{:href => "http://click.linksynergy.com/fs-bin/stat?id=R8vGAT3fz6g&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fomnifocus%252Fid402835630%253Fmt%253D12%2526uo%253D4%2526partnerId%253D30", :target => "itunes_store"} OmniFocus
@@ -83,8 +92,17 @@ nolayout: true
               %a{:href => "http://click.linksynergy.com/fs-bin/stat?id=R8vGAT3fz6g&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fomnigraffle-pro%252Fid404645717%253Fmt%253D12%2526uo%253D4%2526partnerId%253D30", :target => "itunes_store"} OmniGraffle Pro
             %li
               %a{:href => "http://click.linksynergy.com/fs-bin/stat?id=R8vGAT3fz6g&offerid=146261&type=3&subid=0&tmpid=1826&RD_PARM1=http%253A%252F%252Fitunes.apple.com%252Fus%252Fapp%252Fwitch%252Fid412485838%253Fmt%253D12%2526uo%253D4%2526partnerId%253D30", :target => "itunes_store"} Witch
+          %h2 What's Next???
 
+          %p Although it's not obvious at first glance, Foreman is not perfect. Here are some upcoming features:
 
+          %ul
+            %li Make it possible to define a list of apps to never close
+            %li Create a command line version
+            %li Have a window show what apps will be closed and what will be opened when you mouse over an app group
+            
+          %p
+            %strong Follow <a href="http://twitter.com/nonrecursive">@nonrecursive</a> on twitter for updates!
         
           %h2 Comments
           #disqus_thread
