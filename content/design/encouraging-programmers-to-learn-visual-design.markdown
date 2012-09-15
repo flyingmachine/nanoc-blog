@@ -19,7 +19,7 @@ know as programmers.
 
 From a professional perspective, you won't necessarily advance your
 career by learning visual design. Programmers have done fine without
-knowing about design. So why should you give a shit?
+knowing about design. So why should you care?
 
 I think that visual design is worth knowing because it enriches your
 life. You see the world in a different way, and you learn to
@@ -70,4 +70,4 @@ I hope this talk encourages you to do this. I think you'll find that
 learning design brings you rewards beyond your job, beyond web
 development. You'll find that it opens up more of the world to you.
 You'll find that you've become part of a conversation that has been
-going on for millenia.
+going on for centuries.
