@@ -1,0 +1,213 @@
+---
+title: Dissecting The Dumbest Clojure/Noir App In Existence
+created_at: Aug 25 20012 13:23:00 -0500 2012
+kind: article
+categories: programming
+summary: Recently, I released OMG! SMACKDOWN!!!, which is the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
+additional_stylesheets:
+  - pygments
+  - literate-code
+---
+
+h1. The Dumbest Clojure/Noir App In Existence
+
+Recently, I released "OMG! SMACKDOWN!!!":http://omgsmackdown.com, which must be the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
+
+Here's a preview of what you're in for:
+
+* App overview
+* Data mappers
+* Image resizing and S3 storage
+* The (awesome!!!) battle page
+* Account creation
+* Authentication with friend
+* Admining & Moderating
+* Handling stylesheets
+* Final thoughts
+
+You can find all source code on "github":https://github.com/flyingmachine/arenaverse . This article, however, has a snapshot of the source, also on "github":https://github.com/flyingmachine/nanoc-blog/tree/master/content/assets/source/clojure/omgsmackdown-dissected, so that it will continue to make sense long after the app has evolved.
+
+h2. App Overview
+
+I created "OMG! SMACKDOWN!!!":http://omgsmackdown.com, a.k.a. the dumbest Clojure/Noir app on the planet, over a period of three months. Whereas other voting sites like "Hot or Not" and "Kitten War" are focused on trivia, I aspired to build a site for voting on humanity's more pressing questions. Questions like, ""Which deity is more badass?":http://omgsmackdown.com/arenas/deity-bowling" and ""Who loved his mama more?"":http://omgsmackdown.com/arenas/conquerors-57fd and ""Which creature is scarier?":http://omgsmackdown.com/arenas/republicans-vs-monsters". The kind of stuff that has made for many a sleepless night among philosophers and stoners.
+
+OMG! SMACKDOWN!!! lets you create an "arena" which you populate with "fighters". The fighters are shown, two at a time, along with the arena's question. Clicking on a fighter votes for that fighter. Part of the site's (undeniable) charm is that the fighter pairings are completely random, leading to delightful surprise after delightful surprise.
+
+h2. Data Mappers
+
+The app's data mappers are at the heart of everything. I've already written a "fairly thorough description":/programming/refactoring-to-datamappers-in-clojure/ . Here I'll focus on a briefer functional explanation so that you'll know what's going on when you see data mapper code elsewhere.
+
+OMGS!!! uses mongodb with access provided by "Clojure Monger":http://clojuremongodb.info/, an excellent mongodb library.
+
+h3. Convenience Functions
+
+One reason for writing the datamappers was to be able to write code like this:
+
+source. clojure/omgsmackdown-dissected/views/battles.clj 77-78
+
+As you can see, the database details are completely hidden. View code shouldn't have to worry about storage details. Also, I find this code pretty readable - it should be pretty obvious what's going on here. The alternative would be something like:
+
+bc(emphasize).. (defn filtered-arenas []
+  (mc/find-maps "arena" {:hidden {$exists false}}))
+
+p. Not a huge difference, but the former is definitely better.
+
+In order to achieve this convenience, though, I had to do some dark voodoo. This kind of stuff will probably taint your soul:
+
+source. clojure/omgsmackdown-dissected/data_mappers/db.clj
+
+As you can see, those macros "infect" a namespace when they're called. For example, I call them here in the @arenaverse.data-mappers.arena@ namespace:
+
+source. clojure/omgsmackdown-dissected/data_mappers/arena.clj 5-8
+
+These macro calls a) ensure dependencies are met and b) expand to a series of function definitions. It feels really wrong to use macros to create nearly-identical functions in one namespace after another, but I'm not sure what a better alternative would be.
+
+h3. Conventions
+
+Another function served by these macros is that they ensure that conventions are followed. For example, I wanted all queries to convert a MongDB @ObjectId@ object to a simple string. This was another way of hiding an implementation detail - views shouldn't know WTF an @ObjectId@ is. You can see that the dark voodoo macros help in this regard:
+
+source. clojure/omgsmackdown-dissected/data_mappers/db.clj 37-46
+
+One flaw with this approach is that it doesn't quite cover every situation. For example, when I create a user I have to manually convert the @ObjectId@ to string:
+
+source. clojure/omgsmackdown-dissected/data_mappers/user.clj 21-24
+
+This is necessary in order to remain consistent with the convention that data mapper functions convert the @_id@ field to a string. In most cases, this doesn't matter because I don't actually do anything with the return value but in this case it mattered because of the way that user signup works. Here's what would happen if I didn't manually convert the @_id@:
+
+# User signs up
+# Session is populated with user details, including an @ObjectId@ for the @_id@ field
+# User creates arena. @user-id@ field of arena is of type @ObjectId@
+# User logs out
+# User signs in again. Session is populated with user details, including a @String@ for the @_id@ field (because the query methods from db.clj do this conversion)
+# List of user's arenas doesn't include the arena created earlier because the query is looking for the @String@ version of the user's @_id@ instead of the @ObjectId@ version
+
+Coming from a Rails background, I'm used to libraries like mongoid which handle this conversion/consistency issue for you. My solution is a little half-baked and it requires me to pay attention to details which I'm not used to paying attention to.
+
+h2. Image resizing and S3 storage
+
+OMGS!!! wouldn't be half as fun if images weren't involved. I was too lazy to try and find a library that would handle resizing an image, associating it with a record, and storing it wherever I wanted (there are probably five thousand such gems for Rails). Such a library would probably completely unworkable anyway since my datamapper coder is completely custom. It's all throughout the code below:
+
+source. clojure/omgsmackdown-dissected/data_mappers/fighter.clj
+
+As you can see, image-processing code takes up a good 2/3 of all the code, which is probably a sign that those functions belongs in their own namespace. I'll probably do that someday, but for now the code is only being used by the @fighter@ model so I feel OK leaving it where it is.
+
+The code is a bit hard to decipher, but in general I tried to continue following the approach of clearly separating a) data b) transformation functions and c) storage functions. The form input is converted to a sequence of java Buffered Images, which are then resized, which are then transformed to input streams, which are then stored in S3. When updating a fighter I had to take particular care to preserve the @image-extension@ field when the fighter's form was submitted without an image.
+
+There's also something weird happening in the update function:
+
+source. clojure/omgsmackdown-dissected/data_mappers/fighter.clj 131-137
+
+I update the record, then immediately retrieve it from mongodb in order to possibly update the image and to return the fighter record. It feels strange to have to perform a @select@ during an update.
+
+h2. The (awesome!!!) battle page
+
+The battle page is where all the magic happens! It's where you're presented with all of life's deepest questions, ready to be voted on with a simple mouse click. Here's the full code, which will be analyzed in more detail below:
+
+source. clojure/omgsmackdown-dissected/views/battles.clj
+
+h3. Choosing the "main" arena
+
+There are three different ways in which the "main" arena - the large one at the top - is chosen:
+
+# You're viewing the home page, "/". The main arena should be completely random.
+# You've just clicked an image (any image) as the winner of an arena. The main arena should be the one which the fighter you clicked on belongs to.
+# You're viewing an arena directly, "/arenas/arena-name". Example: "Which creature is scarier?":http://omgsmackdown.com/arenas/republicans-vs-monsters . This is so that users can directly share an arena they've created or like.
+
+Additionally, whenever the page is refreshed it's necessary to show the winner of the previous main arena. All of this is accomplished by defining a partial which takes the main arena and previous fighters as parameters, along with page definitions which send the required info:
+
+source. clojure/omgsmackdown-dissected/views/battles.clj 162-203
+
+
+h3. Randomizing arena order
+
+Arena randomization is handled with these functions:
+
+source. clojure/omgsmackdown-dissected/views/battles.clj 72-99
+
+The @battles-with-main-arena-specified@ function looks kind of goofy to me. It's weird to remove the main arena, shuffle the rest, then add the main arena back in, but maybe that's fine.
+
+h3. Randomizing Fighters
+
+source. clojure/omgsmackdown-dissected/views/battles.clj 23-36
+
+h2. Account Creation
+
+Holy crap, this article is so freaking long. Anyway, noir's validation helpers really helped out when I wrote account creation:
+
+source. clojure/omgsmackdown-dissected/views/users.clj
+
+All that @valid?@ and @vali/on-error@ stuff is pretty much straight from the tutorial. So much so that I actually have that @error-item@ partial copied and pasted all over my code, which is kind of crappy but which is also something that's easily fixable.
+
+You may be wondering what the @register@ function is doing there. I'll get into that in the next section.
+
+h2. Authentication with friend
+
+"cemerick's friend":https://github.com/cemerick/friend library seems to be fairly popular. I found it a little confusing to work with so hopefully these notes help other Clojurists making other, less ridiculous web sites.
+
+h3. Logging in automatically after creating an account
+
+In order to log a user in automatically after creating an account, I had to create a custom workflow. Here's the friend code:
+
+source. clojure/omgsmackdown-dissected/server.clj 70-76
+
+@arenaverse.views.users/register@ handles the login, which made this weird because had to require view functions within my @server.clj@ file. This felt pretty wrong. Anyway, here's the register function:
+
+source. clojure/omgsmackdown-dissected/views/users.clj 46-50
+
+Looking at this now, it's hard to even reason out what's going on and how it relates to the friend library. I think what's happening though is that this function is called by the friend "middleware":https://github.com/ring-clojure/ring on every single request. It's therefore necessary to specify that its logic should only be run when the given criteria are met.
+
+When the criteria are met - when the user posts to @/users@ - then the function checks to see if the params are valid. If they are then friend's @workflows/make-auth@ function is called with the result of @user/create@ (remember how I elaborated on that above?). This function does some session magic or something. From then on friend considers you logged in.
+
+If the params are invalid, then nil is returned and your request gets processed like it normally would. This means that the @create@ page gets called, which in turn renders @shiny@. Since your params are invalid, error messages will show up.
+
+h3. Remaining logged in when the server restarts
+
+Another issue with friend is that your session data isn't stored in a cookie. Therefore, every time heroku spins the app down you get logged out. This is problematic because there's no password recovery functionality and also because it's just lame.
+
+To resolve this I did the following:
+
+1. Use clojure-monger's session store function to persist session info to mongodb:
+
+source. clojure/omgsmackdown-dissected/server.clj 17-28
+
+2. Create a session-store-authorize workflow function
+
+source. clojure/omgsmackdown-dissected/server.clj 65-68
+
+3. Add the workflow when adding the @friend/authenticat@ middleware, which you can see above.
+
+h3. Overall Friend Confusion
+
+I have to admit that I don't fully get sessions/cookies/auth in Clojure. With friend & noir, I think the difficulty lies in the fact that friend is meant to work directly with ring, whereas noir provides a little magic on top of ring.
+
+If I understand correctly, ring sessions are perpetuated in a kind of repeating reduce, where the session data for one request is sent to a function. The function then transforms the data, and that's used for the next request. I don't know if I'm explaining it well but I think the key thing is that the session data is never requested and state is never modified.
+
+Noir, on the other hand, somehow stores session data by modifying state. So noir's session and the session variables created by friend exist in two totally different places.
+
+The other way in which noir's "magic" can cause confusion is that, by default, you don't have to care about ring and middlewares. So when you do have to care about middleware, like with ring, it's hard to visualize where it's coming into play and how it's interacting with your other routes.
+
+
+h2. Admining & Moderating
+
+OK this article really is too long now. Check out @models/permissions@ and everything under @views/admin@ and @views/moderate@ to see what's going on.
+
+h2. Handling Stylesheets
+
+You can see my source files in @resources/compass@ in the git repo. Basically, I ran @compass watch@ while doing development. Compass, Sass, and Susy are all great libraries for making good-looking sites. I made the logo with photoshop.
+
+h2. Final Thoughts
+
+This was my first web site using Clojure and Noir. I've been using Rails for almost 7 years now, and there was a lot for me to get used to. Here's some stuff I liked:
+
+* Clojure is awesome. It's a powerful lisp, and having access to Java makes it that much more powerful. Java was used for:
+** Processing images
+** Uploading to S3
+** Interacting with MongoDB
+* I really enjoyed being so close to the "metal"
+** Creating my own data-mapper abomination thing was quite fun
+** The lack of magic felt freeing. I felt like I was only using what I needed, and that made my life a lot easier. I really don't know how else to describe that.
+* It was fun to make something so ridiculous.
+
+The only major drawback is the lack of libraries compared to Rails. For the time being, I'll continue reaching for Rails for professional work but I'll definitely use Clojure for my own side projects.
+
+Wow, so that's it! I hope you liked this detailed look at the silliest Clojure/Noir web site ever made! And if you like the site, please feel free to copy and it and do whatever you want with it. It'd be awesome to hear about it being installed on intranets with battles like "Which employee would win a drinking contest?"

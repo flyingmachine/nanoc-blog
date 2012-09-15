@@ -337,7 +337,6 @@ h1 {
 }
 
 strong {
-  @include adjust-font-size-to(14px);
   letter-spacing:.05em;
 }
 
@@ -403,6 +402,7 @@ ol.pages {
     float:left;
     margin-right:(2 * $gutter-width);
   }
+  
 }
 
 .date {
@@ -417,12 +417,15 @@ ol.pages {
   }
   
   h2 {
-    border-bottom:1px dashed $border;
-    margin-bottom:($base-line-height - 1px);
-    font-variant:small-caps;
+    @include trailer(1, 25px);
     text-transform:none;
     margin-right:2px;
-    @include adjust-font-size-to(24px);
+    border-bottom: 1px dotted #aaa;
+    @include adjust-font-size-to(24px, 1);
+    margin-left: -27px;
+    padding-left: 9px;
+    border-left: 18px solid $highlight;
+    clear:both;
   }
   
   h3 {
@@ -484,7 +487,7 @@ pre.emphasize {
 
 p, ol, ul {
   code {
-    background:#fff;
+    background:#eee;
     line-height:1px;
   }
 }
@@ -495,6 +498,7 @@ p, ol, ul {
 
 .code.pygments {
   line-height:normal;
+  font-size: 75%;
   border: 2px solid silver;
   @include columns(8, 8);
 
@@ -509,6 +513,7 @@ p, ol, ul {
   table {
     td.linenos {
       width:5%;
+      padding-right:0;
     }
     td.code {
       width:95%;
@@ -533,3 +538,5 @@ p, ol, ul {
 a.feed img {
   height:20px;
 }
+
+
