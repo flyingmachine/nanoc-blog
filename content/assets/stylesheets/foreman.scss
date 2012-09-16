@@ -365,8 +365,30 @@ body {
   }
 
   #hero-text {
-    @include padding-leader(3);
-    @include span-columns(6 omega, 9);
+    @include padding-leader(1);
+    @include span-columns(6, 9);
+  }
+
+  #action-buttons {
+    @include leader(1);
+    @include span-columns(3 omega, 9);
+    .buy {
+      @include adjust-font-size-to(36px, 1);
+      background: #71a670;
+      padding: 16px;
+      text-align:center;
+      @include border-radius(10px);
+      @include single-box-shadow(#000, 0, 2px, 0, 0px, false);
+
+      &:hover {
+        position:relative;
+        top:-1px;
+        @include single-box-shadow(#000, 0, 3px, 0, 0px, false);
+      }
+      a {
+        color:white;
+      }
+    }
   }
 
   h1 {

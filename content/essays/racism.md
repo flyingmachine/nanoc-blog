@@ -2,7 +2,7 @@
 title: Thoughts on Racism
 created_at: Wed Aug 1 14:02:00 -0500 2012
 kind: article
-summary: Thoughts on racism.
+summary: Rambling thoughts on racism from a mixed-race guy who grew up in the South.
 ---
 
 My first memories of home take place in a two-story welfare housing
