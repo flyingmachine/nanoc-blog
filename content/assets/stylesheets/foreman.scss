@@ -1,9 +1,56 @@
-//** SCREEN STYLES **//
-@import "blog";
+// Imports -----------------------------------------------------------
+@import "compass/reset";
+@import "compass/utilities/general/clearfix";
+@import "compass/css3/border-radius";
+@import "compass/typography/vertical_rhythm"; // http://compass-style.org/reference/compass/typography/vertical_rhythm/
+@import "compass/css3/box-shadow";
+@import "compass/css3/box-sizing";
+@import "compass/css3/text-shadow";
 
-/* begin old file */
-/* Typography -------------------------------------------------------------- */
-/* The following classes are for use with @extend. */
+@import "susy"; // grid
+
+// Grid --------------------------------------------------------------
+
+$total-columns: 9;             // a 12-column grid
+$column-width   : 4em;            // each column is 4em wide
+$gutter-width   : 1em;            // 1em gutters between columns
+$side-gutter-width : $gutter-width;  // grid-padding equal to gutters
+
+// Colors --------------------------------------------------------------
+
+$base: #333;
+$alt: #005498;
+$dark: #253244;
+$highlight: #000;
+$background: #fffcf4;
+$border: #999;
+
+// Fonts --------------------------------------------------------------
+
+@mixin sans-family {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+@mixin header-family {
+  font-family: "Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#000;
+}
+
+@mixin serif-family {
+  font-family: "Hoefler Text", Cambria, Georgia, serif;
+}
+
+@mixin monospace-family {
+  font-family: Bitstream Vera Sans Mono,monospace
+}
+
+$base-font-size: 18px;
+$base-line-height: 27px;
+
+// Text Shadow --------------------------------------------------------------
+$default-text-shadow-color: #ded8c7;
+
+
 @include establish-baseline;
 
 html {
@@ -33,7 +80,8 @@ text-rendering: optimizeLegibility;
   
 body {
   @extend .serif;
-  color: $base; }
+  color: $base;
+}
 
 /* Selected Text -------------------------------------------------------------- */
 /* -moz- must be declared separately */
@@ -71,14 +119,6 @@ a {
 
 h2, h3, h4, h5, h6 {
   @include trailer; }
-
-h1 {
-  @include adjust-font-size-to(30px, 1);
-  @include trailer(1, 30px);
-}
-
-h1 {
-  @extend .allcaps; }
 
 h3 {
   font-weight: bold; }
@@ -137,7 +177,7 @@ pre, code, tt {
 /* Block -------------------------------------------------------------- */
 
 p {
-  @include trailer; }
+  @include trailer(.5); }
 
 pre {
   margin-bottom: $base-rhythm-unit;
@@ -282,7 +322,7 @@ body {
 }
 
 #main {
-  @include span-columns(8 omega);
+  @include span-columns(9 omega);
   padding-top: $base-line-height;
 }
 
@@ -291,7 +331,7 @@ body {
   background:$highlight;
   padding:(0.5 * $base-line-height) $gutter-width;
   color:white;
-  margin:0 (-2 * $gutter-width) ($base-line-height * 2 - 4);
+  margin:0 (-2 * $gutter-width) ($base-line-height * 1 - 4);
   
   a {
     color:white;
@@ -302,6 +342,62 @@ body {
     &:hover {
       text-decoration:underline;
     }
+  }
+}
+
+#screen {
+  @include clearfix;
+  margin: 1em 0;
+  text-align:center;
+  .caption {
+    font-style: italic;
+  }
+  p {
+    margin-bottom:0;
+  }
+}
+
+#hero {
+  @include clearfix;
+  #icon {
+    @include span-columns(3, 9);
+  }
+
+  #hero-text {
+    @include padding-leader(1);
+    @include span-columns(6, 9);
+  }
+
+  #action-buttons {
+    @include leader(1);
+    @include span-columns(3 omega, 9);
+    .buy {
+      @include adjust-font-size-to(36px, 1);
+      background: #71a670;
+      padding: 16px;
+      text-align:center;
+      @include border-radius(10px);
+      @include single-box-shadow(#000, 0, 2px, 0, 0px, false);
+
+      &:hover {
+        position:relative;
+        top:-1px;
+        @include single-box-shadow(#000, 0, 3px, 0, 0px, false);
+      }
+      a {
+        color:white;
+      }
+    }
+  }
+
+  h1 {
+    @include header-family;
+    @include adjust-font-size-to(96px, 2);
+    @include trailer(1, 96px);
+  }
+
+  p {
+    @include adjust-font-size-to(30px, 1);
   }
 }
 
@@ -324,10 +420,7 @@ hr {
   @include trailer(1);
 }
 
-h1 {
-  letter-spacing:0.15em;
-  @include leader(1, 21px);
-}
+
 
 strong {
   letter-spacing:.05em;
@@ -351,26 +444,6 @@ a {
   }
 }
 
-ol.pages {
-  list-style:none;
-  margin-left: 0;
-  
-  li {
-    padding-top:$base-line-height - 1px;
-    @include trailer;
-    border-top:1px dotted $dark;
-    
-    h2 {
-      margin-bottom:0;
-    }
-    
-    &:last-child {
-      border-bottom:none;
-      margin-bottom:0;
-    }
-  }
-}
-
 @mixin bottom-separated {
   border-top:3px double $border;
   padding-top:($base-line-height - 3px);
@@ -378,9 +451,6 @@ ol.pages {
   margin-top:($base-line-height);
 }
 
-.categories {
-  @include bottom-separated;
-}
 
 #footer {
   @include bottom-separated;
@@ -410,11 +480,12 @@ ol.pages {
   }
   
   h2 {
-    @include trailer(1, 25px);
+    @include adjust-font-size-to(36px, 1);
+    @include trailer(1, 36px);
+    @include leader(1, 36px);
+    @include header-family;
     text-transform:none;
     margin-right:2px;
-    border-bottom: 1px dotted #aaa;
-    @include adjust-font-size-to(24px, 1);
     margin-left: -27px;
     padding-left: 9px;
     border-left: 18px solid $highlight;
@@ -533,3 +604,6 @@ a.feed img {
 }
 
 
+.done {
+  text-decoration:line-through;
+}

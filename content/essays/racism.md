@@ -1,8 +1,8 @@
 ---
 title: Thoughts on Racism
-created_at: Thu Jan 5 14:02:00 -0500 2012
+created_at: Wed Aug 1 14:02:00 -0500 2012
 kind: article
-summary: An attempt to describe an approach to programming within an integrated framework.
+summary: Rambling thoughts on racism from a mixed-race guy who grew up in the South.
 ---
 
 My first memories of home take place in a two-story welfare housing

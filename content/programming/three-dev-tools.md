@@ -1,6 +1,6 @@
 ---
 title: Three Dev Tools You Probably Already Know
-created_at: Aug 25 18:55:00 -0500 2012
+created_at: Sun Aug 26 18:55:00 -0500 2012
 kind: article
 categories: programming
 summary: "You probably already know about the following tools, but I found it useful to be reminded of them."

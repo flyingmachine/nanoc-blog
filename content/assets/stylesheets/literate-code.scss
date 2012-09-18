@@ -1,15 +1,13 @@
-@import "imports";
+@import "screen";
 
-$total-cols: 10;
+$total-columns: 10;
 
 #document {
   @include container;
 }
 
 #main {
-  @include alpha;
-  @include omega;
-  @include columns(10);
+  @include span-columns(10 omega);
 
   p {
     width: 36em;
