@@ -348,13 +348,12 @@ body {
 #screen {
   @include clearfix;
   margin: 1em 0;
-  #wow {
-    @include span-columns(7, 9);
-  }
-
+  text-align:center;
   .caption {
     font-style: italic;
-    @include span-columns(2 omega, 9);
+  }
+  p {
+    margin-bottom:0;
   }
 }
 
@@ -605,3 +604,6 @@ a.feed img {
 }
 
 
+.done {
+  text-decoration:line-through;
+}
