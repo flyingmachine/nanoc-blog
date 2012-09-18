@@ -376,15 +376,18 @@ body {
       background: #71a670;
       padding: 16px;
       text-align:center;
+      display: block;
       @include border-radius(10px);
       @include single-box-shadow(#000, 0, 2px, 0, 0px, false);
+      color:white;
 
       &:hover {
         position:relative;
         top:-1px;
         @include single-box-shadow(#000, 0, 3px, 0, 0px, false);
       }
-      a {
+
+      &:visited {
         color:white;
       }
     }
