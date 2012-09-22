@@ -381,7 +381,7 @@ body {
       @include border-radius(10px);
       @include single-box-shadow(#000, 0, 2px, 0, 0px, false);
       color:white;
-      @include background-image(linear-gradient(top, #afcdaf, #71a670));
+      // @include background-image(linear-gradient(top, #afcdaf, #71a670));
       border: 2px solid black;
 
       &:hover {
