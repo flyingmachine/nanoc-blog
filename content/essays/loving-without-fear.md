@@ -48,3 +48,9 @@ there, ready, waiting for me without judgment. Waiting for me to let
 it out again.
 
 The months that followed that day at the library were not easy. 
+
+
+
+You will get to a point in your growth where you understand that if you protect yourself, you will never be free. It’s that simple. Because you’re scared, you have locked yourself within your house and pulled down all the shades. Now it’s dark and you want to feel the sunlight, but you can’t. It’s impossible. If you close and protect yourself, you are locking this scared, insecure person within your heart. You will never be free that way.
+
+Singer, Michael A. (2007-10-03). The Untethered Soul: The Journey Beyond Yourself (Kindle Locations 921-924). New Harbinger Publications, Inc.. Kindle Edition. 
