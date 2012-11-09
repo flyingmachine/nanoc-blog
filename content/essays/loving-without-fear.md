@@ -2,7 +2,7 @@
 title: Loving Without Fear
 created_at: Tue Oct 16 20:02:00 -0500 2012
 kind: article
-summary: Reflections on how embracing love has changed my life
+summary: Reflections on how embracing love has changed my life.
 ---
 
 # Loving Without Fear
@@ -80,5 +80,5 @@ my brother and mom to allow me to visit them much more often. And my
 latest project, something I put together with the idea of lifting up
 other people, is almost ready to ship.
 
-And through it all, I keep telling myself: Love without fear. Love
-without fear. Love without fear.
+And through it all, I keep telling myself: _Love without fear. Love
+without fear. Love without fear._
