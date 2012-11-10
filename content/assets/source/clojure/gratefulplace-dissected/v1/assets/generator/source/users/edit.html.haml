@@ -1,0 +1,44 @@
+---
+title: "Editing Profile :: Grateful Place"
+---
+
+#user-content.chunk
+  .edit
+    %a{:href => "/users/comments.html"}
+      Back to profile
+  %h2
+    Edit Your Profile
+  #about.sub-section
+    %h3 About You
+    %form{:action => "/users/username", :method => "POST"}
+      %textarea{:name => "about"}
+      %input{:type => "submit", :value => "Update"}
+  #change-password.sub-section
+    %h3 Change Password
+    %form{:action => "/users/username", :method => "POST"}
+      .errors Your passwords didn't match
+      %table.input
+        %tr
+          %td.label
+            %label{:for => "username"} Current Password
+          %td#current-password
+            %input{:name => "change-password[current-password]", :type => "password"}
+        %tr
+          %td.label
+            %label{:for => "password"} New Password
+          %td#new-password
+            %input{:name => "change-password[new-password]", :type => "password"}
+        %tr
+          %td.label
+            %label{:for => "password"} New Password Confirmation
+          %td#new-password-confirmation
+            %input{:name => "change-password[new-password-confirmation]", :type => "password"}
+              
+      %input{:type => "submit", :value => "Change Password"}
+      
+  #change-email.sub-section
+    %h3 Change Email Address
+    %form{:action => "/users/username", :method => "POST"}
+      .errors
+      %input{:name => "email", :type => "text"}
+      %input{:type => "submit", :value => "Update"}

@@ -1,0 +1,31 @@
+---
+title: "Join :: Grateful Place"
+---
+
+#new-user
+  %h2 Join Grateful Place
+
+  %p Joining will let you write posts and comments.
+
+  %form{:action => "/users", :method => "POST"}
+    %table.input
+      %tr
+        %td.label
+          %label{:for => "username"} Username
+        %td#username
+          %input{:name => "username", :type => "text"}
+          .errors
+      %tr
+        %td.label
+          %label{:for => "password"} Password
+        %td#password
+          %input{:name => "password", :type => "password"}
+          .errors
+
+      %tr
+        %td.label
+          %label{:for => "email"} Email
+        %td#email
+          %input{:name => "email", :type => "text"}
+          .errors
+    %input{:type => "submit", :value => "Join Grateful Place"}

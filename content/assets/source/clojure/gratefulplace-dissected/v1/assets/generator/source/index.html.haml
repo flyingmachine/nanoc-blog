@@ -1,0 +1,42 @@
+---
+title: Grateful Place
+---
+#posts
+  .post
+    .content
+      %p Here is some content.
+    %footer
+      .date Jan 03, 2012
+      .author
+        by
+        %a{:href => ""} Joe Schmoe
+      .favorite
+        %a{:href => "#"} &#9733;
+        .status Like this
+      %a.comments{:href => ""} 35 Comments
+      
+
+  .post
+    .content
+      %p Here is some content, too.
+    %footer
+      .date Jan 03, 2012
+      .author
+        by
+        %a{:href => ""} Joe Schmoe
+      .favorite
+        %a{:href => "#"} &#9733;
+        .status Like this
+      %a.comments{:href => ""} 35 Comments
+
+  .pagination
+    %a.previous{:href => "#"}
+      Previous  
+    %span.page-link.current
+      1
+    %a.page-link{:href => "#"}
+      2
+    %a.page-link{:href => "#"}
+      3
+    %a.next{:href => "#"}
+      Next

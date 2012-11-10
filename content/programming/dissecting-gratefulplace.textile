@@ -1,0 +1,39 @@
+---
+title: Building a Clojure Web App Without Noir
+created_at: Fri Aug 25 2012 13:23:00 -0500 2012
+kind: article
+categories: programming
+summary: Having put together a website using Noir, I wanted to to try and get closer to the metal.
+additional_stylesheets:
+  - pygments
+  - literate-code
+---
+
+h1. Look, Ma! No batteries!
+
+Awhile back I released "OMG! SMACKDOWN!!!":/programming/dissecting-omgsmackdown/, which still holds the title for dumbest Clojure app in existence. To make up for that ludicrostrosity, I've created "Grateful Place":http://gratefulplace.com. This time I around I didn't use Noir, instead going closer to the metal with Compojure and Enlive. The experience was a lot easier than I anticipated, perhaps easier than using Noir. This post will cover some of the more interesting bits of code:
+
+* Templating heaven with Enlive and Middleman
+* Using macros to enforce full stack consistency
+* Roll-your-own validations
+* Pagination is more fun with macros
+* Using fierce mustaches to run tasks
+* Fun lispy utilities
+
+You can find all source code on "github":https://github.com/flyingmachine/gratefulplace . This article, however, has a snapshot of the source, also on "github":https://github.com/flyingmachine/nanoc-blog/tree/master/content/assets/source/clojure/gratefulplace-dissecting, so that it will continue to make sense long after the app has evolved.
+
+h2. App Overview
+
+Grateful Place is a social app with only a few models: Users, Comments, Posts, and Likes. Nothing too fancy. If you're interested in why I made it, here's a "post I wrote about gratitude":/essays/gratitude/.
+
+h2. Templating heaven with Enlive and Middleman
+
+I can say without reservation that "Enlive":https://github.com/cgrand/enlive is the best templating library I've ever used. I absolutely love it! If you try out one thing from this post, try out the workflow I describe here. Enlive is completely different from Hiccup, ERB, HAML and the like and it's worth giving it a shot.
+
+If you're not familiar with Enlive, it's a selector-based templating library. In the same way that CSS allows you to separate structure and presentation, Enlive lets you separate structure and view logic. This is huge! Unless you're the kind of person who still likes to use @font@ and @bold@ tags in your HTML, you should give Enlive a try.
+
+Using Enlive allowed me to do all my design work using the Ruby library "Middleman":http://middlemanapp.com/. This allowed me to build stand-alone web pages so that I could see how they looked without worrying about any view logic. For example, here's the example home page I put together:
+
+source. clojure/gratefulplace-dissected/v1/assets/generator/source/index.html.haml
+
+You might notice a few things.

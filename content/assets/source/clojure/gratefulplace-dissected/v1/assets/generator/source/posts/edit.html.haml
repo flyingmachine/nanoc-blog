@@ -1,0 +1,12 @@
+---
+layout: false
+---
+
+%form{:action => "/posts/show.html", :method => "POST"}
+  #content
+    %textarea{:name => "content"}
+  .controls
+    %input{:type => "submit", :value => "Update"}
+    %a.cancel{:href => "#"} cancel
+    .formatting-help
+      %a{:href => "#"} formatting help
