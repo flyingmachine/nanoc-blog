@@ -34,9 +34,8 @@ end
 
 compile '*' do
   unless item.identifier.include?("#") # emacs tmp file
-    if item.binary? || item.identifier.include? "/source/"
+    if item.binary? || item.identifier.include?("/source/") || item.attributes[:draft]
       # don’t filter binary items
-    elsif item.attributes[:draft]
       # don't output drafts
     else
       item_layout = "default"
@@ -77,7 +76,7 @@ end
 route '*' do
   if item.binary?
     # Write item with identifier /foo/ to /foo.ext
-    item.identifier.chop + '.' + item[:extension]
+    item.identifier.chop + '.' + item[:extension].to_s
   elsif item.attributes[:draft]
     # don't output drafts
   else
