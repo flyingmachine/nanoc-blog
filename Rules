@@ -34,7 +34,7 @@ end
 
 compile '*' do
   unless item.identifier.include?("#") # emacs tmp file
-    if item.binary?
+    if item.binary? || item.identifier.include? "/source/"
       # don’t filter binary items
     elsif item.attributes[:draft]
       # don't output drafts

@@ -20,7 +20,7 @@ Awhile back I released "OMG! SMACKDOWN!!!":/programming/dissecting-omgsmackdown/
 * Using fierce mustaches to run tasks
 * Fun lispy utilities
 
-You can find all source code on "github":https://github.com/flyingmachine/gratefulplace . This article, however, has a snapshot of the source, also on "github":https://github.com/flyingmachine/nanoc-blog/tree/master/content/assets/source/clojure/gratefulplace-dissecting, so that it will continue to make sense long after the app has evolved.
+You can find all source code on "github":https://github.com/flyingmachine/gratefulplace/tree/v1.0.0.
 
 h2. App Overview
 
