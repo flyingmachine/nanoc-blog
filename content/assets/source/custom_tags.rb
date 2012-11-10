@@ -4,7 +4,7 @@ module CustomTags
     local_path, highlighted, range = /([^ :]*)(?::(\d+))?(?: (\d+-\d+))?/.match(opts[:text])[1..3]
     code = File.readlines(File.join(File.expand_path(File.dirname(__FILE__)), local_path))
 
-    langs = {"rb" => "ruby", "clj" => "clojure"}
+    langs = {"rb" => "ruby", "clj" => "clojure", "haml" => "haml"}
     lang = langs[File.extname(local_path).gsub(".", "")]
     
     if range
