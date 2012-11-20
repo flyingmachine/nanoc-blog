@@ -7,9 +7,13 @@
 
 #nav {
   @include span-columns(3, 12);
+  @include transition-property("all");
+  @include transition-duration(".1s");
   color: #999;
 
   h2 {
+    @include transition-property("all");
+    @include transition-duration(".1s");
     @include leader;
     @include trailer;
     @include border-box-sizing;
@@ -18,6 +22,8 @@
   }
 
   a {
+    @include transition-property("all");
+    @include transition-duration(".1s");
     text-decoration:none;
     &:link {
       color: lighten(desaturate($alt, 50%), 50%); }
@@ -38,11 +44,18 @@
 
   
   &:hover {
+    @include transition-property("all");
+    @include transition-duration(".1s");
+    color: $base;
+
     h2 {
+      @include transition-property("all");
+      @include transition-duration(".1s");
       border-bottom:1px solid #aaa;
     }
-    color: $base;
     a {
+      @include transition-property("all");
+      @include transition-duration(".1s");
       text-decoration:none;
       &:link {
         color: $alt; }
