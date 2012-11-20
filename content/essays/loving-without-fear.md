@@ -1,6 +1,6 @@
 ---
 title: Loving Without Fear
-created_at: Tue Oct 16 20:02:00 -0500 2012
+created_at: Nov 7 20:02:00 -0500 2012
 kind: article
 summary: Reflections on how embracing love has changed my life.
 ---
