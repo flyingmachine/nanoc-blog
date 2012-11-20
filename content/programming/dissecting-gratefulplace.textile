@@ -40,7 +40,7 @@ Using Enlive allowed me to do all my design work using the Ruby library "Middlem
 
 source. clojure/gratefulplace-dissected/v1/assets/generator/source/index.html.haml
 
-You might have noticed a few weird things. First, this is written using HAML. Yep, HAML. I prefer HAML over HTML because it's more concise and the consisten structure allows me to scan it visually. And since my HTML templates and view logic are completely separate, I can write my designs in HAML, preview them with Middleman, and then generate an HTML file for Enlive to work with. Here's my process in full:
+You might have noticed a few weird things. First, this is written using HAML. Yep, HAML. I prefer HAML over HTML because it's more concise and the consistent structure allows me to visually scan it more easily. And since my HTML templates and view logic are completely separate, I can write my designs in HAML, preview them with Middleman, and then generate an HTML file for Enlive to work with. Here's my process in full:
 
 # Build on every change by cd'ing to @assets/generator/@ and running @fswatch . ./g@. This runs a bash script which generates the HTML, CSS, and Javascript files and moves them to the proper directories.
 # Start up Middleman by cd'ing to @assets/generator/@ and running @middleman@
@@ -55,7 +55,7 @@ h3. Some code to reduce boilerplate
 
 Finally, here's some code I put together to reduce boilerplate:
 
-source. clojure/gratefulplace-dissected/v1/src/gratefulplace/views/posts.clj 9-47
+source. clojure/gratefulplace-dissected/v1/src/gratefulplace/views/common.clj 9-47
 
 The ultimate purpose of this code is the @defpage@ macro. This helps me in a few ways. It lets me easily write view code for each page without having to worry about the surrounding layout. For example, before writing the above code I had to include the navigation transformations in every page, which quickly got annoying.
 
@@ -143,7 +143,7 @@ source. clojure/gratefulplace-dissected/v1/src/gratefulplace/models/post.clj 23-
 
 Here's the pagination macro:
 
-source. clojure/gratefulplace-dissected/v1/src/gratefulplace/models/post.clj 4-9
+source. clojure/gratefulplace-dissected/v1/src/gratefulplace/models/helpers.clj 4-9
 
 And here's the whole thing in action:
 
