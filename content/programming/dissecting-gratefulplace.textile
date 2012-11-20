@@ -20,7 +20,8 @@ Awhile back I released "OMG! SMACKDOWN!!!":/programming/dissecting-omgsmackdown/
 * Using fierce mustaches to run tasks
 * Fun utilities
 
-You can find all source code on "github":https://github.com/flyingmachine/gratefulplace/tree/v1.0.0. Also, I'm going to be at the Clojure Conj, so if you want to talk about any of this stuff, please do tweet me (@nonrecursive) or find me at the conj!
+You can find all source code on
+"github":https://github.com/flyingmachine/gratefulplace/tree/v1.0.0. Also, I'm going to be at the Clojure Conj and would love do meet folks. If you'd like to chat, please do tweet me (@nonrecursive) or find me at the conj!
 
 h2. App Overview
 
