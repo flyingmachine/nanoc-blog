@@ -8,6 +8,7 @@
 @import "compass/css3/text-shadow";
 
 @import "susy"; // grid
+@import "font_awesome";
 
 // Grid --------------------------------------------------------------
 
@@ -49,6 +50,7 @@ $default-text-shadow-color: #ded8c7;
 /* Typography -------------------------------------------------------------- */
 /* The following classes are for use with @extend. */
 @include establish-baseline;
+@include border-box-sizing;
 
 html {
 text-rendering: optimizeLegibility;
