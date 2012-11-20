@@ -9,70 +9,18 @@
   @include span-columns(3, 12);
   @include transition-property("all");
   @include transition-duration(".1s");
-  color: #999;
+  opacity: 0.3;
+
+  &:hover {
+    opacity:1;
+  }
 
   h2 {
-    @include transition-property("all");
-    @include transition-duration(".1s");
     @include leader;
     @include trailer;
     @include border-box-sizing;
     height: $base-line-height;
     border-bottom:1px solid #eee;
-  }
-
-  a {
-    @include transition-property("all");
-    @include transition-duration(".1s");
-    text-decoration:none;
-    &:link {
-      color: lighten(desaturate($alt, 50%), 50%); }
-    &:link, &:visited, &:hover, &:active {
-      outline: none; }
-    &:focus, &:active {
-      color: complement($alt);
-      text-decoration: none; }
-    &:focus {
-      outline: thin dotted; }
-    &:visited {
-      color: lighten(desaturate(complement($alt), 50%), 50%);
-    }
-    &:hover {
-      color:lighten(darken($highlight, 13%), 50%);
-    }
-  }
-
-  
-  &:hover {
-    @include transition-property("all");
-    @include transition-duration(".1s");
-    color: $base;
-
-    h2 {
-      @include transition-property("all");
-      @include transition-duration(".1s");
-      border-bottom:1px solid #aaa;
-    }
-    a {
-      @include transition-property("all");
-      @include transition-duration(".1s");
-      text-decoration:none;
-      &:link {
-        color: $alt; }
-      &:link, &:visited, &:hover, &:active {
-        outline: none; }
-      &:focus, &:active {
-        color: complement($alt);
-        text-decoration: none; }
-      &:focus {
-        outline: thin dotted; }
-      &:visited {
-        color:complement($alt);
-      }
-      &:hover {
-        color:darken($highlight, 13%);
-      }
-    }
   }
 
   ol {
