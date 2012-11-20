@@ -8,29 +8,30 @@ nolayout: true
 %html{ :lang => "en", "xml:lang" => "en", :xmlns => 'http://www.w3.org/1999/xhtml' }
   %head
     %meta{ "http-equiv" => "content-type", "content" => "text/html; charset=utf-8" }
-      - if @item[:description]
-        %meta{ "name" => "description", "content" => @item[:description] }
-    - if @keywords
-      %meta{ "name" => "keywords", "content" => @keywords }
+    %meta{ "name" => "description", "content" => "home site of Daniel Higginbotham" }
     %title= @item[:title]
-    %link{ :href => "/stylesheets/screen.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
-      %link{ :href => "/stylesheets/#{stylesheet}.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/stylesheets/home.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
   %body{ :class => @body_class }
+    %header
+      .title
+        %a{:href => "/"} Flying Machine Studios
+      .subtitle
+        adventures in creating
+
     #document
       #main
-        #header
-          .title
-            %a{:href => "/"} Flying Machine Studios
-          .utilities
-            %a{:href => "/about"} about
-            &bull;
-            %a{:href => "http://twitter.com/nonrecursive"} @nonrecursive
-            &bull;
-            %a.feed{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
-              %img{:src => "/assets/images/ui/icon_rss.png", :title => "feed"}
+        #contact
+          %ul
+
+            %li
+              %a{:href => "http://twitter.com/nonrecursive"} @nonrecursive
+            %li
+              %a{:href => "http://www.linkedin.com/in/danielhigginbotham"} linked in
+            %li
+              %a{:href => "mailto:daniel@flyingmachinestudios.com"}email
+
         #content.page
           %h1 Articles
 
@@ -45,7 +46,6 @@ nolayout: true
                     %header
                       %a{:href => article.path}= article[:title]
                   %p= article[:summary]
-                  %p.read_more= link_to("Continue reading", article)
     
 
 

@@ -21,8 +21,6 @@ Bundler.require(:default)
 require "lib/rule_helper"
 require 'content/assets/source/custom_tags'
 
-Compass.add_project_configuration 'compass/config.rb' # when using Compass 0.10
-
 # blog
 compile '/atom/' do
   filter :haml
@@ -34,7 +32,10 @@ end
 
 compile '*' do
   unless item.identifier.include?("#") # emacs tmp file
-    if item.binary? || item.identifier.include?("/source/") || item.attributes[:draft]
+    if item.binary? ||
+        item.identifier.include?("/source/") ||
+        item.attributes[:draft] ||
+        item.attributes[:filename] =~ /scss$/
       # don’t filter binary items
       # don't output drafts
     else
@@ -48,7 +49,6 @@ compile '*' do
       when /(markdown|md)$/ then filter :redcarpet; use_layout = true
         
       when /coffee$/ then filter :coffeescript;
-      when /scss$/ then filter(:sass, Compass.sass_engine_options)
       end
 
       use_layout = false if item.attributes[:nolayout]
@@ -68,9 +68,7 @@ route '/assets/javascripts/*' do
 end
 
 route '/assets/stylesheets/*' do
-  unless item.identifier.include?("#") # emacs tmp file
-    "/stylesheets/#{basename(item.attributes[:filename])}.css" 
-  end
+  
 end
 
 route '*' do

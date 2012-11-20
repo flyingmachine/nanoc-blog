@@ -1,0 +1,77 @@
+@import "main";
+
+$total-columns: 12;
+$background: white;
+
+$blue: #8cc4fd;
+$green: #a0ff8d;
+
+#document {
+  @include container;
+  background: $background;
+  margin-bottom:(2 * $base-line-height);
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background: white;
+}
+
+body > header {
+  @include container;
+  @include padding-leader;
+  background:$green;
+
+  .title {
+    @include adjust-font-size-to(40px);
+    @include padding-trailer(1, 40px);
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .subtitle {
+    padding: 0 1 * $gutter-width;
+    @include padding-leader(.25);
+    @include padding-trailer(.25);
+    margin-left: -1 * $gutter-width;
+    margin-right: -1 * $gutter-width;
+    margin-top: -1 * $base-line-height;
+    height: $base-line-height;
+    background: #daffd3;
+    font-style: italic;
+  }
+}
+
+#contact {
+  @include clearfix;
+  @include span-columns(12 omega);
+  @include trailer;
+  border-bottom: 2px solid $green;
+  ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    
+    li {
+      float:left;
+      a, span {
+        display:block;
+        @include padding-leader(.5);
+        @include padding-trailer(.5);
+        padding-left: $gutter-width;
+        padding-right: $gutter-width;
+      }
+
+      a:hover {
+        background: $green;
+        color:#395b32;
+      }
+    }
+  }
+  
+}
