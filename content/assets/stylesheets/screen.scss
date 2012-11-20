@@ -1,43 +1,83 @@
 //** SCREEN STYLES **//
 @import "main";
 
-#document {
-  @include container;
-  @include border-radius(0 0 20px);
-  background: $background;
-  margin-bottom:(2 * $base-line-height);
-  margin-left:0;
-}
-
-
 #main {
-  @include span-columns(8 omega);
-  padding-top: $base-line-height;
+  @include span-columns(8 omega, 12);
 }
 
-#header {
-  @include clearfix;
-  background:$highlight;
-  padding:(0.5 * $base-line-height) $gutter-width;
-  color:white;
-  margin:0 (-2 * $gutter-width) ($base-line-height * 2 - 4);
-  
+#nav {
+  @include span-columns(3, 12);
+  color: #999;
+
+  h2 {
+    @include leader;
+    @include trailer;
+    @include border-box-sizing;
+    height: $base-line-height;
+    border-bottom:1px solid #eee;
+  }
+
   a {
-    color:white;
-    &:visited{
-      color:white;
+    text-decoration:none;
+    &:link {
+      color: lighten(desaturate($alt, 50%), 50%); }
+    &:link, &:visited, &:hover, &:active {
+      outline: none; }
+    &:focus, &:active {
+      color: complement($alt);
+      text-decoration: none; }
+    &:focus {
+      outline: thin dotted; }
+    &:visited {
+      color: lighten(desaturate(complement($alt), 50%), 50%);
     }
-    
     &:hover {
-      text-decoration:underline;
+      color:lighten(darken($highlight, 13%), 50%);
     }
   }
-}
 
-.title {
-  @include adjust-font-size-to(20px);
-  letter-spacing:0.15em;
-  float:left;
+  
+  &:hover {
+    h2 {
+      border-bottom:1px solid #aaa;
+    }
+    color: $base;
+    a {
+      text-decoration:none;
+      &:link {
+        color: $alt; }
+      &:link, &:visited, &:hover, &:active {
+        outline: none; }
+      &:focus, &:active {
+        color: complement($alt);
+        text-decoration: none; }
+      &:focus {
+        outline: thin dotted; }
+      &:visited {
+        color:complement($alt);
+      }
+      &:hover {
+        color:darken($highlight, 13%);
+      }
+    }
+  }
+
+  ol {
+    list-style:none;
+    margin: 0;
+    padding: 0;
+    li {
+      @include trailer;
+    }
+  }
+
+  .projects {
+    header a {
+      display: block;
+    }
+  }
+
+  
 }
 
 .utilities {
@@ -53,11 +93,6 @@ hr {
   @include trailer(1);
 }
 
-h1 {
-  letter-spacing:0.15em;
-  @include leader(1, 21px);
-}
-
 strong {
   letter-spacing:.05em;
 }
@@ -68,38 +103,6 @@ strong {
 // and 20 is the (optional) line-height.
 
 /* Styles -------------------------------------------------------------- */
-a {
-  text-decoration:none;
-  
-  &:visited {
-    color:complement($alt);
-  }
-  
-  &:hover {
-    color:darken($highlight, 13%);
-  }
-}
-
-ol.pages {
-  list-style:none;
-  margin-left: 0;
-  
-  li {
-    padding-top:$base-line-height - 1px;
-    @include trailer;
-    border-top:1px dotted $dark;
-    
-    h2 {
-      margin-bottom:0;
-    }
-    
-    &:last-child {
-      border-bottom:none;
-      margin-bottom:0;
-    }
-  }
-}
-
 @mixin bottom-separated {
   border-top:3px double $border;
   padding-top:($base-line-height - 3px);
@@ -134,16 +137,16 @@ ol.pages {
 
 #content.page {
   h1 {
+    @include leader(1, 30px);
     letter-spacing:0;
     text-transform:none;
   }
   
   h2 {
+    @include adjust-font-size-to(25px, 1);
     @include trailer(1, 25px);
     text-transform:none;
     margin-right:2px;
-    border-bottom: 1px dotted #aaa;
-    @include adjust-font-size-to(24px, 1);
     margin-left: -27px;
     padding-left: 9px;
     border-left: 18px solid $highlight;
@@ -154,8 +157,7 @@ ol.pages {
     font-weight:normal;
     font-style:italic;
     letter-spacing:0.05em;
-    margin-bottom:($base-line-height - 1px);
-    border-bottom:1px dotted lighten($border, 20%);
+    @include trailer;
   }
   
   ul {

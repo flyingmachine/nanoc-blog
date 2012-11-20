@@ -1,25 +1,5 @@
 @import "main";
 
-$total-columns: 12;
-$background: white;
-
-$blue: #8cc4fd;
-$green: #a0ff8d;
-
-#document {
-  @include container;
-  background: $background;
-  margin-bottom:(2 * $base-line-height);
-}
-
-a {
-  text-decoration: none;
-}
-
-body {
-  background: white;
-}
-
 h2 {
   @include adjust-font-size-to(30px, 1);
   @include trailer(1, 30px);
@@ -27,51 +7,6 @@ h2 {
 
 h2 {
   @extend .allcaps;
-}
-
-body > header {
-  @include container;
-  @include padding-leader;
-  @include padding-trailer;
-  border-bottom:2px solid #333;
-  background: url(/assets/images/flying-machine.png) no-repeat right -60px;
-
-  .title {
-    @include adjust-font-size-to(40px);
-    a {
-      text-decoration: none;
-      color: black;
-    }
-  }
-
-  .subtitle {
-    font-style: italic;
-    float: left; 
-  }
-}
-
-#document {
-  position:relative;
-}
-
-#contact {
-  @include clearfix;
-  @include trailer;
-  
-  ul {
-    margin:0;
-    padding:0;
-    list-style:none;
-    
-    li {
-      float:left;
-      a, span {
-        margin-right:.5em;
-      }
-      
-    }
-    
-  }
 }
 
 #articles {
@@ -131,4 +66,8 @@ section {
 
 #projects {
   @include span-columns(6 omega, 12);
+}
+
+#main {
+  @include leader;
 }

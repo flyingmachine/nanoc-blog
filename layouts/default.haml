@@ -13,18 +13,27 @@
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
   %body{ :class => @body_class }
+    %header
+      .title
+        %a{:href => "/"} Flying Machine Studios
+      .subtitle
+        adventures in making stuff
     #document
+      #contact
+        %ul
+          %li
+            %a{:href => "http://twitter.com/nonrecursive"}
+              %i{:class => "icon-twitter icon-large"}
+          %li
+            %a{:href => "http://www.linkedin.com/in/danielhigginbotham"}
+              %i{:class => "icon-linkedin icon-large"}
+          %li
+            %a{:href => "https://github.com/flyingmachine"}
+              %i{:class => "icon-github icon-large"}
+          %li
+            %a{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
+              %i{:class => "icon-rss icon-large"}
       #main
-        #header
-          .title
-            %a{:href => "/"} Flying Machine Studios
-          .utilities
-            %a{:href => "/about"} about
-            &bull;
-            %a{:href => "http://twitter.com/nonrecursive"} @nonrecursive
-            &bull;
-            %a.feed{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
-              %img{:src => "/assets/images/ui/icon_rss.png", :title => "feed"}
         #content.page
           - if article?(@item)
             .date= format_date(@item[:created_at])
@@ -43,6 +52,47 @@
               dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
               })();
+      #nav
+        .articles
+          %h2 Recent Blog Posts
+          %ol
+            - sorted_articles[0..7].each do |article|
+              - next if article[:draft]
+              %li
+                %a.title{:href => article.path}= article[:title]
+
+        .projects
+          %h2 Projects
+          %ol
+            %li#foreman
+              %header
+                %a{:href => "/foreman"}
+                  Foreman
+              %p This is why Steve Jobs invented computers.
+              %li#gratefulplace
+              %header
+                %a{:href => "http://gratefulplace.com"}
+                  Grateful Place
+              %p When we appreciate the good in our lives, the good grows and we have more of it.
+            %li#cuym
+              %header
+                %a{:href => "http://www.visualmess.com"}
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+              %p
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+            %li#whoops
+              %header
+                %a{:href => "http://whoopsapp.com"}
+                  Whoops
+              %p A free, self-hosted tool for logging application events like errors or background worker completion.
+            %li#openhercules
+              %header
+                %a{:href => "http://whoopsapp.com"}
+                  Open Hercules
+              %p A free, open-source, keyboard-friendly, social list app
 
     :javascript
       var _gaq = _gaq || [];

@@ -12,7 +12,7 @@
 
 // Grid --------------------------------------------------------------
 
-$total-columns: 8;             // a 12-column grid
+$total-columns: 12;
 $column-width   : 4em;            // each column is 4em wide
 $gutter-width   : 1em;            // 1em gutters between columns
 $side-gutter-width : $gutter-width;  // grid-padding equal to gutters
@@ -23,7 +23,7 @@ $base: #333;
 $alt: #005498;
 $dark: #253244;
 $highlight: #72a670;
-$background: #fffcf4;
+$background: white;
 $border: #999;
 
 // Fonts --------------------------------------------------------------
@@ -103,15 +103,23 @@ body {
 /* Links -------------------------------------------------------------- */
 
 a {
-  &:link, &:visited {
+  text-decoration:none;
+  &:link {
     color: $alt; }
   &:link, &:visited, &:hover, &:active {
     outline: none; }
-  &:focus, &:hover, &:active {
+  &:focus, &:active {
     color: complement($alt);
     text-decoration: none; }
   &:focus {
-    outline: thin dotted; } }
+    outline: thin dotted; }
+  &:visited {
+    color:complement($alt);
+  }
+  &:hover {
+    color:darken($highlight, 13%);
+  }
+}
 
 /* Headings -------------------------------------------------------------- */
 
@@ -316,5 +324,52 @@ button {
 // change '.container' to match your HTML container element
 // or @extend it to apply multiple containers on your site.
 body {
-  background:url("../assets/images/ui/light_honeycomb.png");
+  background:white;
+}
+
+body > header {
+  @include container;
+  @include padding-leader;
+  @include padding-trailer;
+  border-bottom:2px solid #333;
+  background: url(/assets/images/flying-machine.png) no-repeat right -60px;
+
+  .title {
+    @include adjust-font-size-to(40px);
+    letter-spacing:0.15em;
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .subtitle {
+    font-style: italic;
+  }
+}
+
+#document {
+  @include container;
+  background: $background;
+  margin-bottom:(2 * $base-line-height);
+}
+
+#contact {
+  @include clearfix;
+  
+  ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+    
+    li {
+      float:left;
+      a, span {
+        margin-right:.5em;
+      }
+      
+    }
+    
+  }
 }

@@ -6,7 +6,6 @@ categories: programming
 summary: "Having put together a website using Noir, I wanted to to try and get closer to the metal. Here are some of my findings, including: templating heaven with Enlive and Middleman; using macros to enforce full stack consistency; roll-your-own-validations; more!"
 additional_stylesheets:
   - pygments
-  - literate-code
 ---
 
 h1. Look, Ma! No batteries! A Clojure Web App Without Noir
