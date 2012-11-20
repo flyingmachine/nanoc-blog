@@ -45,7 +45,7 @@ nolayout: true
                 %li
                   %article
                     %header
-                      %a{:href => article.path}= article[:title]
+                      %a.title{:href => article.path}= article[:title]
                       .date= format_date article[:created_at]
                       .categories
                         - (article[:categories] || "").split(", ").each do |category|
@@ -53,7 +53,52 @@ nolayout: true
                   %p= article[:summary]
         #projects
           %h2 Projects
-          %ul
+          %section
+            %ol
+              %li#foreman
+                %header
+                  %a{:href => "/foreman"}
+                    Foreman: The too-many-apps solution that will blow your freaking mind
+                .shot
+                  %a{:href => "/foreman"}
+                    %img{:src => "/assets/images/projects/foreman.jpg"}
+                %p This is why Steve Jobs invented computers.
+                %li#gratefulplace
+                %header
+                  %a{:href => "http://gratefulplace.com"}
+                    Grateful Place
+                .shot
+                  %a{:href => "http://gratefulplace.com"}
+                    %img{:src => "/assets/images/projects/gratefulplace.jpg"}
+                %p When we appreciate the good in our lives, the good grows and we have more of it.
+              %li#cuym
+                %header
+                  %a{:href => "http://www.visualmess.com"}
+                    Clean Up Your Mess: a Guide to Visual Design for Everyone
+                .shot
+                  %a{:href => "http://www.visualmess.com"}
+                    %img{:src => "/assets/images/projects/cuym.png"}
+                %p
+                  This popular guide will help you
+                  communicate with conscious skill. It will show you
+                  how to create designs that are easy to understand
+                  and attractive.
+              %li#whoops
+                %header
+                  %a{:href => "http://whoopsapp.com"}
+                    Whoops: Log Anything
+                .shot
+                  %a{:href => "http://whoopsapp.com"}
+                    %img{:src => "/assets/images/projects/whoops.png"}
+                %p Whoops is a free, self-hosted tool for logging application events like errors or background worker completion.
+              %li#openhercules
+                %header
+                  %a{:href => "http://whoopsapp.com"}
+                    Open Hercules: Productivity, Greek Myth Style
+                .shot
+                  %a{:href => "http://openhercules.com"}
+                    %img{:src => "/assets/images/projects/openhercules.jpg"}
+                %p A free, open-source, keyboard-friendly, social list app
     
 
 

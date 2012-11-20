@@ -76,6 +76,9 @@ body > header {
 
 #articles {
   @include span-columns(6, 12);
+}
+
+section {
   ol {
     list-style: none;
     margin: 0;
@@ -85,8 +88,7 @@ body > header {
       @include sans-family;
       @include clearfix;
     }
-
-   a {
+   a.title {
      display: block;
    }
 
@@ -106,6 +108,23 @@ body > header {
       @include adjust-font-size-to(12px);
       @include sans-family;
       
+    }
+  }
+
+  // projects
+  .shot {
+    @include padding-trailer;
+    @include padding-leader;
+    @include trailer;
+    @include leader;
+
+    text-align:center;
+
+    @include single-box-shadow(rgba(0, 0, 0, 0.2), 0, 1px, 2px, 1px);
+    @include border-radius(3px);
+
+    &:hover {
+      @include single-box-shadow(rgba(0, 0, 0, 0.5), 0, 1px, 2px, 1px);
     }
   }
 }
