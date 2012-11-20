@@ -76,6 +76,38 @@ body > header {
 
 #articles {
   @include span-columns(6, 12);
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+   header {
+      @include sans-family;
+      @include clearfix;
+    }
+
+   a {
+     display: block;
+   }
+
+    .categories {
+      float: left;
+      span {
+        margin-left: 5px;
+        background: #eee;
+        padding: 0 10px;
+        @include border-radius(1em);
+        @include adjust-font-size-to(12px);
+      }
+    }
+    
+    .date {
+      float: left;
+      @include adjust-font-size-to(12px);
+      @include sans-family;
+      
+    }
+  }
 }
 
 #projects {
