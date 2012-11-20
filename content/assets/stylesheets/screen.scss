@@ -2,11 +2,11 @@
 @import "main";
 
 #main {
-  @include span-columns(8 omega, 12);
+  @include span-columns(8, 12);
 }
 
 #nav {
-  @include span-columns(3, 12);
+  @include span-columns(3 omega, 12);
   @include transition-property("all");
   @include transition-duration(".1s");
   opacity: 0.3;
