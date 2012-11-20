@@ -6,7 +6,6 @@ categories: programming
 summary: Recently, I released OMG! SMACKDOWN!!!, which is the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
 additional_stylesheets:
   - pygments
-  - literate-code
 ---
 
 h1. The Dumbest Clojure/Noir App In Existence
