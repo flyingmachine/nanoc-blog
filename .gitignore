@@ -1,5 +1,5 @@
 tmp/*
-.sass-cache/*
+.sass-cache
 output/*
 *#*
 .bundle
