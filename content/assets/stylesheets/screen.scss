@@ -118,7 +118,8 @@ strong {
     font-weight:normal;
     font-style:italic;
     letter-spacing:0.05em;
-    @include trailer;
+    @include adjust-font-size-to(22px, 1);
+    @include trailer(1, 22px);
   }
   
   ul {
@@ -223,5 +224,3 @@ p, ol, ul {
 a.feed img {
   height:20px;
 }
-
-
