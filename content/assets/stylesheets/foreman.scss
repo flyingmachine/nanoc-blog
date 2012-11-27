@@ -47,7 +47,7 @@ body {
 body > header {
   @include padding-leader(.5);
   @include padding-trailer(.5);
-  background-position-y: -100px;
+  background-position-y: -70px;
   border-bottom: 1px solid #999;
   .title {
     @include adjust-font-size-to(24px, 1);
@@ -57,6 +57,11 @@ body > header {
   .subtitle, #contact {
     float:left;
     margin-left: $gutter-width;
+  }
+
+  #contact {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 

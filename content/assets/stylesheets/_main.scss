@@ -333,7 +333,7 @@ body > header {
   @include padding-leader(.5);
   @include padding-trailer(.5);
   border-bottom:1px solid #999;
-  background: url(/assets/images/flying-machine.png) no-repeat right -80px;
+  background: #f8f7ef url(/assets/images/flying-machine-xsmall.png) no-repeat 95% -20px;
 
   .title {
     @include adjust-font-size-to(40px);
@@ -347,6 +347,7 @@ body > header {
 
   .subtitle {
     font-style: italic;
+    float: left;
   }
 }
 
@@ -358,9 +359,9 @@ body > header {
 
 #contact {
   @include clearfix;
+  @include adjust-font-size-to(22px, 1);
   @include padding-leader(.5);
   @include padding-trailer(.5);
-  @include adjust-font-size-to(22px, 1);
   
   ul {
     margin:0;
@@ -372,8 +373,11 @@ body > header {
       a, span {
         margin-right:.5em;
       }
-      
+
+      a:visited {
+        color: black;
+        @include single-text-shadow;
+      }
     }
-    
   }
 }
