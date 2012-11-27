@@ -330,10 +330,10 @@ body {
 
 body > header {
   @include container;
-  @include padding-leader;
-  @include padding-trailer;
-  border-bottom:2px solid #333;
-  background: url(/assets/images/flying-machine.png) no-repeat right -60px;
+  @include padding-leader(.5);
+  @include padding-trailer(.5);
+  border-bottom:1px solid #999;
+  background: url(/assets/images/flying-machine.png) no-repeat right -80px;
 
   .title {
     @include adjust-font-size-to(40px);
@@ -358,6 +358,9 @@ body > header {
 
 #contact {
   @include clearfix;
+  @include padding-leader(.5);
+  @include padding-trailer(.5);
+  @include adjust-font-size-to(22px, 1);
   
   ul {
     margin:0;
