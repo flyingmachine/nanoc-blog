@@ -329,11 +329,15 @@ body {
 }
 
 body > header {
-  @include container;
-  @include padding-leader(.5);
-  @include padding-trailer(.5);
   border-bottom:1px solid #999;
-  background: #f8f7ef url(/assets/images/flying-machine-xsmall.png) no-repeat 95% -20px;
+  background: #f8f7ef;
+
+  .display {
+    @include container;
+    background: url(/assets/images/flying-machine.png) no-repeat 95% -60px;
+    @include padding-leader(.5);
+    @include padding-trailer(.5);
+  }
 
   .title {
     @include adjust-font-size-to(40px);
@@ -372,11 +376,6 @@ body > header {
       float:left;
       a, span {
         margin-right:.5em;
-      }
-
-      a:visited {
-        color: black;
-        @include single-text-shadow;
       }
     }
   }

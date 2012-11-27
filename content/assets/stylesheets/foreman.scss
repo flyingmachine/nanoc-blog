@@ -32,6 +32,9 @@ $border: #999;
 body {
 }
 
+p {
+  @include trailer(.75);
+}
 
 #document {
   @include container;
@@ -44,11 +47,10 @@ body {
   padding-top: $base-line-height;
 }
 
-body > header {
-  @include padding-leader(.5);
-  @include padding-trailer(.5);
-  background-position-y: -70px;
-  border-bottom: 1px solid #999;
+body > header {  
+  .display {
+    background: url(/assets/images/flying-machine-xsmall.png) no-repeat 95% -45px;
+  }
   .title {
     @include adjust-font-size-to(24px, 1);
     float:left;

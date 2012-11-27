@@ -17,24 +17,25 @@ nolayout: true
     %link{ :href => "/stylesheets/foreman.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
   %body
     %header
-      .title
-        %a{:href => "/"} Flying Machine Studios
-      .subtitle
-        adventures in making stuff
-      #contact
-        %ul
-          %li
-            %a{:href => "http://twitter.com/nonrecursive"}
-              %i{:class => "icon-twitter"}
-          %li
-            %a{:href => "http://www.linkedin.com/in/danielhigginbotham"}
-              %i{:class => "icon-linkedin icon"}
-          %li
-            %a{:href => "https://github.com/flyingmachine"}
-              %i{:class => "icon-github icon"}
-          %li
-            %a{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
-              %i{:class => "icon-rss icon"}    
+      .display
+        .title
+          %a{:href => "/"} Flying Machine Studios
+        .subtitle
+          adventures in making stuff
+        #contact
+          %ul
+            %li
+              %a{:href => "http://twitter.com/nonrecursive"}
+                %i{:class => "icon-twitter"}
+            %li
+              %a{:href => "http://www.linkedin.com/in/danielhigginbotham"}
+                %i{:class => "icon-linkedin icon"}
+            %li
+              %a{:href => "https://github.com/flyingmachine"}
+                %i{:class => "icon-github icon"}
+            %li
+              %a{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
+                %i{:class => "icon-rss icon"}    
     #document
       #content.page
         #hero
@@ -47,17 +48,29 @@ nolayout: true
           #action-buttons
             %a.buy{:href => "http://gum.co/bTqL"}Get It Now
 
-        %h2 Control Open Apps with Activity Groups
+        %h2 Is this a familiar sight?
+        %p Look at all these open apps:
+        %p
+          %img{:src => "/assets/images/foreman/somanyapps.png"}
+        %p What a pain in the patootie! All those apps clutter up your screen and turn &#x2318;+tab into a joke. But look what happens when Foreman closes the apps you don't need:
+        %p
+          %img{:src => "/assets/images/foreman/phew.png"}
+        %p My heavens! What a relief!
+        %p If you find yourself with a bunch of unused apps open throughout the day, then Foreman will help you.
         %p Foreman opens the apps you need and closes or hides the rest. It reduces clutter and helps you focus.
+        
+        %h2 How it Works
+        %p You define app groups by dragging apps from the Finder into the space that says "Drag Apps Here To Create New Group".
+        %p Click a group to hide all applications which aren't in that group; shift+click to close apps instead of hiding them. Foreman also opens all the apps in the group that aren't already open.
+        %p <strong>Holy smokes!!!!!</strong>
+        %p <strong>This is why Steve Jobs invented computers.</strong>
         #screen
           #wow
             %img{:src => "/assets/images/foreman/foreman-screen.jpg"}
-
-          
           %p.caption "I think Foreman by @nonrecursive is the answer to all my app switching prayers"
           %p &ndash; @StuRobson
         #movie
-          %h2 Open the Apps You Need, Close the Ones You Don't
+          %h2 Watch It in Action
           %p It only takes a couple keystrokes with Foreman:
           <iframe width="792" height="445" src="http://www.youtube.com/embed/JP42hQyKsFQ" frameborder="0" allowfullscreen></iframe>
 
@@ -66,20 +79,7 @@ nolayout: true
           %a{:href => "http://gum.co/bTqL"}Purchase Foreman for only $6.49.
           If you don't like it for any reason whatsoever, your $6.49 will be refunded.
         %p Follow <a href="http://twitter.com/nonrecursive">@nonrecursive</a> on twitter for updates! Or, <a href="http://eepurl.com/pyfD9">subscribe to the Flying Machine Studios product newsletter!</a>
-        %p <strong>This is why Steve Jobs invented computers.</strong>
           
-        %h2 Foreman Wrangles Your Apps Quickly and It's Amazing
-        %p Is this a familiar sight? Look at all these open apps:
-        %p
-          %img{:src => "/assets/images/foreman/somanyapps.png"}
-        %p What a pain in the patootie! All those apps clutter up your screen and turn &#x2318;+tab into a joke. But look what happens after you click an app group in Foreman:
-        %p
-          %img{:src => "/assets/images/foreman/phew.png"}
-        %p My heavens! What a relief!
-        %p If you need different sets of apps open throughout the day, then Foreman will help you.
-        %p You define app groups by dragging apps from the Finder into the space that says "Drag Apps Here To Create New Group".
-        %p Click a group to hide all applications which aren't in that group; shift+click to close apps instead of hiding them. Foreman also opens all the apps in the group that aren't already open.
-        %p <strong>Holy smokes!!!!!</strong>
 
         %h2 More Instructions on Using Foreman
         %p <strong>&#x2318;&#x21E7;.</strong> (command+shift+period) a global hotkey to show foreman
