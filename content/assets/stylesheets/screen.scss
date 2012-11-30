@@ -102,6 +102,10 @@ strong {
     letter-spacing:0;
     text-transform:none;
   }
+
+  .date {
+    margin-left:1em;
+  }
   
   h2 {
     @include adjust-font-size-to(25px, 1);
