@@ -3,18 +3,19 @@ title: My Failed(?) Social Web Experiment Still Haunts Me
 created_at: Dec 1 2012
 kind: article
 categories: social, penguins
-summary: 
+summary: What will people post if they can't include links and can't use a nickname?
 ---
 
 # My Failed(?) Social Web Experiment Still Haunts Me
 
-What will people post if they can't include links and can't use a handle?
+What will people post if they can't include links and can't use a
+nickname?
 
 This was the question I was looking to answer back in 2007 I launched
 nobodynotes.com. It was a very simple web site, consisting mainly of a
 text field and all the posts which people had entered in the text
 field. You can
-[see it, untyled](http://web.archive.org/web/20090402015728/http://nobodynotes.com/),
+[see it, unstyled](http://web.archive.org/web/20090402015728/http://nobodynotes.com/),
 thanks to the wayback machine.
 
 Initially, the posts were interesting to me, but probably unremarkable
@@ -35,9 +36,9 @@ But why? Why all this activity from Iranians? I wanted to know, but
 sadly had no direct way of finding out. After all, everyone was
 anonymous. Not knowing what else, to do, I tried using Google
 Translate to see what people were saying. One post in particular stood
-out. It's probably irretrieval now, but a young man essentially wrote,
-"Help, I am a gay man living in Iran. I cannot tell anyone, or I will
-be killed. Please, someone help me."
+out. It's probably irretrievable now, but a young man essentially
+wrote, "Help, I am a gay man living in Iran. I cannot tell anyone, or
+I will be killed. Please, someone help me."
 
 To this day, that post haunts me. Who was this young man? Was he able
 to find help? Where is he today, and is he OK?
