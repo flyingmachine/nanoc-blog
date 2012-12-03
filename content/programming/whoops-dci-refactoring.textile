@@ -65,8 +65,6 @@ And everyone knows that having to navigate multiple files in order to understand
 
 h2. The Refactoring
 
-In this case, 
-
 "This github diff":https://github.com/flyingmachine/whoops/compare/abc6d496024272e5a596d280bd47c51ba3a3d953...b6943881ddad094543d80528df79cc450e516c9f shows all the changes to DCI-ify the code.
 
 As you can see, our @Whoops::Event@ and @Whoops::EventGroup@ classes are no longer violating the single responsibility principle. Now when you dig into those classes you no longer have to wade through code that's only tangentially related to the real purpose of those closses. We're no longer burdening our classes with knowledge that they shouldn't have, reducing coupling.
