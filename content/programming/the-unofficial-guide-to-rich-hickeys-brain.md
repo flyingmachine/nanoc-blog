@@ -10,16 +10,16 @@ summary: Part of the excitement of working with Clojure is being exposed to Rich
 
 ![The Rich Hickey Function](/assets/images/posts/rich-hickey-function.png)
 
-Part of the excitement of learning Clojure has been being exposed to
+Part of my excitement in learning Clojure has been being exposed to
 Rich Hickey's thoughts on programming. Rich Hickey has a clear,
 consistent way of viewing fundamental programming concepts that I
 think any programmer would benefit from. Every time I watch one of his
 talks, I feel like someone has gone in and organized my brain.
 
-In this article (and more to come), I begin my attempt to catalog Mr.
-Hickey's unique viewpoint. Eventually, I would like to produce a
-concise summary of his ideas. My hope is that this will provide an
-easily-scannable reference to Clojurists and an accessible
+In this article (and more to come (possibly)), I begin my attempt to
+catalog Mr. Hickey's unique viewpoint. Eventually, I would like to
+produce a concise summary of his ideas. My hope is that this will
+provide an easily-scannable reference to Clojurists and an accessible
 introduction to non-Clojurists.
 
 What follows is derived from Rich Hickey's talk,
