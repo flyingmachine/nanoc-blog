@@ -5,8 +5,6 @@ kind: article
 summary: I've been doing a daily gratitude practice for half a year now and have found it very useful. Here are some suggestions for your own practice.
 ---
 
-# Daily Gratitude
-
 Around the beginning of the year I read about the benefits of
 cultivating a daily practice of gratitude. Making a point of being
 grateful trains you to think more positively and just makes you feel

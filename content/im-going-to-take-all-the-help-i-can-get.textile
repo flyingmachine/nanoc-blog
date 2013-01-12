@@ -5,8 +5,6 @@ kind: article
 summary: A few months ago, I was really psyched about some project (don't recall which), and said to myself, "I'm going to finish this thing, and nothing's going to get in my way." Immediately it occurred to me that a better attitude would be, "I'm going to finish this thing -- and I'll take all the help I can get."
 ---
 
-h1. I'm Going to Take All the Help I Can Get
-
 A few months ago, I was really psyched about some project (don't recall which), and said to myself, "I'm going to finish this thing, and nothing's going to get in my way." Immediately it occurred to me that a better attitude would be, "I'm going to finish this thing -- and I'll take all the help I can get."
 
 Expecting that I'll get help instead of expecting that I'll encounter conflict and resistance has made me more open about my work. My tendency is to be quite shy about my own work, but I've since tried to go out of my way to share it with people.

@@ -6,8 +6,6 @@ categories: design
 summary: What causes frustration? How can we eliminate those causes?
 ---
 
-h1. Design: The Art of Reducing Frustration
-
 In this article I attempt to describe a simple, cohesive approach to design. My hope is that those learning design will find in it a conceptual skeleton which they can use to integrate their growing body of design knowledge. Additionally, I want to show that the design "skeleton" is the same for different kinds of design, including visual design and software design.
 
 h2. Why Does Frustration Matter?

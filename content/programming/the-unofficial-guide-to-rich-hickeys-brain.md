@@ -6,8 +6,6 @@ categories: programming
 summary: Part of the excitement of working with Clojure is being exposed to Rich Hickey's thoughts on programming. Rich Hickey has a clear, consistent way of viewing fundamental programming concepts that I think any programmer would benefit from. Here is the beginning of my attempt to catalog Mr. Hickey's unique viewpoint.
 ---
 
-# The Unofficial Guide to Rich Hickey's Brain
-
 ![The Rich Hickey Function](/assets/images/posts/rich-hickey-function.png)
 
 Part of my excitement in learning Clojure has been being exposed to

@@ -93,18 +93,18 @@ strong {
 
 .date {
   font-style:italic;
-  float:right;
 }
 
 #content.page {
   h1 {
     @include leader(1, 30px);
-    letter-spacing:0;
-    text-transform:none;
+    margin-bottom: 0;
+    letter-spacing: 0;
+    text-transform: none;
   }
 
   .date {
-    margin-left:1em;
+    @include trailer;
   }
   
   h2 {

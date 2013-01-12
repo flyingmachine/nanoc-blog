@@ -37,6 +37,7 @@
       #main
         #content.page
           - if article?(@item)
+            %h1= @item[:title]
             .date= format_date(@item[:created_at])
           = find_and_preserve yield
           
@@ -69,7 +70,7 @@
               %header
                 %a{:href => "/foreman"}
                   Foreman
-              %p The Mac for people with too many Mac apps.
+              %p The $2 Mac power tool for reducing clutter
               %li#gratefulplace
               %header
                 %a{:href => "http://gratefulplace.com"}

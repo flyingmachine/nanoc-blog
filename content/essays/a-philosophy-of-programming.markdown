@@ -5,8 +5,6 @@ kind: article
 summary: An attempt to describe an approach to programming within an integrated framework.
 ---
 
-# A Philosophy of Programming, Rough Sketch
-
 Below is a first attempt at describing an integrated approach to
 programming. My hope is that it'll give programmers some tools to
 reason about their current practices and generate ideas on new

@@ -6,9 +6,6 @@ categories: design
 summary: "A talk I gave: Why you might want to learn more about visual design and how it's pretty similar to what you already know as programmers."
 ---
 
-Encouraging Programmers to Learn Visual Design
-===
-
 Below is a talk I was asked to give at work.
 
 ***

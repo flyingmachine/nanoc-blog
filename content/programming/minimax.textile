@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. An Exhaustive Explanation of Minimax, a Staple AI Algorithm
-
 h2. Overview
 
 The minimax algorithm is used to determine which moves a computer player makes in games like tic-tac-toe, checkers, othello, and chess. These kinds of games are called games of perfect information because it is possible to see all possible moves. A game like scrabble is not a game of perfect information because there's no way to predict your opponent's moves because you can't see his hand.

@@ -6,8 +6,6 @@ summary: I&apos;m a young software developer and caregiver. This web site is abo
 categories: essays
 ---
 
-h1. The Why of this Site
-
 I'm a young software developer and caregiver. This web site is about my experimentations in creating and following a system for constant personal growth. This article gives some background on the circumstances that motivated me to start those experimentations and this site.
 
 It was around summer of 2008 that I realized I had become mean -- a small person, constantly irritable and ready to cut down others. I went through nearly every day in a sour mood, showing annoyance and contempt toward those I interacted with regularly and interpreting their behavior as putting me down. It was like I was an angry drunk without the benefit of actually being drunk. At the same time, I clung to trivial diversions like video games and TV, all the while feeling like I no longer had time for anything I liked. In the mean time, my fledgling consultancy had crumbled and I felt like a professional failure.

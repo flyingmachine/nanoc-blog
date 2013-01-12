@@ -6,8 +6,6 @@ categories: programming
 summary: A way to avoid namespace collisions.
 ---
 
-h1. Aikidoka Prevents Namespace Collisions
-
 Recently I fell victim to the Twitter-Mash / Extlib-DataMapper-Mash "namespace collision":http://blog.zerosum.org/2009/4/17/why-namespaces-are-important. To get around this problem, I've created a new gem, "Aikidoka":http://github.com/flyingmachine/aikidoka/tree/master".
 
 Here's what happened when I tried to use Twitter when Extlib had already been loaded:

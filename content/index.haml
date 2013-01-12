@@ -48,9 +48,6 @@ nolayout: true
                     %header
                       %a.title{:href => article.path}= article[:title]
                       .date= format_date article[:created_at]
-                      .categories
-                        - (article[:categories] || "").split(", ").each do |category|
-                          %span= category
                   %p= article[:summary]
         #projects
           %h2 Projects
@@ -59,7 +56,7 @@ nolayout: true
               %li#foreman
                 %header
                   %a{:href => "/foreman"}
-                    Foreman: The Mac productivity app that will blow your freaking mind
+                    Foreman: The $2 Mac Power Tool for Reducing Clutter
                 .shot
                   %a{:href => "/foreman"}
                     %img{:src => "/assets/images/projects/foreman.jpg"}

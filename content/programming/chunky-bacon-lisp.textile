@@ -6,8 +6,6 @@ categories: programming
 summary: Almost seven years since my first exposure to Ruby, I've found another language to be excited about.
 ---
 
-h1. Chunky Bacon in the Land of Lisp: a Rubyist Becomes Intimately Acquainted with Parentheses
-
 h2. Ruby is Awesome
 
 Like many Rubyists, I came to the language through Rails while fleeing the horror of convoluted PHP sphagetti hell. For web development, the Rails framework was a relief; for programming, Ruby was a revelation.

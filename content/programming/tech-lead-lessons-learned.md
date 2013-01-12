@@ -6,8 +6,6 @@ categories: programming
 summary: What I've learned so far working with a distributed team in an enterprise environment.
 ---
 
-# Tech Lead Lessons Learned
-
 Since September 2011 I've been the tech lead of a multi-cultural,
 distributed team in an enterprise environment. I've definitely learned
 a _lot_ during this time and thought I'd set it all down here.

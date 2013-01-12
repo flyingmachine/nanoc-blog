@@ -6,8 +6,6 @@ categories: programming
 summary: If your configuration is convoluted as all hell, Higml might be for you. Also, this is my first attempt at writing first-class documentation.
 ---
 
-h1. Higml: Hierarchical, Cascading, Dynamic Configuration
-
 h2. Purpose
 
 Higml allows you to write hierarchical, cascading, dynamic configuration files with Ruby. It visually reflects the conditions governing how rules are applied, allowing otherwise-complicated rules to be expressed concisely and understood easily.

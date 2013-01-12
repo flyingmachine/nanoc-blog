@@ -5,8 +5,6 @@ kind: article
 summary: Reflections on how embracing love has changed my life.
 ---
 
-# Loving Without Fear
-
 I was sitting at the Cambridge Public Library, and for the first time
 in months - years? - I felt at peace. In my journal I had just written
 what's become a kind of mantra for me: "Love without fear."

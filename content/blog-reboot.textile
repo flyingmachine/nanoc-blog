@@ -5,8 +5,6 @@ kind: article
 summary: It's been nearly a year since I've added anything to this site. There are a few reasons for that, though for now I'll only mention that I didn't like that the site existed in part to sell an iphone app and possibly future apps. Well, it turns out that I don't really care about overtly selling stuff. What I really want is a place to write about the pursuits I care about most.
 ---
 
-h1. Blog Reboot
-
 It's been nearly a year since I've added anything to this site. There are a few reasons for that, though for now I'll only mention that I didn't like that the site existed in part to sell an iphone app and possibly future apps. Well, it turns out that I don't really care about selling stuff. What I really want is a place to write about I care about most.
 
 And that might make this site kinda weird. I plan on writing about design, programming, aikido, buddhism, communication, and a host of other topics which aren't usually seen rubbing elbows. The thread which wends its way through all these topics is love.

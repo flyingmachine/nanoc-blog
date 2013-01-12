@@ -5,9 +5,6 @@ kind: article
 summary: I'm open sourcing <a href='http://openhercules.com'>Open Hercules</a> an application I've put a lot of time into. This article explains my motivations, both practical and personal.
 ---
 
-Open Source, Open Heart
-=======================
-
 I've decided to open source my project
 [Open Hercules](http://openhercules.com). If you're one of the nearly
 seven billion people unaware of this project, it's a little Rails app

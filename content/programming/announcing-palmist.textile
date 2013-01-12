@@ -6,8 +6,6 @@ categories: programming
 summary: A tool for finding and fixing mysql bottlenecks in Ruby on Rails
 ---
 
-h1. Announcing Palmist
-
 !palmist.gif(A Handy Tool for Finding and Fixing MySQL Bottlenecks)!
 
 *Purpose:* Help find and fix mysql bottlenecks in Ruby on Rails

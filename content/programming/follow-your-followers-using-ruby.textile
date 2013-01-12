@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. Follow Your Followers Using Ruby
-
 I have the following in a rake task run every 30 minutes. You'll need jnunemaker's twitter gem.
 
 source. follow-your-followers.rb

@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. Rails Prototypal Attributes
-
 Give your models javascript-esque prototypal methods. When accessing an attribute on the prototypal object, the attribute's value is returned if not nil. Otherwise, the "linked" object's attribute value is returned.
 
 source. prototypal.rb:3

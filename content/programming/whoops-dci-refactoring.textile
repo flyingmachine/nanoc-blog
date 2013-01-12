@@ -8,7 +8,7 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. A Detailed Look at a Small DCI Refactoring in Ruby
+UPDATE: this isn't actually DCI! Whoops!
 
 In this post I go over a small refactoring to clean up some code in "Whoops":http://www.whoopsapp.com/ by implementing the DCI pattern. I'll cover the actual code changes and include my usual hand-wringing about what could be done better. 
 

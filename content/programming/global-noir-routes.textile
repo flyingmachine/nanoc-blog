@@ -8,9 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-
-h1. Global Noir Routes
-
 h2. The Problem
 
 Noir has a "helper function":http://webnoir.org/autodoc/1.2.1/noir.core-api.html#noir.core/url-for, @url-for@, which you can use to generate URL's when given a named route. The problem arises when you have two different views which need to have links to each other:

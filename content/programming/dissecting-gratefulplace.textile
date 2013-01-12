@@ -1,5 +1,5 @@
 ---
-title: Building a Clojure Web App Without Noir
+title: Look, Ma! No batteries! A Clojure Web App Without Noir
 created_at: Sat Nov 10 2012 13:23:00 -0500 2012
 kind: article
 categories: programming
@@ -7,8 +7,6 @@ summary: "Having put together a website using Noir, I wanted to to try and get c
 additional_stylesheets:
   - pygments
 ---
-
-h1. Look, Ma! No batteries! A Clojure Web App Without Noir
 
 Awhile back I released "OMG! SMACKDOWN!!!":/programming/dissecting-omgsmackdown/, which still holds the title for dumbest Clojure app in existence. To make up for that ludicrostrosity, I've created "Grateful Place":http://gratefulplace.com. This time I around I didn't use Noir, instead going closer to the metal with Compojure and Enlive. The experience was a lot easier than I anticipated, perhaps easier than using Noir. This post will cover some of the more interesting bits of code:
 

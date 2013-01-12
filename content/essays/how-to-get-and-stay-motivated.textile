@@ -6,8 +6,6 @@ summary: A lot of people view their motivation as something out of their control
 categories: essays
 ---
 
-h1. How to Get and Stay Motivated
-
 A lot of people view their motivation as something out of their control. It comes and goes, catlike in its fickleness. By breaking down motivation to its components, however, you'll be able to troubleshoot your lack of motivation and figure out ways to increase it.
 
 But first: what is motivation?

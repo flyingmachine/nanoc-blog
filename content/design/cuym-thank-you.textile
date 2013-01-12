@@ -6,8 +6,6 @@ categories: design
 summary: Thank you, everyone who has viewed <a href="http://www.visualmess.com">Clean Up Your Mess</a>. Thanks as well to everyone who has passed it on.
 ---
 
-h1. Thank You
-
 Thank you, everyone who has viewed <a href="http://www.visualmess.com">Clean Up Your Mess</a>. Thanks as well to everyone who has passed it on.
 
 I made it because I want to help as many people as possible learn about and enjoy design, so it makes me happy to see that people are reading it and finding it worth telling other people about it.

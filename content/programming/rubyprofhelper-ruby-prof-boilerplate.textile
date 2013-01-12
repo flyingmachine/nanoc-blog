@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. RubyProfHelper: Reducing ruby-prof Boilerplate
-
 This is meant to save me from having to write the same boilerplate profiling code over and over.
 
 By default, it creates an HTML graph and saves it to RAILS_ROOT/ruby-prof/profile.html .

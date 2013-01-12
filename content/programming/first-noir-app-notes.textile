@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. Deeper Into the Land of Lisp: First Contact with Noir
-
 Two days ago I got my "first noir app running":http://omgsmackdown.com on Heroku. This post is a mishmash of tips, tricks, processes and opinions on whole experience.
 
 h2. What's noir?

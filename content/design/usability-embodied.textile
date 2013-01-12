@@ -6,6 +6,4 @@ categories: design
 summary: A few years ago I ordered DSL service. The DSL modem came with an ethernet cable, and one end was labeled "this end goes in your computer", and the other was labeled "this end goes in the modem." Obviously, it doesn't matter which end goes where, but the labels undoubtedly eliminated any possible confusion.
 ---
 
-h1. Usability Embodied
-
 A few years ago I ordered DSL service. The DSL modem came with an ethernet cable, and one end was labeled "this end goes in your computer", and the other was labeled "this end goes in the modem." Obviously, it doesn't matter which end goes where, but the labels undoubtedly eliminated any possible confusion.

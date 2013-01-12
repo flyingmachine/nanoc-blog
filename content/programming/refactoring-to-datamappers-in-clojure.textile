@@ -7,9 +7,6 @@ additional_stylesheets:
   - pygments
 ---
 
-
-h1. Refactoring to Datamappers in Clojure
-
 In this post I give a detailed description of a recent refactoring for my site "OMG! SMACKDOWN!!!":http://omgsmackdown.com. I make no attempt to enliven the article with "cats" or "memes" or "humor" - it's straight up code and commentary.
 
 The refactoring was largely influenced by Rich Hickey's talk "Simplicity Matters":http://www.confreaks.com/videos/860-railsconf2012-keynote-simplicity-matters. The main purposes were:

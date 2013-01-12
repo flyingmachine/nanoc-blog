@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. The Dumbest Clojure/Noir App In Existence
-
 Recently, I released "OMG! SMACKDOWN!!!":http://omgsmackdown.com, which must be the dumbest Clojure/Noir app created to date. This post dissects it in excruciating detail.
 
 Here's a preview of what you're in for:

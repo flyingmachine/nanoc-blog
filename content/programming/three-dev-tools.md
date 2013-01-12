@@ -6,8 +6,6 @@ categories: programming
 summary: "You probably already know about the following tools, but I found it useful to be reminded of them."
 ---
 
-# Three Dev Tools
-
 You probably already know about the following tools, but I found it
 useful to be reminded of them:repl
 

@@ -8,8 +8,6 @@ additional_stylesheets:
   - pygments
 ---
 
-h1. Chunky Iterator: So You Don't Have to Load All Your AR Objects at Once
-
 The following code lets you iterate over large collections of Active Record objects without having to load them all at once, thus reducing memory usage. It's allowed me to run cron jobs which iterate over thousands of records without getting the cron'd process killed for using too much of a system's resources.
 
 source. chunky-iterator.rb

@@ -6,8 +6,6 @@ categories: programming
 summary: "Matt Swanson has shared the secret to improving your running: move your feet! I elaborate on that advice and give a more complete way of figuring out your learning roadblocks and removing them."
 ---
 
-# On Learning Skills (A Response to Move Your Feet)
-
 Matt Swanson wrote an inspiring
 [blog post](http://swanson.github.com/blog/2012/08/27/move-your-feet.html)
 on learning new skills and developing new habits. Below is additional

@@ -4,7 +4,6 @@ created_at: Aug 3 21:30:00 -0500 2011
 kind: article
 summary: I don't want to start a startup because of the experiences I've had with working for them. Also, the idea of financial freedom is not as appealing to me as it once was. Finally, there are already big challenges in my life.
 ---
-h1. Why I Don't Want to Start a Startup
 
 Over the course of my programming career I've spent a little more than two years working at startups. At the time, I thought that the experience would help me when I eventually started my startup. Instead I became convinced that the startup life is not for me.
 
