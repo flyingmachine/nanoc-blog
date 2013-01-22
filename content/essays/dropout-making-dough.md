@@ -1,6 +1,6 @@
 ---
 title: On Making $90/hr as a 21-Year-Old, Freelancing, High School (and College) Dropout
-created_at: Jan 10 20:44:00 -0500 2013
+created_at: Jan 22 17:16:00 -0500 2013
 kind: article
 summary: An attempt to describe an approach to programming within an integrated framework.
 draft: true
@@ -14,12 +14,12 @@ being able to do work I love while sitting on a sunny beach and
 drinking a delicious, cool drink. And it was exactly as awesome as it
 sounds :)
 
-The rest of this post details how I got there with the hope that the
-information will be helpful or inspiring for others wanting to work
-for themselves. I'll cover the general principles that guided me with
-specific examples.
+The rest of this post details the mindset I had developed to get me to
+that point. Hopefully it will be helpful or inspiring for others
+wanting to work for themselves. I may provide more concrete info in a
+later post.
 
-## Principle 1: Reject the Statistical Approach to Planning Your Life
+## Reject the Statistical Approach to Planning Your Life
 
 _Brief aside: when I talk about "statistics" in the example below, I am
 talking literally about statistics derived from data. However, this
@@ -40,9 +40,7 @@ trying to determine what career to go for, she consulted numbers on:
   including the percent chance that she would be able to get into a
   decent college given her GPA and other credentials
 
-The way I see it, there were two major mistakes with this approach.
-
-### Mistake 1: Treating Statistical Information as Hard Limitations
+I think that this approach is fundamentally flawed.
 
 My friend saw these statistics as immutable laws of the world which
 can in no way be defied, like gravity or Nickelback's consummate
@@ -50,15 +48,20 @@ inability to produce music. She treated them as the unbreakable
 boundaries of her life which she had to work within. She wouldn't even
 try to do something that seemed statistically unlikely.
 
+## Life Does Not Unfold in the Abstract World of Statistics
+
 The problem is, life does not unfold in the abstract world of
 statistics. You must deal with hard, concrete reality when you're
 trying to get your first freelancing gig, or charge a higher rate, or
 get into the school you want.
 
 And your success depends completely on your ability to apply your own
-brain to the situation ata hand. You do not solve real life problems
-statistically. You solve them by working your brain until you come up
-with a solution.
+brain to the situation at hand. You do not solve real life problems
+statistically. When driving by a car wreck, you do not say to
+yourself, "There's today's one-in-a-thousand! I can totally drive like
+an idiot now without getting in a crash!" No, you solve real life
+problems by shoving your brain against concrete details until you come
+up with a solution.
 
 And here's the real tragedy of the statistical approach. You undercut
 your confidence in your own mind's ability to grasp the world. You rob
@@ -76,35 +79,42 @@ limitations like:
 * I can't give a public talk even though it would tremendously help my
   career (all my data on myself says that I'm no good at speaking)
 
+## The Antidote to This Approach
+
 The antidote to this approach is embodied in these two quotes from
 George Washington Carver:
 
 > Reading about nature is fine, but if a person walks in the woods and
 > listens carefully, he can learn more than what is in books.
 
-To me, the first quote says that when it comes to solving a problem -
+To me, this quote says that when it comes to solving a problem -
 and making money is all about solving problems - nothing beats
-actually going out into the woods yourself.
+actually "going out into the woods" yourself.
 
+If you want to be a freelancer, stop giving yourself reasons for why
+it won't work and start looking for ways to make it work. I promise
+you, this change in mindset makes a world of difference. Instead of
+being vaguely aware of all the abstract ways in which you'll fail, you
+will encounter concrete problems which you can engage directly and
+solve.
 
-### Mistake 2: Ignoring Your Inner Voice
+Problems like how to find your first client, how to handle billing,
+how to scope out your work, and on and on. Name the problem
+explicitly, then work to find a solution. Another George Washington
+Carver quote:
 
 > Anything will give up its secrets if you love it enough.
 
-The second quote points to something more profound (incidentally, it's
-one of my all time favorite quotes). It points to a beautiful
-understanding born of devotion. It points to the joy of learning to
-master something, a joy which becomes gratifying in and of itself,
-outside of the external rewards it might give you.
+And yes, it is scary. Any time you venture into the unknown, you put
+yourself at risk. You risk rejection, you risk failure, you risk
+financial setback and emotional turmoil. You risk falling in with the
+statistical percentage that gets things horribly wrong.
 
-But here's something cool. When you are passionate about something and
-allow other people to see it, they love it! For one extreme example
+These risks are real, and experiencing them is painful. But making
+them the focus of your life is a mistake. It is a mistake to be
+concerned first and foremost with protecting yourself.
 
-By the way, here's a corny joke that I was trying to work in above but
-couldn't so I'm hamfistedly cramming it in here:
-
-> Three statisticians went out hunting, and came across a large deer.
-> The first statistician fired, but missed, by a meter to the left. The
-> second statistician fired, but also missed, by a meter to the right.
-> The third statistician didn't fire, but shouted in triumph, "On the
-> average we got it!"
+In the end it comes down to a matter of priorities. Is it more
+important to wall yourself away, protecting yourself from pain as much
+as possible? Or to embrace the unrepeatable miracle of your life,
+engaging fully your own inner voice and the world around you?
