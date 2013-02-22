@@ -3,8 +3,8 @@ title: WTF is Datomic? (And Should You Care?)
 created_at: Feb 2 9:23:00 -0500 2009
 kind: article
 categories: programming
-summary: Datomic is a fairly new database system that has thus far been terribly explained. This is a brief conceptual introduction.
-draft: true
+summary: Datomic is a fairly new database system that could hasn't been explained well. This is a brief conceptual introduction.
+
 ---
 
 If you're interested in
@@ -24,11 +24,46 @@ if you decide to investigate it further.
 
 ## Overview of Datomic's Three Pillars of Badassitude
 
-Datomic is unique in many ways, but the following features are key to
-its power. I'll explain each in more detai below, contrasting each
-with relational databases and document databases.
+Datomic is unique in many ways, but the following three features are
+key to its power. I'll explain each in more detai below, contrasting
+each with relational databases and document databases.
 
-
+<table>
+    <tr>
+        <th></th>
+        <th>Relational DB</th>
+        <th>Document DB</th>
+        <th>Datomic</th>
+    </tr>
+    <tr>
+        <td>Information Model</td>
+        <td>The unit of information is an entity in a relation and you
+            alter it in place, forgetting previous values</td>
+        <td>The unit of information is a schemaless document and you
+            update it in place, forgetting previous values</td>
+        <td>The unit of information is a fact comprised of an entity,
+            attributes, values, and time. You accrete the assertion and
+            retraction of facts instead of updating in place.</td>
+    </tr>
+    <tr>
+        <td>Architecture</td>
+        <td>Database is a monolithic system responsible for querying,
+            ACID compliance, and storage</td>
+        <td>Same as RDBMS</td>
+        <td>Separate querying, transacting, and storage in such a way
+            that you get ACID compliance, read scalability, and more
+            power within the application using Datomic</td>
+    </tr>
+    <tr>
+        <td>Interaction</td>
+        <td>SQL - applications abstract SQL by performing string
+            manipulation</td>
+        <td>Proprietary data structures which are more
+            programming-friendly than SQL but less powerful</td>
+        <td>Datalog, completely uses data structures and has as much
+            power as SQL</td>
+    </tr>
+</table>
 
 * The kinds of problems Datomic solves
 * The three ways in which Datomic is unique and exciting. Spoiler:
