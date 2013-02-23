@@ -258,8 +258,14 @@ th, td, caption {
   text-align: left;
   font-weight: normal; }
 
-table, th {
-  @include trailing-border(1px, 0.5); }
+table.comparison {
+  th {
+    @include trailing-border(1px, 0.5);
+  }
+  td {
+    border-bottom: 1px dotted black;
+  }
+}
 
 tfoot {
   @include adjust-font-size-to(14px); }

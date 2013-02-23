@@ -1,9 +1,9 @@
 ---
-title: WTF is Datomic? (And Should You Care?)
-created_at: Feb 2 9:23:00 -0500 2009
+title: Datomic for Five Year Olds
+created_at: Feb 23 9:23:00 -0500 2013
 kind: article
 categories: programming
-summary: Datomic is a fairly new database system that could hasn't been explained well. This is a brief conceptual introduction.
+summary: Datomic is a unique new database. This article explains it by relating it to existing kinds of databases.
 ---
 
 If you're interested in
@@ -25,9 +25,10 @@ if you decide to investigate it further.
 
 Datomic differs from existing solutions in its _information model_,
 its _architecture_ and its _programmability_. Below is a quick
-overview followed by a more detailed explanation of each facet.
+overview. We'll cover each of these righteous pillars of databasing in
+much more detail.
 
-<table>
+<table class="comparison">
     <tr>
         <th></th>
         <th>Relational DB</th>
@@ -55,9 +56,9 @@ overview followed by a more detailed explanation of each facet.
     </tr>
     <tr>
         <td>Programmability</td>
-        <td>SQL - applications abstract SQL by performing string
+        <td>Applications abstract SQL by performing string
             manipulation</td>
-        <td>Proprietary data structures which are more
+        <td>Interact with proprietary data structures which are more
             programming-friendly than SQL but less powerful</td>
         <td>Datalog, completely uses data structures and has as much
             power as SQL</td>
@@ -67,7 +68,7 @@ overview followed by a more detailed explanation of each facet.
 ## First Righteous Pillar of Databasing: Information Model
 
 A database's information model is defined by its rules regarding the
-way entities and attributes relate to each other -- for lack of a
+way entities and attributes relate to each other &mdash; for lack of a
 better term, its schema system.
 
 Yea, the choice between a relational and schemaless database is
@@ -77,11 +78,12 @@ Datomic's schema system isn't as rigid as the relational model but
 affords more power than a schemaless database.
 
 Additionally, a database's information model is defined by its
-approach to time. Datomic's approach to time different from most, if
-not all, existing databases.
+approach to time. Datomic's approach to time is different from most,
+if not all, existing databases.
 
 Below are the schema systems for relational dbs, schemaless dbs, and
-datomic, followed by a comparison of the way these systems handle time.
+datomic, followed by a comparison of the way the information models
+handle time.
 
 ### Relational Schemas
 
@@ -130,8 +132,9 @@ power and forces data integrity concerns into your application.
         <td>Attribute</td>
         <td>A name. Attributes can hold values of any type, and an attribute
         belonging to one entity is logically distinct from all other
-        attribute, even other entities belonging to the same
-        collection.</td>
+        attributes, even those belonging to other entities within the same
+        collection. Relationships between attributes are enforced
+        within the client application.</td>
     </tr>
 </table>
 
@@ -158,7 +161,7 @@ your client applications.
         <td>Attribute</td>
         <td>Name + data type + cardinality. Attributes themselves can
         be thought of as data types. They differ from attributes in
-        the relational model in that they exist outside of rigid tables</td>
+        the relational model in that they exist independently of rigid tables</td>
     </tr>
 </table>
         
@@ -204,9 +207,30 @@ updates, or deletes entities, you create a new database value. You're
 always able to say, "I want to work with the value of the database at
 this point in time."
 
-## Architecture
+### Datomic's Information Model Summarized
 
-Existing databases couple the following into one monolithic:
+In Datomic, the unit of information is a fact. A fact is comprised of
+an entity, an attribute, a value, and time. If you were to say "The
+princess", that would not be a fact. If you were to say, "The
+princess's favorite condiment", that would not be a fact. A fact would
+be "The princess's favorite condiment is mustard," that would be very
+close to a fact. "The princess's favorite condiment is mustard as of
+10pm on February 10th." is a fact.
+
+Facts don't go away. If the princess's tastes change so that she
+prefers sriracha, it's still useful to know that in the past she
+preferred mustard. More importantly, new facts don't obliterate old
+facts. In Datomic, all prior facts are available. Also, in Datomic,
+facts are called "datoms" and not "facts" because it's more exciting
+that way.
+
+For more, check out
+[The Datomic Information Model](http://www.infoq.com/articles/Datomic-Information-Model),
+an article by Datomic's creator, Rich Hickey.
+
+## Second Righteous Pillar of Databasing: Architecture
+
+Existing databases couple the following into one monolithic product:
 
 * Reading
 * Writing
@@ -216,13 +240,45 @@ Datomic decouples these capabilities. All writing is handled by a
 single "transactor", ensuring ACID compliance. This is the only point
 of similarity to existing solutions.
 
-Querying happens within "peers" - basically, running processes which
-make use of Datomic's peer library. The peer library is responsible
-for connecting to and querying your database. In this way, your
-queries run largely in your application rather than in a central
-database server, allowing for easy read scalability. I think the
-Datomic dudes were trying to avoid the term "client" here, but a peer
-is essentially a client.
+Side note: the diagrams at the
+[Datomic Architectural Overview](http://www.datomic.com/overview.html)
+page are quite awful. Besides being ugly, it is difficult to tell what
+the visual components signify. What do the arrows mean? What does the
+dashed border mean? WTF is "Comm"? Please, please fix these. OK, rant
+over.
+
+Your application communicates with datomic through the Peer Library, a
+component which exists within your applicaiton. Using the Peer Library
+makes your application a Peer. I think the Datomic guys were trying to
+avoid the term "client" here, but a Peer is essentially a client. What
+makes a Peer diffeerent from the usual database client, however, is
+that querying happens primarily in the Peer. By the way, when I say
+"querying" I mean "read querying."
+
+Instead of sending a query "over there" to the database server, which
+runs the query and gives the client results, the Peer Library is
+responsible for pulling the "value of the database" into the Peer so
+that querying happens within your actual application. If you were to
+create a script out of this action-packed drama, it would look like:
+
+* **_Peer:_** Peer Library! Find me all redheads who know how to play the
+  ukelele!
+* **_Peer Library:_** Yes yes! Right away sir! Database - give me your
+  data!
+* (Peer Library retrieves the database and performs query on it)
+* **_Peer Library:_** Here are all ukelele-playing redheads!
+* **_Peer:_** Hooraaaaaaaay!
+
+The most novel thing here is "retrieves the database". In Datomic, you
+have the concept of the "value of the database" - the database as a
+whole, as a data structure. The Peer Library is responsible for
+pulling as much of that data structure into memory as necessary to
+satisfy your queries.
+
+In this way, your queries run largely in your application rather than
+in a central database server, allowing for easy read scalability. It
+gives more power to your application rather than keeping all the power
+in a central server, where you have to worry about bottlenecks.
 
 Finally, Datomic does not implement its own storage solution but
 instead relies on storage as a service, allowing you to choose which
@@ -235,7 +291,8 @@ supported:
 * Couchbase
 * Infinispan
 
-## Programmability
+
+## Third Righteous Pillar of Databasing: Programmability
 
 In Datomic, everything is data! Your schema is data! Queries are data!
 Transactions are data! This is great because it's easier to manipulate
@@ -252,7 +309,5 @@ you do with SQL. Check out
 
 ## The End
 
-That's it for now! If you have any suggestions please let me know. As
-you can tell by the decreasing length of each major section, I got
-pretty tired of writing by the end of the article. If anything doesn't
-make sense I'll try to clarify.
+That's it for now! If you have any suggestions or corrections please
+let me know.

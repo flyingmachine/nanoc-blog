@@ -122,6 +122,9 @@ strong {
     font-weight:normal;
     font-style:italic;
     letter-spacing:0.05em;
+    margin-left: -18px;
+    padding-left: 9px;
+    border-left: 9px solid #f8f7ef;
     @include adjust-font-size-to(22px, 1);
     @include trailer(1, 22px);
   }
