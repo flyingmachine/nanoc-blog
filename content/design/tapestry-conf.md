@@ -179,9 +179,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
     * one technique: associate ancillary content (animations) with scroll
 
       so that extra information shows up in a way that it's tied to what the
-      reader is reading at that moment
-
-      _(this idea shows up a lot during the conf)_
+      reader is reading at that moment _(this idea shows up a lot during the conf)_
     * focusing on immersive content
     * it's important to carve out time, even just 10%, to play
 
@@ -200,10 +198,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
 
 ## Visual storytelling in the Age of Data, Robert Kosara
 
-* academics don't get the idea of presenting data, communicating data.
-  it's just an afterthought
-
-  _(There was some twitter conversation about this remark :)_
+* academics don't get the idea of presenting data, communicating data. it's just an afterthought
 * argues that stylizing charts is quite useful. helps to tell the
   story. emotional impact?
     * example: monstrous data by Nigel Holmes
@@ -235,9 +230,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
 </table>
 
 
-* storytelling affordances
-
-  _(I love the idea of storytelling affordances)_
+* storytelling affordances _(I love the idea of storytelling affordances)_
     * the form which lends itself to storytelling
     * what are they?
         * reading direction, left to right
@@ -255,8 +248,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
     * kind of the natural enemy of more data
     * you must be selective in presenting data for it to be a story
 * information scent - story depth
-    * hints used to guide people, indicate that there's more data
-    
+    * hints used to guide people, indicate that there's more data.
       example: the jobless rate for people like you
     * present a lot of information, but focus only on one bit.
       provide other data in a less visually prominent manner
