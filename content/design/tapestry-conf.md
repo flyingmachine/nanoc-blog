@@ -1,9 +1,9 @@
 ---
-title: Tapestry 2013
+title: Notes From Tapestry 2013
 created_at: Feb 28, 2013
 kind: article
 categories: design
-summary: A summary of the conferences content, along with links and reflections
+summary: Notes and links from Tapestry 2013
 ---
 
 Yesterday I had the immense pleasure of joining about 100 other
@@ -79,24 +79,19 @@ comment, tweet me @nonrecursive, or submit
       their phone, playing a game
     * his grandmother - does it pull together as a cohesive visual whole?
 * whole goal is to design for someone else
-
-  *This was probably the overarching theme for the whole talk. How can
-   you make it comprehensible and interesting for your audience?*
     * tensions
         * oversimplification vs. overwhelming detail
         * explanation vs. decoration
         * storytelling vs interactivity - narrative vs exploration
     * don't be your own audience
-        *this is a pretty common theme when people talk about
-        communicating - one of the first things John Trimble mentions
-        in Writing with Style. Web devs do usability testing* 
+
 * show ideas + evidence
     * understand, translate, display, explain
     * find the central idea. find one idea to use as the basis for your graphic
 * respect the reader - help them through the story
     * allow for multiple entry points - compartmentalized graphical sections
     * interactive tools to allow reader to pace themselves through
-    * use disparate scales to **give context**. Example, mixing
+    * use disparate scales to give context. Example, mixing
       longjump distances with free-throw line
 * add meaningful annotations
     * close proximity between graphics and labels
@@ -186,7 +181,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
       so that extra information shows up in a way that it's tied to what the
       reader is reading at that moment
 
-      *(this idea shows up a lot during the conf)*
+      _(this idea shows up a lot during the conf)_
     * focusing on immersive content
     * it's important to carve out time, even just 10%, to play
 
@@ -203,12 +198,12 @@ attempting the long jump - I doubt any of us will forget seeing that!
 * designers: provide retros. be accessible to critics
 
 
-# visual storytelling in the age of data, Robert Kosara
+## Visual storytelling in the Age of Data, Robert Kosara
 
 * academics don't get the idea of presenting data, communicating data.
   it's just an afterthought
 
-  *(There was some twitter conversation about this remark :)*
+  _(There was some twitter conversation about this remark :)_
 * argues that stylizing charts is quite useful. helps to tell the
   story. emotional impact?
     * example: monstrous data by Nigel Holmes
@@ -217,6 +212,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
 
      example: driving an electric car in the parking lot until the battery
      runs down
+     
 * story telling potential of charts
 
 <table class="comparison">
@@ -241,7 +237,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
 
 * storytelling affordances
 
-  *(I love the idea of storytelling affordances)*
+  _(I love the idea of storytelling affordances)_
     * the form which lends itself to storytelling
     * what are they?
         * reading direction, left to right
@@ -251,8 +247,6 @@ attempting the long jump - I doubt any of us will forget seeing that!
         * animations
         * direction - the bush admin vs. obama admin us job loss bar chart
           effective way of walking you through developments
-
-          example: gap minder regional differences in health and income
 * narrative ties facts together
     * provides causality
     * walks you through a story
@@ -272,7 +266,7 @@ attempting the long jump - I doubt any of us will forget seeing that!
   beyond what's out there right now"
 
 
-# comics and visual communication, scott mccloud
+## comics and visual communication, scott mccloud
 
 * in a 10" cube box of air is information
     * wifi, cell, radio
