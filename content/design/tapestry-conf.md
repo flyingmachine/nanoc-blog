@@ -9,16 +9,16 @@ summary: Notes and links from Tapestry 2013
 Yesterday I had the immense pleasure of joining about 100 other
 designers, programmers, educators, data scientists, journalists and
 storytellers in a day-long conference "designed to advance interactive
-online storytelling with data." Below is a list of links to many of
-the resources followed by notes on the presentations. My main goal
-here is to provide a useful resource to other attendees, but I think
-anyone falling into the categories listed above will find the content
-useful. It is, after all, the work and thoughts of some of the best in
-our industries. My secret goal is to spark some more conversation!
+online storytelling with data."
 
-If you'd like to make any contributions or corrections, please leave a
-comment, tweet me @nonrecursive, or submit
-[a pull request on github](https://github.com/flyingmachine/nanoc-blog/tree/master/content/design/tapestry-conf.md).
+Below is a list of links to many of the presentation examples followed
+by notes on the presentations.
+[You might like the way it's presented on github](https://github.com/flyingmachine/nanoc-blog/tree/master/content/design/tapestry-conf.md)
+better - my blog isn't ideal for this kind of content.
+
+If you'd like to make any contributions
+or corrections, please leave a comment, tweet me @nonrecursive, or
+submit a pull request :)
 
 ## Resources
 

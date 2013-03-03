@@ -6,8 +6,6 @@ categories: social, penguins
 summary: What will people post if they can't include links and can't use a nickname?
 ---
 
-# My Failed(?) Social Web Experiment Still Haunts Me
-
 What will people post if they can't include links and can't use a
 nickname?
 
