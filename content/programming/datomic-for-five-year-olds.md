@@ -290,6 +290,7 @@ supported:
 * Riak
 * Couchbase
 * Infinispan
+* SQL database
 
 
 ## Third Righteous Pillar of Databasing: Programmability
@@ -306,6 +307,7 @@ you do with SQL. Check out
 * [Rich Hickey on Datomic](http://www.infoq.com/interviews/hickey-datomic)
 * [The Value of Values](http://www.infoq.com/presentations/Value-Values)
 * [The Datomic Information Model](http://www.infoq.com/articles/Datomic-Information-Model)
+* [Datomic docs](http://docs.datomic.com)
 
 ## The End
 
