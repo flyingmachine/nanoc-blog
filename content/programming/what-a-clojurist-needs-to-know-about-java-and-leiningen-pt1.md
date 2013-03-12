@@ -49,9 +49,13 @@ familiar with object-oriented programming.
 
 In this section, we're going to learn just enough Java to understand
 what the hell is going on when we run programs written in the language
-we actually care about: Clojure.
+we actually care about: Clojure. Along the way, you will learn about:
 
 ### Compiling and Running a Basic Program
+
+This section will lay a foundation for your understanding of Java. It
+doesn't address Clojure directly, but the knowledge you gain will be
+useful in your Clojuring.
 
 Let's put our game faces on and start with a basic program. Visit the
 [github repo](https://github.com/flyingmachine/make-a-clojure-baby)
@@ -127,5 +131,162 @@ jars to understand what's happening when you run
 java -cp clojure-1.4.0.jar clojure.main
 ```
 
-### Packages, Imports, and Jars
+### Packages and Imports
+
+In this section, you'll learn about how Java handles programs which
+are spread over more than one file. You'll also learn how to use Java
+libraries. Once again, we'll look at both compiling and running a
+program. This section has direct implications for Clojure programming,
+so pay attention!
+
+Let's start with a couple definitions:
+
+* **package:** Similar to Clojure's namespaces, packages serve two
+  purposes. They provide code organization, just like clojure
+  namespaces. They also enforce access rules, which we don't really
+  care about. The directory that a Java file lives in must mirror the
+  package it belongs to. If a file has the line `package com.shapemaster`
+  in it, then it must be located at com/bobdole somewhere on your
+  classpath. More about classpath later.
+* **import:** Java allows you to import classes, which basically means
+  that you can refer to them without using their namespace prefix. So,
+  if you have a class in `com.shapemaster` named `Square`, you could
+  write `import com.shapemaster.Square;` or `import com.shapemaster.*;`
+  at the top of a `.java` file so that you can use `Square` in your
+  code instead of `com.shapemaster.Square`. Code example below.
+
+Now let's see `package` and `import` in action. Here they are as used
+by the files in 
+`make-a-clojure-baby/ContrivedPackageExample`. Pay
+attention to the comments, as they explain a lot of what's going on
+
+```java
+// Contents of:  make-a-clojure-baby/ContrivedPackageExample/Conversation.java
+public class Conversation
+{    
+    public static void main(String[] args)
+    {
+        // The "ns1" prefix is necessary because ShyGhost belongs to
+        // the "ns1" package, and we haven't imported the classes in
+        // that package
+        ns1.ShyGhost shyGhost = new ns1.ShyGhost();
+        shyGhost.talk();
+    }
+}
+
+////////
+
+// Contents of: make-a-clojure-baby/ContrivedPackageExample/ns1/ShyGhost.java
+
+// The classes defined in this file belong to the "ns1" package.
+// Notice that this file is in the "ns1" directory.
+package ns1;
+
+// This basically means, "I hate typing the namespace prefix all the
+// time so please allow me to not do that"
+import ns2.*;
+
+public class ShyGhost
+{
+    public void talk() {
+        // the shy ghost can't speak for himself and has to get
+        // someone else to do it for him
+        
+        // Notice that even though SuperManlyIguana belongs to the ns2
+        // namespace, we don't have to use the ns2 prefix
+        SuperManlyIguana smi = new SuperManlyIguana();
+        smi.talk();
+    }
+}
+
+
+////////
+
+// Contentsof make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java
+
+// The classes defined in this file belong to the "ns2" package
+package ns2;
+
+public class SuperManlyIguana
+{
+    public void talk()
+    {
+        System.out.println("Why hello there");
+    }
+}
+
+```
+
+You can run all the above code with the following:
+
+```shell
+cd make-a-clojure-baby/ContrivedPackageExample
+javac Conversation.java
+java Conversation
+```
+
+Can you guess what this outputs? I bet you can!
+
+Anyway, so far we've established the relationship between importing,
+packages, and directory structure: Packages organize code and require
+a matching directory structure. Importing classes allows you to
+"de-namespace" them.
+
+One piece that's missing, which I alluded to above, is the role of the
+classpath. Try the following:
+
+```shell
+cd make-a-clojure-baby/ContrivedPackageExample/ns1
+javac ../Conversation.java
+```
+
+Boom! The Java compiler just told you to hang your head in shame, and
+maybe weep a little:
+
+```
+../Conversation.java:13: error: package ns1 does not exist
+        ns1.ShyGhost shyGhost = new ns1.ShyGhost();
+           ^
+../Conversation.java:13: error: package ns1 does not exist
+        ns1.ShyGhost shyGhost = new ns1.ShyGhost();
+                                       ^
+```
+
+It thinks that the `ns1` package doesn't exist. But that's stupid,
+right? I mean, you're in the `ns1` directory and everything!
+
+What's happening here is that the java compiler is looking for
+`./ns1/ShyGhost` which it can't find because you're already in the
+`ns1` directory. This is because the default classpath includes '.'.
+Without changing directories, try running `javac -classpath ../
+../Conversation.java`
+
+Et voila! It works! So let's amend our understanding of the
+relationship between importing, packages, and the directory
+structures: when you're compiling a Java program, Java searches your
+classpath for packages.
+
+Guess what: the same things happens when you're running a Java
+program, too. Run the following:
+
+```shell
+cd make-a-clojure-baby/ContrivedPackageExample
+mkdir hide
+mv ns1 hide
+java Conversation
+```
+Another explosion! Now try:
+
+```shell
+java -classpath .:hide Converstaion
+```
+
+Success!
+
+I hope this clarifies the relationship between your directory
+structure, the classpath, packages, and importing.
+
+
+### Jar Files
+
 
