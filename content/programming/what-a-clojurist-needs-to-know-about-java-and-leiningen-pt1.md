@@ -1,10 +1,11 @@
 ---
-title: How Clojure Babies Are Made: a Tale of Leiningen and Java
-created_at: Mar 11 23:23:00 -0500 2013
+title: "How Clojure Babies Are Made: a Tale of Leiningen and Java"
+created_at: Mar 12 23:23:00 -0500 2013
 kind: article
 categories: programming
-summary: A way to avoid namespace collisions.
-draft: true
+summary: Whoa yeah
+additional_stylesheets:
+  - pygments
 ---
 
 If you're at all like me, the moment you got your first Clojure
@@ -26,11 +27,11 @@ outline of what's to come:
         * Class lookup rules & classpath
         * imports
         * packages
-        * jar files
+        * JAR files
     * Running
         * Class file
         * classpath
-        * Executable Jar
+        * Executable JAR
 * Leiningen
     * Running an app without Leiningen
     * CLASSPATH management
@@ -79,7 +80,7 @@ run `javac ShiverMeTimbers.java`. If you typed everything correctly
 *and* you're pure of heart, you should now see a file named
 `ShiverMeTimbers.class`.
 
-```shell
+```bash
 $ ls
 ShiverMeTimbers.class ShiverMeTimbers.java
 ```
@@ -87,7 +88,7 @@ ShiverMeTimbers.class ShiverMeTimbers.java
 You've just compiled your first Java program, son! Now run it with
 `java ShiverMeTimbers`. You should see:
 
-```shell
+```
 Shiver me timbers!!!
 ```
 
@@ -127,9 +128,12 @@ if you're curious.)
 In the next section you'll learn enough about packages, imports, and
 jars to understand what's happening when you run
 
-```shell
+```
 java -cp clojure-1.4.0.jar clojure.main
 ```
+
+You better take your socks off now because they're about to get
+knocked off!
 
 ### Packages and Imports
 
@@ -175,9 +179,7 @@ public class Conversation
 }
 
 ////////
-
 // Contents of: make-a-clojure-baby/ContrivedPackageExample/ns1/ShyGhost.java
-
 // The classes defined in this file belong to the "ns1" package.
 // Notice that this file is in the "ns1" directory.
 package ns1;
@@ -201,9 +203,7 @@ public class ShyGhost
 
 
 ////////
-
 // Contentsof make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java
-
 // The classes defined in this file belong to the "ns2" package
 package ns2;
 
@@ -219,7 +219,7 @@ public class SuperManlyIguana
 
 You can run all the above code with the following:
 
-```shell
+```
 cd make-a-clojure-baby/ContrivedPackageExample
 javac Conversation.java
 java Conversation
@@ -235,7 +235,7 @@ a matching directory structure. Importing classes allows you to
 One piece that's missing, which I alluded to above, is the role of the
 classpath. Try the following:
 
-```shell
+```
 cd make-a-clojure-baby/ContrivedPackageExample/ns1
 javac ../Conversation.java
 ```
@@ -269,7 +269,7 @@ classpath for packages.
 Guess what: the same things happens when you're running a Java
 program, too. Run the following:
 
-```shell
+```
 cd make-a-clojure-baby/ContrivedPackageExample
 mkdir hide
 mv ns1 hide
@@ -277,7 +277,7 @@ java Conversation
 ```
 Another explosion! Now try:
 
-```shell
+```
 java -classpath .:hide Converstaion
 ```
 
@@ -287,6 +287,29 @@ I hope this clarifies the relationship between your directory
 structure, the classpath, packages, and importing.
 
 
-### Jar Files
+### JAR Files
 
+JAR, or Java ARchive, files allow you to bundle all your .class files
+into one single file. Run the following:
 
+```
+cd make-a-clojure-baby/ContrivedPackageExample
+jar cvfe contrived.jar Conversation *.class ns*/*.class
+java -jar contrived.jar
+```
+
+It works, just like before. You bundled all the class files into
+`contrived.jar` with the file patterns `*.class` and `ns*/*.class`.
+You also indicated that the `Conversation` class is the "entry point"
+with the `e` flag. The "entry point" is the class which contains the
+`main` method which should be executed when the JAR as a whole is run.
+
+You might be wondering why Java isn't throwing any exceptions like
+"can't find package". The reason is that the JAR file maintains the
+directory structure. You can see its contents with:
+
+```
+jar tf contrived.jar
+```
+
+You'll see that the directory structure is maintained.

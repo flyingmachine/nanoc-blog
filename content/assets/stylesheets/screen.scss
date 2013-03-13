@@ -125,6 +125,7 @@ strong {
     margin-left: -18px;
     padding-left: 9px;
     border-left: 9px solid #f8f7ef;
+    @include clearfix;
     @include adjust-font-size-to(22px, 1);
     @include trailer(1, 22px);
   }
@@ -180,8 +181,7 @@ pre.emphasize {
 
 p, ol, ul {
   code {
-    background:#eee;
-    line-height:1px;
+    background:#f3f8fc;
   }
 }
 
@@ -191,8 +191,11 @@ p, ol, ul {
 
 .code.pygments {
   line-height:normal;
-  font-size: 75%;
-  border: 2px solid silver;
+  padding: 0 $gutter-width;
+  @include clearfix;
+  @include adjust-font-size-to(14px);
+  @include padding-leader(.5);
+  @include padding-trailer(.5);
   @include span-columns(8, 8);
 
   margin-bottom:$base-line-height;
@@ -201,7 +204,7 @@ p, ol, ul {
     margin-left:-2 * $column-width;
   }
  
-  overflow-x:scroll;
+  overflow-x:auto;
 
   table {
     td.linenos {
