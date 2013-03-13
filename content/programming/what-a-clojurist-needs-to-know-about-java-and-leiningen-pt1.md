@@ -125,15 +125,9 @@ if you're curious.)
 * `java` searches the `classpath` for the class you specified and
   executes its `main` method. That method must be public.  
 
-In the next section you'll learn enough about packages, imports, and
-jars to understand what's happening when you run
-
-```
-java -cp clojure-1.4.0.jar clojure.main
-```
-
-You better take your socks off now because they're about to get
-knocked off!
+In the next section you'll learn about handling program code that's
+spread over more than one file. If you don't remove your socks now,
+they're liable to get knocked off!
 
 ### Packages and Imports
 
@@ -286,6 +280,12 @@ Success!
 I hope this clarifies the relationship between your directory
 structure, the classpath, packages, and importing.
 
+**Key Ideas**
+* Packages provide a way for you to organize classes. Your directory
+  structure must reflect your package names
+* Imports allow you to be lazy and not prefix a class name with its
+  package
+* `javac` and `java` search the classpath for packages
 
 ### JAR Files
 
