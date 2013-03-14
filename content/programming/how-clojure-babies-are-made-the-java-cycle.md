@@ -145,7 +145,7 @@ Let's start with a couple definitions:
   namespaces. They also enforce access rules, which we don't really
   care about. The directory that a Java file lives in must mirror the
   package it belongs to. If a file has the line `package com.shapemaster`
-  in it, then it must be located at com/shapemaster somewhere on your
+  in it, then it must be located at `com/shapemaster` somewhere on your
   classpath. More about classpath later.
 * **import:** Java allows you to import classes, which basically means
   that you can refer to them without using their namespace prefix. So,
