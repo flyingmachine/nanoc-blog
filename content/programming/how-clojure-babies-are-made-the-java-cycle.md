@@ -282,6 +282,7 @@ I hope this clarifies the relationship between your directory
 structure, the classpath, packages, and importing.
 
 **Key Ideas**
+
 * Packages provide a way for you to organize classes. Your directory
   structure must reflect your package names
 * Imports allow you to be lazy and not prefix a class name with its

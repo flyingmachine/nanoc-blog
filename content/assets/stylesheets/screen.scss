@@ -174,9 +174,8 @@ strong {
 }
 
 pre.emphasize {
-  background:#fff;
+  background:#f3f8fc;
   padding:($base-line-height / 2) ($gutter-width / 2);
-  border:1px solid #ccc;
 }
 
 p, ol, ul {
@@ -192,7 +191,7 @@ p, ol, ul {
 .code.pygments {
   line-height:normal;
   padding: 0 $gutter-width;
-  @include clearfix;
+
   @include adjust-font-size-to(14px);
   @include padding-leader(.5);
   @include padding-trailer(.5);
@@ -219,14 +218,16 @@ p, ol, ul {
     padding-bottom:0;
     border:none;
     .highlight pre {
-      overflow:hidden;
-      white-space:pre;
-      word-wrap:normal;
+      overflow: hidden;
+      white-space: pre;
+      word-wrap: normal;
     }
   }
   
   pre {
-    margin-bottom:0;
+    margin-bottom: 0;
+    white-space: pre;
+    word-wrap: normal;
   }
 
 }
