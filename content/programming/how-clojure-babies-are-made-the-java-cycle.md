@@ -198,7 +198,7 @@ public class ShyGhost
 
 Contents of `make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java`:
 
-```java2
+```java
 // The classes defined in this file belong to the "ns2" package
 package ns2;
 
