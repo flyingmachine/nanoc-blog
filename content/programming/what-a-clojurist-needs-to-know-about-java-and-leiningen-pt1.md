@@ -1,9 +1,9 @@
 ---
-title: "How Clojure Babies Are Made: a Tale of Leiningen and Java, Part 1"
+title: "How Clojure Babies Are Made: The Java Cycle"
 created_at: Mar 12 23:23:00 -0500 2013
 kind: article
 categories: programming
-summary: "If you're at all like me, the moment you got your first Clojure program running you belted out, \"SOOO MUUUUUUUCH POOOOOOOWEEEEEEEER!\" and thrust one or both fists into the air. Then, fifteen minutes later, you found yourself muttering things like \"What's a maven?\" and \"Classpath what now?\" and "What is Leiningen actually doing, anyway? Sure, those are the most handsome mustaches I ever laid eyes on, but can I really trust them?\"
+summary: "If you're at all like me, the moment you got your first Clojure program running you belted out, \"SOOO MUUUUUUUCH POOOOOOOWEEEEEEEER!\" and thrust one or both fists into the air. Then, fifteen minutes later, you found yourself muttering things like \"What's a maven?\" and \"Classpath what now?\" and \"What is Leiningen actually doing, anyway? Sure, those are the most handsome mustaches I ever laid eyes on, but can I really trust them?\""
 additional_stylesheets:
   - pygments
 ---
