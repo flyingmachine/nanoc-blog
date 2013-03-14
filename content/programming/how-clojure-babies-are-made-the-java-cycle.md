@@ -1,5 +1,5 @@
 ---
-title: "How Clojure Babies Are Made: The Java Cycle"
+title: "How Clojure Babies Are Made: Compiling and Running a Java Program"
 created_at: Mar 12 23:23:00 -0500 2013
 kind: article
 categories: programming
@@ -34,7 +34,7 @@ way easier. Here's an outline of what's to come:
         * Executable JAR
 * Leiningen
     * Running an app without Leiningen
-    * CLASSPATH management
+    * classpath management
     * Incorporating Clojure automatically
     * Dependency managemenet
 
