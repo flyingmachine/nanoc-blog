@@ -60,7 +60,8 @@ useful in your Clojuring.
 
 Let's put our game faces on and start with a basic program. Visit the
 [github repo](https://github.com/flyingmachine/make-a-clojure-baby)
-for this post and clone that baby for all you're worth.
+for the examples in this post and clone that baby for all you're
+worth.
 
 In the folder `ShiverMeTimbers`, you should find an article named
 `ShiverMeTimbers.java`. Here are its contents:
