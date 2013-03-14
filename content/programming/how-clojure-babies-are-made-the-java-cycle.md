@@ -48,10 +48,6 @@ installed, you might want to do that now. To check, just try running
 you're somewhat familiar with the terminal. It also assumes you're
 familiar with object-oriented programming.
 
-In this section, we're going to learn just enough Java to understand
-what the hell is going on when we run programs written in the language
-we actually care about: Clojure. Along the way, you will learn about:
-
 ## Compiling and Running a Basic Program
 
 This section will lay a foundation for your understanding of Java. It
