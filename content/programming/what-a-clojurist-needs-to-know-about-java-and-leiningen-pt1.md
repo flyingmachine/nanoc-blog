@@ -1,9 +1,9 @@
 ---
-title: "How Clojure Babies Are Made: a Tale of Leiningen and Java"
+title: "How Clojure Babies Are Made: a Tale of Leiningen and Java, Part 1"
 created_at: Mar 12 23:23:00 -0500 2013
 kind: article
 categories: programming
-summary: Whoa yeah
+summary: "If you're at all like me, the moment you got your first Clojure program running you belted out, \"SOOO MUUUUUUUCH POOOOOOOWEEEEEEEER!\" and thrust one or both fists into the air. Then, fifteen minutes later, you found yourself muttering things like \"What's a maven?\" and \"Classpath what now?\" and "What is Leiningen actually doing, anyway? Sure, those are the most handsome mustaches I ever laid eyes on, but can I really trust them?\"
 additional_stylesheets:
   - pygments
 ---
@@ -17,9 +17,9 @@ Sure, those are the most handsome mustaches I ever laid eyes on, but
 can I really trust them?"
 
 This post is here to help you out. In it, I will describe how Java
-compiles and runs programs, and how this relates to Clojure. I will
-then describe how Leiningen makes this process way easier. Here's an
-outline of what's to come:
+compiles and runs programs, and how this relates to Clojure. In an
+upcoming post, I will also describe how Leiningen makes this process
+way easier. Here's an outline of what's to come:
 
 * Java
     * Compilation
@@ -52,7 +52,7 @@ In this section, we're going to learn just enough Java to understand
 what the hell is going on when we run programs written in the language
 we actually care about: Clojure. Along the way, you will learn about:
 
-### Compiling and Running a Basic Program
+## Compiling and Running a Basic Program
 
 This section will lay a foundation for your understanding of Java. It
 doesn't address Clojure directly, but the knowledge you gain will be
@@ -129,7 +129,7 @@ In the next section you'll learn about handling program code that's
 spread over more than one file. If you don't remove your socks now,
 they're liable to get knocked off!
 
-### Packages and Imports
+## Packages and Imports
 
 In this section, you'll learn about how Java handles programs which
 are spread over more than one file. You'll also learn how to use Java
@@ -287,7 +287,7 @@ structure, the classpath, packages, and importing.
   package
 * `javac` and `java` search the classpath for packages
 
-### JAR Files
+## JAR Files
 
 JAR, or Java ARchive, files allow you to bundle all your .class files
 into one single file. Run the following:
@@ -304,12 +304,98 @@ You also indicated that the `Conversation` class is the "entry point"
 with the `e` flag. The "entry point" is the class which contains the
 `main` method which should be executed when the JAR as a whole is run.
 
-You might be wondering why Java isn't throwing any exceptions like
-"can't find package". The reason is that the JAR file maintains the
-directory structure. You can see its contents with:
+Behind the scenes, java knows which class is the entry point because
+when you create a jar, the file `META-INF/MANIFEST.MF` automaticaally
+gets generated and added. When you add the `e` flag, the following
+line gets added:
+
+```
+Main-Class: Conversation
+```
+
+
+By the way, you might be wondering why Java isn't throwing any
+exceptions like "can't find package". The reason is that the JAR file
+maintains the directory structure. You can see its contents with:
 
 ```
 jar tf contrived.jar
 ```
 
 You'll see that the directory structure is maintained.
+
+## Pulling it All Together: clojure.jar
+
+Let's pull all of this together with some Clojure! Download
+[the 1.5.1 stable release](http://repo1.maven.org/maven2/org/clojure/clojure/1.5.1/clojure-1.5.1.zip)
+and unzip it. Then `cd` to the directory that gets created and run
+
+```
+java -jar clojure-1.5.1.jar
+```
+
+You should get that most soothing of sights, the Clojure REPL. So, how
+did it actually start up? Let's have a look at `META-INF/MANIFEST.MF`
+in the jar file:
+
+```
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: hudson
+Build-Jdk: 1.6.0_20
+Main-Class: clojure.main
+```
+
+It looks like `clojure.main` is specified as the entry point. Where
+does this class come from? Well, have a look at
+[clojure/main.java on github](https://github.com/clojure/clojure/blob/master/src/jvm/clojure/main.java):
+
+```java
+/**
+ *   Copyright (c) Rich Hickey. All rights reserved.
+ *   The use and distribution terms for this software are covered by the
+ *   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+ *   which can be found in the file epl-v10.html at the root of this distribution.
+ *   By using this software in any fashion, you are agreeing to be bound by
+ * 	 the terms of this license.
+ *   You must not remove this notice, or any other, from this software.
+ **/
+
+package clojure;
+
+import clojure.lang.Symbol;
+import clojure.lang.Var;
+import clojure.lang.RT;
+
+public class main{
+
+final static private Symbol CLOJURE_MAIN = Symbol.intern("clojure.main");
+final static private Var REQUIRE = RT.var("clojure.core", "require");
+final static private Var LEGACY_REPL = RT.var("clojure.main", "legacy-repl");
+final static private Var LEGACY_SCRIPT = RT.var("clojure.main", "legacy-script");
+final static private Var MAIN = RT.var("clojure.main", "main");
+
+public static void legacy_repl(String[] args) {
+    REQUIRE.invoke(CLOJURE_MAIN);
+    LEGACY_REPL.invoke(RT.seq(args));
+}
+
+public static void legacy_script(String[] args) {
+    REQUIRE.invoke(CLOJURE_MAIN);
+    LEGACY_SCRIPT.invoke(RT.seq(args));
+}
+
+public static void main(String[] args) {
+    REQUIRE.invoke(CLOJURE_MAIN);
+    MAIN.applyTo(RT.seq(args));
+}
+}
+```
+
+As you can see, the class `main` is defined. It belongs to the package
+`clojure` and defines a `public static main` method. This is all Java
+needs to run a program.
+
+I hope this has helped clarify Java and how it relates to Clojure! In
+my next post, I'll dig in to Leiningen. Fun for everybody!!!
