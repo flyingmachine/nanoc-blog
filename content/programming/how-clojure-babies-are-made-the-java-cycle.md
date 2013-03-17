@@ -48,10 +48,6 @@ installed, you might want to do that now. To check, just try running
 you're somewhat familiar with the terminal. It also assumes you're
 familiar with object-oriented programming.
 
-In this section, we're going to learn just enough Java to understand
-what the hell is going on when we run programs written in the language
-we actually care about: Clojure. Along the way, you will learn about:
-
 ## Compiling and Running a Basic Program
 
 This section will lay a foundation for your understanding of Java. It
@@ -159,8 +155,9 @@ by the files in
 `make-a-clojure-baby/ContrivedPackageExample`. Pay
 attention to the comments, as they explain a lot of what's going on
 
+Contents of `make-a-clojure-baby/ContrivedPackageExample/Conversation.java`:
+
 ```java
-// Contents of:  make-a-clojure-baby/ContrivedPackageExample/Conversation.java
 public class Conversation
 {    
     public static void main(String[] args)
@@ -172,9 +169,11 @@ public class Conversation
         shyGhost.talk();
     }
 }
+```
 
-////////
-// Contents of: make-a-clojure-baby/ContrivedPackageExample/ns1/ShyGhost.java
+Contents of `make-a-clojure-baby/ContrivedPackageExample/ns1/ShyGhost.java`:
+
+```java
 // The classes defined in this file belong to the "ns1" package.
 // Notice that this file is in the "ns1" directory.
 package ns1;
@@ -195,10 +194,11 @@ public class ShyGhost
         smi.talk();
     }
 }
+```
 
+Contents of `make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java`:
 
-////////
-// Contentsof make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java
+```java
 // The classes defined in this file belong to the "ns2" package
 package ns2;
 
@@ -282,6 +282,7 @@ I hope this clarifies the relationship between your directory
 structure, the classpath, packages, and importing.
 
 **Key Ideas**
+
 * Packages provide a way for you to organize classes. Your directory
   structure must reflect your package names
 * Imports allow you to be lazy and not prefix a class name with its
@@ -324,6 +325,9 @@ jar tf contrived.jar
 ```
 
 You'll see that the directory structure is maintained.
+
+One final point: a JAR file is really just a Zip file with a ".jar"
+extension. You can treat it just the same as any other zip file.
 
 ## Pulling it All Together: clojure.jar
 

@@ -221,6 +221,9 @@ img {
 
 ol, ul, dl {
   @include trailer;
+  ol, ul, dl{
+    margin-bottom: 0;
+  }
   margin-left: $base-rhythm-unit; }
 
 ol {
