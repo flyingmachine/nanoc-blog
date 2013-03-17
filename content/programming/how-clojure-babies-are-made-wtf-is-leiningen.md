@@ -28,7 +28,7 @@ deploying Clojure applications.
 Here's what we'll learn:
 
 * How to build and run a Clojure program without Leiningen
-* What happens when you run "leiningen run"
+* What happens when you run `leiningen run`
 * Running a Leiningen task
 * How Leiningen manages dependencies
 * How to distribute a full application
@@ -42,7 +42,7 @@ have any pictures of sparkly, sensitive, muscle-bound men though so if
 that's what you're hoping for you're out of luck. We're here to learn
 Clojure, dammit, not ogle cartoons!
 
-## Brief overview of Leiningen
+## Brief Overview of Leiningen
 
 Leiningen is the Swiss Army Bazooka of Clojure development. It
 handles:
@@ -54,7 +54,7 @@ handles:
 * **Deployment.** Helps with creating Java jars which can be executed
   and/or incorporated in other projects. Similar to Ruby gems.
 
-## How to build and run a Clojure program without Leiningen
+## How to Build and Run a Clojure Program Without Leiningen
 
 By understanding how to build and run a Clojure program manually,
 you'll better understand what Leiningen does to automate the process.
@@ -149,6 +149,7 @@ Now that we've compiled our Clojure program, let's get it running:
 
 
 ```
+# Notice that you have to provide a numerical argument
 $ java -cp classes:clojure.jar learn_a_language/important_phrases 0
 English:  I love you.
 German:  Ich liebe dich.
@@ -174,4 +175,79 @@ would be burdensome to go through his process over and over again
 while developing a program. Let's finally bring in our pal Leiningen
 to automate this process.
 
-## How 
+## How Leiningen Compiles and Runs a Basic Clojure Program
+
+Let's build the "learn a language" program with Leiningen. We have a
+very basic project at `make-a-clojure-baby/leiningen/lein-build`.
+Under that the directory, the file
+`src/learn_a_language/important_phrases.clj` is the same as the one
+listed above.
+
+### lein run
+
+Lein automates the build + run process with `lein run`. Go ahead and
+try that now:
+
+```
+$ lein run 2
+Compiling learn-a-language.important-phrases
+English:  I miss you.
+German:  Ich vermisse dich./Du fehlst mir.
+```
+
+You can probably guess what's happening at this point, at least to a
+degree. Leiningen is compiling the `important_phrases.clj` resulting
+in a number of Java `.class` files. We can, in fact, see these class
+files:
+
+```
+$ ls target/classes/learn_a_language
+important_phrases$_main.class
+important_phrases$loading__4784__auto__.class
+important_phrases__init.class
+```
+
+Leiningen then somehow constructs a classpath such that both Clojure
+and the "important phrases" classes are accessible by Java. Finally,
+the `-main` function is executed.
+
+I know what you're thinking at this point, noble reader. You're
+thinking that the "somehow" in "somehow constructs a classpath" is a
+particularly un-manly, un-artistic, un-mustached, un-sparkly word,
+unbefitting an article on Leiningen. And you are absolutely right. To
+avoid your wrath, let's dig into Leiningen's source code so that we
+can understand what's going on with complete clarity.
+
+### Walking Through lein run
+
+To get an idea of where to start, let's run `lein run 1` again and
+then run `ps | grep lein`:
+
+```
+8420 /usr/bin/java \
+  -client -XX:+TieredCompilation  \
+  -Xbootclasspath/a:/Users/daniel/.lein/self-installs/leiningen-2.0.0-standalone.jar \
+  -Dfile.encoding=UTF-8 \
+  -Dmaven.wagon.http.ssl.easy=false \
+  -Dleiningen.original.pwd=/Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build \
+  -Dleiningen.script=/Users/daniel/bin/lein \
+  -classpath :/Users/daniel/.lein/self-installs/leiningen-2.0.0-standalone.jar clojure.main \
+  -m leiningen.core.main run 1 \
+
+8432 /usr/bin/java
+  -classpath \
+    /Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/test:\
+    /Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/src:\
+    /Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/dev-resources:\
+    /Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/resources:\
+    /Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/target/classes:\
+    /Users/daniel/.m2/repository/org/clojure/clojure/1.5.1/clojure-1.5.1.jar
+  -XX:+TieredCompilation \
+  -Dclojure.compile.path=/Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build/target/classes \
+  -Dlearn-a-language.version=0.1.0-SNAPSHOT \
+  -Dfile.encoding=UTF-8 \
+  -Dclojure.debug=false clojure.main \
+  -e (do (try (clojure.core/require (quote learn-a-language.important-phrases)) (catch java.io.FileNotFoundException ___6081__auto__)) (set! *warn-on-reflection* nil) (clojure.core/let [v__6079__auto__ (clojure.core/resolve (quote learn-a-language.important-phrases/-main))] (if (clojure.core/ifn? v__6079__auto__) (v__6079__auto__ "1") (clojure.lang.Reflector/invokeStaticMethod "learn-a-language.important-phrases" "main" (clojure.core/into-array [(clojure.core/into-array java.lang.String (quote ("1")))])))))
+```
+
+Hooooooly crap. Somebody buy @technomancy a beer.
