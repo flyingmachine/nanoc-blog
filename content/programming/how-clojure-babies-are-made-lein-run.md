@@ -35,6 +35,7 @@ Here's what we'll learn:
 
 In the next post, we'll learn:
 
+* How Leiningen avoids waste with a trampoline
 * How Leiningen manages dependencies
 * How to distribute a full application
 * How to distribute a library
@@ -53,11 +54,12 @@ Leiningen is the Swiss Army Bazooka of Clojure development. It
 handles:
 
 * **Project compilation.** Your Clojure has to get converted into Java
-  class files somehow, and Leiningen automates the process.
+  bytecode somehow, and Leiningen automates the process.
 * **Dependency management.** Similar to Ruby's bundler and gemfiles,
-    Leiningen automates the process of resolving and downloading the
-    Java jars your project depends on
-* **Running tasks.** Similar to Ruby's Rake.
+  Leiningen automates the process of resolving and downloading the
+  Java jars your project depends on
+* **Running tasks.** Superficially similar to Ruby's Rake, except that
+  Rake is not very declarative. This could have its own blog post.
 * **Deployment.** Helps with creating Java jars which can be executed
   and/or incorporated in other projects. Similar to Ruby gems.
 
@@ -241,7 +243,7 @@ can understand what's going on with complete clarity.
 
 To get an idea of where to start, let's run `lein run 1` again and
 then run `ps | grep lein`. The output has been broken up to make more
-sense:
+sense (apologies for the goofy highlighting):
 
 ```
 # you can actually copy and paste the part after the PID to try this
@@ -368,18 +370,24 @@ resolves to `leiningen.run`, which you can
 This is pretty cool &mdash; `run` is just another task from
 Leiningen's point of view. Wait... did I just say "cool"? I meant
 *MANLY* and *ARTISTIC* and *SPARKLY*. But yeah, it looks like basic
-leiningen architecture includes the `leiningen.core` namespace, which
-handles task resolution and application, and plain ol' `leiningen`,
-which appears to be mostly a collection of default tasks. Leiningen
-uses this same mechanism to execute any function in your Clojure
-project as a task. Bodacious!
+leiningen architecture includes the `leiningen.core` collection of
+namespaces, which handle task resolution and application, and plain
+ol' `leiningen`, which appears to be mostly a collection of default
+tasks.
+
+Leiningen uses this same mechanism to execute any function in your
+Clojure project as a task. Bodacious! I recommend checking out
+[the code for the other Leiningen tasks](https://github.com/technomancy/leiningen/tree/master/src/leiningen).
+You'll see how they do more than just require and run a single
+function, but the task-running infrastructure remains the same.
 
 Anyway, once the `run` task has been resolved, it is executed and the
-result is the second process we saw in the `ps | grep lein` output we
-saw above, the process with PID 8432. I won't go into how that command
-gets constructed, as you can figure that all out from `leiningen/run`.
-What's more important is what it actually does. The command loads
-Clojure and tells it to evaluate the following:
+result is the second process we saw in the `ps | grep lein` output
+above, the process with PID 8432. This is done to enforce isolation
+between Leiningen and your project. I won't go into how the command
+for the sub-process gets constructed, as you can figure that all out
+from `leiningen/run`. What's more important is what it actually does.
+The command loads Clojure and tells it to evaluate the following:
 
 ```clojure
 (do
@@ -451,10 +459,13 @@ java -cp classes:clojure.jar learn_a_language/important_phrases 0
         * Automagically set the classpath
         * Use `clojure.main` as the Java entry point
         * Construct some Clojure code to evaluate so that the
-          project's main function gets executed
+          project's main function gets executed. This happens in a
+          sub-process to enforce isolcation from Leiningen. Check out
+          Leiningen's `eval-in-project` function for more info.
 
 In the next article we'll cover:
 
+* How Leiningen avoids waste with a trampoline
 * How Leiningen manages dependencies
 * How to distribute a full application
 * How to distribute a library
