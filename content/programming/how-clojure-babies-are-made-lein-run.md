@@ -383,11 +383,12 @@ function, but the task-running infrastructure remains the same.
 
 Anyway, once the `run` task has been resolved, it is executed and the
 result is the second process we saw in the `ps | grep lein` output
-above, the process with PID 8432. This is done to enforce isolation
-between Leiningen and your project. I won't go into how the command
-for the sub-process gets constructed, as you can figure that all out
-from `leiningen/run`. What's more important is what it actually does.
-The command loads Clojure and tells it to evaluate the following:
+above, the process with PID 8432. A sub-process is created to enforce
+isolation between Leiningen and your project. I won't go into how the
+command for the sub-process gets constructed, as you can figure that
+all out from `leiningen/run`. What's more important is what it
+actually does. The command loads Clojure and tells it to evaluate the
+following:
 
 ```clojure
 (do
