@@ -296,10 +296,10 @@ What's essentially happening is we're saying:
 * Use `clojure.main` as the Java entry point
 * Pass `-m leiningen.core.main run 1` as arguments to `clojure.main`
 
-That last step is a way of specifying what the *Clojure* entry point
-is, as opposed to the *Java* entry point. Clojure uses it to load the
-`leiningen.core.main` namespace and then execute the `-main` function
-within it. `leiningen.core.main/-main` receives the arguments `run 1`.
+That last step specifies the *Clojure* entry point, as opposed to the
+*Java* entry point. Clojure uses it to load the `leiningen.core.main`
+namespace and then execute the `-main` function within it.
+`leiningen.core.main/-main` receives the arguments `run 1`.
 
 We can view Leiningen's `leiningen.core.main/-main` function
 [on github](https://github.com/technomancy/leiningen/blob/master/leiningen-core/src/leiningen/core/main.clj#L275):
