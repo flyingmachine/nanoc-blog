@@ -1,9 +1,9 @@
 ---
-title: "How Clojure Babies Are Made: lein run"
+title: "How Clojure Babies Are Made: Understanding lein run"
 created_at: Mar 18 9:23:00 -0500 2013
 kind: article
 categories: programming
-summary: "If you're at all like me, the moment you got your first Clojure program running you belted out, \"SOOO MUUUUUUUCH POOOOOOOWEEEEEEEER!\" and thrust one or both fists into the air. Then, fifteen minutes later, you found yourself muttering things like \"What's a maven?\" and \"Classpath what now?\" and \"What is Leiningen actually doing, anyway? Sure, those are the most handsome mustaches I ever laid eyes on, but can I really trust them?\""
+summary: "Leiningen reminds me a lot of Major Alex Louis Armstrong from Fullmetal Alchemist: <ul><li>They are both manly</li><li>They are both artistic</li><li>Sometimes you don't know what the f* they're saying (but it's amazing anyway)</li><li>Mustaches</li><li>Sparkles</li></ul>"
 additional_stylesheets:
   - pygments
 ---
@@ -15,21 +15,23 @@ Fullmetal Alchemist:
 
 * They are both manly
 * They are both artistic
-* Sometimes you don't know what the f* they're saying
+* Sometimes you don't know what the f* they're saying (but it's
+  amazing anyway)
 * Mustaches
 * Sparkles
 
 Though the Strong Arm Alchemist will forever remain inscrutable, we do
 have some hope in understanding Leiningen better. In this post, we'll
-peek under Leiningen's lederhosen so that we can beginto learn
+peek under Leiningen's lederhosen so that we can begin to learn
 precisely what it does and how to make effective use of it in
 developing, testing, running, and deploying Clojure applications.
 
 Here's what we'll learn:
 
 * How to build and run a Clojure program without Leiningen
-* What happens when you run `leiningen run`
-* Running a Leiningen task
+* What happens when you run `lein run`
+* Basic Leiningen architecture
+* What happens when you run a Leiningen task
 
 In the next post, we'll learn:
 
@@ -51,8 +53,10 @@ Leiningen is the Swiss Army Bazooka of Clojure development. It
 handles:
 
 * **Project compilation.** Your Clojure has to get converted into Java
-  class files somehow, and Leiningen makes this process transparent.
-* **Dependency management.** Similar to Ruby's bundler and gemfiles.
+  class files somehow, and Leiningen automates the process.
+* **Dependency management.** Similar to Ruby's bundler and gemfiles,
+    Leiningen automates the process of resolving and downloading the
+    Java jars your project depends on
 * **Running tasks.** Similar to Ruby's Rake.
 * **Deployment.** Helps with creating Java jars which can be executed
   and/or incorporated in other projects. Similar to Ruby gems.
@@ -89,9 +93,11 @@ Love:
 ```
 
 One important thing to note here is that we included the `:gen-class`
-directive in the `ns` declaration. This generates a named Java class
-when we compile the namespace, which will allow us to actually execute
-the `-main` method directly from the command line.
+directive in the `ns` declaration. This tells Clojure to generate a
+named Java class when it compiles the namespace. Remember that Java
+requires a `public main` method within a `public` class to serve as
+the entry point for the JVM. Using `:gen-class` allows us to use
+`learn-a-language.important-phrases/-main` as the entry point.
 
 Let's go ahead and compile. First, start up a Clojure repl (note that
 the git repo includes the 1.5.1 release of Clojure as clojure.jar):
@@ -144,9 +150,9 @@ mind grapes: "Where did the `classes` directory come from?"
 Oh, gentle-hearted reader. Your dedication to learning has touched my
 heart. I shall answer your query: Clojure places compiled files under
 `*compile-path*`, which is `classes` by default. Therefore, `classes`
-must exist and be accessible from the classpath. You'll noticed that
+must exist and be accessible from the classpath. You'll notice that
 there's a `classes` directory in the git repo with a `.gitkeep` file
-in it. Never change, dear reader. Never!
+in it. Never change, dear, inquisitive reader. Never!
 
 Now that we've compiled our Clojure program, let's get it running:
 
@@ -210,9 +216,8 @@ German:  Ich vermisse dich./Du fehlst mir.
 ```
 
 You can probably guess what's happening at this point, at least to a
-degree. Leiningen is compiling the `important_phrases.clj` resulting
-in a number of Java `.class` files. We can, in fact, see these class
-files:
+degree. Leiningen is compiling `important_phrases.clj` resulting in a
+number of Java `.class` files. We can, in fact, see these class files:
 
 ```
 $ ls target/classes/learn_a_language
@@ -363,11 +368,11 @@ resolves to `leiningen.run`, which you can
 This is pretty cool &mdash; `run` is just another task from
 Leiningen's point of view. Wait... did I just say "cool"? I meant
 *MANLY* and *ARTISTIC* and *SPARKLY*. But yeah, it looks like basic
-leiningen architecture includes `leiningen.core`, which handles task
-resolution and application, and plain ol' `leiningen`, which appears
-to be mostly a collection of default tasks. Leiningen uses this same
-mechanism to execute any function in your Clojure project as a task.
-Bodacious!
+leiningen architecture includes the `leiningen.core` namespace, which
+handles task resolution and application, and plain ol' `leiningen`,
+which appears to be mostly a collection of default tasks. Leiningen
+uses this same mechanism to execute any function in your Clojure
+project as a task. Bodacious!
 
 Anyway, once the `run` task has been resolved, it is executed and the
 result is the second process we saw in the `ps | grep lein` output we
@@ -400,11 +405,11 @@ You can see how the end result is that
 argument `"1"`. One interesting thing to note about this approach is
 that the `:gen-class` directive isn't actually needed. In the manual
 build at the beginning of this article, we needed `:gen-class` because
-we were specifying `learn-a-language.important-phrases` as the entry
-point. When we use `lein run`, the entry point is `clojure.main`. Once
-Clojure is loaded, we use it to evaluate some code which loads the
-`learn-a-language.important-phrases` namespace and then calls the
-`-main` function.
+we were specifying `learn-a-language.important-phrases` as the JVM
+entry point. When we use `lein run`, the entry point is
+`clojure.main`. Once Clojure is loaded, we use it to evaluate some
+code which loads the `learn-a-language.important-phrases` namespace
+and then calls the `-main` function.
 
 ## Wrapping Things Up
 
@@ -418,7 +423,7 @@ Here's everything we covered:
 **Building and running a Clojure program manually:**
 
 * Load the Clojure repl
-* Load your Clojure code (make sure it includes `:gen-class`
+* Load your Clojure code (make sure it includes `:gen-class`)
 * Compile your Clojure code. By default code gets put in `classes`
   directory
 * Run your code, making sure the classpath includes the `classes`
@@ -443,17 +448,17 @@ java -cp classes:clojure.jar learn_a_language/important_phrases 0
         * Setup project config with `project.clj`
         * Resolve the task to be run
     * Run the task
-        * automagically set the classpath
-        * set `clojure.main` as the entry point
-        * construct some Clojure code to evaluate so that the
-          project's main method gets executed
+        * Automagically set the classpath
+        * Use `clojure.main` as the Java entry point
+        * Construct some Clojure code to evaluate so that the
+          project's main function gets executed
 
 In the next article we'll cover:
 
 * How Leiningen manages dependencies
 * How to distribute a full application
 * How to distribute a library
-* Sparkles
+* Manliness
 
 I hope you enjoyed this article. Please do leave me any feedback - I'm
 always looking for ways to improve my writing!
