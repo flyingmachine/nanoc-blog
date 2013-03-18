@@ -218,10 +218,11 @@ unbefitting an article on Leiningen. And you are absolutely right. To
 avoid your wrath, let's dig into Leiningen's source code so that we
 can understand what's going on with complete clarity.
 
-### Walking Through lein run
+### Walking Through "lein run"
 
 To get an idea of where to start, let's run `lein run 1` again and
-then run `ps | grep lein`:
+then run `ps | grep lein`. The output has been broken up to make more
+sense:
 
 ```
 8420 /usr/bin/java \
@@ -231,8 +232,10 @@ then run `ps | grep lein`:
   -Dmaven.wagon.http.ssl.easy=false \
   -Dleiningen.original.pwd=/Users/daniel/projects/web_sites/make-a-clojure-baby/leiningen/lein-build \
   -Dleiningen.script=/Users/daniel/bin/lein \
-  -classpath :/Users/daniel/.lein/self-installs/leiningen-2.0.0-standalone.jar clojure.main \
-  -m leiningen.core.main run 1 \
+  -classpath :/Users/daniel/.lein/self-installs/leiningen-2.0.0-standalone.jar \
+  clojure.main \
+  -m leiningen.core.main \
+  run 1
 
 8432 /usr/bin/java
   -classpath \
@@ -247,7 +250,89 @@ then run `ps | grep lein`:
   -Dlearn-a-language.version=0.1.0-SNAPSHOT \
   -Dfile.encoding=UTF-8 \
   -Dclojure.debug=false clojure.main \
-  -e (do (try (clojure.core/require (quote learn-a-language.important-phrases)) (catch java.io.FileNotFoundException ___6081__auto__)) (set! *warn-on-reflection* nil) (clojure.core/let [v__6079__auto__ (clojure.core/resolve (quote learn-a-language.important-phrases/-main))] (if (clojure.core/ifn? v__6079__auto__) (v__6079__auto__ "1") (clojure.lang.Reflector/invokeStaticMethod "learn-a-language.important-phrases" "main" (clojure.core/into-array [(clojure.core/into-array java.lang.String (quote ("1")))])))))
+  -e (do \
+      (try \
+       (clojure.core/require 'learn-a-language.important-phrases) \
+       (catch java.io.FileNotFoundException ___6081__auto__)) \
+      (set! *warn-on-reflection* nil) \
+      (clojure.core/let \
+       [v__6079__auto__ \
+        (clojure.core/resolve 'learn-a-language.important-phrases/-main)] \
+       (if \
+        (clojure.core/ifn? v__6079__auto__) \
+        (v__6079__auto__ "1") \
+        (clojure.lang.Reflector/invokeStaticMethod \
+         "learn-a-language.important-phrases" \
+         "main" \
+         (clojure.core/into-array \
+          [(clojure.core/into-array java.lang.String '("1"))])))))
 ```
 
-Hooooooly crap. Somebody buy @technomancy a beer.
+There are two things happening here. When you first run `lein run`,
+then the process with PID 8420 starts. There are a lot of
+configuration variables that we don't necessarily need to care about.
+What's essentially happening is we're saying:
+
+* Start up the JVM with the leiningen standalone jar on the classpath
+* Use `clojure.main` as the Java entry point
+* Pass `-m leiningen.core.main run 1` as arguments to `clojure.main`
+
+That last step is a way of specifying what the *Clojure* entry point
+is, as opposed to the *Java* entry point. Clojure uses it to load the
+`leiningen.core.main` namespace and then execute the `-main` function
+within it. `leiningen.core.main/-main` receives the arguments `run 1`.
+
+We can view Leiningen's `leiningen.core.main/-main` function
+[on github](https://github.com/technomancy/leiningen/blob/master/leiningen-core/src/leiningen/core/main.clj#L275):
+
+```clojure
+(defn -main
+  "Command-line entry point."
+  [& raw-args]
+  (try
+    (user/init)
+    (let [project (project/init-project
+                   (if (.exists (io/file "project.clj"))
+                     (project/read)
+                     (assoc (project/make (:user (user/profiles)))
+                       :eval-in :leiningen :prep-tasks [])))
+          [task-name args] (task-args raw-args project)]
+      (when (:min-lein-version project) (verify-min-version project))
+      (configure-http)
+      (warn-chaining task-name args)
+      (apply-task task-name project args))
+    (catch Exception e
+      (if (or *debug* (not (:exit-code (ex-data e))))
+        (.printStackTrace e)
+        (when-not (:suppress-msg (ex-data e))
+          (println (.getMessage e))))
+      (exit (:exit-code (ex-data e) 1))))
+  (exit 0))
+```
+
+Just as we would suspect from the `ps` output, this is the command
+line entry point for `lein`. I won't cover all of the code above, but
+if you look about 2/3 of the way down you'll see the `apply-task`
+function being called. This calls `resolve-task` which eventually
+resolves to `leiningen.run`, which you can
+[also see on github](https://github.com/technomancy/leiningen/blob/master/src/leiningen/run.clj).
+
+This is pretty cool &mdash; `run` is just another task from
+Leiningen's point of view. Wait... did I just say "cool"? I meant
+*MANLY* and *ARTISTICT* and *SPARKLY*. But yeah, it looks like basic
+leiningen architecture includes `leiningen.core`, which handles task
+resolution and application, and plain ol' `leiningen`, which appears
+to be mostly a collection of default tasks. Leiningen uses this same
+mechanism to execute any function in your Clojure project as a task.
+Bodacious!
+
+Anyway, once the `run` task has been resolved, it is executed and the
+result is the second process we saw in the `ps | grep lein` output we
+saw above, the process with PID 8432. I won't go into how that command
+gets constructed, as you can figure that all out from `leiningen/run`.
+
+So now we know how Leiningen compiles and runs a basic Clojure
+program! Can you feel your mustache growing? Can you feel your
+artistry blooming? Are you feeling just a smidge more sparklier? I
+sure hope so!
+
