@@ -7,9 +7,9 @@
     - if @keywords
       %meta{ "name" => "keywords", "content" => @keywords }
     %title= @item[:title]
-    %link{ :href => "/stylesheets/screen.css?1", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/stylesheets/screen.css?2", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
-      %link{ :href => "/stylesheets/#{stylesheet}.css?1", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+      %link{ :href => "/stylesheets/#{stylesheet}.css?2", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
   %body{ :class => @body_class }

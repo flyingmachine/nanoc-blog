@@ -38,7 +38,7 @@ $border: #999;
 }
 
 @mixin monospace-family {
-  font-family: Bitstream Vera Sans Mono,monospace
+  font-family: monospace;
 }
 
 $base-font-size: 18px;
