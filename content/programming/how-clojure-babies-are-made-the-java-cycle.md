@@ -38,6 +38,9 @@ way easier. Here's an outline of what's to come:
     * Incorporating Clojure automatically
     * Dependency managemenet
 
+(Update: Part 2 of this series is
+[now available](/programming/how-clojure-babies-are-made-lein-run/)!)
+
 ## Java
 
 Java is going to rule the universe. The sooner you accept that, the
