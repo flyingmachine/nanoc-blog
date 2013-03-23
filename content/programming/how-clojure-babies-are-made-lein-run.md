@@ -144,7 +144,7 @@ important_phrases__init.class
 
 (I won't go into into detail about the purposes of the various class files,
 but you can start to learn more about that in
-[clojure's compilation documentation](http://clojure.org/compilation))
+[clojure's compilation documentation](http://clojure.org/compilation).)
 
 After going through the above steps, you might have a question on your
 mind grapes: "Where did the `classes` directory come from?"
