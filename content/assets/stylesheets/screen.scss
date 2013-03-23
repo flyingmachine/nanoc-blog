@@ -147,6 +147,10 @@ strong {
       text-shadow:none;
     }
   }
+
+  li {
+    clear: both;
+  }
   
   .spaced li {
     @include trailer;
