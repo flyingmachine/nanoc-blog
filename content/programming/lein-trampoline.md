@@ -46,10 +46,10 @@ meticulously hand-crafted, artisinal program.
 
 However, like a doting father, the Leiningen process continues to stay
 open for the entire duration of your program's execution. If you have
-a long-running process, like a web server for your creepy Justin
-Bieber fan site, then Leiningen stays open the whole time consuming
-memory that could be put to use in compositing images of the Biebs
-with hearts all over them. 
+a long-running process, like a web server for your Justin Bieber fan
+site, then Leiningen stays open the whole time consuming memory that
+could be put to use in compositing images of the Biebs with hearts all
+over them.
 
 This is where the trampoline comes into play. It allows the Leiningen
 process to exit completely before your project's process starts. Now,
@@ -69,7 +69,8 @@ choose to envision the trampoline process as follows:
    "Hyup!", rockets himself into the sky, his mustaches flapping in
    the wind. He grows smaller and smaller until, with a bright
    sparkle, he disappears entirely.
-5. Your creepy, noisey monkey of a web server starts doing whatever.
+5. Your cymbal-clanging web server starts up, allowing users to
+   profess their undying love for teenage pop stars.
 
 ## How lein trampoline Works
 
