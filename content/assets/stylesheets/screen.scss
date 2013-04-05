@@ -184,6 +184,10 @@ p, ol, ul {
   }
 }
 
+p > code {
+  padding: 0 2px;
+}
+
 .read_more {
   margin-top:-1.5em;
 }
