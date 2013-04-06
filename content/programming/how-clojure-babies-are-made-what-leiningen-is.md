@@ -36,7 +36,7 @@ generations to come.
 ## Programming Language Artifact Ecosystems
 
 In order to become proficient at a language, you need to know much
-more than just its syntax in semantics. You need to familiarize
+more than just its syntax and semantics. You need to familiarize
 yourself with the entire programming language ecosystem, which is
 comprised of everything you need in order to build working software in
 that language. It can be broken down into at least the following
@@ -50,29 +50,63 @@ sub-ecosystems:
 Right now we only care about the artifact ecosystem. For our purposes,
 a programming artifact is a library or executable. Ruby gems, shell
 scripts, Java jars, shared libraries, and "HAL9000.exe" are all
-programming artifacts. We could probably spend all day splitting hairs
-about what is and is not an artifact, but this is my blog and I'm
-going to define the term how I feel, dag nabbit. If the definition is
-unclear then hopefully it will become clear through usage.
+programming artifacts.
 
 An artifact ecosystem is the set of tools and services that allow
 you to do the following with regard to artifacts:
 
 * Retrieve them from repositories
-* Incorporate them in your own program, (possibly) resolving conflicts
+* Incorporate them in your own project, (possibly) resolving conflicts
 * Build them
 * Publish them to repositories
 * Run them
+
+For example, the following tools (and more) are part of the Ruby
+artifact ecosystem:
+
+* _Ruby Gems_ provides a package specification, the means to
+  incorporate gems in your project, and the means to build and publish
+  gems
+* _[rubygems.org](http://rubygems.org)_ is a central repo for gems
+* _Bundler_ provides a layer on top of Ruby Gems, providing dependency
+  resolution and gem retrieval
+* _Jeweler_ is one of many tools for easing the process of creating
+  gemspecs and building gems.
+
+## Leiningen Is a Task Runner with Clojure Tasks Built In
+
+In previous Clojure Baby posts, we've already seen that we can use
+Leiningen to build and run Clojure programs. It turns out that
+Leiningen also handles the remaining tasks - retrieving packages,
+incorporating them in your project, and publishing them.
+
+All of these artifact-related tasks are especially tedious in Clojure
+because of its nature as a hosted language. In Ruby, all artifact
+tools are written in Ruby itself. In Clojure, you have to deal with
+
+Ultimate, Leiningen is a task runner with a built in set of tasks 
+
 
 It goes without saying that developers want to spend as little time as
 possible cajoling their tools to accomplish the above tasks. The
 result is that we end up with a layered set of tools where each layer
 attempts to smooth out the warts of the layer beneath it.
 
-For example, in Ruby, the "gem" program can retrieve gems, build them,
-and publish them. But the process of creating a gem is a pain in the
-booty, hence we have a cornucopia of tools like Jeweler and Hoe. And,
-though we all became overwhelmed with joy it when our Ruby programs
-stopped working because of a dependency conflict, Bundler has sadly
-robbed us of that particular source of endorphins.
+For example, in Ruby, the the Ruby Gems library allows you to
+incorporate Ruby artifacts (gems) into your project. But for years,
+Ruby Gems provided no facility for dependency resolution. Consider the
+following scenario:
 
+* Your project requires gem A which depends on version 1.0 of gem C
+* Your project requires gem B which depends on version 1.1 of gem C
+
+In this situation, plain old Ruby Gems completely freaks out and
+throws an exception. Up until a few years ago, the main tactic that
+rubyists had for dealing with this situation was to lock themselves
+in a closet and sob quietly. Now we have Bundler, a tool which sits on
+top of Ruby Gems and provides sane dependency resolution. QED, the
+tools in our artifact ecosystem are layered.
+
+## Task Runners
+
+The topmost layer of artifact ecosystems is usually a task runner.
