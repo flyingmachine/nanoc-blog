@@ -8,11 +8,10 @@ additional_stylesheets:
   - pygments
 ---
 
-"Wait &ndash; what the hell is Leiningen?" is a question you've
-probably overheard many times in your day-to-day life. You've probably
-even asked it yourself. Up until now we've described specific
-capabilities that Leiningen has and how those capabilities are
-implemented. It can
+"What the hell is Leiningen?" is a question you've probably overheard
+many times in your day-to-day life. You've probably even asked it
+yourself. Up until now we've described specific capabilities that
+Leiningen has and how those capabilities are implemented. It can
 [build and run your app](/programming/how-clojure-babies-are-made-lein-run),
 it [has a trampoline](/programming/lein-run), and so forth.
 
@@ -22,7 +21,7 @@ and say "I see you," like Jake Sully in that Avatar documentary. We'll
 do this by giving an overview of the non-coding related tasks you need
 to accomplish when building software. Next, we'll describe how
 Leiningen helps you accomplish these tasks and compare it to similar
-technology, Ruby.
+tools in Ruby.
 
 This post isn't as nitty-gritty as the previous posts in the Clojure
 Babies series, but it will help lay the groundwork for the upcoming
