@@ -1,11 +1,9 @@
 ---
 title: "How Clojure Babies are Made: What Leiningen Is"
-created_at: Apr 5 9:23:00 -0500 2013
+created_at: Apr 7 9:23:00 -0500 2013
 kind: article
 categories: programming, clojure
 summary: The Clojure packaging ecosystem
-additional_stylesheets:
-  - pygments
 ---
 
 "What the hell is Leiningen?" is a question you've probably overheard
@@ -24,7 +22,7 @@ Leiningen helps you accomplish these tasks and compare it to similar
 tools in Ruby.
 
 This post isn't as nitty-gritty as the previous posts in the Clojure
-Babies series, but it will help lay the groundwork for the upcoming
+Babies series, but it will help lay the groundwork for an upcoming
 post on packaging. Additionally, I hope it will clarify what a
 programming language artifact ecosystem is. This concept is often
 overlooked when teaching a programming language, and when it _is_
@@ -73,6 +71,9 @@ more) are part of the Ruby artifact ecosystem:
 * _Jeweler_ is one of many tools for easing the process of creating
   gemspecs and building gems.
 
+Other languages have their own tools. Java has Maven, PHP has Pear or
+whatever. Artifact management is a common need across languages.
+
 In previous Clojure Baby posts, we've seen that we can use Leiningen
 to build and run Clojure programs. It turns out that Leiningen also
 handles the remaining tasks - retrieving packages, incorporating them
@@ -80,33 +81,49 @@ in your project, and publishing them. It's truly the Swiss Army
 Bazooka (I'm going to keep repeating that phrase until it catches on)
 of the Clojure artifact ecosystem.
 
-Leiningen is able to handle so many responsibilities because it is, at
-heart, a task runner. It just happens to come with an
-[excellent set of built-in tasks]((https://github.com/technomancy/leiningen/tree/master/src/leiningen))
-for handling Clojure artifacts.
+But why is it that in Ruby you need an entire constellation of tools,
+while in Clojure you only need one?
 
 ## Leiningen Is a Task Runner with Clojure Tasks Built In
 
-Artifact-related tasks are especially cumbersome in Clojure because of
-its nature as a hosted language. In order to really understand the
-Clojure artifact ecosystem, you have to learn about Java, the JVM, and
-the way Java handles artifacts. Additionally, it seems like handling
-this stuff wih Java tools like Maven and Ant is kind of a pain in the
-butt so that even if you were doing pure Java development you'd be
-pretty sad.
+Leiningen is able to handle so many responsibilities because it is, at
+heart, a task runner. It just happens to come with an
+[excellent set of built-in tasks](https://github.com/technomancy/leiningen/tree/master/src/leiningen)
+for handling Clojure artifacts. (Incidentally, this is probably where
+Leiningen's name came from. "Leiningen Versus the Ants" is a short
+story where the protagonist fights ants. Ant is a Java build tool that
+evidently is unpleasant to use for Clojure builds.) By comparison,
+Ruby's Rake is also a task runner used by many of Ruby's artifact
+tools, but Rake provides no built-in tasks for working with Ruby
+artifacts.
 
-By comparison, all Ruby artifact tools are written in Ruby itself. It
-is still a chore to become familiar with the ecosystem, but at least
-you're not required to learn a second language.
+"Task runner" is a little bit ambiguous, so let's break it down.
+Ultimately, all Leiningen tasks are just Clojure functions. However,
+in [previous posts](/programming/how-clojure-babies-are-made-lein-run)
+we've seen how fun it is to try and run Clojure functions from the
+command line. In case you need a short refresher: it's not fun at all!
 
-Leiningen's nature as a task runner gives it the flexibility to glue
-together existing pieces of the Clojure/Java ecosystem in a pleasant,
-cohesive way.
+Leiningen allows the Clojure party to remain fun by serving as an
+adapter between the CLI and Clojure. It takes care of the plumbing
+required for you to run a Clojure function. Whether the function is
+provided by your project, by Leiningen's built-in tasks, or by a
+[Leiningen plugin](https://github.com/technomancy/leiningen/blob/master/doc/PLUGINS.md),
+Leiningen does everything necessary to get the function to run. In a
+way, Leiningen's like an attentive butler who quietly and competently
+takes care of all your chores so that you can focus on your true
+passions, like knitting sweaters for gerbils or whatever.
 
-The only "drawback" to this approach is that sometimes you have no
-clue as to what Leiningen is doing. It's difficult to untangle
-Leiningen from Java and Clojure. But that's where these articles come
-in, right?
+This manner of executing code was foreign to me when I first came to
+Clojure. At that time I had mostly coded in Ruby and JavaScript, and I
+had a decent amount of experience in Objective C. Those languages
+represent two different paradigms of code execution.
+
+Ruby and Javascript, being scripting languages, don't require
+compilation and execute statements as they're encountered. Objective C
+requires compilation and always starts by executing a `main` method.
+With Leiningen, Clojure has achieved an amalgamation of the two
+paradigms by allowing you to easily run arbitrary functions with a
+compiled language.
 
 ## The End
 
@@ -121,3 +138,9 @@ and incorporates them in your project.
 
 Goodbye for now!
 
+## Shout Outs
+
+Thanks to [Pat Shaughnessy](http://patshaughnessy.net/) and
+[technomancy](http://technomancy.us/) for reviewing this article.
+technomancy provided the line "Leiningen is an adapter between the CLI
+and Clojure", which really helped!
