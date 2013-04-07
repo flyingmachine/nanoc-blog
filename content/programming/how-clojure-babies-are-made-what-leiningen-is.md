@@ -3,7 +3,7 @@ title: "How Clojure Babies are Made: What Leiningen Is"
 created_at: Apr 7 9:23:00 -0500 2013
 kind: article
 categories: programming, clojure
-summary: The Clojure packaging ecosystem
+summary: "It's time to take a step back and get a high-level understanding of what Leiningen is. It's time to stare deeply into Leiningen's eyes and say \"I see you,\" like Jake Sully in that Avatar documentary."
 ---
 
 "What the hell is Leiningen?" is a question you've probably overheard
