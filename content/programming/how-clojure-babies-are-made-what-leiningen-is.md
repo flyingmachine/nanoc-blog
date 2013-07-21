@@ -132,7 +132,7 @@ is. The idea that Leiningen is a task runner with a powerful set of
 built-in tasks designed to aid Clojure artifact management should help
 you organize your disparate chunks of Leiningen knowledge.
 
-In the next article, we'll add another chunk of Leiningen khnowledge
+In the next article, we'll add another chunk of Leiningen knowledge
 by examining the way Leiningen retrieves artifacts from repositories
 and incorporates them in your project.
 
