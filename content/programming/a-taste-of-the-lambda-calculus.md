@@ -173,10 +173,10 @@ Let's see an example:
 ;; Apply the self-application function to the identity function
 (λs.(s s) λx.x)
 
-;; Perform replacement
+;; Perform replacement - results in an application
 (λx.x λx.x)
 
-;; Results in an application - perform another replacement
+;; Perform another replacement
 λx.x
 ```
 
@@ -250,7 +250,7 @@ def self_apply = λs.(s s)
 def apply = λfunc.λarg.(func arg)
 ```
 
-Now wherever we see <name>, we can mentally substitute <function>.
+Now wherever we see `<name>`, we can mentally substitute `<function>`.
 Examples:
 
 ```
@@ -259,7 +259,7 @@ Examples:
 ((apply idenity) self_apply) => self_apply
 ```
 
-Make sense? Excellent! Now we can break your brain with greater
+Make sense? Excellent! This will let us break your brain with greater
 efficiency. Now pay attention, because things are about to get super
 flippin' fantastic.
 
@@ -274,8 +274,8 @@ or the second of two arguments. We'll look at them all together first
 and then dig in to see how they work together.
 
 ```
-def make_pair = λfirst.λsecond.λfunc.((func first) second)
-def select_first = λfirst.λsecond.first
+def make_pair     = λfirst.λsecond.λfunc.((func first) second)
+def select_first  = λfirst.λsecond.first
 def select_second = λfirst.λsecond.second
 ```
 
