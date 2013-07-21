@@ -30,7 +30,7 @@ The λ calculus is one of the foundations of computer science. It's
 perhaps most famous for serving as the basis of Lisp, invented (or
 discovered, if you prefer to think of Lisp as being on par with the
 theory of gravity or the theory of evolution) by
-[John McCarthy](http://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist))
+[John McCarthy](http://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist\))
 in 1958.
 
 Indeed, by examining the λ calculus, you can see where Lisp derives
@@ -250,13 +250,24 @@ def self_apply = λs.(s s)
 def apply = λfunc.λarg.(func arg)
 ```
 
-Now wherever we see `<name>`, we can mentally substitute `<function>`.
+Now wherever we see `<name>`, we can substitute `<function>`.
 Examples:
 
 ```
-(identity identity) => identity
-(self_apply identity) => identity
-((apply idenity) self_apply) => self_apply
+(identity identity) =>
+(λx.x identity) =>
+identity
+
+(self_apply identity) =>
+(λs.(s s) identity) =>
+(identity identity) =>
+identity
+
+((apply idenity) self_apply) =>
+((λfunc.λarg.(func arg) identity) self_apply) =>
+(λarg.(identity arg) self_apply) =>
+(identity self_apply) =>
+identity
 ```
 
 Make sense? Excellent! This will let us break your brain with greater
