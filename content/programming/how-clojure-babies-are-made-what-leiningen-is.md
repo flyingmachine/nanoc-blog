@@ -116,7 +116,7 @@ passions, like knitting sweaters for gerbils or whatever.
 This manner of executing code was foreign to me when I first came to
 Clojure. At that time I had mostly coded in Ruby and JavaScript, and I
 had a decent amount of experience in Objective C. Those languages
-represent two different paradigms of code execution.
+employ two different paradigms of code execution.
 
 Ruby and Javascript, being scripting languages, don't require
 compilation and execute statements as they're encountered. Objective C
