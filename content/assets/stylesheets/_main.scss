@@ -189,6 +189,7 @@ q {
 pre, code, tt {
   @extend .mono; }
 
+.code.pygments  { background: #f3f8fc; }
 /* Block -------------------------------------------------------------- */
 
 p {

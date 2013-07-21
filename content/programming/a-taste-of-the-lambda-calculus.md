@@ -3,14 +3,18 @@ title: A Taste of the λ Calculus
 created_at: Sat Jul 20 2013 19:23:00 -0500
 kind: article
 categories: programming
-summary: "I've been having a brain-bending good time reading An Introduction to Functional Programming Through Lambda Calculus. Below, you'll find surprising examples of how you can representconditions and boolean operations *purely with functions* in λ calculus. I hope they tickle your mathematical fancy!"
+summary: "I've been having a brain-bending good time reading An Introduction to Functional Programming Through Lambda Calculus. Using examples from that book, this article will walk you through the basics of λ calculus. We'll then look at the surprising, counterintuitive way that the λ calculus lets us represent conditional expressions and boolean operations &mdash; all with functions as the only values. It was a very different way of thinking for me, and exciting to learn. I hope it's exciting for you, too!"
 ---
 
 I've been having a brain-bending good time reading
 [An Introduction to Functional Programming Through Lambda Calculus](http://www.amazon.com/gp/product/B00CWR4USM/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00CWR4USM&linkCode=as2&tag=aflyingmachin-20).
-Below, you'll find surprising examples of how you can represent
-conditions and boolean operations *purely with functions* in λ
-calculus. I hope they tickle your mathematical fancy!
+Using examples from that book, this article will walk you through the
+basics of λ calculus. We'll then look at the surprising,
+counterintuitive way that the λ calculus lets us represent conditional
+expressions and boolean operations &mdash; all with functions as the only
+values. It was a very different way of thinking for me, and exciting
+to learn. I hope it's exciting for you, too!
+
 
 ## A Bit of History
 
@@ -193,7 +197,7 @@ Now let's make things interesting:
 How about that, it turns out that it's possible for evaluation to
 never terminate. Fun!
 
-## Function application function
+## The Function Application Function
 
 Check this out:
 
@@ -263,8 +267,7 @@ flippin' fantastic.
 
 In the λ calculus, functions by definition have one and only one
 parameter, the *name*. This might seem limiting, but it turns out that
-you can build functions which essentially allow you to work on
-multiple arguments.
+you can build functions which allow you to work on multiple arguments.
 
 The following functions together allow you to select either the first
 or the second of two arguments. We'll look at them all together first
@@ -295,12 +298,11 @@ Let's see how this works with `select_first`:
 ;; Perform the first function application, replacing "first" with "identity".
 ;; This returns another function, which we'll apply to a second argument.
 ;; Notice that the body of the resulting function is "identity", and
-;; the name "second" doesn't appear at all
+;; the name "second" doesn't appear in the body at all
 (λsecond.identity apply)
 
 ;; Apply function. Since "second" doesn't appear in the function body,
 ;; it disappears into the ether.
-   
 identity
 ```
 
@@ -333,7 +335,7 @@ Let's actually create a pair:
 ;; Perform first function application, replacing "first" with "identity"
 (λsecond.λfunc.((func identity) second) apply)
 
-;; Perform remaining function application, replacign "second" with "apply"
+;; Perform remaining function application, replacing "second" with "apply"
 λfunc.((func identity) apply)
 ```
 
@@ -358,11 +360,12 @@ returns a function with takes a `second` argument. The result is a
 function which you can apply to either `select_first` or
 `select_second` to get the argument you want.
 
-This is super freaking cool! A pair is a function which you apply to a
-selection function. Starting with just four basic constructs &ndash;
-names, functions, applications, expressions &ndash; and five simple
-rules for performing function application, we've been able to
-construct pairs of arguments and select between them.
+This is super freaking cool! A pair is a function which has "captured"
+two arguments and which you then apply to a selection function.
+Starting with just four basic constructs &ndash; names, functions,
+applications, expressions &ndash; and five simple rules for performing
+function application, we've been able to construct pairs of arguments
+and select between them.
 
 And things are about to get even more fun! We're now ready to see how
 we can create conditional expressions and boolean operations purely
