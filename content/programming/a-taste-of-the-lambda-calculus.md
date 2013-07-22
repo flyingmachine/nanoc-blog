@@ -231,14 +231,16 @@ Here's the whole application:
 λs.(s s)
 ```
 
-Is your head hurting yet? I sure hope so! We're starting to get a hint
-of the cool things you can do with λ calculus. It only gets cooler
-from here!
+Is your head hurting yet? I sure hope so! That's your brain's way of
+letting you know that it's learning!
 
-## Interlude: I Ain't Got Time For These Parentheses!
+We're starting to get a hint of the cool things you can do with λ
+calculus. It only gets cooler from here!
 
-Before this post gets overwhelmed by parentheses, let's introduce some
-syntax:
+## Interlude: Give the Functions Names, Already!
+
+Before this post gets overwhelmed with "λx.x" and "λs.(s s)" and such,
+let's introduce some syntax:
 
 ```
 ;; Name functions
