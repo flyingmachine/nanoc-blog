@@ -139,6 +139,9 @@ make it clearer by looking at a few examples:
 λb.λc.((foo b) c)
 ```
 
+For a more thorough explanation of what's going on here, please see
+[Jon Sterling's comment](http://www.flyingmachinestudios.com/programming/a-taste-of-the-lambda-calculus/#comment-971908704) below!
+
 Now that we understand how to apply functions, let's explore a few
 more basic functions.
 
