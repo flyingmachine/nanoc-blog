@@ -126,33 +126,17 @@ foo
 
 Makes sense, right? I'm sure that you can intuitively understand
 what's going on in function application. Nevertheless, I think we can
-break it down so that it's crystal clear.
+make it clearer by looking at a few examples:
 
 ```
-1. Write the function application expression:
-(λx.x foo)
+(λs.(s s) foo) =>
+(foo foo)
 
-2. In the function body, replace all instances of the function name
-with the argument expression:
-(λfoo.foo foo)
+(λx.λy.x foo)
+λy.foo
 
-3. Remove the argument expression
-(λfoo.foo)
-
-4. Remove the parentheses
-λfoo.foo
-
-5. Remove all characters up to and including the period for the final result:
-foo
-```
-
-So now we have a basic, step-by-step process for performing the symbol
-manipulation necessary to apply a function. Of course, when you're
-actually doing function application you only need to write something
-like the following and everyone will know what you're talking about:
-
-```
-(λx.x foo) => foo
+(λa.λb.λc.((a b) c) foo)
+λb.λc.((foo b) c)
 ```
 
 Now that we understand how to apply functions, let's explore a few
@@ -269,7 +253,7 @@ identity
 ((λfunc.λarg.(func arg) identity) self_apply) =>
 (λarg.(identity arg) self_apply) =>
 (identity self_apply) =>
-identity
+self_apply
 ```
 
 Make sense? Excellent! This will let us break your brain with greater
