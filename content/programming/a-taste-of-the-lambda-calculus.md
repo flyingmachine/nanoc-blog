@@ -443,7 +443,7 @@ expressions above:
 (((cond false) true) true) =>
 false
 (((cond false) true) false) =>
-false
+true
 
 ;; So in general, we can say:
 def not = λbool.(((cond false) true) bool)
