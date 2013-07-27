@@ -40,6 +40,9 @@ each component and how everything works together. We'll cover:
 
 All source is available
 [on github](https://github.com/flyingmachine/gratefulplace2/tree/v1.0.0).
+This article isn't meant to be a tutorial. However, if you have any
+questions about how things work or about how to work on the codebase,
+please leave a comment and I'll do my best to clarify.
 
 
 ## About the Site
