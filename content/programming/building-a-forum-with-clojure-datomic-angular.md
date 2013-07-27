@@ -340,7 +340,7 @@ and those might prove helpful to someone else. I also ended up
 writing a crazy-ass macro for creating functions with default
 positional arguments:
 
-```
+```clojure
 (defmacro defnpd
   ;; defn with default positional arguments
   [name args & body]
