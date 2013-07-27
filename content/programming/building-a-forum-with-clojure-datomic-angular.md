@@ -689,7 +689,7 @@ $scope.peekAtAuthor = (author)->
 
 The base view has the following:
 
-```
+```html
 <div id="more">
   <nav class="secondary">
     <ng-include src="support.secondaryNav.include()"></ng-include>
@@ -700,7 +700,7 @@ The base view has the following:
 
 And the user peek looks like this:
 
-```
+```html
 <div class="peek">
   <div class="user">
     <h3 class="username">{{support.peek.data.username}}</h3>
@@ -779,7 +779,6 @@ deploys it with Ansible:
 ```bash
 # build.sh
 #!/bin/bash
-
 cd html-app
 grunt build
 rm -Rf ../server/resources/html-app
@@ -791,7 +790,6 @@ cp  server/target/gratefulplace-0.1.0-SNAPSHOT-standalone.jar infrastructure/ans
 
 # deploy.sh
 #!/bin/bash
-
 die () {
   echo >&2 "$@"
   exit 1
