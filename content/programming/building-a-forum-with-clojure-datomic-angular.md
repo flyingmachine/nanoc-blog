@@ -280,19 +280,6 @@ goose.
                (= request-method :post))
       (if-valid
        params (:create validations/user) errors
-       (cemerick.friend.workflows/make-auth
-        (mapify-tx-result (ts/create-user params) record)
-        {:cemerick.friend/redirect-on-auth? false})
-       (invalid errors)))))
-       
-;; The controller function for the compojure route
-(defn attempt-registration
-  [req]
-  (let [{:keys [uri request-method params session]} req]
-    (when (and (= uri "/users")
-               (= request-method :post))
-      (if-valid
-       params (:create validations/user) errors
        ;; [5] Here's where we return the authentication map, which
        ;; Friend appends to the request map, sending the result to the
        ;; next middleware
@@ -300,6 +287,7 @@ goose.
         (mapify-tx-result (ts/create-user params) record)
         {:cemerick.friend/redirect-on-auth? false})
        (invalid errors)))))
+       
 
 ;; [7] The compojure route, https://github.com/flyingmachine/gratefulplace2/blob/v1.0.0/server/src/gratefulplace/middleware/routes.clj#L67
 (authroute POST "/users" users/registration-success-response)
