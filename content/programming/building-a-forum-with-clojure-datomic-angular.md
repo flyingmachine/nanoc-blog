@@ -184,10 +184,10 @@ brain can hold everything together. After that you pray that you won't
 need to change anything because, Jesus, that trip can take a lot out
 of you. I don't know, maybe that's why peyote was invented.
 
-Anyway, that's a testament to my own need to learn more (and perhaps a
-need for slightly clearer documentation) and not to the quality or
-value of the library itself. Everything hangs together, working with
-Ring in a stateless way, which I really appreciate.
+Anyway, that's a testament to my own need to learn (and perhaps a need
+for slightly clearer documentation) and not to the quality or value of
+the library itself. Everything hangs together, working with Ring in a
+stateless way, which I really appreciate.
 
 OK enough of my blathering. We want code! The actual tricky bits were:
 
@@ -207,14 +207,14 @@ programming, throwing chicken bones and listening to the wind in hopes
 that everything turns out OK. Things are working and I'm not going to
 mess with them.
 
-In order to create the authenticated session, there are a lot of
-things going on. In order, they are:
+Creating the authenticated session is a different story. There are a
+lot of things going on. In order, they are:
 
 1. User submits registration form
-2. Request goes through a bunch of Ring middleware to wrap the
+2. Request goes through a bunch of Ring middlewares that wrap the
 request, adding keyword params and handling json and whatnot
 3. Request hits the middleware created by Friend
-4. The request "hits" `users/attempt-registration` Friend workflow
+4. The request "hits" the `users/attempt-registration` Friend workflow
 5. If the registration is valid, return a friend authentication map.
 Friend "knows" that this is not meant to be a response sent to the
 browser, so the authentication map gets added to the Ring request map
