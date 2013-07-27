@@ -831,7 +831,7 @@ for any project which you'll be toiling over for months on end!
 
 Behold, my very first keybinding! This starts the Jetty server:
 
-```elisp
+```common-lisp
 (defun nrepl-start-http-server ()
   (interactive)
   (nrepl-load-current-buffer)
