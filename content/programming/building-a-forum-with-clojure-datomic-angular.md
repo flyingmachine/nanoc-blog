@@ -181,10 +181,10 @@ brain can hold everything together. After that you pray that you won't
 need to change anything because, Jesus, that trip can take a lot out
 of you. I don't know, maybe that's why peyote was invented.
 
-Anyway, that's a testament to my own need to learn more (and perhaps
-slightly clearer documentation) and not to the quality or value of the
-library itself. Everything hangs together, working with Ring in a
-stateless way, which I really appreciate.
+Anyway, that's a testament to my own need to learn more (and perhaps a
+need for slightly clearer documentation) and not to the quality or
+value of the library itself. Everything hangs together, working with
+Ring in a stateless way, which I really appreciate.
 
 OK enough of my blathering. We want code! The actual tricky bits were:
 
