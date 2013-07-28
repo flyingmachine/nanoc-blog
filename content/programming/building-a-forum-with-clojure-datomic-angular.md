@@ -1,6 +1,6 @@
 ---
 title: Building a Forum with Clojure, Datomic, Angular, and Ansible
-created_at: Sat Jul 20 2013 19:23:00 -0500
+created_at: Sat Jul 27 2013 19:23:00 -0500
 kind: article
 categories: programming
 summary: "After many long months I've finished re-writing <a href='http://gratefulplace.com'>Grateful Place</a>. The site now uses Clojure as an API server, with Datomic for the database, Angular for the front end, and Vagrant and Ansible for provisioning and deployment. We'll dive into the code base, covering the most important parts of each component and how everything works together."
@@ -934,4 +934,4 @@ bookmark for `server.clj`
 
 That's it! I hope you've found this article useful. I'm going to go
 have a life for a little while now. Haha, just kidding! I'm going to
-spend the next two hours hitting "refresh" on my reddit submission!
+spend the next two hours hitting refresh on my reddit submission!
