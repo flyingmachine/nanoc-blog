@@ -798,6 +798,11 @@ server with Java and Datomic and deploy my app to it. You can check
 out my setup in `infrastructure/ansible`. If you're using Datomic free
 please do use it as a starting point.
 
+`provision.yml` has just about everything you need to get a server up
+and running, with the exception of uploading SSH keys. `deploy.yml` is
+used by the janky bash script below to upload an uberjar, run
+migrations, and restart the server.
+
 ### Building and Deploying with a Janky Bash Script and Ansible
 
 Here's my janky Bash scripts which first build the app and then
