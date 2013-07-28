@@ -897,7 +897,7 @@ tabs:
   - shell: 
 ```
 
-I also have this nice little bash aliases:
+I also have these nice little bash aliases:
 
 ```bash
 alias "tmk"="tmux kill-session -t"
@@ -919,4 +919,5 @@ bookmark for `server.clj`
 
 ## The End
 
-That's it! I hope you've found this article useful.
+That's it! I hope you've found this article useful. I'm going to go
+have a life for a little while now.
