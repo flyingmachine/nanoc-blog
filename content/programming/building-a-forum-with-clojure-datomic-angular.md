@@ -511,20 +511,23 @@ I wrote a number of wrapper functions in the misleadingly-name
   []
   (d/db (conn)))
 
-;; '[:find ?c :where [?c :topic/title]]
+;; Don't make me pass in the value of the database that gets boring
 (def q
   #(d/q % (db)))
 
+;; I'll give you an id, you give me a datomic entity or nil
 (defn ent
   [id]
   (if-let [exists (ffirst (d/q '[:find ?eid :in $ ?eid :where [?eid]] (db) id))]
     (d/entity (db) exists)
     nil))
 
+;; Is this an entity?! Tell me!
 (defmulti ent? class)
 (defmethod ent? datomic.query.EntityMap [x] x)
 (defmethod ent? :default [x] false)
 
+;; I'll give you some conditions, you'll give me an entity id
 (defn eid
   [& conditions]
   (let [conditions (map #(concat ['?c] %) conditions)]
@@ -533,11 +536,13 @@ I wrote a number of wrapper functions in the misleadingly-name
         q
         ffirst)))
 
+;; I want one thing please
 (defn one
   [& conditions]
   (if-let [id (apply eid conditions)]
     (ent id)))
 
+;; I want all the things please
 (defn all
   [common-attribute & conditions]
   (let [conditions (concat [['?c common-attribute]]
@@ -545,6 +550,7 @@ I wrote a number of wrapper functions in the misleadingly-name
     (map #(ent (first %)) (q {:find ['?c]
                               :where conditions}))))
 
+;; Passing the connection all the time is boring
 (def t
   #(d/transact (conn) %))
 
@@ -552,6 +558,7 @@ I wrote a number of wrapper functions in the misleadingly-name
   [tempids tempid]
   (d/resolve-tempid (db) tempids tempid))
 
+;; I make a lot of mistakes so please make it easy for me to retract them
 (defn retract-entity
   [eid]
   (t [[:db.fn/retractEntity eid]]))
@@ -926,4 +933,5 @@ bookmark for `server.clj`
 ## The End
 
 That's it! I hope you've found this article useful. I'm going to go
-have a life for a little while now.
+have a life for a little while now. Haha, just kidding! I'm going to
+spend the next two hours hitting "refresh" on my reddit submission!
