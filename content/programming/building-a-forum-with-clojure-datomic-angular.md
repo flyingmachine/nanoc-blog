@@ -56,10 +56,10 @@ consciously help lift each other up. One way to do this is by
 expressing gratitude on a daily basis, which science says increases
 happiness.
 
-Some of the features include watching threads, liking posts, and
-creating a basic profile. I have a lot more planned for the future,
-like tags and "summary" views, and I think the combination of Clojure +
-Angular will make it fun and easy for me to continue development :)
+Some of the features include watching forum threads, liking posts, and
+creating a basic profile. I have a lot more planned, like tags and
+"summary" views, and I think the combination of Clojure and Angular
+will make it fun and easy for me to continue development :)
 
 If you want to have a look without diving head-first into hippified
 waters (what, do you have something against happiness?), you can
