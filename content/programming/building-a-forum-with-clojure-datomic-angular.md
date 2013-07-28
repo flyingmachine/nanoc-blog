@@ -456,6 +456,7 @@ run database-related tasks. Here's what I came up with:
   [cmd]
   (cond 
    (= cmd "server") (server/-main)
+   ;; I know there's repetition here please don't hate me :'(
    (= cmd "db/reload") (do (println (db/reload)) (System/exit 0))
    (= cmd "db/migrate") (do (println (db/migrate)) (System/exit 0))))
 ```
@@ -487,8 +488,8 @@ researching Datomic (see
 and using it has afforded the same simple, lightweight experience as
 using Clojure.
 
-You won't find any mind-blowing code here &nbsp; I'm still trying to
-learn how to use Datomic well &nbsp; but hopefully you'll find it
+You won't find any mind-blowing code here &ndash; I'm still trying to
+learn how to use Datomic well &ndash; but hopefully you'll find it
 useful or interesting.
 
 ### The Poopy Code I Wrote to Make Things "Easier"
