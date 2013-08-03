@@ -82,10 +82,18 @@ each day by thinking of three things that I'm grateful for.
 This practice has been instrumental in helping me overcome my
 compulsion for more money. The craving has diminished as, daily, I
 take stock of my life and recognize the good things in it. I let
-myself fully experience the truth that my life is full of cause for
+myself fully experience the truth that my life is full of reasons for
 wonder and joy.
 
 In a way, I think of my craving as my mom internalized. Always looking
 out for me, always vigilant about my well being. Day by day I tell
 her, "It's OK. You don't have to work so hard. Things are OK. You can
 relax." And day by day, she does.
+
+In the mean time, I have flourished. I've done the creative work and
+learning that I find meaningful, taking up the violin, throwing myself
+into improv comedy, and learning more about programming. I've moved
+much closer to my family and have gotten to see them more in the past
+eight months than in the past eight years. And this September, I will
+be marrying the love of my life. Life is good, and I am grateful for
+it.
