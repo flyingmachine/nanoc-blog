@@ -40,7 +40,7 @@ wrong:
 
 Below, we'll contrast the OOP viewpoint on each of these topics with
 the Functional Programming viewpoint. But first, we'll compare the
-models of reality which underly OOP and FP. It's this underlying
+models of reality which underlie OOP and FP. It's this underlying
 difference which gives rise to their different approach to the topics
 above.
 
@@ -58,7 +58,7 @@ possible terms:
 * What is it like?
 
 Rich Hickey explains the difference between OOP and FP metaphysics by
-contrasting their definitions of what a river is. 
+contrasting their explanations of what a river is. 
 
 ### Object Oriented Programming
 
@@ -79,12 +79,12 @@ you can still interact with a stable interface and all will work as it
 should. An object can change, but to all observers it is still
 considered the same object.
 
-This conforms to our intuitive sense of the world. The positions of
-the electrons of the coffee in my mug matters naught; the coffee still
+This conforms to our intuitive sense of the world. The position of the
+electrons of the coffee in my mug matters naught; the coffee still
 interacts with my taste buds in the way I expect.
 
 Finally, in OOP, objects do things. They act on each other. Again, this
-conforms to our intuitive sense of the world where change is the
+conforms to our intuitive sense of the world: change is the
 result of objects acting upon each other. A Person object pushes on a
 Door object and enters a House object.
 
@@ -112,7 +112,7 @@ can't _do_ anything. Change is not the result of one object acting on
 another; change is the result of a process being applied to an
 unchangeable atom. To say that something has changed is to say, "Oh,
 there's a new atom in this stream of atoms." It's like saying that
-HEAD points to a new commit in your git repo.
+HEAD points to a new commit in your Git repo.
 
 OK! Enough with metaphysics. Now let's describe the more immediately
 useful topics, starting with Value.
@@ -131,7 +131,7 @@ class construct within the class.
 This is one of the main causes of headaches when doing OOP. How many
 times have you pulled your hair out trying to figure out how an
 object's attribute got changed? The fact is, in OO languages there is
-no built in mechanism to ensure that the object you're dealing with is
+no built-in mechanism to ensure that the object you're dealing with is
 stable.
 
 This is the big reason why concurrent programming is so difficult.
@@ -154,7 +154,7 @@ In the video, Mr. Hickey says:
 
 In FP, identity is essentially a name we give to a sequence of related
 atoms. "River" refers to the sequence R1, R2, R3, etc, produced by the
-river process. This is directly analogous to HEAD in git - it's just a
+river process. This is directly analogous to HEAD in Git - it's just a
 name which is used to refer to actual values. In OO, there really
 isn't such a distinction.
 
