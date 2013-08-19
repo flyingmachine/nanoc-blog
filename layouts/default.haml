@@ -65,6 +65,16 @@
               })();
       #nav
         .articles
+          %h2 Popular Blog Posts
+          %ol
+            %li
+              %a.title{:href => "/programming/the-unofficial-guide-to-rich-hickeys-brain/"}The Unofficial Guide to Rich Hickey's Brain
+            %li
+              %a.title{:href => "/programming/datomic-for-five-year-olds/"}Datomic for Five-Year-Olds
+            %li
+              %a.title{:href => "/programming/how-clojure-babies-are-made-lein-run/"}How Clojure Babies Are Made: Understanding lein run
+
+          
           %h2 Recent Blog Posts
           %ol
             - sorted_articles[0..7].each do |article|
