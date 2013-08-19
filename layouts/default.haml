@@ -39,9 +39,18 @@
           - if article?(@item)
             %h1= @item[:title]
             .date= format_date(@item[:created_at])
+
+            %p
+              %a{:href => "https://twitter.com/share", :class => "twitter-share-button", "data-via" => "nonrecursive"}Tweet
+              
           = find_and_preserve yield
           
           - if article?(@item)
+            %p
+              %a{:href => "https://twitter.com/share", :class => "twitter-share-button", "data-via" => "nonrecursive"}Tweet
+            :javascript
+              !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+              
             %h2 Comments
             #disqus_thread
             :javascript
@@ -106,3 +115,4 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+      
