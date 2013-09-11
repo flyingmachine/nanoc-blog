@@ -1,6 +1,6 @@
 ---
 title: Stepping Off the Happiness Treadmill
-created_at: Tue Oct 16 20:02:00 -0500 2012
+created_at:  Sep 11 14:02:00 -0500 2012
 kind: article
 summary: Stepping Off the Happiness Treadmill
 draft: true
@@ -94,6 +94,6 @@ In the mean time, I have flourished. I've done the creative work and
 learning that I find meaningful, taking up the violin, throwing myself
 into improv comedy, and learning more about programming. I've moved
 much closer to my family and have gotten to see them more in the past
-eight months than in the past eight years. And this September, I will
+eight months than in the past eight years. And in a few weeks I will
 be marrying the love of my life. Life is good, and I am grateful for
 it.
