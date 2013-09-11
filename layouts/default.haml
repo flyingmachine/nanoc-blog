@@ -39,9 +39,18 @@
           - if article?(@item)
             %h1= @item[:title]
             .date= format_date(@item[:created_at])
+
+            %p
+              %a{:href => "https://twitter.com/share", :class => "twitter-share-button", "data-via" => "nonrecursive"}Tweet
+              
           = find_and_preserve yield
           
           - if article?(@item)
+            %p
+              %a{:href => "https://twitter.com/share", :class => "twitter-share-button", "data-via" => "nonrecursive"}Tweet
+            :javascript
+              !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+              
             %h2 Comments
             #disqus_thread
             :javascript
@@ -56,6 +65,16 @@
               })();
       #nav
         .articles
+          %h2 Popular Blog Posts
+          %ol
+            %li
+              %a.title{:href => "/programming/the-unofficial-guide-to-rich-hickeys-brain/"}The Unofficial Guide to Rich Hickey's Brain
+            %li
+              %a.title{:href => "/programming/datomic-for-five-year-olds/"}Datomic for Five-Year-Olds
+            %li
+              %a.title{:href => "/programming/how-clojure-babies-are-made-lein-run/"}How Clojure Babies Are Made: Understanding lein run
+
+          
           %h2 Recent Blog Posts
           %ol
             - sorted_articles[0..7].each do |article|
@@ -106,3 +125,4 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+      
