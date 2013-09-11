@@ -1,13 +1,13 @@
 ---
 title: Stepping Off the Happiness Treadmill
-created_at:  Sep 11 14:02:00 -0500 2012
+created_at:  Sep 11 14:02:00 -0500 2013
 kind: article
-summary: Stepping Off the Happiness Treadmill
-draft: true
+summary: "I did not expect to have a life-altering insight while tidying my kitchen some night during the winter of 2011. Yet there I was, sponge in hand and mind on idle, when out of nowhere"
 ---
 
-"Happiness is not something that you pursue; it is something you
-allow." - Chade-Meng Tan
+> "Happiness is not something that you pursue; it is something you
+> allow." <br />
+> &mdash; Chade-Meng Tan
 
 I did not expect to have a life-altering insight while tidying my
 kitchen some night during the winter of 2011. Yet there I was, sponge
@@ -77,7 +77,8 @@ And then I read about the difference that gratitude makes. First, in
 "The Pursuit of Perfect" by Tal Ben-Shahar. Then, in "The Happiness
 Advantage" by Shawn Achor. And yet again in "The Tools" by Phil Stutz
 and Barry Michels. I began my own daily gratitude practice, beginning
-each day by thinking of three things that I'm grateful for.
+each day by thinking of three things that I'm grateful for. I even
+[created a little online community for sharing gratitude](http://gratefulplace.com).
 
 This practice has been instrumental in helping me overcome my
 compulsion for more money. The craving has diminished as, daily, I
