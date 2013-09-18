@@ -8,6 +8,8 @@ additional_stylesheets:
   - pygments
 ---
 
+*UPDATE* "http://gratefulplace.com":http://gratefulplace.com now uses a completely different codebase. You can find it "on github":https://github.com/flyingmachine/gratefulplace2. You can read about the new codebase at "Building a Forum with Clojure, Datomic, Angular, and Ansible":/programming/building-a-forum-with-clojure-datomic-angular/ .
+
 Awhile back I released "OMG! SMACKDOWN!!!":/programming/dissecting-omgsmackdown/, which still holds the title for dumbest Clojure app in existence. To make up for that ludicrostrosity, I've created "Grateful Place":http://gratefulplace.com. This time I around I didn't use Noir, instead going closer to the metal with Compojure and Enlive. The experience was a lot easier than I anticipated, perhaps easier than using Noir. This post will cover some of the more interesting bits of code:
 
 * Templating heaven with Enlive and Middleman
