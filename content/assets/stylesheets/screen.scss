@@ -243,3 +243,11 @@ p > code {
 a.feed img {
   height:20px;
 }
+
+
+#mc-embedded-subscribe-form {
+  @include trailer;
+  input[type=text], input[type=email] {
+    border-color:#999;
+  }
+}
