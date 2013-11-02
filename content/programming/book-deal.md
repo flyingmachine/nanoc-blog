@@ -35,6 +35,10 @@ is a creative, artistic endeavor for me. Also, writing Clojure is
 *fun*, I want my book to be *fun*, and No Starch really understands
 *fun*. Fun!
 
+Those who bought the book on Leanpub, have no fear: you will continue
+to receive updated PDF's and will receive the final, No Starch PDF at
+no additional cost. Thanks for buying the beta book!
+
 If you haven't already, please have a look at
 [Clojure for the Brave and True](http://www.braveclojure.com/). If you
 have already &mdash; thank you! I've really appreciated all the
