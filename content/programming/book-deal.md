@@ -44,3 +44,9 @@ If you haven't already, please have a look at
 have already &mdash; thank you! I've really appreciated all the
 feedback and encouragement I've gotten so far, and I'm very happy to
 be able to contribute back.
+
+By the way, there's a new chapter up:
+[Writing Macros](http://www.braveclojure.com/writing-macros). Also,
+I'm going to be at the Conj in a couple weeks and would love to chat
+with folks about learning Clojure or anything else Clojure. Hope to
+see you there!
