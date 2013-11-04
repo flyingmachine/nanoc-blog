@@ -17,15 +17,14 @@ Please sign up for notifications on new chapter releases:
 </form>
 
 My hope is that this will provide as many people as possible with a
-thorough, entertaining introduction to Clojure. No Starch provides the
-best of both worlds. By being published through an established,
-respected company, it's possible for *Clojure for the Brave and True*
-to reach aspiring Clojurists through channels which I don't have the
-time or means to cultivate. By keeping the book online for free, I
-get to stay true to my hippie aspirations of free learning for
-everyone. What's more, the book will now be professionally edited
-&mdash; a big win for Clojure noobies and, I think, for the Clojure
-community.
+thorough, entertaining introduction to Clojure. By being published
+through an established, respected company, it's possible for *Clojure
+for the Brave and True* to reach aspiring Clojurists through channels
+which I don't have the time or means to cultivate. By keeping the book
+online for free, I get to stay true to my hippie aspirations of free
+learning for everyone. What's more, the book will now be
+professionally edited &mdash; a big win for Clojure noobies and, I
+think, for the Clojure community.
 
 This is super cool! I can't think of any other publisher that allows
 an author to continue publishing a book for free online as he writes.
@@ -43,7 +42,7 @@ If you haven't already, please have a look at
 [Clojure for the Brave and True](http://www.braveclojure.com/). If you
 have already &mdash; thank you! I've really appreciated all the
 feedback and encouragement I've gotten so far, and I'm very happy to
-be able to contribute back.
+be able to contribute back to the community.
 
 By the way, there's a new chapter up:
 [Writing Macros](http://www.braveclojure.com/writing-macros). Also,
