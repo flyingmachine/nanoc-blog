@@ -1,9 +1,9 @@
 ---
-title: "New Clojure for the Brave and True Chapter: Concurrency, Parallelism, and State"
+title: "New Clojure for the Brave and True Chapter: Concurrency, Parallelism, and State. And Zombies."
 created_at: Mon Mar 24 2014 8:07:00 -0500
 kind: article
 categories: programming
-summary: "There's a new chapter up on concurrency, parallelism, and ptate. And zombies."
+summary: "There's a new chapter up on concurrency, parallelism, and state. And zombies."
 ---
 
 There's a new chapter up! It's on
