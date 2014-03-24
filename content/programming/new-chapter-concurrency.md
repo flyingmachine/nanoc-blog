@@ -8,7 +8,7 @@ summary: "There's a new chapter up on concurrency, parallelism, and state. And z
 
 There's a new chapter up! It's on
 ["Concurrency, Parallelism, and State"](http://www.braveclojure.com/concurrency/).
-And zommbies. And Lady Gaga. And dwarven berserkers. And mind reading :D
+And zombies. And Lady Gaga. And dwarven berserkers. And mind reading :D
 
 This has definitely been the most challenging chapter to write so far.
 I've tried to explain the concepts in a way that's fun and easily
