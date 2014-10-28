@@ -123,7 +123,7 @@ if you're curious.)
 * `javac` compiles java source code to bytecode which the JVM can
   execute
 * `java` searches the `classpath` for the class you specified and
-  executes its `main` method. That method must be public.  
+  executes its `main` method. That method must be public.
 
 In the next section you'll learn about handling program code that's
 spread over more than one file. If you don't remove your socks now,
@@ -326,6 +326,7 @@ maintains the directory structure. You can see its contents with:
 ```
 jar tf contrived.jar
 ```
+
 
 You'll see that the directory structure is maintained.
 
