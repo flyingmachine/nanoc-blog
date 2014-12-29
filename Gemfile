@@ -1,7 +1,8 @@
 source 'http://rubygems.org'
 
 gem "compass", "1.0.1"
-gem "susy"
+gem "susy", "2.1.3"
+gem "breakpoint"
 gem "haml"
 gem "sass", "3.4.9"
 gem "nanoc", "3.7.4"

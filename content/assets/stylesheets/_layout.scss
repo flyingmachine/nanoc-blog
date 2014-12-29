@@ -1,0 +1,208 @@
+$M: 47em;
+
+body {
+  @include padding-trailer(2);
+}
+
+h1 {
+  @include trailer(1, $h1);
+}
+
+h2 {
+  @include leader(1.5, $h2);
+  @include trailer(.5, $h2);
+}
+
+h3, h4 {
+  @include leader(1.5, $h3);
+  @include trailer(.5, $h3);
+}
+
+p {
+  @include trailer;
+}
+
+header {
+  @include padding-leader(1);
+  position: relative;
+  z-index: 1;
+}
+
+.tagline {
+  @include trailer(1);
+  font-style: italic;
+}
+
+.main-nav {
+  @include clearfix;
+  @include trailer(2);
+  li {
+    float: left;
+    display: block;
+    margin-right: 1em;
+  }
+}
+
+form {
+  margin: 1.5em -1em 3em;
+  padding: 1.5em 1em;
+  //@include leader;
+  clear: both;
+}
+
+.issue-info {
+  @include padding-leader(1);
+  @include padding-trailer(1);
+  @include trailer(1);
+}
+
+.container {
+  @include container;
+  padding: 0 2em;
+}
+
+.main {
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+  }
+  .content {
+    float:left;
+  }
+}
+
+.content {
+  @include leader(-1);
+  @include breakpoint($M) {
+    width: span(9);
+  }
+
+  li {
+    margin-left: 1.2em;
+  }
+
+  ul, ol {
+    @include trailer;
+    ul, ol {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.chapter-nav {
+  @include breakpoint($M) {
+    @include span(3 at 10 of 12);
+  }
+}
+
+.code {
+  @include padding-leader(.25);
+  @include padding-trailer(.25);
+  @include trailer;
+}
+
+.chapter-nav>ol {
+  @include trailer;
+}
+
+ol ol {
+  margin-left: 1em;
+}
+
+#top-nav {
+  @include breakpoint($M) {
+    display: block;
+    position: fixed;
+    width: 100%;
+    top: -3em;
+    @include padding-leader(.2);
+    @include padding-trailer(.2);
+  }
+}
+
+#top-nav-sticky-wrapper {
+  display: none;
+  @include breakpoint($M) {
+    height: 0 !important;
+    display: block;
+  }
+  &.is-sticky {
+    #top-nav {
+      @include breakpoint($M) {
+        height: 2.25em !important;
+        top: 0;
+        display: block;
+      }
+    }
+  }
+}
+
+.chapter-nav .sticky-wrapper {
+  height: auto !important;
+  width: auto !important;
+
+  .wrapper {
+    height: auto !important;
+    @include leader(1);
+    @include breakpoint($M) {
+      margin-top: 0;
+    }
+  }
+}
+
+.chapter-nav .sticky-wrapper.is-sticky .wrapper {
+  position: static !important;
+  top: 0 !important;
+  margin-right: 2em;
+  
+  @include breakpoint($M) {
+    position: fixed !important;
+    top: 60px !important;
+    bottom: 0;
+    overflow-y: auto;
+  }
+}
+
+.pagenav.bottom {
+  @include leader;
+  @include trailer;
+  @include clearfix;
+
+  .prev {
+    float: left;
+  }
+
+  .next {
+    float: right;
+  }
+}
+
+#tipue_search_content_title {
+  @include leader;
+}
+
+#disqus_thread {
+  @include leader;
+}
+
+blockquote {
+  padding-left: 1em;
+  @include padding-leader(0.5);
+  @include padding-trailer(0.5);
+  @include trailer;
+
+  p {
+    margin: 0;
+    white-space: pre-line;
+  }
+}
+
+table {
+  @include trailer;
+}
+
+.previous-issues {
+  @include leader;
+}

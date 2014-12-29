@@ -41,6 +41,12 @@ route '/static/*' do
   item.identifier.gsub(/static/, 'assets')[0..-2]
 end
 
+compile '/assets/stylesheets/*' do
+  unless item.identifier =~ /stylesheets\/_/ || item.identifier =~ /documentation/
+    filter(:sass, Compass.sass_engine_options)
+  end
+end
+
 compile '*' do
   if item.binary? ||
       item.identifier.include?("/source/") ||
@@ -62,7 +68,6 @@ compile '*' do
     # when /(markdown|md)$/ then filter :redcarpet; use_layout = true
       
     when /coffee$/ then filter :coffeescript;
-    when /scss$/ then filter(:sass, Compass.sass_engine_options)
     end
 
     use_layout = false if item.attributes[:nolayout]
@@ -81,7 +86,7 @@ route '/assets/javascripts/*' do
 end
 
 route '/assets/stylesheets/*' do
-  unless item.identifier.include?("#") # emacs tmp file
+  unless item.identifier.include?("#") || item.identifier =~ /stylesheets\/_/ # emacs tmp file
     "/stylesheets/#{basename(item.attributes[:filename])}.css" 
   end
 end
