@@ -21,7 +21,6 @@ Bundler.require(:default)
 
 require "./lib/rule_helper"
 require "./lib/static"
-require './content/assets/source/custom_tags'
 
 Compass.add_project_configuration 'compass/config.rb'
 
