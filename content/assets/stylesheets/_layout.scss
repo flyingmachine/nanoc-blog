@@ -56,27 +56,21 @@ form {
   @include trailer(1);
 }
 
-.container {
+#document {
   @include container;
   padding: 0 2em;
 }
 
-.main {
+#main {
   img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     max-width: 100%;
   }
-  .content {
-    float:left;
-  }
-}
 
-.content {
-  @include leader(-1);
   @include breakpoint($M) {
-    width: span(9);
+    @include span(9);
   }
 
   li {
@@ -91,9 +85,12 @@ form {
   }
 }
 
-.chapter-nav {
+#nav {
   @include breakpoint($M) {
     @include span(3 at 10 of 12);
+  }
+  li {
+    @include trailer;
   }
 }
 
@@ -177,10 +174,6 @@ ol ol {
   .next {
     float: right;
   }
-}
-
-#tipue_search_content_title {
-  @include leader;
 }
 
 #disqus_thread {

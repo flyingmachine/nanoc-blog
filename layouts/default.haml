@@ -7,7 +7,8 @@
     - if @keywords
       %meta{ "name" => "keywords", "content" => @keywords }
     %title= @item[:title]
-    %link{ :href => "/stylesheets/screen.css?2", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/stylesheets/main.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => 'http://fonts.googleapis.com/css?family=Cantata+One|Tenor+Sans|Josefin+Slab|Libre+Baskerville:400,400italic,700|Candal|Goudy+Bookletter+1911|Montserrat|Lato|Open+Sans+Condensed:300,700|Open+Sans', :media => "screen", :rel => "stylesheet", :type => "text/css" }
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
       %link{ :href => "/stylesheets/#{stylesheet}.css?2", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }

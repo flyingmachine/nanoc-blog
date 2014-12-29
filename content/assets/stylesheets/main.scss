@@ -12,7 +12,7 @@
 @import "susy"; // grid
 
 $susy: (
-  columns: 9,
+  columns: 12,
   column-width: 4em,
   gutters: 1/4,
   math: fluid,
@@ -21,7 +21,7 @@ $susy: (
 );
 @include border-box-sizing;
 
-$base-font-size: 20px;
+$base-font-size: 16px;
 $base-line-height: 30px;
 @include establish-baseline;
 

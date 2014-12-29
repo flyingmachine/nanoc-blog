@@ -72,13 +72,6 @@ input[type=submit] {
   }
 }
 
-.title {
-  @include adjust-font-size-to(60px, 2);
-  @include title-family;
-  border-bottom: 2px solid $main-color;
-  display: inline-block;
-}
-
 .main {
   ul li {
     list-style: disc;
