@@ -36,7 +36,7 @@ martial art for hippies. Here's a quote from its founder:
 > heart and then you must make your own mission the protection and love
 > of all things.
 > 
-> -- O'Sensei
+> -- O Sensei
 
 In aikido you train to extend love to all things - including angry
 jerks yelling at you for no reason. Including people who are attacking
