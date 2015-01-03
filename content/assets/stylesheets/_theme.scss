@@ -7,12 +7,13 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  @include adjust-font-size-to($h1, 2);
+  @include adjust-font-size-to($h1, 1);
+  font-weight: 700;
 }
 
 h2 {
   @include adjust-font-size-to($h2, 1);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 h3, h4 {
@@ -22,7 +23,7 @@ h3, h4 {
 a {
   color: $alt-color;
   &:visited {
-    color: $alt-color;
+    color: $main-color;
   }
   &:hover {
     color: $tri-color;
@@ -58,18 +59,28 @@ input[type=submit] {
   display: inline-block;
 }
 
-.issue-info {
-  background: $main-color;
+header.top {
+  background: #ecf5ec url(/assets/images/flying-machine-small.png) no-repeat 95%;
+  .title {
+    font-family: Great Vibes;
+    @include adjust-font-size-to(46px);
+    a {
+      color: black;
+    }
+  }
+  .subtitle {
+    @include leader(-.25);
+    color: #193019;
+    font-family: Garamond;
+    font-family: Courgette;
+    //font-style: italic;
+  }
+  //border-bottom: .25em solid #000;
 }
 
-.issue-title {
-  font-family: "Open Sans Condensed", Helvetica, sans-serif;
-  font-weight: 300;
-  @include adjust-font-size-to(42px);
-  strong {
-    border-bottom: 2px solid white;
-    font-variant: smallcaps;
-  }
+.date {
+  font-style: italic;
+  @include adjust-font-size-to(16px);
 }
 
 .main {
@@ -99,8 +110,4 @@ table {
   td:last-child {
     padding: 0 1em;
   }
-}
-
-.previous-issues {
-  border-top: 2px solid $main-color;
 }

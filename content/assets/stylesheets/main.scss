@@ -21,21 +21,21 @@ $susy: (
 );
 @include border-box-sizing;
 
-$base-font-size: 16px;
+$base-font-size: 20px;
 $base-line-height: 30px;
 @include establish-baseline;
 
 // Fonts --------------------------------------------------------------
 @mixin sans-family {
-  font-family: Open Sans Condensed, Tenor Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: Open Sans Condensed, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 @mixin serif-family {
-  font-family: Libre Baskerville, Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+  font-family: Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
 }
 
 @mixin monospace-family {
-  font-family: "Bitstream Vera Sans Mono", monospace;
+  font-family: Bitstream Vera Sans Mono, monospace;
 }
 
 @mixin title-family {
@@ -47,24 +47,27 @@ $base-line-height: 30px;
 $magenta: #e14d6d;
 $teal: #489bd2;
 
+$blue: #6684af;
+$green: #669d97;
+$plum: #b36994;
+
 $red: #ff5553;
 $purple: #8873e5;
 $dark-purple: #6348dd;
 
-$green: #57e08d;
 $light-green: #eefcf3;
 
 $main-color: $green;
 $main-color-accent: $red;
 $main-color-light: $light-green;
-$alt-color: $magenta;
-$tri-color: $teal;
+$alt-color: $blue;
+$tri-color: $plum;
 $happy-color: $green;
 
 
-$h1: 42px;
-$h2: 32px;
-$h3: 21px;
+$h1: 28px;
+$h2: 23px;
+$h3: 20px;
 
 
 @import "base";

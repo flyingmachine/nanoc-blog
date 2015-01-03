@@ -8,18 +8,18 @@
       %meta{ "name" => "keywords", "content" => @keywords }
     %title= @item[:title]
     %link{ :href => "/stylesheets/main.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    %link{ :href => 'http://fonts.googleapis.com/css?family=Cantata+One|Tenor+Sans|Josefin+Slab|Libre+Baskerville:400,400italic,700|Candal|Goudy+Bookletter+1911|Montserrat|Lato|Open+Sans+Condensed:300,700|Open+Sans', :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{:href => 'http://fonts.googleapis.com/css?family=Oswald:400,300|Gentium+Book+Basic:400,700|Fjalla+One|Courgette|Open+Sans+Condensed:300,700|Great+Vibes', :rel => 'stylesheet', :type => 'text/css'}
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
-      %link{ :href => "/stylesheets/#{stylesheet}.css?2", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+      %link{ :href => "/stylesheets/#{stylesheet}.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
   %body{ :class => @body_class }
-    %header
+    %header.top
       .display
         .title
           %a{:href => "/"} Flying Machine Studios
         .subtitle
-          adventures in making stuff
+          adventures in making stuff with Daniel Higginbotham
     #document
       #contact
         %ul
@@ -40,9 +40,6 @@
           - if article?(@item)
             %h1= @item[:title]
             .date= format_date(@item[:created_at])
-
-            %p
-              %a{:href => "https://twitter.com/share", :class => "twitter-share-button", "data-via" => "nonrecursive"}Tweet
               
           = find_and_preserve yield
           
