@@ -64,7 +64,7 @@ header.top {
   border-bottom: 1px solid #444;
   .title {
     font-family: $title;
-    @include adjust-font-size-to(46px);
+    @include adjust-font-size-to(52px);
     a {
       color: black;
     }
