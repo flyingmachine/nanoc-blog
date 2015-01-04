@@ -26,6 +26,19 @@ $base-line-height: 30px;
 @include establish-baseline;
 
 // Fonts --------------------------------------------------------------
+@font-face {
+  font-family: 'Leonardo Hand F';
+  src: url(/assets/fonts/leonardo/leonardo.ttf);
+  src: url(/assets/fonts/leonardo/leonardo.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$serif-family: Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+$title: Ruthie, $serif-family;
+$stitle: $serif-family;
+$h-family: $serif-family;
+
 @mixin sans-family {
   font-family: Open Sans Condensed, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
@@ -65,9 +78,9 @@ $tri-color: $plum;
 $happy-color: $green;
 
 
-$h1: 28px;
-$h2: 23px;
-$h3: 20px;
+$h1: 35px;
+$h2: 28px;
+$h3: 23px;
 
 
 @import "base";

@@ -1,19 +1,17 @@
 body, input[type=email] {
-  @include serif-family;
+  font-family: $serif-family;
 }
 
 h1, h2, h3, h4 {
-  @include sans-family;
+  font-family: $h-family;
 }
 
 h1 {
   @include adjust-font-size-to($h1, 1);
-  font-weight: 700;
 }
 
 h2 {
   @include adjust-font-size-to($h2, 1);
-  font-weight: 700;
 }
 
 h3, h4 {
@@ -61,26 +59,24 @@ input[type=submit] {
 
 header.top {
   background: #ecf5ec url(/assets/images/flying-machine-small.png) no-repeat 95%;
+  border-top: 4px solid #444;
+  border-bottom: 1px solid #444;
   .title {
-    font-family: Great Vibes;
+    font-family: $title;
     @include adjust-font-size-to(46px);
     a {
       color: black;
     }
   }
   .subtitle {
-    @include leader(-.25);
     color: #193019;
-    font-family: Garamond;
-    font-family: Courgette;
-    //font-style: italic;
+    font-family: $stitle;
+    font-style: italic;
   }
-  //border-bottom: .25em solid #000;
 }
 
 .date {
   font-style: italic;
-  @include adjust-font-size-to(16px);
 }
 
 .main {
@@ -90,6 +86,14 @@ header.top {
 
   ol>li {
     list-style: decimal;
+  }
+}
+
+#nav li {
+  color: #eee;
+  list-style: disc;
+  p {
+    color: black;
   }
 }
 

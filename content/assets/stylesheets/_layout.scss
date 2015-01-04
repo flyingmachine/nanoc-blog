@@ -22,7 +22,7 @@ p {
   @include trailer;
 }
 
-header {
+header.top {
   @include padding-leader(.5);
   @include padding-trailer(.5);
   @include trailer(2);
@@ -40,17 +40,8 @@ header {
 }
 
 .date {
-  @include trailer;
-}
-
-.main-nav {
-  @include clearfix;
-  @include trailer(2);
-  li {
-    float: left;
-    display: block;
-    margin-right: 1em;
-  }
+  @include adjust-font-size-to(16px);
+  @include trailer(1, 16px);
 }
 
 form {
@@ -100,7 +91,7 @@ form {
     @include span(3 at 10 of 12);
   }
   li {
-    list-style: disc;
+    // @include trailer;
   }
 }
 
@@ -116,74 +107,6 @@ form {
 
 ol ol {
   margin-left: 1em;
-}
-
-#top-nav {
-  @include breakpoint($M) {
-    display: block;
-    position: fixed;
-    width: 100%;
-    top: -3em;
-    @include padding-leader(.2);
-    @include padding-trailer(.2);
-  }
-}
-
-#top-nav-sticky-wrapper {
-  display: none;
-  @include breakpoint($M) {
-    height: 0 !important;
-    display: block;
-  }
-  &.is-sticky {
-    #top-nav {
-      @include breakpoint($M) {
-        height: 2.25em !important;
-        top: 0;
-        display: block;
-      }
-    }
-  }
-}
-
-.chapter-nav .sticky-wrapper {
-  height: auto !important;
-  width: auto !important;
-
-  .wrapper {
-    height: auto !important;
-    @include leader(1);
-    @include breakpoint($M) {
-      margin-top: 0;
-    }
-  }
-}
-
-.chapter-nav .sticky-wrapper.is-sticky .wrapper {
-  position: static !important;
-  top: 0 !important;
-  margin-right: 2em;
-  
-  @include breakpoint($M) {
-    position: fixed !important;
-    top: 60px !important;
-    bottom: 0;
-    overflow-y: auto;
-  }
-}
-
-.pagenav.bottom {
-  @include leader;
-  @include trailer;
-  @include clearfix;
-
-  .prev {
-    float: left;
-  }
-
-  .next {
-    float: right;
-  }
 }
 
 #disqus_thread {
