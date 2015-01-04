@@ -1,5 +1,6 @@
 body, input[type=email] {
   font-family: $serif-family;
+  color: #333;
 }
 
 h1, h2, h3, h4 {
@@ -58,7 +59,7 @@ input[type=submit] {
 }
 
 header.top {
-  background: #f7f3ee url(/assets/images/flying-machine-small.png) no-repeat 95%;
+  background: #f7f3ee url(/assets/images/flying-machine-small.png) no-repeat 85%;
   border-top: 4px solid #444;
   border-bottom: 1px solid #444;
   .title {
@@ -114,4 +115,21 @@ table {
   td:last-child {
     padding: 0 1em;
   }
+}
+
+code {
+  line-height: 1.2;
+  font-size: 16px;
+  white-space: pre;
+  @include monospace-family;
+}
+
+pre {
+  @include trailer;
+}
+
+pre code {
+  display: block;
+  @include padding-leader(.5, 16px);
+  @include padding-trailer(.5, 16px);
 }

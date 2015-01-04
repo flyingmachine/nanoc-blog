@@ -23,49 +23,48 @@ after one of my cats, this guy:
 
 Here's an example of vern in use:
 
-```clojure
-(def fixtures [:endpoints
-               [:wallace
-                {:name "wallace" :id 1}
-
-                :gromit
-                {:name "gromit"  :id 2}]
-
-               :permissions
-               [;; these permissions belong to wallace
-                [{:endpoint [:endpoints :wallace]}
-
-                 :wallace-read
-                 {:name "read"  :id 10}
-
-                 :wallace-write
-                 {:name "write" :id 11}]
-
-                ;; these permissions belong to gromit
-                [{:endpoint [:endpoints :gromit]}
-
-                 :gromit-read
-                 {:name "read"  :id 12}
-
-                 :gromit-write
-                 {:name "write" :id 13}]]])
-
-(def entities (atom []))
-
-(do-named (fn [processed group-name entity]
-              (swap! entities #(conj % (:data entity)))
-              (get-in entity [:data :id]))
-            fixtures)
-
-@entities
-; =>
-[{:id 1 :name "wallace"}
- {:id 2 :name "gromit"}
- {:id 10 :endpoint 1 :name "read"}
- {:id 11 :endpoint 1 :name "write"}
- {:id 12 :endpoint 2 :name "read"}
- {:id 13 :endpoint 2 :name "write"}]
-```
+    #!clojure
+    (def fixtures [:endpoints
+                   [:wallace
+                    {:name "wallace" :id 1}
+    
+                    :gromit
+                    {:name "gromit"  :id 2}]
+    
+                   :permissions
+                   [;; these permissions belong to wallace
+                    [{:endpoint [:endpoints :wallace]}
+    
+                     :wallace-read
+                     {:name "read"  :id 10}
+    
+                     :wallace-write
+                     {:name "write" :id 11}]
+    
+                    ;; these permissions belong to gromit
+                    [{:endpoint [:endpoints :gromit]}
+    
+                     :gromit-read
+                     {:name "read"  :id 12}
+    
+                     :gromit-write
+                     {:name "write" :id 13}]]])
+    
+    (def entities (atom []))
+    
+    (do-named (fn [processed group-name entity]
+                  (swap! entities #(conj % (:data entity)))
+                  (get-in entity [:data :id]))
+                fixtures)
+    
+    @entities
+    ; =>
+    [{:id 1 :name "wallace"}
+     {:id 2 :name "gromit"}
+     {:id 10 :endpoint 1 :name "read"}
+     {:id 11 :endpoint 1 :name "write"}
+     {:id 12 :endpoint 2 :name "read"}
+     {:id 13 :endpoint 2 :name "write"}]
 
 First, we assign the fixture the colorful name `data`, then create a
 "database", which in this case is just an atom holding an empty

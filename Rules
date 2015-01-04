@@ -62,8 +62,8 @@ compile '*' do
     when /haml$/ then filter :haml; use_layout = true
     when /textile$/ then filter :redcloth; use_layout = true
     when /(markdown|md)$/ then
-      filter :redcarpet, :options => {:fenced_code_blocks => true}
-      filter :colorize_syntax, :default_colorizer => :pygmentsrb
+      filter :kramdown, coderay_line_numbers: nil, coderay_css: :class
+      filter :colorize_syntax, default_colorizer: :pygmentsrb
       use_layout = true
     # when /(markdown|md)$/ then filter :redcarpet; use_layout = true
       

@@ -13,7 +13,7 @@
 
 $susy: (
   columns: 12,
-  column-width: 5em,
+  column-width: 4em,
   gutters: 1/4,
   math: fluid,
   output: static,
@@ -34,7 +34,7 @@ $base-line-height: 30px;
   font-style: normal;
 }
 
-$serif-family: Georgia, Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+$serif-family: Hoefler Text, Garamond, Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
 $title: Ruthie, $serif-family;
 $stitle: $serif-family;
 $h-family: $serif-family;
@@ -49,11 +49,6 @@ $h-family: $serif-family;
 
 @mixin monospace-family {
   font-family: Bitstream Vera Sans Mono, monospace;
-}
-
-@mixin title-family {
-  @include serif-family;
-  font-weight: 700;
 }
 
 // Colors
