@@ -53,7 +53,6 @@ GEM
     haml (4.0.6)
       tilt
     hitimes (1.2.2)
-    kramdown (1.5.0)
     listen (2.8.3)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -78,6 +77,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    redcarpet (3.2.0)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -112,9 +112,9 @@ DEPENDENCIES
   guard-nanoc
   guard-rspec
   haml
-  kramdown
   nanoc (= 3.7.4)
   nokogiri
   pygments.rb (= 0.6.0)
+  redcarpet
   sass (= 3.4.9)
   susy (= 2.1.3)

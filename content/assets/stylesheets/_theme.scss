@@ -19,6 +19,14 @@ h3, h4 {
   @include adjust-font-size-to($h3, 1);
 }
 
+#main {
+  h2, h3, h4 {
+    margin-left: -11px;
+    padding-left: 9px;
+    border-left: 2px dotted #ddd;
+  }
+}
+
 a {
   color: $alt-color;
   &:visited {
@@ -90,46 +98,69 @@ header.top {
   }
 }
 
-#nav li {
-  color: #ddd;
-  list-style: disc;
-  p {
-    color: black;
+#nav {
+  @include adjust-font-size-to(17px);
+  h2 {
+    @include adjust-font-size-to(26px, 1, 17px);
+    @include leader(1.5, 26px);
+    @include trailer(.5, 26px);
+    color: #555;
+  }
+  li {
+    color: #ccc;
+    list-style: disc;
+    a {
+      display: block;
+    }
+    p {
+      color: #333;
+    }
   }
 }
 
 table {
-  border-top: 1px solid #eee;
-  thead {
-    display: none;
+  @include trailer;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+table, td, th {
+  vertical-align: top;
+}
+
+th, thead th {
+  font-weight: bold;
+}
+
+th, td, caption {
+  padding: 0.75em;
+  text-align: left;
+  font-weight: normal;
+}
+
+table.comparison {
+  th {
+    @include trailing-border(1px, 0.5);
   }
   td {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px dotted black;
   }
-  td:first-child {
-    @include monospace-family;
-    white-space: pre;
-    padding: 0 1em;
-    border-right: 1px solid #eee;
-  }
-  td:last-child {
-    padding: 0 1em;
+  tr:last-child td {
+    border-bottom: none;
   }
 }
 
-code {
+.highlight {
+  @include trailer;
+}
+
+.highlight pre {
+  display: block;
   line-height: 1.2;
   font-size: 16px;
   white-space: pre;
   @include monospace-family;
-}
-
-pre {
-  @include trailer;
-}
-
-pre code {
-  display: block;
   @include padding-leader(.5, 16px);
   @include padding-trailer(.5, 16px);
 }
