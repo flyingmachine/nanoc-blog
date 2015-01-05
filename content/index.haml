@@ -14,7 +14,9 @@ nolayout: true
     - if @keywords
       %meta{ "name" => "keywords", "content" => @keywords }
     %title= @item[:title]
+
     %link{ :href => "/stylesheets/main.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     
     - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
@@ -33,16 +35,16 @@ nolayout: true
         %ul
           %li
             %a{:href => "http://twitter.com/nonrecursive"}
-              %i{:class => "icon-twitter"}
+              %i{:class => "fa fa-twitter"}
           %li
             %a{:href => "http://www.linkedin.com/in/danielhigginbotham"}
-              %i{:class => "icon-linkedin"}
+              %i{:class => "fa fa-linkedin"}
           %li
             %a{:href => "https://github.com/flyingmachine"}
-              %i{:class => "icon-github"}
+              %i{:class => "fa fa-github"}
           %li
             %a{:href => "http://feeds.feedburner.com/FlyingMachineStudios"}
-              %i{:class => "icon-rss"}
+              %i{:class => "fa fa-rss"}
       #main
         #articles
           %h2 Articles

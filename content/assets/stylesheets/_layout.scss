@@ -25,13 +25,23 @@ p {
 header.top {
   @include padding-leader(.5);
   @include padding-trailer(.5);
-  @include trailer(2);
   position: relative;
   z-index: 1;
   .display {
     @include container;
     padding: 0 2em;
   }
+}
+
+#contact {
+  @include clearfix;
+  @include leader;
+  @include trailer;
+}
+
+#contact li {
+  float: left;
+  margin-right: 1em;
 }
 
 .tagline {
