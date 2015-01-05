@@ -24,6 +24,10 @@
       margin-left: 0;
     }
 
+    ol li {
+      list-style: none;
+    }
+
     header {
       font-family: $sans-family;
     }
