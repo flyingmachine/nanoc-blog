@@ -1,6 +1,7 @@
 --- 
 title: Home - Flying Machine Studios
 created_at: Fri Jan 14 13:11:26 -0500 2011
+description: Adventures in making stuff with Daniel Higginbotham
 nolayout: true
 ---
 
@@ -8,13 +9,20 @@ nolayout: true
 %html{ :lang => "en", "xml:lang" => "en", :xmlns => 'http://www.w3.org/1999/xhtml' }
   %head
     %meta{ "http-equiv" => "content-type", "content" => "text/html; charset=utf-8" }
-    %meta{ "name" => "description", "content" => "home site of Daniel Higginbotham" }
+      - if @item[:description]
+        %meta{ "name" => "description", "content" => @item[:description] }
+    - if @keywords
+      %meta{ "name" => "keywords", "content" => @keywords }
     %title= @item[:title]
-    %link{ :href => "/stylesheets/home.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/stylesheets/main.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    
+    - @item[:additional_stylesheets] && @item[:additional_stylesheets].each do |stylesheet|
+      %link{ :href => "/stylesheets/#{stylesheet}.css?3", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "http://feeds.feedburner.com/FlyingMachineStudios", :rel => "alternate", :type => "application/rss+xml" }
 
-  %body{ :class => @body_class }
-    %header
+  %body.home
+    %header.top
       .display
         .title
           %a{:href => "/"} Flying Machine Studios
@@ -62,47 +70,22 @@ nolayout: true
                 %header
                   %a{:href => "http://gratefulplace.com"}
                     Grateful Place
-                .shot
-                  %a{:href => "http://gratefulplace.com"}
-                    %img{:src => "/assets/images/projects/gratefulplace.jpg"}
+                -# .shot
+                -#   %a{:href => "http://gratefulplace.com"}
+                -#     %img{:src => "/assets/images/projects/gratefulplace.jpg"}
                 %p When we appreciate the good in our lives, the good grows and we have more of it.
               %li#cuym
                 %header
                   %a{:href => "http://www.visualmess.com"}
                     Clean Up Your Mess: a Guide to Visual Design for Everyone
-                .shot
-                  %a{:href => "http://www.visualmess.com"}
+                -# .shot
+                -#   %a{:href => "http://www.visualmess.com"}
                     %img{:src => "/assets/images/projects/cuym.png"}
                 %p
                   This popular guide will help you
                   communicate with conscious skill. It will show you
                   how to create designs that are easy to understand
                   and attractive.
-              %li#whoops
-                %header
-                  %a{:href => "http://whoopsapp.com"}
-                    Whoops: Log Anything
-                .shot
-                  %a{:href => "http://whoopsapp.com"}
-                    %img{:src => "/assets/images/projects/whoops.png"}
-                %p Whoops is a free, self-hosted tool for logging application events like errors or background worker completion.
-              %li#foreman
-                %header
-                  %a{:href => "/foreman"}
-                    Foreman: The $2 Mac Power Tool for Reducing Clutter
-                .shot
-                  %a{:href => "/foreman"}
-                    %img{:src => "/assets/images/projects/foreman.jpg"}
-                %p Foreman reduces clutter and helps you focus. It opens the apps you need and closes or hides the rest.
-              %li#openhercules
-                %header
-                  %a{:href => "http://whoopsapp.com"}
-                    Open Hercules: Productivity, Greek Myth Style
-                .shot
-                  %a{:href => "http://openhercules.com"}
-                    %img{:src => "/assets/images/projects/openhercules.jpg"}
-                %p A free, open-source, keyboard-friendly, social list app
-    
 
 
     :javascript

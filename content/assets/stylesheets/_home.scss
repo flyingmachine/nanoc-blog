@@ -1,0 +1,45 @@
+.home {
+  #main {
+    @include span(12 of 12);
+  }
+  #articles {
+    @include span(6 of 12);
+  }
+  #projects {
+    @include span(5.5 of 12 at 7);
+    float: right;
+  }
+
+
+  #main {
+    h2 {
+      text-transform: uppercase;
+      border-left: none;
+      margin: 0;
+      @include trailer(1, $h2);
+      padding-left: 0;
+    }
+
+    li {
+      margin-left: 0;
+    }
+
+    header {
+      font-family: $sans-family;
+    }
+
+    .date {
+      margin: 0;
+      @include adjust-font-size-to(14px);
+      font-style: normal;
+    }
+
+    .shot {
+      @include padding-leader;
+      @include padding-trailer;
+      @include leader(.5);
+      @include trailer(.5);
+      border: 1px solid #ddd;
+    }
+  }
+}
