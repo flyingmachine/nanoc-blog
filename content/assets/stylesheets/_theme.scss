@@ -160,6 +160,7 @@ table.comparison {
   line-height: 1.2;
   font-size: 16px;
   white-space: pre;
+  overflow-y: auto;
   @include monospace-family;
   @include padding-leader(.5, 16px);
   @include padding-trailer(.5, 16px);
