@@ -4,6 +4,7 @@ created_at: Tue Jan 5 2015 19:39:00 -0500
 kind: article
 categories: programming
 summary: "Boot provides abstractions for creating Clojure tasks"
+draft: true
 ---
 
 On the surface, [Boot](http://boot-clj.com/), the new Clojure
