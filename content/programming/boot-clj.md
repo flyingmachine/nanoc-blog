@@ -7,20 +7,28 @@ summary: "Boot provides abstractions for creating Clojure tasks"
 draft: true
 ---
 
-On the surface, [Boot](http://boot-clj.com/), the new Clojure
-ecosystem creation of Micha Niskin and Alan Dipert, is "merely" an
-easy-to-use, convenient way to build Clojure applications and run
-Clojure tasks from the command line. But if you dig a little deeper,
-you'll see that Boot is like the lisped-up philosophical lovechild of
-Git and Unix. It goes beyond providing a few conveniences; it asks,
-"What is the essence of a build tool? What kinds of behaviors should
-it support?" The result is a platform that provides solid abstractions
-that enable you to create isolated, composable tasks. In the same way
-that core.async gives you the tools to reason about isolated, concurrent
-processes that communicate in an easily-understood way, Boot gives you
-the tools to reason about tasks. In the same way that Unix processes
-have the common abstraction of file handles, including standard input
-and standard output, Boot provides a way to communicate between tasks.
+Build tools are known to inspire the entire gamut of emotions from
+bored impatience to Homeric rage (I'm looking at you,
+Grunt). Personally, I've never given them much thought; they've always
+seemed like tedious overhead, an unfortunate necessity for getting
+*real work* done.
+
+Recently, though, I've started learning about
+[Boot](http://boot-clj.com/), and it's made me believe that build
+programming can actually be interesting. Created by Micha Niskin and
+Alan Dipert, Boot is a completely controversy-free addition to the
+Clojure tooling landscape. On the surface, it's "merely" a convenient
+way to build Clojure applications and run Clojure tasks from the
+command line. But dig a little deeper and you'll see that Boot is like
+the lisped-up lovechild of Git and Unix, providing abstractions that
+make it much more pleasant to write code that exists at the
+intersection of your operating system and your application.
+
+In the same way that the Unix process abstraction allows you to reason
+about programs as isolated units of logic that can be easily composed
+into a pipeline through the `STDIN` and `STDOUT` file descriptors,
+Boot provides the Task abstraction to define units of logic with
+the Fileset, another abstraction, as the communication medium.
 
 That's a lot of high-level description, which hopefully is great for
 when you want to hook someone's attention, which hopefully I have now
@@ -28,24 +36,57 @@ done. But I would be ashamed to leave you with a plateful of
 metaphors. Oh no, dear reader; that was only the appetizer. For the
 rest of this article you will learn what that word salad means by
 building your own Boot tasks. Along the way, you'll discover that
-build tools can actually have an underlying conceptual framekwork.
+build tools can actually have a conceptual foundation.
 
-## Boot Tenet #1: It's Programming
+## Tasks
 
-In contrast to tools like [Leiningen](http://leiningen.org/) or
-[Grunt](http://gruntjs.com/), Boot doesn't rely on a
-data-structure-based mini-language to drive the behavior and
-interactions of tasks. You end up losing the power and flexibility of
-a full programming language without any gains - the configurations
-aren't any easier to understand or reason about.
+Like make, rake, grunt, and other build tools of yore, Boot lets you
+define *tasks*. Tasks are
 
-Instead, it sees task running as a programming problem. You can think
-about your tasks the same way you think about Clojure programs,
-employing the same mental models.
+* named operations
+* that take command line options
+* dispatched by some intermediary program (make, rake, Boot)
 
-Tasks are meant to be stateful.
+Boot provides the dispatching program, `boot`, and a Clojure library
+that makes it easy for you to define named operations and their
+command line options with the `deftask` macro. So that you can see
+what all the fuss is about, it's time to create your first
+task. Normally, programming tutorials encourage have you write
+something that prints "Hello World", but I like my examples to have
+real-world utility, so your task is going to print "My pants are on
+fire!", information which is objectively more useful. First,
+[install Boot](https://github.com/boot-clj/boot#install), then create
+a new directory named `boot-walkthrough`, navigate to that directory,
+and finally create a file named `build.boot` and put in this in it:
 
-Provides abstractions that make it easy to provide interfaces between
-the command line and Clojure code.
+```clojure
+(deftask fire
+  "Prints 'My pants are on fire!'"
+  []
+  (println "My pants are on fire!"))
+```
 
-`deftask` creates a function with helpful wrappers
+Now run this task with `boot fire`; you should see the message you
+wrote printed to your terminal. This demonstrates two out of the three
+task components - the task is named (`fire`) and it's dispatched by
+`boot`. Let's extend it to demonstrate how you'd write command line
+options:
+
+```clojure
+(deftask fire
+  "Announces that something is on fire"
+  [t thing     THING str  "The thing that's on fire"
+   p pluralize       bool "Whether to pluralize"]
+  (let [verb (if pluralize "are" "is")]
+    (println "My" thing verb "on fire!")))
+```
+
+Try running the task like so:
+
+```bash
+boot fire -t heart
+# => My heart is on fire!
+
+boot fire -t logs -p
+# => My logs are on fire!
+```

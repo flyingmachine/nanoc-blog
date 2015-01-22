@@ -1,6 +1,6 @@
 ---
 title: The core.async Chapter is Up
-created_at: Fri Jan * 2015 9:08:00 -0500
+created_at: Tue Jan 13 2015 9:08:00 -0500
 kind: article
 categories: programming
 summary: "You can now read 'Mastering Concurrent Processes with core.async' at <a href='http://www.braveclojure.com/core-async/'>Clojure for the Brave and True</a>"
