@@ -24,11 +24,23 @@ the lisped-up lovechild of Git and Unix, providing abstractions that
 make it much more pleasant to write code that exists at the
 intersection of your operating system and your application.
 
-In the same way that the Unix process abstraction allows you to reason
-about programs as isolated units of logic that can be easily composed
-into a pipeline through the `STDIN` and `STDOUT` file descriptors,
-Boot provides the Task abstraction to define units of logic with
-the Fileset, another abstraction, as the communication medium.
+Unix provides abstractions that we're all familiar with to the point
+of taking them for granted. (I mean, would it kill you to take your
+computer out to a nice restaurant once in awhile?) The process
+abstraction allows you to reason about programs as isolated units of
+logic that can be easily composed into a stream-processing pipeline
+through the `STDIN` and `STDOUT` file descriptors. These abstractions
+make certain kinds of operations, like text processing, very easy.
+
+Similarly, Boot provides abstractions that make it actually pleasant
+to compose independent operations into the kinds of complex,
+coordinated operations that build tools end up doing, like converting
+Clojurescript into Javascript. Boot's *task* abstraction lets you
+easily define units of logic that communicate through *filesets*. The
+fileset abstraction keeps track of the evolving build context and it
+provides a well-defined, reliable method of task coordination, as
+opposed to the ill-defined, ad-hoc task coordination which programmers
+have to impose on other build tools.
 
 That's a lot of high-level description, which hopefully is great for
 when you want to hook someone's attention, which hopefully I have now
@@ -69,7 +81,13 @@ and finally create a file named `build.boot` and put in this in it:
 Now run this task with `boot fire`; you should see the message you
 wrote printed to your terminal. This demonstrates two out of the three
 task components - the task is named (`fire`) and it's dispatched by
-`boot`. Let's extend it to demonstrate how you'd write command line
+`boot`. This is already super cool &ndash; you've essentially created
+a Clojure script, standalone Clojure code that you can easily run from
+the command line. No `project.clj` or directory structure or
+namespaces needed!
+
+
+Let's extend the example to demonstrate how you'd write command line
 options:
 
 ```clojure
@@ -90,3 +108,55 @@ boot fire -t heart
 boot fire -t logs -p
 # => My logs are on fire!
 ```
+
+In the first instance, either you're newly in love or you need to be
+rushed to the emergency room. In the second, you are a boy scout
+awkwardly exclaiming your excitement over meeting the requirements for
+a merit badge. In both instances, you were able to easily specify
+options for the task.
+
+This refinement of the `fire` task introduced two command line
+options, `thing` and `pluralize`. These options are defined using the
+options DSL. In the case of `thing`, `t` specifies the option's short
+name and `thing` specifies the long name. `THING` is a little
+complicated, and I'll get to it in a second. `str` specifies the
+option's type, and Boot uses that both to validate the argument and
+convert it. `"The thing that's on fire"` is the documentation for the
+option. You can view a task's documentation with `boot task-name -h`:
+
+```bash
+boot fire -h
+# Announces that something is on fire
+# 
+# Options:
+#   -h, --help         Print this help info.
+#   -t, --thing THING  Set the thing that's on fire to THING.
+#   -p, --pluralize    Whether to pluralize
+```
+
+Pretty groovy! Boot makes it very, very easy to write code that's
+meant to be invoked from the command line.
+
+Now, about `THING`. `THING` is an *optarg* and it indicates that this
+option expects an argument. You don't have to include an optarg when
+you're defining an option (notice that the `pluralize` option has no
+optarg). The optarg doesn't have to correspond to the full name of the
+option; you could replace `THING` with `BILLY_JOEL` or whatever you
+want and the task would work the same. Finally, you can also designate
+[complex options](https://github.com/boot-clj/boot/wiki/Task-Options-DSL#complex-options)
+using the optarg. (That link will take you to Boot's documentation on
+the subject.) Basically, complex options allow you to specify that
+option arguments should be treated as as maps, sets, vectors, or even
+nested collections. It's pretty powerful.
+
+Boot provides you with all the tools you could ask for in building
+command-line interfaces with Clojure. And you've only just started
+learning about it!
+
+## The REPL
+
+
+
+## Composition
+
+## Coordination
