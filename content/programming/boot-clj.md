@@ -86,7 +86,6 @@ a Clojure script, standalone Clojure code that you can easily run from
 the command line. No `project.clj` or directory structure or
 namespaces needed!
 
-
 Let's extend the example to demonstrate how you'd write command line
 options:
 
@@ -155,8 +154,31 @@ learning about it!
 
 ## The REPL
 
+Boot comes with a good number of useful built-in tasks, including a
+REPL task; run `boot repl` to fire up that puppy. The Boot REPL is
+similar to Leiningen's in that it handles loading your project code so
+that you can play around with it. You might not think this applies to
+the project you've been writing because you've only written tasks, but
+you can actually run tasks in the REPL (I've left out the
+`boot.user=>` prompt):
 
+```clojure
+(fire "-t" "NBA Jam guy")
+; My NBA Jam guy is on fire!
+;=> nil
+
+(fire "-p" "-t" "NBA Jam guys")
+; My NBA Jam guys are on fire!
+;=> nil
+```
+
+Pretty sweet! Of course, you can also use `deftask` in the REPL
+&ndash; it's just Clojure, after all. The takeaway is that Boot lets
+you interact with your tasks as Clojure functions, because that's what
+they are.
 
 ## Composition
+
+
 
 ## Coordination
