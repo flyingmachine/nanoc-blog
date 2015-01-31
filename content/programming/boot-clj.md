@@ -11,14 +11,14 @@ Build tools are known to inspire the entire gamut of emotions from
 bored impatience to Homeric rage (I'm looking at you,
 Grunt). Personally, I've never given them much thought; they've always
 seemed like tedious overhead, an unfortunate necessity for getting
-*real work* done.
+*real* work done.
 
 Recently, though, I've started learning about
-[Boot](http://boot-clj.com/), and it's made me believe that build
-programming can actually be interesting. This article will explain
-Boot's underlying concepts and guide you through writing your first
-Boot tasks. If you're interested in using Boot to build projects right
-this second, then check out its
+[Boot](http://boot-clj.com/), and I've found that build programming
+can actually be interesting. This article will explain Boot's
+underlying concepts and guide you through writing your first Boot
+tasks. If you're interested in using Boot to build projects right this
+second, then check out its
 [github README](https://github.com/boot-clj/boot) and its
 [wiki](https://github.com/boot-clj/boot/wiki).
 
@@ -186,6 +186,61 @@ Clojure, after all. The takeaway is that Boot lets you interact with
 your tasks as Clojure functions, because that's what they are.
 
 ## Composition and Coordination
+
+If what you've seen so far was all that Boot had to offer, it'd be a
+pretty swell tool, though not very different from other build
+tools. One thing that sets Boot apart, though, is how it lets you
+compose tasks. For comparison's sake, here's an example Rake
+invocation (Rake is the premier Ruby build tool):
+
+```
+rake db:create db:migrate db:seed
+```
+
+In case you were wondering, this will create a database, run
+migrations on it, and populate it with seed data when run in a Rails
+project. What's worth noting, however, is that Rake doesn't provide
+any way for these tasks to communicate with each other. Specifying
+multiple tasks is just a convenience, saving you from having to run
+`rake db:create; rake db:migrate; rake db:seed`. If you want to access
+the result of Task A within Task B, the build tool doesn't help you;
+you have to manage that coordination yourself. Usually, you'll do this
+by shoving the result of Task A into a special place on the
+filesystem, and then making sure Task B reads that special place.
+This looks like programming with mutable, global variables, and it's
+just as brittle.
+
+### Middleware
+
+Boot addresses this problem by treating tasks as *middleware*. If
+you're familiar with [Ring](https://github.com/ring-clojure/ring),
+Boot's tasks work almost exactly the same way; feel free to skip to
+the next section.
+
+If you're not familiar with the concept, then allow me to explain!
+Middleware are functions that are meant to adhere to a few
+domain-specific conventions when they're composed. You can think of
+those conventions as the middleware *interface*. This can be
+understood by comparing middleware functions to regular functions. (By
+the way, I'm going to use *middleware function* and *middleware*
+interchangeably.) Here's an example of composing everyday functions:
+
+```clojure
+(def strinc (comp str inc))
+(strinc 3)
+; => "4"
+```
+
+There's nothing domain-specific about this function composition. This
+function composition is so unremarkable that it strains my abilities
+as a writer to try and actually say anything about it. There are two
+functions, each doing its own thing, and now they've been been
+composed into one. Whoop-dee-do!
+
+Middleware functions, by contrast, are meant to be used in a
+particular domain.
+
+### Writing Tasks as Middleware
 
 
 
