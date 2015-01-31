@@ -15,14 +15,23 @@ seemed like tedious overhead, an unfortunate necessity for getting
 
 Recently, though, I've started learning about
 [Boot](http://boot-clj.com/), and it's made me believe that build
-programming can actually be interesting. Created by Micha Niskin and
-Alan Dipert, Boot is a completely controversy-free addition to the
-Clojure tooling landscape. On the surface, it's "merely" a convenient
-way to build Clojure applications and run Clojure tasks from the
-command line. But dig a little deeper and you'll see that Boot is like
-the lisped-up lovechild of Git and Unix, providing abstractions that
-make it much more pleasant to write code that exists at the
-intersection of your operating system and your application.
+programming can actually be interesting. This article will explain
+Boot's underlying concepts and guide you through writing your first
+Boot tasks. If you're interested in using Boot to build projects right
+this second, then check out its
+[github README](https://github.com/boot-clj/boot) and its
+[wiki](https://github.com/boot-clj/boot/wiki).
+
+## Boot's Abstractions
+
+Created by Micha Niskin and Alan Dipert, Boot is a completely
+controversy-free addition to the Clojure tooling landscape. On the
+surface, it's "merely" a convenient way to build Clojure applications
+and run Clojure tasks from the command line. But dig a little deeper
+and you'll see that Boot is like the lisped-up lovechild of Git and
+Unix, providing abstractions that make it much more pleasant to write
+code that exists at the intersection of your operating system and your
+application.
 
 Unix provides abstractions that we're all familiar with to the point
 of taking them for granted. (I mean, would it kill you to take your
@@ -172,13 +181,20 @@ you can actually run tasks in the REPL (I've left out the
 ;=> nil
 ```
 
-Pretty sweet! Of course, you can also use `deftask` in the REPL
-&ndash; it's just Clojure, after all. The takeaway is that Boot lets
-you interact with your tasks as Clojure functions, because that's what
-they are.
+And of course, you can also use `deftask` in the REPL &ndash; it's just
+Clojure, after all. The takeaway is that Boot lets you interact with
+your tasks as Clojure functions, because that's what they are.
 
-## Composition
-
+## Composition and Coordination
 
 
-## Coordination
+
+## Everything else
+
+The point of this article was to explain the concepts behind Boot. It
+has a bunch of features, like `set-env!` and `task-options!` that make
+life easier when you're actually using it. If Boot tickles your fancy,
+check out its (README)[https://github.com/boot-clj/boot] for more info
+on real-world usage. Also, its
+[wiki](https://github.com/boot-clj/boot/wiki) provides top-notch
+documentation. Have fun!
