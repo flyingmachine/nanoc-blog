@@ -210,7 +210,7 @@ filesystem, and then making sure Task B reads that special place.
 This looks like programming with mutable, global variables, and it's
 just as brittle.
 
-### Middleware
+### Handlers and Middleware
 
 Boot addresses this problem by treating tasks as *middleware
 factories*. If you're familiar with
@@ -218,12 +218,12 @@ factories*. If you're familiar with
 similarly; feel free to skip to the next section.
 
 If you're not familiar with the concept of middleware, then allow me
-to explain!  Middleware are functions that are meant to adhere to a
-few domain-specific conventions when they're composed. You can think
-of those conventions as the middleware *interface*. This can be
-understood by comparing middleware functions to regular functions. (By
-the way, I'm going to use *middleware function* and *middleware*
-interchangeably.) Here's an example of composing everyday functions:
+to explain! First, the term *middleware* refers to a set of
+*conventions* that programmers adhere to so that they can *flexibly
+create domain-specific function pipelines*. That's pretty dense, so
+let's un-dense it. To understand how the middleware approach differs
+from run-of-the-mill function composition, here's an example of
+composing everyday functions:
 
 ```clojure
 (def strinc (comp str inc))
@@ -237,8 +237,56 @@ as a writer to try and actually say anything about it. There are two
 functions, each doing its own thing, and now they've been been
 composed into one. Whoop-dee-do!
 
-Middleware functions, by contrast, are meant to be used in a
-particular domain.
+Middleware introduce an extra step to function composition, and this
+gives you more flexibility in defining your function
+pipeline. Suppose, in the example above, that you wanted to return `"I
+don't like the number X"` for arbitrary numbers, but still return the
+stringified number for everything else. Here's how you could do that:
+
+```clojure
+(defn whiney-str
+  [rejects]
+  {:pre [(set? rejects)]}
+  (fn [x]
+    (if (rejects x)
+      (str "I don't like " x)
+      (str x))))
+
+(def whiney-strinc (comp (whiney-str #{2}) inc))
+(whiney-strinc 1)
+; => "I don't like 2 :'("
+```
+
+Now let's take it one step further. What if you want to decide whether
+or not to call `inc` in the first place? Here's how you could do that:
+
+```clojure
+(defn whiney-middleware
+  [handler rejects]
+  {:pre [(set? rejects)]}
+  (fn [x]
+    (if (= x 1)
+      "I'm not going to bother doing anything to that"
+      (let [y (handler x)]
+        (if (rejects y)
+          (str "I don't like " y " :'(")
+          (str y))))))
+
+(def whiney-strinc (whiney-middleware inc #{3}))
+```
+
+Here, instead of using `comp` to create your function pipeline, you
+pass the next function in the pipeline as the first argument to the
+middleware function. We say that middleware take a *handler* as their
+first argument, and return a handler. Middleware can also take extra
+arguments, like `rejects`, that act as configuration. The result is
+that the handler returned by the middleware can behave more flexibly
+(thanks to configuration) and it has more control over the function
+pipeline (because it can choose whether or not to call the next
+handler).
+
+This is essentially how Ring works. With Ring, you write middleware
+that take a handler as an argument
 
 ### Writing Tasks as Middleware
 
@@ -249,7 +297,7 @@ particular domain.
 The point of this article was to explain the concepts behind Boot. It
 has a bunch of features, like `set-env!` and `task-options!` that make
 life easier when you're actually using it. If Boot tickles your fancy,
-check out its (README)[https://github.com/boot-clj/boot] for more info
+check out its [README](https://github.com/boot-clj/boot) for more info
 on real-world usage. Also, its
 [wiki](https://github.com/boot-clj/boot/wiki) provides top-notch
 documentation. Have fun!
