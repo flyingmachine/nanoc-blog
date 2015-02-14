@@ -212,15 +212,15 @@ just as brittle.
 
 ### Middleware
 
-Boot addresses this problem by treating tasks as *middleware*. If
-you're familiar with [Ring](https://github.com/ring-clojure/ring),
-Boot's tasks work almost exactly the same way; feel free to skip to
-the next section.
+Boot addresses this problem by treating tasks as *middleware
+factories*. If you're familiar with
+[Ring](https://github.com/ring-clojure/ring), Boot's tasks work very
+similarly; feel free to skip to the next section.
 
-If you're not familiar with the concept, then allow me to explain!
-Middleware are functions that are meant to adhere to a few
-domain-specific conventions when they're composed. You can think of
-those conventions as the middleware *interface*. This can be
+If you're not familiar with the concept of middleware, then allow me
+to explain!  Middleware are functions that are meant to adhere to a
+few domain-specific conventions when they're composed. You can think
+of those conventions as the middleware *interface*. This can be
 understood by comparing middleware functions to regular functions. (By
 the way, I'm going to use *middleware function* and *middleware*
 interchangeably.) Here's an example of composing everyday functions:
