@@ -172,11 +172,21 @@ you can actually run tasks in the REPL (I've left out the
 `boot.user=>` prompt):
 
 ```clojure
+;; pass arguments as flags
 (fire "-t" "NBA Jam guy")
 ; My NBA Jam guy is on fire!
 ;=> nil
 
+;; or as keywords
+(fire :thing "NBA Jam guy")
+; My NBA Jam guy is on fire!
+;=> nil
+
 (fire "-p" "-t" "NBA Jam guys")
+; My NBA Jam guys are on fire!
+;=> nil
+
+(fire :pluralize true :thing "NBA Jam guys")
 ; My NBA Jam guys are on fire!
 ;=> nil
 ```
@@ -215,15 +225,17 @@ just as brittle.
 Boot addresses this problem by treating tasks as *middleware
 factories*. If you're familiar with
 [Ring](https://github.com/ring-clojure/ring), Boot's tasks work very
-similarly; feel free to skip to the next section.
+similarly; feel free to skip to the next section.  If you're not
+familiar with the concept of middleware, then allow me to explain!
+First, the term *middleware* refers to a set of *conventions* that
+programmers adhere to so that they can *flexibly create
+domain-specific function pipelines*. That's pretty dense, so let's
+un-dense it. I'll go over the *flexible* part in this section, and
+cover *domain-specific* in the next.
 
-If you're not familiar with the concept of middleware, then allow me
-to explain! First, the term *middleware* refers to a set of
-*conventions* that programmers adhere to so that they can *flexibly
-create domain-specific function pipelines*. That's pretty dense, so
-let's un-dense it. To understand how the middleware approach differs
-from run-of-the-mill function composition, here's an example of
-composing everyday functions:
+To understand how the middleware approach differs from run-of-the-mill
+function composition, here's an example of composing everyday
+functions:
 
 ```clojure
 (def strinc (comp str inc))
@@ -231,7 +243,7 @@ composing everyday functions:
 ; => "4"
 ```
 
-There's nothing domain-specific about this function composition. This
+There's nothing interesting about this function composition. This
 function composition is so unremarkable that it strains my abilities
 as a writer to try and actually say anything about it. There are two
 functions, each doing its own thing, and now they've been been
@@ -262,12 +274,12 @@ or not to call `inc` in the first place? Here's how you could do that:
 
 ```clojure
 (defn whiney-middleware
-  [handler rejects]
+  [next-handler rejects]
   {:pre [(set? rejects)]}
   (fn [x]
-    (if (= x 1)
+    (if (= x 1) ; ~1~
       "I'm not going to bother doing anything to that"
-      (let [y (handler x)]
+      (let [y (next-handler x)]
         (if (rejects y)
           (str "I don't like " y " :'(")
           (str y))))))
@@ -277,27 +289,151 @@ or not to call `inc` in the first place? Here's how you could do that:
 
 Here, instead of using `comp` to create your function pipeline, you
 pass the next function in the pipeline as the first argument to the
-middleware function. We say that middleware take a *handler* as their
-first argument, and return a handler. Middleware can also take extra
-arguments, like `rejects`, that act as configuration. The result is
-that the handler returned by the middleware can behave more flexibly
-(thanks to configuration) and it has more control over the function
-pipeline (because it can choose whether or not to call the next
-handler).
+middleware function. In this case, you're passing `inc` as the first
+argument to `whiney-middleware`. `whiney-middleware` then returns an
+anonymous functions which closes over `inc` and has the ability to
+choose whether to call it or not. You can see this at `~1~`.
 
-This is essentially how Ring works. With Ring, you write middleware
-that take a handler as an argument
+We say that middleware take a *handler* as their first argument, and
+return a handler. In the example above, `whiney-middleware` takes a
+handler as its first argument, `inc` here, and it returns another
+handler, the anonymous function with `x` as its only
+argument. Middleware can also take extra arguments, like `rejects`,
+that act as configuration. The result is that the handler returned by
+the middleware can behave more flexibly (thanks to configuration) and
+it has more control over the function pipeline (because it can choose
+whether or not to call the next handler).
 
-### Writing Tasks as Middleware
+### Tasks are Middleware Factories
 
+Boot takes this pattern one step further by separating middleware
+configuration from handler creation. First, you create a function
+which takes *n* many configuration arguments. This is the *middleware
+factory* and it returns a middleware function. The middleware function
+expects one argument, the next handler, and it returns a handler, just
+like in the example above. Here's a whiney middleware factory:
 
+```clojure
+(defn whiney-middleware-factory
+  [rejects]
+  {:pre [(set? rejects)]}
+  (fn [handler]
+    (fn [x]
+      (if (= x 1)
+        "I'm not going to bother doing anything to that"
+        (let [y (handler x)]
+          (if (rejects y)
+            (str "I don't like " y " :'(")
+            (str y)))))))
+            
+(def whiney-strinc ((whiney-middleware-factory #{3}) inc))
+```
+
+As you can see, it's nearly identical to the previous example. The
+change is that the topmost function, `whiney-middleware-factory`, now
+only accepts one argument, `rejects`. It returns an anonymous
+function, the middleware, which expects one argument, a handler. The
+rest of the code is the same.
+
+In Boot, tasks can act as middleware factories. In fact, they usually
+do, I just didn't present them that way above in order to keep things
+simple. To show this, let's split the `fire` task into two tasks:
+`what` and `fire`. `what` will let you specify an object and whether
+it's plural, and `fire` will announce that it's on fire. This is
+great, modular software engineering because it allows you to add other
+tasks like `gnomes`, to announce that a thing is being overrun with
+gnomes, which is just as objectively useful.
+
+```clojure
+(deftask what
+  "Specify a thing"
+  [t thing     THING str  "An object"
+   p pluralize       bool "Whether to pluralize"]
+  (fn middleware [next-handler]
+    (fn handler [_]
+      (next-handler {:thing thing :pluralize pluralize}))))
+
+(deftask fire
+  "Announce a thing is on fire"
+  []
+  (fn middleware [next-handler]
+    (fn handler [thing-map]
+      (let [updated-thing-map (next-handler thing-map)
+            verb (if (:pluralize thing-map) "are" "is")]
+        (println "My" (:thing thing-map) verb "on fire!")))))
+```
+
+Here's how you'd run this on the command line:
+
+```
+boot what -t "pants" -p -- fire
+```
+
+And here's how you'd run it in the REPL:
+
+```clojure
+(boot (what :thing "pants" :pluralize true) (fire))
+```
+
+Exercise for the reader: create the `gnome` task.
+
+### Filesets
+
+I mentioned earlier that middleware are for creating *domain-specific*
+function pipelines. All that means is that each handler expects to
+receive domain-specific data, and returns domain-specific data. With
+Ring, for example, each handler expects to receive a *request map*
+representing the HTTP request. This might look something like:
+
+```clojure
+{:server-port 80
+ :request-method :get
+ :scheme :http}
+```
+
+Each handler can choose to modify this request map in some way before
+passing it on to the next handler, say by adding a `:params` key with
+a nice Clojure map of all query string and POST parameters. Ring
+handlers return a *response map*, which consists of the keys
+`:status`, `:headers`, and `:body`, and once again each handler can
+transform this data in some way before returning it to its parent
+handler.
+
+In Boot, each handlers receives and returns a
+[*fileset*](https://github.com/boot-clj/boot/wiki/Filesets).  The
+fileset abstraction gives you a way to treat files on your filesystem
+as immutable data, and this is a great innovation for build tools
+because building projects is so file-centric. For example, your
+project might need to place temporary, intermediary files on the
+filesystem. Usually, with build tools that aren't Boot, these files
+get placed in some specially-named place, say,
+`project/target/tmp`. The problem with this is that
+`project/target/tmp` is effectively a global variable, and other tasks
+can accidentally muck it up.
+
+The fileset abstraction works by adding a layer of indirection on top
+of the filesystem. Let's say Task A creates File X and tells the
+fileset to store it. Behind the scenes, the fileset stores the file in
+an anonymous, temporary directory. The fileset then gets passed to
+Task B, and Task B modifies File X and asks the fileset to store the
+result. Behind the scenes, a new file, File Y, is created and stored,
+but File X remains untouched. In Task B, an updated fileset is
+returned. This is the equivalent of doing `assoc-in` with a map; Task
+A can still access the original fileset and the files it references.
+
+The mechanics of working with filesets are all explained in
+[the fileset wiki](https://github.com/boot-clj/boot/wiki/Filesets),
+but I hope this gives a good conceptual overview!
 
 ## Everything else
 
-The point of this article was to explain the concepts behind Boot. It
-has a bunch of features, like `set-env!` and `task-options!` that make
-life easier when you're actually using it. If Boot tickles your fancy,
-check out its [README](https://github.com/boot-clj/boot) for more info
-on real-world usage. Also, its
-[wiki](https://github.com/boot-clj/boot/wiki) provides top-notch
-documentation. Have fun!
+The point of this article was to explain the concepts behind
+Boot. However, it also has a bunch of features, like `set-env!` and
+`task-options!` that make life easier when you're actually using
+it. It does *amazing magical things like providing classpath isolation
+so that you can run multiple projects using one JVM* and *letting you
+add new dependencies to your project without having to restart your
+REPL*.  If Boot tickles your fancy, check out its
+[README](https://github.com/boot-clj/boot) for more info on real-world
+usage. Also, its [wiki](https://github.com/boot-clj/boot/wiki)
+provides top-notch documentation. Have fun!
