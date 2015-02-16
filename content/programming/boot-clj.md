@@ -225,7 +225,7 @@ filesystem, and then making sure Task B reads that special place.
 This looks like programming with mutable, global variables, and it's
 just as brittle.
 
-### Handlers and Middleware
+## Handlers and Middleware
 
 Boot addresses this problem by treating tasks as *middleware
 factories*. If you're familiar with
@@ -309,7 +309,7 @@ the middleware can behave more flexibly (thanks to configuration) and
 it has more control over the function pipeline (because it can choose
 whether or not to call the next handler).
 
-### Tasks are Middleware Factories
+## Tasks are Middleware Factories
 
 Boot takes this pattern one step further by separating middleware
 configuration from handler creation. First, you create a function
@@ -388,7 +388,7 @@ that). Tasks are functions so you can call them directly, but if they
 use the fileset they will fail unless you call them via the boot
 macro." Wait a minute, what's a fileset?
 
-### Filesets
+## Filesets
 
 I mentioned earlier that middleware are for creating *domain-specific*
 function pipelines. All that means is that each handler expects to
