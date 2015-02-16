@@ -1,6 +1,6 @@
 ---
 title: Boot, Clojure Build Tooling
-created_at: Mon Feb 15 2015 08:00:00 -0500
+created_at: Mon Feb 15 2015 09:18:00 -0500
 kind: article
 categories: programming
 summary: "Build tools are known to inspire the entire gamut of emotions from
@@ -441,7 +441,7 @@ but I hope this gives a good conceptual overview!
 The point of this article was to explain the concepts behind
 Boot. However, it also has a bunch of features, like `set-env!` and
 `task-options!` that make life easier when you're actually using
-it. It does *amazing magical things like providing classpath isolation
+it. It does *amazing magical things* like *providing classpath isolation
 so that you can run multiple projects using one JVM* and *letting you
 add new dependencies to your project without having to restart your
 REPL*.  If Boot tickles your fancy, check out its
