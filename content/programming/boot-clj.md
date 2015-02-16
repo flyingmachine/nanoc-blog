@@ -1,5 +1,5 @@
 ---
-title: Boot, Clojure Build Tooling
+title: Boot, the Fancy New Clojure Build Framework
 created_at: Mon Feb 15 2015 09:18:00 -0500
 kind: article
 categories: programming
@@ -34,9 +34,9 @@ controversy-free addition to the Clojure tooling landscape. On the
 surface, it's "merely" a convenient way to build Clojure applications
 and run Clojure tasks from the command line. But dig a little deeper
 and you'll see that Boot is like the lisped-up lovechild of Git and
-Unix, providing abstractions that make it much more pleasant to write
-code that exists at the intersection of your operating system and your
-application.
+Unix in that it provides abstractions that make it much more pleasant
+to write code that exists at the intersection of your operating system
+and your application.
 
 Unix provides abstractions that we're all familiar with to the point
 of taking them for granted. (I mean, would it kill you to take your
@@ -447,4 +447,8 @@ add new dependencies to your project without having to restart your
 REPL*.  If Boot tickles your fancy, check out its
 [README](https://github.com/boot-clj/boot) for more info on real-world
 usage. Also, its [wiki](https://github.com/boot-clj/boot/wiki)
-provides top-notch documentation. Have fun!
+provides top-notch documentation.
+
+If you're new to Clojure, then check out
+[Clojure for the Brave and True](http://www.braveclojure.com/), an
+introduction to the language written by yours truly. Have fun!
