@@ -50,7 +50,7 @@ $h-family: $serif-family;
 }
 
 @mixin monospace-family {
-  font-family: Bitstream Vera Sans Mono, monospace;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
 
 // Colors

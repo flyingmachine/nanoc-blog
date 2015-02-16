@@ -3,8 +3,13 @@ title: Boot, Clojure Build Tooling
 created_at: Mon Feb 15 2015 08:00:00 -0500
 kind: article
 categories: programming
-summary: "Boot provides abstractions for creating Clojure tasks"
-draft: true
+summary: "Build tools are known to inspire the entire gamut of emotions from
+bored impatience to Homeric rage (I'm looking at you,
+Grunt). Personally, I've never given them much thought; they've always
+seemed like tedious overhead, an unfortunate necessity for getting
+<em>real</em> work done. Boot is different."
+additional_stylesheets:
+  - pygments
 ---
 
 Build tools are known to inspire the entire gamut of emotions from

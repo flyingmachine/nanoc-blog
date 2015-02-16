@@ -165,3 +165,14 @@ table.comparison {
   @include padding-leader(.5, 16px);
   @include padding-trailer(.5, 16px);
 }
+
+code {
+  font-size: 16px;
+  background: rgba(0,0,0, 0.04);
+  padding: 0.2em 0;
+  @include monospace-family;
+  &::before, &::after{
+    letter-spacing: -0.2em;
+    content: "\00a0 ";
+  }
+}
