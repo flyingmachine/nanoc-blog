@@ -1,6 +1,6 @@
 ---
 title: Boot, Clojure Build Tooling
-created_at: Tue Jan 5 2015 19:39:00 -0500
+created_at: Mon Feb 15 2015 08:00:00 -0500
 kind: article
 categories: programming
 summary: "Boot provides abstractions for creating Clojure tasks"
@@ -342,7 +342,8 @@ simple. To show this, let's split the `fire` task into two tasks:
 it's plural, and `fire` will announce that it's on fire. This is
 great, modular software engineering because it allows you to add other
 tasks like `gnomes`, to announce that a thing is being overrun with
-gnomes, which is just as objectively useful.
+gnomes, which is just as objectively useful. (Exercise for the reader:
+create the `gnome` task.)
 
 ```clojure
 (deftask what
@@ -375,7 +376,12 @@ And here's how you'd run it in the REPL:
 (boot (what :thing "pants" :pluralize true) (fire))
 ```
 
-Exercise for the reader: create the `gnome` task.
+Wait a minute, what's that `boot` call doing there? In Micha's words,
+"The `boot` macro takes care of setup and cleanup (creating the
+initial fileset, stopping servers started by tasks, things like
+that). Tasks are functions so you can call them directly, but if they
+use the fileset they will fail unless you call them via the boot
+macro." Wait a minute, what's a fileset?
 
 ### Filesets
 
