@@ -3,7 +3,7 @@ title: Review of Clojure Applied
 created_at: Sun Oct 18 2015 08:00:00 -0500
 kind: article
 categories: programming
-summary: "<em>Clojure Applied</em> is a good pick for intermediate Clojurists."
+summary: "<em>Clojure Applied</em> is a good choice for those looking to become intermediate Clojurists. It really shines in its coverage of testing and of decomposing your system into components. Besides that, it's filled with little gems from Java and the Clojure standard library."
 ---
 
 A while back, Clojure community czar and all around good guy
