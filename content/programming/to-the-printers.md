@@ -1,6 +1,6 @@
 ---
 title: "Clojure for the Brave and True Is Off to the Printers!"
-created_at: Aug 7 9:40:00 -0500 2015
+created_at: Aug 18 9:50:00 -0500 2015
 kind: article
 categories: programming, clojure
 summary: "Today, my fantastic production editor at No Starch reached out and pressed the basketball-sized \"RELEASE IT!\" button at No Starch headquarters, encasing <em>Clojure for the Brave and True</em> cucumber-infused amber and sending it on its way to the bookeries of Melrose Park, Illinois."
@@ -8,7 +8,7 @@ summary: "Today, my fantastic production editor at No Starch reached out and pre
 
 Today, my fantastic production editor at No Starch reached out and
 pressed the basketball-sized "RELEASE IT!" button at No Starch
-headquarters, encasing *Clojure for the Brave and True*
+headquarters, encasing [*Clojure for the Brave and True*](http://www.braveclojure.com/)
 cucumber-infused amber and sending it on its way to the bookeries of
 Melrose Park, Illinois.
 
@@ -19,6 +19,8 @@ September, and you can preorder it from
 [No Starch](https://www.nostarch.com/clojure) (free ebook included
 with print book) or
 [Amazon](http://www.amazon.com/Clojure-Brave-True-Ultimate-Programmer/dp/1593275919/).
+(Leanpubbers, you'll be getting the fully-updated ebook by the time the
+book is published.)
 
 The main work (writing a book) is done, but there's actually still
 more stuff to do. I need to finish rebuilding
@@ -36,6 +38,6 @@ Newton, Jalil Fanaian, Chris Parker, Christian Lilley, and Mark
 Daggett.
 
 I hope you're having a great day. I am! Now if you'll excuse me, I'm
-going to walk around the block pumping my fists in the air.
+going to go rediscover what it feels like to have free time.
 
 ![Sock Gnome](/assets/images/posts/to-the-printers/sock-gnome.png)
