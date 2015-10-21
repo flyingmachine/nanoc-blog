@@ -13,11 +13,12 @@ use the coupon code ZOMBIEHUGS to get 30% off at
 buy it from [Amazon](http://amzn.to/1jQXJ8a).
 
 The [web site](http://www.braveclojure.com/) has been updated, too!
-One of the reasons I went with No Starch as a publisher was that they
-supported the idea of keeping the entire book available for free
-online. It makes me super happy to release the professionally-edited,
-even better book for free. I hope it makes you laugh, cry, and give up
-on object-oriented programming forever.
+(Don't forget to force refresh.) One of the reasons I went with No
+Starch as a publisher was that they supported the idea of keeping the
+entire book available for free online. It makes me super happy to
+release the professionally-edited, even better book for free. I hope
+it makes you laugh, cry, and give up on object-oriented programming
+forever.
 
 Writing this book was one of the most ambitious projects of my life,
 and I appreciate all the support I've gotten from friends, family, and
@@ -43,9 +44,23 @@ illustrator) put together a
 The gear features the dwarf and warpig combo on the book cover :) This
 run only lasts one week - future runs will feature other illustrations
 from the book or from new projects. The money from that will help me
-continue avoid full-time employment so that I can continue creating
+continue avoiding full-time employment so that I can keep creating
 fun, high-quality Clojure content!
 
 Thank you, and have fun Clojuring!
 
 ![Brave and True](/assets/images/posts/brave-and-new/cover.png)
+
+[Update] I got asked for a list of the major differences. Here they are:
+
+* Illustrations!
+* Almost every chapter now has exercises
+* The first macro chapter, Read and Eval, is massively improved. I'm hoping this will gives readers an excellent conceptual foundation for working with macros
+* There's now a joke about melting faces
+* There used to be two Emacs chapters (basic emacs and using Emacs for Clojure dev), now there's just one
+* The concurrency chapter got split into two chapters
+* Appendices on Leiningen and Boot were added
+* The "Do Things" chapter is much friendlier
+* I spend a lot more time explaining some of the more obscure topics, like lazy sequences.
+* Many of the chapters got massive overhauls. The functional programming chapter, for example, was turned completely inside out, and the result is that it's much, much clearer
+* Overall, everything should be clearer
