@@ -55,3 +55,5 @@ etc.
 
 All in all, it's a good book. If you're looking for a good second book
 on Clojure, then *Clojure Applied* is an excellent choice!
+
+P.S. The Amazon links in this post are affiliate links, because why not?
