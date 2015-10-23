@@ -52,9 +52,11 @@ have a decent car, and I'm confident I can provide for my family. I
 even have enough free time for hobbies and friends.
 
 So, I wanted to provide something free to the world to help others
-improve their lives. Clojure might not seem like the most logical
-choice, but learning Clojure has personally made me a much better
-programmer, and I think others can benefit from it just as much.
+improve their lives. Learning Clojure has personally made me a much
+better programmer, and I think others can benefit from it just as
+much. In learning Clojure, you learn a new way of thinking about
+programming. It's intellectually rewarding and it has immense
+practical value; it makes your life as a programmer a lot easier.
 
 Plus, there's something romantic about learning a language that
 carries on a 60-year legacy. Like you're engaging in a tradition that
