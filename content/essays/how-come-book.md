@@ -1,9 +1,8 @@
 ---
 title: Why I wrote Clojure for the Brave and True
-created_at: Mon Oct 19 21:00:00 -0500 2015
+created_at: Thu Oct 22 20:00:00 -0500 2015
 kind: article
 summary: Some reflections on why I wrote the recently-released <em>Clojure for the Brave and True</em>
-draft: true
 ---
 
 It seems weird to say that I'm almost painfully filled with
@@ -39,8 +38,8 @@ think it's imperative to learn to live with kindness, love, and
 generosity. The bleak perspective on this is that the ship is going
 down for all of us, and the only thing we have to hold on to is each
 other. The not-bleak perspective is that we are social creatures,
-wired to find fulfillment in contributing to each others'
-happiness.
+wired to find fulfillment in contributing to each others' happiness,
+that our greatest joys are found in human connection.
 
 Which is why I wrote a programming book featuring hobbit violence,
 man-eating trolls, and mopey teenage vampires!
@@ -59,9 +58,12 @@ programmer, and I think others can benefit from it just as much.
 
 Plus, there's something romantic about learning a language that
 carries on a 60-year legacy. Like you're engaging in a tradition that
-extends far beyond you. And it's fun! It feels like something you'd
+extends far beyond you. And it's fun! Clojure feels like something you'd
 want to use in your spare time, for fun, but what's better is that you
 can actually get paid to use it.
 
 The other main reason I wrote the book was that I needed some way to
-tell the world about the were-Simmons. The danger is real!
+tell the world about the were-Simmons. The danger is real! Wake up,
+sheeple!
+
+![were-Simmons](/assets/images/posts/how-come-book/weresimmons.png)
