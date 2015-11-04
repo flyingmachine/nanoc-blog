@@ -270,7 +270,7 @@ I think anyone who tries clojure will agree that the syntax is  superior. At fir
 
 h2. Tips & Tricks
 
-* Cemerick's [clojure book](http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=aflyingmachin-20&o=1&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=1449394701) is the best, hands down. Just get it already.
+* Cemerick's [clojure book](http://amzn.to/1MyXhCx) is the best, hands down. Just get it already.
 * Use IRC - people on #clojure are super freakin helpful
 * People are really great on Twitter, too. I randomly mentioned a couple issues I had, and it was like these magical clojure faeries came and solved my problem for me. Pretty great.
 * Stack Overflow and reddit are good too.

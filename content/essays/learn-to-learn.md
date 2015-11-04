@@ -50,7 +50,7 @@ developing a new habit.
 One habit that you can start developing now is to identify your
 learning gaps
 (This list, by the way, is pulled in part from
-[Design for How People Learn](http://www.amazon.com/gp/product/0321768434/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0321768434&linkCode=as2&tag=aflyingmachin-20)):
+[Design for How People Learn](http://amzn.to/1Ww8EGk)):
 
 * Knowledge
     * What information do you need to be successful?
@@ -103,7 +103,7 @@ I have a [little essay](/essays/how-to-get-and-stay-motivated/) on
 this topic.
 
 Finally,
-["Change Anything"](http://www.amazon.com/Change-Anything-Science-Personal-Success/dp/0446573906/?tag=aflyingmachin-20)
+["Change Anything"](http://amzn.to/1Ww8ONY)
 is probably the best book I've read on developing new habits.
 
 I hope you find this helpful!

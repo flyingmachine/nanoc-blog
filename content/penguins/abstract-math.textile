@@ -10,7 +10,7 @@ h1. Abstract Mathematics and Programming
 
 If you've been alive long enough to develop language comprehension, you've probably heard that most people don't like math. The usual complaint is that it's just a bunch of formulas disconnected from everything and that you have to memorize in order to finish school.
 
-My opinion is that the poor souls who hate math have never been exposed to the abstract method. This is explained by Timothy Gowers in "Mathematics: a Very Short Introduction":http://books.google.com/books?id=DBxSM7TIq48C&lpg=PP1&pg=PA17#v=onepage&q&f=false :
+My opinion is that the poor souls who hate math have never been exposed to the abstract method. This is explained by Timothy Gowers in "Mathematics: a Very Short Introduction":http://amzn.to/1MyY5qW :
 
 bq.. What is the black king in chess? This is a strange question, and the most satisfactory way to deal with it seems to be to sidestep it slightly. What more can one do than point to a chessboard and explain the rules of the game, perhaps paying paprticular attention to the black king as one does so? What matters about the black king is not its existence, or its intrinsic nature, but the role that it plays in the game.
 
@@ -24,6 +24,6 @@ Besides its intrinsic value, I think that learning abstract math will make it ea
 
 I also believe that learning abstract math makes your thinking more flexible, but it's hard for me to describe how. You just see the world differently.
 
-The above book by Timothy Gowers seems like a good introduction. Personally I was introduced to the ideas through "Godel, Escher, Bach: an Eternal Golden Braid":http://www.amazon.com/gp/product/0465026567/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0465026567 and "Godel's Proof":http://www.amazon.com/gp/product/0814758371/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0814758371 . Both books are a true joy. The first can take awhile to get through, but the second is a considerably quicker read. They both demonstrate the beauty and delight within mathematics.
+The above book by Timothy Gowers seems like a good introduction. Personally I was introduced to the ideas through "Godel, Escher, Bach: an Eternal Golden Braid":http://amzn.to/1H7PS0X and "Godel's Proof":http://amzn.to/1Ww8bnj . Both books are a true joy. The first can take awhile to get through, but the second is a considerably quicker read. They both demonstrate the beauty and delight within mathematics.
 
 I regret that I don't have the time to provide some concrete examples of how learning this stuff is fun and could possibly help you learn  programming. However, I hope that writing about my own experiences might motivate folks to go out there and learn themselves some *real* math.

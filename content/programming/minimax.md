@@ -354,7 +354,7 @@ optimization techniques, like alpha-beta programming. Look for it!
 ## P.S.
 
 My motivation for writing all this came from reading
-[Land of Lisp: Learn to Program in Lisp, One Game at a Time!](http://www.amazon.com/gp/product/1593272812/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1593272812),
+[Land of Lisp: Learn to Program in Lisp, One Game at a Time!](http://amzn.to/1MyWXUg),
 which introduced me to minimax. It's one of the best programming books
 I've read: it was fun to read, and I learned a lot :) It's also the
 only programming book I know of to have [its own music

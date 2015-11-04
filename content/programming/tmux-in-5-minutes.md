@@ -65,6 +65,8 @@ type `tmk sample`.
 I hope you find this useful! For more information, you can check out
 [tmuxinator's github repo](https://github.com/tmuxinator/tmuxinator). You
 can do some pretty crazy stuff, like split your terminal into multiple
-panes. There's also a [a handy book](http://www.amazon.com/gp/product/1934356964/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1934356964&linkCode=as2&tag=aflyingmachin-20&linkId=KX7OZEGOV4WX5K7W) on tmuxinator available from the Pragmatic Programmers if you want to really go nuts with it.
+panes. There's also a [a handy book](http://amzn.to/1Ww8tut) on
+tmuxinator available from the Pragmatic Programmers if you want to
+really go nuts with it.
 
 I hope you've found this tip useful!

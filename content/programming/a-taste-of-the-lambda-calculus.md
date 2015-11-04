@@ -7,7 +7,7 @@ summary: "I've been having a brain-bending good time reading An Introduction to 
 ---
 
 I've been having a brain-bending good time reading
-[An Introduction to Functional Programming Through Lambda Calculus](http://www.amazon.com/gp/product/B00CWR4USM/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00CWR4USM&linkCode=as2&tag=aflyingmachin-20).
+[An Introduction to Functional Programming Through Lambda Calculus](http://amzn.to/1MyWGRe).
 Using examples from that book, this article will walk you through the
 basics of λ calculus. We'll then look at the surprising,
 counterintuitive way that the λ calculus lets us represent conditional
@@ -508,7 +508,7 @@ reader." :)
 I hope you've enjoyed this brief taste of the λ calculus! We've only
 scratched the surface of the kinds of neat things it's capable of. If
 you thought this article was fun, then I definitely recommend
-[An Introduction to Functional Programming Through Lambda Calculus](http://www.amazon.com/gp/product/B00CWR4USM/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B00CWR4USM&linkCode=as2&tag=aflyingmachin-20).
+[An Introduction to Functional Programming Through Lambda Calculus](http://amzn.to/1MyWGRe).
 This fun tome provided most or all of the examples I've used, though
 I've tried to present them in a way that's easier to understand. I
 also recommend

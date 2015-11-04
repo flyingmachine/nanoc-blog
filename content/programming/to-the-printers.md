@@ -18,7 +18,7 @@ it's actually done! Aaaaaah! It'll be available at the beginning of
 September, and you can preorder it from
 [No Starch](https://www.nostarch.com/clojure) (free ebook included
 with print book) or
-[Amazon](http://www.amazon.com/Clojure-Brave-True-Ultimate-Programmer/dp/1593275919/).
+[Amazon](http://amzn.to/1Sojd8s).
 (Leanpubbers, you'll be getting the fully-updated ebook by the time the
 book is published.)
 

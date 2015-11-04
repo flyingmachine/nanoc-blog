@@ -126,7 +126,7 @@ territory is worth exploring.
 ## Lisp Resources
 
 To get started, I recommend
-[Land of Lisp: Learn to Program in Lisp, One Game at a Time!](http://www.amazon.com/gp/product/1593272812/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1593272812). I
+[Land of Lisp: Learn to Program in Lisp, One Game at a Time!](http://amzn.to/1MyWXUg). I
 would say that it rivals _why's book in fun, creativity, and
 usefulness.
 
@@ -144,4 +144,4 @@ useful:
 * [On Lisp](http://www.paulgraham.com/onlisp.html) - Paul Graham's
   classic, for free. I haven't actually started this one yet but I'll
   be going through it next.
-* [Let Over Lambda](http://www.amazon.com/gp/product/1435712757/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1435712757) - I've only just started this and it's probably too advanced for me, but holy crap is it exciting to read!
+* [Let Over Lambda](http://amzn.to/1Ww8AWV) - I've only just started this and it's probably too advanced for me, but holy crap is it exciting to read!

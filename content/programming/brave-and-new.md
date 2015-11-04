@@ -10,7 +10,7 @@ summary: "The Clojure for the Brave and True web site has been updated to match 
 use the coupon code ZOMBIEHUGS to get 30% off at
 [No Starch](https://www.nostarch.com/clojure) (plus you'll get a free
 [sticker](https://www.nostarch.com/images/Clojure_Sticker.jpg)), or
-buy it from [Amazon](http://amzn.to/1jQXJ8a).
+buy it from [Amazon](http://amzn.to/1Sojd8s).
 
 The [web site](http://www.braveclojure.com/) has been updated, too!
 (Don't forget to force refresh.) One of the reasons I went with No

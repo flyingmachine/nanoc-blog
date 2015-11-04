@@ -9,7 +9,7 @@ summary: "<em>Clojure Applied</em> is a good choice for those looking to become 
 A while back, Clojure community czar and all around good guy
 [Alex Miller](http://twitter.com/puredanger) asked me to review a beta
 version of his nearly complete book
-[*Clojure Applied*](http://amzn.to/1PqXyOi), co-authored with Ben
+[*Clojure Applied*](http://amzn.to/1H7Pe3n), co-authored with Ben
 Vandgrift. This was great news for me because I was planning on buying
 it, but this way I would get it for free. Delighted, I downloaded my
 free copy, added a "review book" item to my todo list, then merrily
@@ -24,7 +24,7 @@ actually get off my ass and read and review the book!
 And I am glad I did, because it's a good one. *Clojure Applied* is
 aimed at people who know Clojure basics and want to learn how to write
 idiomatic code and create production applications, and if this
-describes you, then you should [get it](http://amzn.to/1PqXyOi). In
+describes you, then you should [get it](http://amzn.to/1H7Pe3n). In
 case you need more convincing, the rest of this post goes on about how
 good the book is.
 
@@ -55,5 +55,3 @@ etc.
 
 All in all, it's a good book. If you're looking for a good second book
 on Clojure, then *Clojure Applied* is an excellent choice!
-
-P.S. The Amazon links in this post are affiliate links, because why not?

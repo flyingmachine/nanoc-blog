@@ -192,11 +192,11 @@ uncover those assumptions.
 ## Further Reading
 
 * [Pragmatic Thinking and
-  Learning](http://www.amazon.com/gp/product/1934356050/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356050)
+  Learning](http://amzn.to/1Ww8WwI)
   . Learn how to learn.
 * [Your Brain at Work: Strategies for Overcoming Distraction,
   Regaining Focus, and Working Smarter All Day
-  Long](http://www.amazon.com/gp/product/0061771295/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0061771295)
+  Long](http://amzn.to/1Ww8YEO)
   . This is one of the most useful books I've ever read. It gave me a
   useful understanding of how my brain works, and how to make use of
   that knowledge to improve my work life.

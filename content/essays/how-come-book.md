@@ -38,7 +38,7 @@ think it's imperative to learn to live with kindness, love, and
 generosity. The bleak perspective on this is that the ship is going
 down for all of us, and the only thing we have to hold on to is each
 other. The not-bleak perspective is that we are social creatures,
-wired to find fulfillment in contributing to each others' happiness,
+wired to find fulfillment in contributing to each others' happiness;
 that our greatest joys are found in human connection.
 
 Which is why I wrote a programming book featuring hobbit violence,

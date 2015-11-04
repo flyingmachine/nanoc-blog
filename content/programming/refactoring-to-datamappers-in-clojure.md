@@ -30,8 +30,8 @@ In order to do this, I kept the following guidelines in mind:
 
 In the process I may have created an even more terrible monster than
 the one I started with and perhaps lost a few
-["sanity points"](http://www.amazon.com/gp/product/1589942108/ref=as_li_ss_tl?ie=UTF8&tag=aflyingmachin-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1589942108)
-but the process was fun and educational.
+["sanity points"](http://amzn.to/1H7NJ5e) but the process was fun and
+educational.
 
 ## Quick Project Overview
 
