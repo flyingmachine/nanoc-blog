@@ -1,6 +1,6 @@
 ---
 title: Why Clojure's a Great Next Language for Rubyists
-created_at: Sat Nov 7 2015 11:00:00 -0400
+created_at: Tue Nov 10 2015 11:00:00 -0400
 kind: article
 categories: programming
 summary: "Rubyists enjoy Ruby because it's simple, powerful, and a joy to use. Clojure has all of those qualities, plus it employs a completely different paradigm that's crazy fun to learn. If you're looking to learn a new language, Clojure's a great choice."
