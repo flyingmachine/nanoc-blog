@@ -1,6 +1,6 @@
 ---
 title: Why Clojure's a Great Next Language for Rubyists
-created_at: Tue Nov 10 2015 11:00:00 -0400
+created_at: Wed Nov 11 2015 10:00:00 -0400
 kind: article
 categories: programming
 summary: "Rubyists enjoy Ruby because it's simple, powerful, and a joy to use. Clojure has all of those qualities, plus it employs a completely different paradigm that's crazy fun to learn. If you're looking to learn a new language, Clojure's a great choice."
@@ -19,12 +19,12 @@ summary: "Rubyists enjoy Ruby because it's simple, powerful, and a joy to use. C
 
 If you're a Rubyist itching to learn a new language, then I want to
 convince you (using only a minimum of mouth frothing and chair
-flipping) that Clojure's a great pick for you. Please, please excuse
-me if this article reeks of the glassy-eyed fanaticism of the true
-believer, but the fact is that I think Clojure is crazy stupid fun to
-use, and intellectually rewarding to boot.
+flipping) that Clojure's a great pick for you. Please excuse me if
+this article reeks of the glassy-eyed fanaticism of the true believer,
+but the fact is that I think Clojure is crazy stupid fun to use, and
+intellectually rewarding to boot.
 
-Ever since I fell in love with Ruby back in 2005, only Clojure has
+I fell in love with Ruby back in 2005, and since then only Clojure has
 been able to elicit the same level of affection. I think this is
 because Clojure has the same fundamental attributes that make Ruby so
 appealing: it's *simple*, it's *powerful*, and above all, it's
@@ -37,7 +37,7 @@ My first exposure to Ruby was
 [DHH's whoops-laden Ruby on Rails demo](https://www.youtube.com/watch?v=Gzj723LkRJY).
 That video saved me from the Lovecraftian horror that was PHP
 circa 2005. You may have had a similar experience, with Ruby rescuing
-you from C++ or Java or COBOL or whatever. Ruby
+you from C++ or Java or COBOL or whatever.
 
 It's a vast understatement to say that, compared to PHP, Ruby is
 elegant. Whereas PHP seemed almost to strive for inconsistency, Ruby
@@ -53,19 +53,18 @@ elaborating on what it means for something to be simple, including
 and
 [Clojure, Made Simple](https://www.youtube.com/watch?v=VSdnJDO-xdg).
 
-Clojure's simplicity, however, takes a radically different
-form. In Clojure, you primarily care about two things: data and
-functions. You pass data to functions and get new data back. Yes,
-there's other interesting stuff like state management constructs and
-macros, just as there are other interesting aspects of ruby like
-modules and blocks. But the heart of Clojure is so simple any eighth
-grade algebra student can understand: hand some value to a function,
-and it hands you a new value back.
+Clojure's simplicity, however, takes a radically different form. In
+Clojure, you primarily care about two things: data and functions. You
+pass data to functions and get new data back. Yes, there's other
+interesting stuff like state management constructs and macros, just as
+there are other interesting aspects of Ruby like modules and
+blocks. But the heart of Clojure is so simple any eighth grade algebra
+student can understand it: hand some value to a function, and it hands
+you a new value back.
 
 "But wait a minute," you might be thinking, "You can't just pass data
 around like that. Haven't you read POODR? What about encapsulation?
-What if one of those functions turns your data into something crazy,
-like a, uh, condescending walrus with goatee?"
+What if those functions mutate your data?"
 
 In Clojure, data is *immutable*. You can't change existing data, you
 can only derive new data; when you add 3 and 4, you don't change 3 or
@@ -76,28 +75,29 @@ to this book I wrote available free online,
 explains how) and hope that your intellectual curiosity will motivate
 you to explore this crazypants paradigm that lots of people seem to
 love. Here's a teaser: many of the problems addressed by
-object-oriented design simply aren't problems in Clojure. Learning
-Clojure will result in a surplus of unused brain cycles.
+object-oriented design simply aren't problems in Clojure. You don't
+have to care about inheritance vs. composition because behavior isn't
+chained to data. You don't have to care about data hiding because
+there's no risk that some object somewhere will silently change it.
 
 As a Rubyist, you know that simplicity buys you power, where power is
-defined as the ability to express computational ideas
-concisely. For example, Ruby's blocks allow you to write anonymous
-algorithms, something that's impossible in C.
-
-Another example: Ruby's simple method dispatch scheme makes it easy
-for you to reason about and design robust programs. It lets you easily
-extend code and buys you reuse through multiple inheritance. Most
-enticingly, it lets you do metaprogramming.
+defined as the ability to express computational ideas concisely. For
+example, Ruby's blocks allow you to write anonymous algorithms,
+something that's impossible in C.  Another example: Ruby's simple
+method dispatch scheme makes it easy for you to reason about and
+design robust programs. It lets you easily extend code and buys you
+reuse through multiple inheritance. Most enticingly, it lets you do
+metaprogramming.
 
 Clojure's simplicity also buys you power. As a Lisp, Clojure employs a
-unify syntax which just so happens to mirror the internal
-abstract syntax trees that represent Clojure code. I'm going to wave
-my hands a bit here and say that this lets you use *macros*, the most
-powerful metaprogramming tool available to any language. In the Ruby
-community, we like to talk about code that writes code; macros take
-this idea to a whole different level. It's not an exaggeration to say
-that Ruby's metaprogramming system provides only a subset of the
-capability provided by Lisp macros.
+syntax which just so happens to mirror the internal abstract syntax
+trees that represent Clojure code. I'm going to wave my hands a bit
+here and say that this lets you use *macros*, the most powerful
+metaprogramming tool available to any language. In the Ruby community,
+we like to talk about code that writes code; macros take this idea to
+a whole different level. It's not an exaggeration to say that Ruby's
+metaprogramming system provides only a subset of the capability
+provided by Lisp macros.
 
 Super duper hand wavy, I know, but the point is: if you like how
 powerful Ruby is, you will lose your flipping mind over how powerful
@@ -125,7 +125,12 @@ programming vistas become more readily accessible.
 Second, Clojure is a joy to write. Here's a quote from Matz (Ruby's
 creator) on his design philosophy:
 
-> By using Ruby, I want to concentrate the things I do, not the magical rules of the language, like starting with public void something something something to say, "print hello world." I just want to say, "print this!" I don't want all the surrounding magic keywords. I just want to concentrate on the task. That's the basic idea. So I have tried to make Ruby code concise and succinct.
+> By using Ruby, I want to concentrate the things I do, not the
+> magical rules of the language, like starting with public void
+> something something something to say, "print hello world." I just
+> want to say, "print this!" I don't want all the surrounding magic
+> keywords. I just want to concentrate on the task. That's the basic
+> idea. So I have tried to make Ruby code concise and succinct.
 
 Clojure, likewise, is concise. It lets you focus on solving the
 problem at hand rather than figuring out the magic whatever. People
@@ -145,5 +150,7 @@ started:
   book by Carin Meier, someone who BUILDS ROBOTS
 * [LispCasts](http://www.purelyfunctional.tv/) for those of you who
   prefer video
+* [The Rich Hickey FanClub](https://github.com/tallesl/Rich-Hickey-fanclub)
+  lists all his talks
 
 Now go out there and start learning some Clojure!
