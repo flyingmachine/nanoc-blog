@@ -1,6 +1,6 @@
 ---
 title: Announcing Job Search Sanity
-created_at: Wed Dec 9, 2015
+created_at: Wed Dec 09 2015 11:15:00 -0500
 kind: article
 categories: penguins
 summary: "Today I'm releasing a free web application, <a href='https://jobsearchsanity.com'>Job Search Sanity</a>. It lets you take a methodical approach to looking for a job search, helping you make progress and feel in control."
