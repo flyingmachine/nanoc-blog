@@ -111,31 +111,3 @@ their own prejudice (see this article on
 [hip hop and homophobia](http://blog.myspace.com/index.cfm?fuseaction=blog.view&friendID=15116190&blogID=229642761&MyToken=eae2c553-d21f-4e45-b216-4f651977b86a)
 .) In fact, I'm sure there's a lot of literature on the subject and if
 anyone could point me to it I would appreciate it.
-
-
-
-In the mean time, I only want to address two questions:
-How difficult is it to change this component of identity?
-What happens when this component of identity is challenged?
-Lincoln argued that slaveowners "are just what we would be in their situation." (p167)
-===
-He had begun to lay away savings for the store he had always wanted to own when, as always, some stupid local Uncle Tom Negroes began to funnel stories about his revolutionary beliefs to the local white people. This time, the get-out-of-town threats came from a local hate society called The Black Legion. They wore black robes instead of white. Soon, nearly everywhere my father went, Black Legionnaires were reviling him as an "uppity nigger" for wanting to own a store, for living outside the Lansing Negro district, for spreading unrest and dissention among "the good niggers."
-As in Omaha, my mother was pregnant again, this time with my youngest sister. Shortly after Yvonne was born came the nightmare night in 1929, my earliest vivid memory. I remember being suddenly snatched awake into a frightening confusion of pistol shots and shouting and smoke and flames. My father had shouted and shot at the two white men who had set the fire and were running away. Our home was burning down around us... The white police and firemen came and stood around watching as the house burned down to the ground.
-===
-//
-black like me on bus woman spits
-http://books.google.com/books?id=ObTddfcqk2gC&pg=PA20&lpg=PA20&dq=black+like+me+train&source=web&ots=YZxQiL-uIh&sig=1vq7XqZXulnBiPshOx3B3V0RwcM&hl=en&sa=X&oi=book_result&resnum=1&ct=result#PPA20,M1a hate stare
-http://books.google.com/books?id=ObTddfcqk2gC&pg=PA51&vq=change&dq=black+like+me+train&source=gbs_search_s&sig=ACfU3U3tdsCg95TD3K9dNIZLTu-nZLXyEghomophobia in hip hop
-http://blog.myspace.com/index.cfm?fuseaction=blog.view&friendID=15116190&blogID=229642761&MyToken=eae2c553-d21f-4e45-b216-4f651977b86auchi-soto, japanese ingroup outgroup
-http://en.wikipedia.org/wiki/Uchi-sotoin group altruism and hostility toward outsiders evolved together
-http://www.sciencedaily.com/releases/2007/10/071026173536.htmlincoln nebraska speech
-http://www.vlib.us/amdocs/texts/kansas.html//
-Build a sense of identity on stronger ground.
-Have you ever read ? It's a short story by Flannery O'Connor. I finally found it online: . I read it for the first time maybe 8 years ago and it's really stuck with me. It made me realize that racism can be part of someone's very identity. I'm reading The Grapes of Wrath again now, and Steinbeck has the characters talk about how the land is who they are - how the earth where a grandfather got gored by a bull is who they are, how the house where a son is born is who they are, etc. I don't think someone strongly racist would think of himself in those terms. But I think the civil rights movement had the same effect on racist whites that the dustbowl (and consequent having to move) had on Okies. The civil rights movement probably made them feel like a part of who they were was being taken from them. And I guess I see that a lot now, especially when it comes to politics and "hot button issues". The way people act and talk, it looks like they feel the same fear and anger from perceiving that someone's trying to take away a part of who they are. Anyway, the story is really good :).
-///////
-I've been thinking about the phrase "love the sinner, hate the sin" from a different standpoint. This really all started many years ago when I read a short story, "Everything that Rises Must Converge" (by Flannery O'Connor). One thing I got from the story was that racism can be very much a part of someone's identity - that it can be part of who someone is to consider him/herself better than whole classes of people people just because they belong to a different race.
-Recently I started re-reading the Grapes of Wrath, and it describes how the Okies felt like they were losing a part of themselves, losing their sense of their place in the world, when they got pushed off their land. The Flannery O'Connor story made me realize that racism can be just like that. That southern whites probably felt the same sense of loss and disorientation with the changes that the civil rights movement brought.
-Personally, I would consider racism a sin. It degrades people in a way that few things can. But what if I had been born to a white family in Alabama in the 1930's? Would I have been out torching black folk's houses? Or would I not have actually *done* anything, but inside harbor a bitterness and an ready contempt for black people? Even Abraham Lincoln said that if he had been born in the South, he would probably think as Southerners did.
-So it seems to me that a lot of what we think is right or wrong is bound up in our own personal identities, in our ability to make sense of the world and feel secure in our relations with other people. Some of us get lucky and are born in cultures which overwhelming "tell" individuals that they should relate to each other as equals.
-At this point my thinking if pretty fuzzy, and I apologize. The overall gist, though, is that I think it makes sense to "love the sinner" because the command people have over setting their own moral compass is so tenuous, and the ability to act in accordance with it so impeded by other competing human instincts, that I personally have no right to condemn another person for what they've done. What I really mean to say is - I have an obligation to *not* treat others as less than human because they've done something I think is wrong. We're all in the same boat, trying to make sense of the world and be decent people.
-// incorporate batman no man's land vol 4 doctor who talks about pacifism
