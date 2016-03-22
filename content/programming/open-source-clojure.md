@@ -1,6 +1,6 @@
 ---
 title: A Directory of Open Source Clojure Projects
-created_at: Sat Mar 19 2016 12:00:00 -0500
+created_at: Sun Mar 20 2016 12:00:00 -0500
 kind: article
 categories: programming
 summary: "<a href='http://open-source.braveclojure.com/'>Open Source Clojure Projects</a> is a directory of active projects welcoming new contributors. Its purpose is to make it easier for both new and experienced Clojurists to find ways to contribute."
@@ -127,7 +127,8 @@ involved in deployment.
 The Ansible configuration is almost completely reusable. You can check
 it out in `infrastructure/ansible`. The `roles` directory in
 particular has Ansible tasks for creating an nginx server that can run
-Clojure apps.
+Clojure app. It also includes an Upstart script for controlling
+startup/shutdown of your Clojure app (assuming you use Ubuntu).
 
 ## The Future
 
