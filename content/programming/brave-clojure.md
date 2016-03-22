@@ -97,5 +97,5 @@ signing up for my newsletter, where I'll announce every release:
 
 Writing _Clojure for the Brave and True_ was one of the most rewarding
 experiences of my life in large part because I got to interact with so
-many kind, thoughtful, intelligent people. I look forward to embarking
-on this new _chapter_ of my journey with you!
+many kind, thoughtful, intelligent people. I look forward to your
+company as I embark on this new _chapter_ of my journey!
