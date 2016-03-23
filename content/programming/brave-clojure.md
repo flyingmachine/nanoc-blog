@@ -1,9 +1,9 @@
 ---
 title: "Brave Clojure: Become a Better Programmer"
-created_at: Mon Mar 21 2016 20:00:00 -0500
+created_at: Tue Mar 22 2016 08:00:00 -0500
 kind: article
 categories: programming
-summary: "In one week I'm re-launching <a href='http://www.braveclojure.com/'>www.braveclojure.com</a> as <em>Brave Clojure: Become a Better Programmer</em>."
+summary: "Next week I'm re-launching <a href='http://www.braveclojure.com/'>www.braveclojure.com</a> as <em>Brave Clojure: Become a Better Programmer</em>."
 ---
 
 Next week week I'm re-launching
@@ -16,7 +16,7 @@ cherish _become better programmers_.
 Like many other Clojurists, I fell in love with the language because
 learning it made me a better programmer. I started learning it because
 I was a bit bored and burnt out on the languages and tools I had been
-using. Ruby, Javascript, Objective-C (the hipster triad circa 2012?)
+using. Ruby, Javascript, Objective-C (the trendy triad circa 2012?)
 weren't radically different from each other, and after using them for
 many years I felt like I was stagnating.
 
@@ -75,6 +75,15 @@ closest friends, enemies, and even frenemies become better programmers
 by writing about these big ideas, I'm also going to spend time
 covering practical Clojure topics like deployment and debugging.
 
+To make this happen, I'm working a (great) job only two days a week
+and spending the rest of the time on Brave Clojure, so I'll need to
+find a way to derive income from the site. I'm not sure yet what will
+be free and what won't. My dream is to make _all_ the content
+available online for free. That's what gives me joy, and I think it's
+the best way to have a positive impact. Ideally, I would be supported
+in this endeavor through monthly donations, but I'll likely try
+different approaches over time.
+
 Finally, I've been putting together two sites to help you up your
 game:
 [Open Source Clojure Projects](http://open-source.braveclojure.com/),
@@ -84,7 +93,8 @@ board. The latter is still in beta, and I'm going to officially
 release it and move it to https://jobs.braveclojure.com next week. The
 best way to get better at Clojure is to actually write Clojure, and
 working on real projects (and even getting paid to do so) is a great
-way to do that.
+way to do that. Companies who buy job board ads will also be
+supporting me in making more content - hooray!
 
 If you get excited about learning more programming ideas, or learning
 to develop Clojure programs better, or getting paid cold hard cash to
