@@ -16,9 +16,9 @@ cherish _become better programmers_.
 Like many other Clojurists, I fell in love with the language because
 learning it made me a better programmer. I started learning it because
 I was a bit bored and burnt out on the languages and tools I had been
-using. Ruby, Javascript, Objective-C (the trendy triad circa 2012?)
-weren't radically different from each other, and after using them for
-many years I felt like I was stagnating.
+using. Ruby, Javascript, Objective-C weren't radically different from
+each other, and after using them for many years I felt like I was
+stagnating.
 
 But Clojure, with its radically different approach to computation (and
 those exotic parentheses) drew me out of my programming funk and made
