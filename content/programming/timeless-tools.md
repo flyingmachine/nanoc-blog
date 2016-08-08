@@ -13,42 +13,6 @@ every day. Here are mine; I'd love to hear what yours are so I can
 experience both the joy of discovery and regret for not learning about
 the tool earlier.
 
-### Regular Expressions
-
-Yeah, yeah, we've all heard the joke: "something something regular
-expressions, then you have two problems." Personally, I don't get it,
-because regular expressions are _seriously badass_. I remember going
-through O'Reilly's big fat regex book while I worked from 11pm till
-7am as a night auditor at a hotel when I was 18, and being blown away
-at how powerful they are. To say that we programmers deal with text
-all the time is so obvious, it's not even worth saying. Regular
-expressions are an essential tool,
-[and here's where you can learn to use them](http://regexone.com/)
-
-### Finite State Machines
-
-Regular expressions are built as _finite state machines_. Here's
-[a great tutorial on FSMs](http://www.gamedev.net/page/resources/_/technical/general-programming/finite-state-machines-and-regular-expressions-r3176)
-showing how to actually build a regular expression. It's extremely
-cool!
-
-I think FSMs are covered in computer science 101, but since I only
-went to college for a year and even then I studied works written a
-couple millennia before before the computer revolution, I didn't
-actually learn about them until about six years ago. My colleagues and
-I were having trouble with a mobile app - we needed the initialization
-process to happen in a particular way, and the logic for ensuring that
-was getting pretty tangled.
-
-Once we took the time to learn about FSMs, though, it was easy to
-express the process as a series of states and transitions. I've since
-found that most tricky UI code can be improved this way. Just a couple
-months ago I was having trouble building a typeahead element from
-scratch with [hoplon](http://hoplon.io/). Once I identified that the
-difficulty was in keeping track of all the possible states, it only
-took a few minutes drawing a state machine diagram and I was back on
-track.
-
 ### Relational Algebra / SQL
 
 I feel lucky that, during my fourteenth summer, I apparently had no
@@ -89,6 +53,42 @@ harder to understand how programs interact with each other. If you
 ever feel a vague sense that you don't really get what's going when
 you run the apps you write, learning the process model will go a long
 way toward clearing things up.
+
+### Regular Expressions
+
+Yeah, yeah, we've all heard the joke: "something something regular
+expressions, then you have two problems." Personally, I don't get it,
+because regular expressions are _seriously badass_. I remember going
+through O'Reilly's big fat regex book while I worked from 11pm till
+7am as a night auditor at a hotel when I was 18, and being blown away
+at how powerful they are. To say that we programmers deal with text
+all the time is so obvious, it's not even worth saying. Regular
+expressions are an essential tool,
+[and here's where you can learn to use them](http://regexone.com/).
+
+### Finite State Machines
+
+Regular expressions are built as _finite state machines_. Here's
+[a great tutorial on FSMs](http://www.gamedev.net/page/resources/_/technical/general-programming/finite-state-machines-and-regular-expressions-r3176)
+showing how to actually build a regular expression. It's extremely
+cool!
+
+I think FSMs are covered in computer science 101, but since I only
+went to college for a year and even then I studied works written a
+couple millennia before before the computer revolution, I didn't
+actually learn about them until about six years ago. My colleagues and
+I were having trouble with a mobile app - we needed the initialization
+process to happen in a particular way, and the logic for ensuring that
+was getting pretty tangled.
+
+Once we took the time to learn about FSMs, though, it was easy to
+express the process as a series of states and transitions. I've since
+found that most tricky UI code can be improved this way. Just a couple
+months ago I was having trouble building a typeahead element from
+scratch with [hoplon](http://hoplon.io/). Once I identified that the
+difficulty was in keeping track of all the possible states, it only
+took a few minutes drawing a state machine diagram and I was back on
+track.
 
 ### Emotion Management
 
