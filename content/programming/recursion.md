@@ -33,7 +33,7 @@ function factorial(n) {
 }
 ```
 
-What makes this function recursive is that factorial calls
+What makes this function recursive is that `factorial` calls
 itself. That's also what makes the function tricky; the function calls
 itself!?
 
