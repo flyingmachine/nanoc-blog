@@ -96,7 +96,7 @@ in giant filthy clumps all over. At the beginning of the year I
 suppressed my gag reflex long enough to clean it out with the goal of
 setting up a photo studio, which I did, only to let it sit for three
 months. So three months later I go in there to actually take photos
-and guess what: it's a compolete horror show, again!
+and guess what: it's a complete horror show, again!
 
 If I had only spent time every day or even every week maintaining it,
 I'm sure it would have been much easier to keep clean. If I had
