@@ -1,6 +1,6 @@
 ---
 title: My Writing Process
-created_at: Thu Aug 18 22:00:00 -0500 2016
+created_at: Mon Aug 22 18:00:00 -0500 2016
 kind: article
 summary: "Some notes on how I write that I hope will be useful to aspiring authors"
 ---
@@ -57,14 +57,15 @@ powerful to be able to perceive my identity as a construct as
 ephemeral as smoke.
 
 Around the same time, I started taking improv comedy classes, where I
-would spend two hours constantly coming up with new, unique characters
-and living in them for a few minutes at a time. When you're sold on
-the idea that your day-to-day _you_ is itself just a character, improv
-becomes way easier and more fun. It's also fun to do this in real
-life - like, recently my wife and I were at the grocery store and I
-decided my character was "Super Excited About Carrots Guy", and I
-started shouting "OH MY GAWD JESS CARROTS! THEY HAVE CARROTS JESS!
-CARROTS!" Everyone was laughing as they escorted me out!
+would spend two hours a week constantly coming up with new, unique
+characters and living in them for a few minutes at a time. When you're
+sold on the idea that your day-to-day _you_ is itself just a
+character, improv becomes way easier and more fun. It's also fun to do
+this in real life - like, recently my wife and I were at the grocery
+store and I decided my character was "Super Excited About Carrots
+Guy", and I started shouting "OH MY GAWD JESS CARROTS! THEY HAVE
+CARROTS JESS!  CARROTS!" Everyone was laughing as they escorted me
+out!
 
 Anyway, during this time of buddhism and improv I was writing _Clean
 Up Your Mess_ and when I sat down to write I got to play with new
