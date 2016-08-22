@@ -84,7 +84,7 @@ that 95% of the time you can take more time to explain something. Even
 if you're writing for experienced audiences, at least take the time to
 explain acronyms and jargon.
 
-## How often and how much do you write?
+## _How often and how much do you write?_
 
 Not enough and not enough! Writing was easiest, however, when I had a
 consistent schedule of writing at least one hour every single day.
@@ -124,18 +124,18 @@ understanding, has helped me be much more productive.
 
 ## Collaboration
 
-### Who does your drawings?
+### _Who does your drawings?_
 
 My wife! She's pretty great.
 
-### Do you have someone who edits for you?
+### _Do you have someone who edits for you?_
 
 I did when I worked with No Starch. They were awesome! _Clojure for
 the Brave and True_ is much, much better because they kept pushing me
 to write more clearly and explain things more fully. For other
 projects, I'll ask friends to look at drafts.
 
-### How much does it cost?
+### _How much does it cost?_
 
 I paid my wife in carrots. **OH MY GAWD JESS THEY HAVE CARROTS!**
 
