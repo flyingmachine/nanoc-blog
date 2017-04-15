@@ -1,6 +1,6 @@
 ---
 title: Techniques for Efficiently Learning Programming Languages
-created_at: Apr 10, 2017
+created_at: Apr 16, 2017
 categories: programming
 kind: article
 ---
