@@ -11,11 +11,13 @@ The Dark Knight came out at the same time that I was becoming intensely interest
 
 Buddhism teaches that suffering comes from constantly scrambling for stability in an unstable world. Nothing is permanent, but we strive mightily to hold on to the illusion of permanence, only to suffer when reality once again asserts itself.
 
-In the scene where Batman is in the interrogation room beating the shit out of the Joker, the Joker just laughs and says, "You have nothing! Nothing to threaten me with. Nothing to do with all your strength." And that cuts to the heart of who the Batman is: a person whose reaction to the first shock of impermanence (his parents dying) was to dedicate his life to developing his strength so that he would never experience that pain again. The Batman's entire being is an exercise in doing just one... more... thing... to establish control.
+In the scene where Batman is in the interrogation room beating the stuffing out of the Joker, the Joker just laughs and says, "You have nothing! Nothing to threaten me with. Nothing to do with all your strength." And that cuts to the heart of who the Batman is: a person whose reaction to the first shock of impermanence (his parents dying) was to dedicate his life to developing his strength so that he would never experience that pain again. The Batman's entire being is an exercise in doing just one... more... thing... to establish control.
 
 I mean, who would want to live that life?
 
-And here's the Joker, ready with the Zen slap: he tells Batman where to find Harvey and his girlfriend Rachel, giving him the illusion of choice. And we know how that turned out. In case you haven't watched the movie in the last year (shame on you!): the Joker lied to the caped crusader, telling him Rachel was at one address, but actually Harvey was there. Batmaan races to save Rachel, only to find that all his strength truly was empty.
+And here's the Joker, ready with the Zen slap: he tells Batman where to find Harvey and his girlfriend Rachel, giving him the illusion of control over who to save. And we know how that turned out: the Joker lied to the caped crusader, telling him Rachel was at one address, but actually Harvey was there. Batman races to save Rachel, only to find find Harvey instead. Nothing to do with all that strength.
+
+This really hit home for me because, at the time, I was in a relationship with someone that had a chronic illness. I could try to do everything to make her life less painful and more enjoyable, but there was only so much I or anyone could do.
 
 **Natural Metaphors and Endless Desire**
 
@@ -29,7 +31,7 @@ The Buddhist idea of "no self" is actually somewhat nuanced and I'm purposefully
 
 **Interconnectedness**
 
-One Buddhist teaching is the idea of interconnectedness: that we are all one, but not in the wavy-gravy way your high uncle used to ramble about. My take on the idea is that it's related to _no self_: you cannot point to a "you" that is separate from the world you exist in. It's a fallacy to believe your "you" is somehow different from the collection of experiences of the world, so that you are inextricably intertwined with the world. You can't point to one thing outside yourself and say "I am not this," because you are pointing at you moron, and so in that moment who you are is a guy pointing at that thing, and life is the accumulation of such moments.
+One Buddhist teaching is the idea of interconnectedness: that we are all one, but not in the wavy-gravy way your high uncle used to ramble about. My take on the idea is that it's related to _no self_: you cannot point to a "you" that is separate from the world you exist in. It's a fallacy to believe your "you" is somehow different from the collection of experiences of the world, so that you are inextricably intertwined with the world. You can't point to one thing outside yourself and say "I am not this," because you are pointing at it you moron, and so in that moment who you are is a guy pointing at that thing, and life is the accumulation of such experiences of things outside of "you."
 
 ANYWAY I am totally not your high uncle, OK? Point is, the idea of interconnectedness is meant to foster a sense of compassion. You can see that at the end of the movie when the Joker plays his hilarious "blow up the other boat" gag. Two boats full of strangers become enlightened, refusing to do harm to people they haven't even met.
 
