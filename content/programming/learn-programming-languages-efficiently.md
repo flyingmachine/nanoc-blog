@@ -2,6 +2,7 @@
 title: Techniques for Efficiently Learning Programming Languages
 created_at: Apr 16, 2017
 categories: programming
+summary: What follows are the best techniques for learning programming languages that I've picked up over years of teaching programming.
 kind: article
 ---
 
@@ -18,7 +19,7 @@ running
 these techniques are pulled from books explaining the latest research
 in efficient learning, and you can find those books (along with other
 great programming books) at
-[Learn Programming Community Picks](http://www.communitypicks.com/r/learnprogramming).
+[Community Picks: Learn Programming](http://www.communitypicks.com/r/learnprogramming).
 
 ## Test Yourself Constantly to Defeat The Illusion of Competence
 
@@ -31,12 +32,15 @@ illusion of competence_.
 A significantly better approach (and one of the best techniques you
 can employ) is to _test yourself constantly_. Instead of re-reading
 what a function or class or object is, ask yourself to define these
-concepts. This process often feels uncomfortable, but it's much more
-efficient at forming long term memories. You can take this one step
-further and _test yourself before you've covered the material_, which
-has also been shown aid memory formation.
+concepts or use them in a short program; force yourself to somehow
+demonstrate your understanding. This process often feels
+uncomfortable, but it's much more efficient at forming long term
+memories. You can take this one step further and _test yourself before
+you've covered the material_ by, for example, attempting exercises
+before reading a chapter. Remarkably, this has also been shown aid
+memory formation.
 
-The remarkable impact that testing has on learning is called _the
+The impressive impact that testing has on learning is called _the
 testing effect_, and here are some specific ways you can take
 advantage of it:
 
@@ -44,8 +48,8 @@ advantage of it:
   you're about to learn and write it down.
 * Try doing a chapter's exercises _before_ reading the chapter.
 * Always do exercises, even the hard ones. It's OK to give up on an
-  exercise and come back to it later, but at least try it. (More
-  on this in the next section.)
+  exercise and come back to it later (or never, even), but at least
+  try it. (More on this in the next section.)
 * Read a short program and try to recreate it without looking at the
   original code. Or, go smaller and do this with a function.
 * Immediately after learning a new concept like objects, classes,
@@ -208,7 +212,7 @@ energy drinks.
 If you have any useful tips, please leave them in the comments! If
 you'd like more excellent resources on learning to program, check out
 the
-[Learn Programming Community Picks](http://www.communitypicks.com/r/learnprogramming),
+[Community Picks: Learn Programming](http://www.communitypicks.com/r/learnprogramming),
 a community-curated collection of the best books for learning
 programming. It includes a wide array of subjects, including
 introductory programming books, books on craftsmanship, and books on
