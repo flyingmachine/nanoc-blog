@@ -6,9 +6,6 @@ categories: people
 summary: "While at Reify, I drafted an outline of a program called The Buddy System. The idea was to provide a framework for devs to support each other. I'm sharing it here in case others find it useful."
 ---
 
-
-# Buddy Systems at Work
-
 One of my work mottos is "support the hell out of each other": helping
 your friends grow and succeed is far more rewarding than chasing after
 the next gold star for yourself. While I was at [Reify
@@ -30,12 +27,12 @@ below - and that's totally ok! A key part of the framework is _you
 don't have to buy into it_. But I think it speaks volumes about the
 level of trust and mutual good feeling among the team that almost
 everyone was excited about it while respecting that we're all
-different and not everyone prefers the same way of interacting. New
-hires were especially excited because they felt like it would help
-them acclimate to their new environment. To me, a team that is
-enthusiastic about these ideas is a team that I'd want to work with;
-it's a team that actually likes the idea of relating to each other on
-a real, human level.
+different and not everyone prefers the same way of interacting. On the
+other hand, new hires were especially excited because they felt like
+it would help them acclimate to their new environment. To me, a team
+that is enthusiastic about these ideas is a team that I'd want to work
+with; it's a team that actually likes the idea of relating to each
+other on a real, human level.
 
 One topic that came up was, how is this different from just being
 friends? Is it really necessary to have a _structure_ that everyone
