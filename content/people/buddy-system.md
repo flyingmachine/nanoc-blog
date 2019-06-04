@@ -20,43 +20,7 @@ context. This framework would let us explore how to be there for each
 other in more meaningful ways while maintaining boundaries. This
 seemed particularly valuable in Reify's mostly-remote
 environment. With their permission, I'm sharing the initial framework
-proposal below.
-
-Some reading this might be uncomfortable with the ideas outlined in
-the buddy system - and that's totally ok! A key part of the framework
-is _you don't have to buy into it_. But I think it speaks volumes
-about the level of trust and mutual good feeling among the team that
-almost everyone was excited about it while respecting that we're all
-different and not everyone prefers the same way of interacting. On the
-other hand, new hires were especially excited because they felt like
-it would help them acclimate to their new environment. To me, a team
-that is enthusiastic about these ideas is a team that I'd want to work
-with; it's a team that actually likes the idea of relating to each
-other on a real, human level.
-
-One topic that came up was, how is this different from just being
-friends? Is it really necessary to have a _structure_ that everyone
-agrees to? Does that bring an element of artifice into friendship? My
-thinking is that structure is a precondition for
-vulnerability. Structure tells us to be extra mindful in how we
-interact with each other, and it provides boundaries (like a clear
-time limit) to protect us from getting overwhelmed. By designating a
-time and place to consciously interact with each other, it also
-resolves the problem of never knowing when is "the right time" to
-bring something up.
-
-This would be helpful for new hires, sure, but even in my personal
-life I've found that structure is much better at fostering deeper
-interactions than just winging it. Knowing that everyone is "in it"
-together _and_ that "it" won't last forever provides a solid
-foundation for trust.
-
-Final note: vulnerability here does _not_ mean you have to spill your
-guts, emotionally leaking on each other all the time. It _does_ mean
-feeling safe to express that you're struggling or that you feel
-dissatisfied or hurt in some way.
-
-Without further ado, here it is:
+proposal below:
 
 ---
 
@@ -95,6 +59,40 @@ This doc outlines a proposal for a buddy system. The main idea behind the buddy 
 Daniel is acting as facilitator in that he’s organizing discussion about the Buddy System so that we all come to a shared understanding of what it is and what we want to get out of it. However, Daniel isn’t, like, the Buddy System’s owner, and can’t tell you what to do.
 
 ---
+
+Some reading this might be uncomfortable with the ideas outlined in
+the buddy system - and that's totally ok! A key part of the framework
+is _you don't have to buy into it_. But I think it speaks volumes
+about the level of trust and mutual good feeling among the team that
+almost everyone was excited about it while respecting that we're all
+different and not everyone prefers the same way of interacting. On the
+other hand, new hires were especially excited because they felt like
+it would help them acclimate to their new environment. To me, a team
+that is enthusiastic about these ideas is a team that I'd want to work
+with; it's a team that actually likes the idea of relating to each
+other on a real, human level.
+
+One topic that came up was, how is this different from just being
+friends? Is it really necessary to have a _structure_ that everyone
+agrees to? Does that bring an element of artifice into friendship? My
+thinking is that structure is a precondition for
+vulnerability. Structure tells us to be extra mindful in how we
+interact with each other, and it provides boundaries (like a clear
+time limit) to protect us from getting overwhelmed. By designating a
+time and place to consciously interact with each other, it also
+resolves the problem of never knowing when is "the right time" to
+bring something up.
+
+This would be helpful for new hires, sure, but even in my personal
+life I've found that structure is much better at fostering deeper
+interactions than just winging it. Knowing that everyone is "in it"
+together _and_ that "it" won't last forever provides a solid
+foundation for trust.
+
+Final note: vulnerability here does _not_ mean you have to spill your
+guts, emotionally leaking on each other all the time. It _does_ mean
+feeling safe to express that you're struggling or that you feel
+dissatisfied or hurt in some way.
 
 What are your thoughts? Have you tried something like this where you
 worked, and how did it go?
