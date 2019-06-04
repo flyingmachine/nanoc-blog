@@ -1,5 +1,5 @@
 ---
-title: "Buddy Systems at Work"
+title: "Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams"
 created_at: Tue Jun 04 2019 8:00:00 -0500
 kind: article
 categories: people
