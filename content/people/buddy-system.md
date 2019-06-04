@@ -98,3 +98,5 @@ Daniel is acting as facilitator in that he’s organizing discussion about the B
 
 What are your thoughts? Have you tried something like this where you
 worked, and how did it go?
+
+P.S. [Reify is hiring!](https://jobs.braveclojure.com/jobs/17592186046941/data-engineer-architecture-integration-reify-health)
