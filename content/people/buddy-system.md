@@ -1,11 +1,9 @@
 ---
 title: "Buddy Systems at Work"
-created_at: Tue Oct 10 2014 8:07:00 -0500
 created_at: Tue Jun 04 2019 8:00:00 -0500
 kind: article
 categories: people
 summary: "While at Reify, I drafted an outline of a program called The Buddy System. The idea was to provide a framework for devs to support each other. I'm sharing it here in case others find it useful."
-draft: true
 ---
 
 
@@ -21,23 +19,23 @@ somewhere where I made real, honest-to-god friends :)
 
 During my final weeks there I collaborated with my coworkers on an
 experimental framework for supporting each other in a formal way. This
-framework would allow us to explore a possible method for coworkers to
-be there for each other in a more meaningful way while maintaining
+framework would let us explore a possible method for coworkers to be
+there for each other in a more meaningful way while maintaining
 boundaries. This seemed particularly valuable in Reify's mostly-remote
 environment. With their permission, I'm sharing the initial framework
 proposal below.
 
-Some of you reading this might be uncomfortable with the ideas
-outlined below - and that's totally ok! A key part of the framework is
-_you don't have to buy into it_. But I think it speaks volumes about
-the level of trust and mutual good feeling among the team that almost
+Some reading this might be uncomfortable with the ideas outlined
+below - and that's totally ok! A key part of the framework is _you
+don't have to buy into it_. But I think it speaks volumes about the
+level of trust and mutual good feeling among the team that almost
 everyone was excited about it while respecting that we're all
-different and prefer different ways of interacting. New hires were
-especially excited because they felt like it would help them acclimate
-to their new environment. To me, a team that is enthusiastic about
-these ideas is a team that I'd want to work with; it's a team that
-actually likes the idea of relating to each other on a real, human
-level, and that is all too rare.
+different and not everyone prefers the same way of interacting. New
+hires were especially excited because they felt like it would help
+them acclimate to their new environment. To me, a team that is
+enthusiastic about these ideas is a team that I'd want to work with;
+it's a team that actually likes the idea of relating to each other on
+a real, human level.
 
 One topic that came up was, how is this different from just being
 friends? Is it really necessary to have a _structure_ that everyone
@@ -50,6 +48,11 @@ helpful for new hires, sure, but even in my personal life I've found
 that structure is much better at fostering deeper interactions than
 just winging it. Knowing that everyone is "in it" together _and_ that
 "it" won't last forever provides a solid foundation for trust.
+
+Final note: vulnerability here does _not_ mean you have to spill your
+guts, emotionally leaking on each other all the time. It _does_ mean
+feeling safe to express that you're struggling or that you feel
+dissatisfied or hurt in some way.
 
 Without further ado, here it is:
 
