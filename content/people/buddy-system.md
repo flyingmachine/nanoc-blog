@@ -31,13 +31,13 @@ Some of you reading this might be uncomfortable with the ideas
 outlined below - and that's totally ok! A key part of the framework is
 _you don't have to buy into it_. But I think it speaks volumes about
 the level of trust and mutual good feeling among the team that almost
-everyone was excited about it (but not everyone was, and everyone was
-able to respect that we're all different and prefer different ways of
-interacting). New hires were especially excited because they felt like
-it would help them acclimate to their new environment. To me, a team
-that is enthusiastic about these ideas is a team that I'd want to work
-with; it's a team that actually likes the idea of relating to each
-other on a real, human level, and that is all too rare.
+everyone was excited about it while respecting that we're all
+different and prefer different ways of interacting. New hires were
+especially excited because they felt like it would help them acclimate
+to their new environment. To me, a team that is enthusiastic about
+these ideas is a team that I'd want to work with; it's a team that
+actually likes the idea of relating to each other on a real, human
+level, and that is all too rare.
 
 One topic that came up was, how is this different from just being
 friends? Is it really necessary to have a _structure_ that everyone
