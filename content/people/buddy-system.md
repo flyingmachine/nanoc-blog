@@ -9,13 +9,55 @@ draft: true
 ---
 
 
-# The Buddy System
+# Buddy Systems at Work
 
-My time at [Reify Health](https://www.reifyhealth.com/) was one of the highlights of my career.
+One of my work mottos is "support the hell out of each other": helping
+your friends grow and succeed is far more rewarding than chasing after
+the next gold star for yourself. While I was at [Reify
+Health](https://www.reifyhealth.com/) I was lucky enough to work with
+other devs who had a similar ethos. There were no rock stars, and
+everyone looked out for each other. I'm happy to have gotten to work
+somewhere where I made real, honest-to-god friends :)
 
---- 
+During my final weeks there I collaborated with my coworkers on an
+experimental framework for supporting each other in a formal way. This
+framework would allow us to explore a possible method for coworkers to
+be there for each other in a more meaningful way while maintaining
+boundaries. This seemed particularly valuable in Reify's mostly-remote
+environment. With their permission, I'm sharing the initial framework
+proposal below.
 
-This here doc outlines a proposal for a buddy system. The main idea behind the buddy system is for us to support each other by regularly spending time chatting with each other about things beyond whatever PT story is at hand. Exactly what that looks like will be up to you; this doc includes suggestions for how to have rewarding conversations. First, here are some ground rules:
+Some of you reading this might be uncomfortable with the ideas
+outlined below - and that's totally ok! A key part of the framework is
+_you don't have to buy into it_. But I think it speaks volumes about
+the level of trust and mutual good feeling among the team that almost
+everyone was excited about it (but not everyone was, and everyone was
+able to respect that we're all different and prefer different ways of
+interacting). New hires were especially excited because they felt like
+it would help them acclimate to their new environment. To me, a team
+that is enthusiastic about these ideas is a team that I'd want to work
+with; it's a team that actually likes the idea of relating to each
+other on a real, human level, and that is all too rare.
+
+One topic that came up was, how is this different from just being
+friends? Is it really necessary to have a _structure_ that everyone
+agrees to? Does that bring an element of artifice into friendship? My
+thinking is that structure is a precondition for
+vulnerability. Structure tells us to be extra mindful in how we
+interact with each other, and it provides boundaries (like a clear
+time limit) to protect us from getting overwhelmed. This would be
+helpful for new hires, sure, but even in my personal life I've found
+that structure is much better at fostering deeper interactions than
+just winging it. Knowing that everyone is "in it" together _and_ that
+"it" won't last forever provides a solid foundation for trust.
+
+Without further ado, here it is:
+
+---
+
+## The Buddy System
+
+This doc outlines a proposal for a buddy system. The main idea behind the buddy system is for us to support each other by regularly spending time chatting with each other about things beyond whatever story is at hand. Exactly what that looks like will be up to you; this doc includes suggestions for how to have rewarding conversations. First, here are some ground rules:
 
 
 ## Ground Rules
@@ -46,3 +88,8 @@ This here doc outlines a proposal for a buddy system. The main idea behind the b
 ## Notes
 
 Daniel is acting as facilitator in that he’s organizing discussion about the Buddy System so that we all come to a shared understanding of what it is and what we want to get out of it. However, Daniel isn’t, like, the Buddy System’s owner, and can’t tell you what to do.
+
+---
+
+What are your thoughts? Have you tried something like this where you
+worked, and how did it go?
