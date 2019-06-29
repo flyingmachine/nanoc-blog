@@ -220,7 +220,7 @@ have more to say about this in the next section, but I share it here
 to illustrate how much more powerful your programming environment can
 be if you find the right abstractions. The file I/O model still
 dominates decades after its introduction, making our lives easier
-_without even having to understand how it actually works_.
+_without our even having to understand how it actually works_.
 
 One final point about abstractions: they provide mechanisms for
 calling your application's code. We saw this a bit earlier with
