@@ -237,7 +237,7 @@ implement a kind of `onStart` callback using a function named
 `main`. The OS calls `main`, and `main` tells the OS what instructions
 should be run. However, the OS controls when instructions are actually
 executed because the OS is in charge of scheduling. It's a kind of
-inversion of control. Think about it.
+inversion of control, right? 🤔
 
 ### Communication
 
