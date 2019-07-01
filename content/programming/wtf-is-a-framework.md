@@ -27,8 +27,8 @@ I'll first define _framework_ in a way that I hope you'll find both
 novel and satisfying. Then I'll explain the benefits frameworks bring
 to you as an individual developer and to the broader Clojure
 ecosystem. Lastly, we'll engage in some techno-futurism and dream up
-some ways that Clojure is uniquely suited to creating a completely
-kick-ass framework.
+some ways that Clojure is uniquely suited to creating a kick-ass
+framework.
 
 ## What is a Framework?
 
@@ -253,11 +253,20 @@ the work of ensuring resilience. This usually entails:
 
 * Establishing naming and addressing conventions
 * Establishing conventions for how to structure content
+* Introducing communication brokers
 * Handling communication failures: the database is down! that file
   doesn't exist!
 
-The file model is a common language, and the OS uses device drivers
-between it and whatever local language is spoken by hardware
+One example many people are familiar with is the HTTP stack, a
+"language" that be used to communicate between browser and server
+resources:
+
+* HTTP structures content (request headers, request body)
+* TCP handles communication failures
+* IP handles addressing
+
+The file model is also a common language, and the OS uses device
+drivers between it and whatever local language is spoken by hardware
 devices. It has naming and addressing conventions, allowing you
 specify files on the filesystem using character strings separated by
 slashes that it translates to an internal inode (a data structure that
@@ -269,177 +278,124 @@ described in the last section are also a convention.
 
 Another convention the file model introduces is to structure content
 as byte streams, as opposed to bit streams, character streams, or xml
-documents. In most cases, however, bytes are too low-level, so the OS
-includes a suite of command line tools that interpret the 
+documents. However, bytes are usually too low-level, so the OS
+includes a suite of command line tools that introduce the further
+convention of structuring bytes by interpreting them as characters
+(`sed`, `awk`, `grep`, and friends). More recently, more tools have
+been introduced that interpret text as YAML or JSON. The Clojure world
+has further tools to interpret JSON as transit. My YAML tools can't do
+jack with your JSON files, but because these formats are all expressed
+in terms of lower-level formats, the lower-level tools can still work
+with them. Structure affects composability.
 
 The file model's simplicity is what allows it to be the "universal I/O
-model." Having a simple, universal communication system makes it
-extremely easy for new resources to participate without having to be
-directly aware of each other. It allows us to easily compose command
-line tools, as seen in the last section. It allows one program to
-write to a log while another reads from it. In other words, it enables
-loose coupling and all the attendant benefits.
+model." I mean, just imagine if all Linux processes had to communicate
+with XML instead of byte streams! Having a simple, universal
+communication system makes it extremely easy for new resources to
+participate without having to be directly aware of each other. It
+allows us to easily compose command line tools. It allows one program
+to write to a log while another reads from it. In other words, it
+enables loose coupling and all the attendant benefits.
 
-Another example is the HTTP stack:
+In particular, _globally addressable communication brokers_ (like the
+filesystem, or Kafka queues, or databases) are essential to enabling
+composable systems. _Global_ means that every resource has access to
+it. _Addressable_ means that it's possible for any participant to
+specify entities. _Communication broker_ means that the system's
+purpose is convey data from one resource to another, and it has
+well-defined semantics: a queue has FIFO semantics, the file system
+has update-in-place semantics, etc.
 
-* HTTP structures content
-* TCP handles communication failures
-* IP handles addressing
+If Linux had no filesystem and processes were only allowed to
+communicate via pipes, it would be a nightmare. Indirect communication
+is more flexible than direct communication. It supports decoupling
+over time, in that reads and writes don't have to happen
+synchronously. It also allows to participants to drop in and out of
+the communication system without some kind of central control. (By the
+way, I can't think of the name for this concept or some better way to
+express it, and would love feedback here.)
 
-The degree to which resources participate in the simplest
-communication layers of the system.
+I think this is the trickiest part of framework design. At the
+beginning of the article I mentioned that developers might end up
+hacking around a framework's constraints, and I think the main
+constraint is often the absence of a communication broker. The
+framework's designers introduce new resources and abstractions, but
+the only way to compose them is through direct communication, and
+sometimes that direct communication is handled magically. If someone
+wants to introduce new abstractions, they have to untangle all the
+magic and hook deep into the framework's internals, using -- or even
+overwriting! -- code that's meant to be private.
 
+For example, a frontend framework might identify the form as a
+resource, and create a nice abstraction for it that handles things
+like validation and the submission lifecycle. If the form abstraction
+uses local state to represent everything, then it will be very
+difficult to fulfill a common use case like using a form to filter the
+rows in a table because no other part of the application will have
+access to the form's state. You might come up with some hack like
+defining handlers for exporting the form's state, but doing this on an
+ad-hoc basis results in confusing and brittle code.
 
-Notice that all of these universal, successful protocols are all
-data-centric. We've tried RPC I guess, but it's not RPC that runs the
-world wide web. If you want your framework to be successful over the
-long term, it should be data-centric.
+By contrast, the presence of a communication broker can make life much
+easier. In the Clojure world, the React frameworks
+[re-frame](https://github.com/Day8/re-frame/) and
+[om.next](https://github.com/omcljs/om) have embraced global state
+atoms, a kind of communication broker similar to the filesystem (atoms
+are an in-memory storage mechanism). They also both have well defined
+communication protocols. I'm not very familiar with
+[Redux](https://redux.js.org/) but I've heard tell that it also has
+embraced a global, central state container.
 
-addressing
-transmission control
-content structure
+If you create a form abstraction using re-frame, it's possible to keep
+track of its state in a global state atom. It's further possible to
+establish a naming convention for forms, making it easier for other
+participants to look up the form's data and react to it.
 
+Communication systems are fundamental. Without them, it's difficult to
+build anything but the simplest applications. By providing
+communication systems, frameworks relieve much of the cognitive burden
+of building a program. By establishing communication standards,
+frameworks make it possible for developers to create composable tools,
+tools that benefit everybody who uses that framework.
 
-* initialization
-* transmission
-* failure handling
-* addressing
-* data format
-* translation - how extensible is it?
-
-* Communication is required
-* Communication involves constraints
-* It's necessary for data at rest to be globally accessible
-
-Efficient communication requires conventions.
-
-There is a need to make tools that can participate in the
-communication system.
-
-The file I/O model imposes a convention that includes constraints. It
-allows the suite of command line tools, making it easy to compose them.
-
-
-Communication models:
-
-* Event bus
-* Callbacks
-* Universal I/O
-* Direct invocation - method calls
-* Addressing
-* Protocols
-* Intra-process vs inter-process
-* Data formats
-* object-relational impedence mismatch
-* request/response
-* queues
-* message-oriented
-
-examples
-
-* graphql
-* queues
-* signals
-* sockets
-* ajax calls
-* coordinating various UI components - toggling display of a component
-* submitting forms
-* requesting a page
-* sending an email
-* text messages
-* cocoa event handling https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/EventArchitecture/EventArchitecture.html
-
-communication model includes
-* initialization
-* sometimes, failure handling
-* addressing
-* data format
-
-framework responsible for using tools to communicate with the world
-outside the application
-
-* http
-it's text
-
-the importance of a global datastore, of addressing conventions, for
-composability
-* data at rest
-* what if processes always had to immediately hand their data off to
-  another process, always and forever, for eternity?
-
-
-what are we communicating?
-state - a snapshot of the world at a point in time
-
-rails represents sql as chains of method calls
-clojure represents sql as primitive data structures
-datomic does not have a text interface, it has a data interface
-
-the communication format - structured or not, determines its
-composability
-bytes vs text vs data structures like JSON or maps
-people hated soap and xml because it's overstructured
-
-universal serial bus
-
-if this all sounds like it falls under the domain of software
-architecture, it does! frameworks impose architecture. the constraints
-that they choose are architectural constraints.
-
-how accessible are a resource's entities? A form resource- how
-accessible are the values of the inputs? the form's error state?
-whether it succeeded or failed? speaks to the need to find the right
-representation of an entity, and then consider how to convey that
-entity
-
-how do we convey entities?
-
-to what degree do we want to be able to compose these entities?
+In this section I focused primarily on the file model because it's
+been so successful and I think we can learn a lot from it. Other
+models include event buses and message queues.
 
 ### Environments
 
-- inversion of control: receiving events from the environment
+Frameworks are built to coordinate resources within a particular
+_environment_. When we talk about desktop apps, web apps, single page
+web apps, and mobile apps, we're talking about different
+environments. From the developer's perspective, environments are
+distinguished by the resources that are available, while from the
+user's perspective different environments entail different usage
+patterns and expectations about availability, licensing, and payment.
 
-### Business Goal
-
-## What isn't a framework?
-
-A framework is a library whose purpose is to 
-
-Frameworks are like operating systems: their job is to provide
-abstractions for resources and conventions for how the resources
-coordinate with each other.
-
-In fact, an operating system _is_ a framework.
-
-And how do frameworks differ from libraries?
-
-Allow you to write application-specific code, minimize the need to
-write resource-specific code. They provide conventions for how to
-represent and interact with resources. They're about coordinating
-various resources (lifecycles). Handling events, making it possible
-for the resulting state to be conveyed across resources.
-
-They allow you to convey events across
-resources, and they provide resource lifecycles.
-
-
-- application frameworks vs computation like fork/join - fork/join is
-  a library
-- on one level, libraries are part of the artifact ecosystem,
-  frameworks are distributed as libraries
-- distinguished from libraries by their purpose - enter the domain of
-  architecture
-- libraries are focused on solving a narrower problem: performing
-  certain kinds of computations, wrapping certains kinds of resources
-- examples of frameworks
-  - cocoa
-  - operating systems
-  - rails
-
-## What Makes a Good Framework?
+As technology advances, new resources become available (the Internet!
+smart phones! powerful browsers! AWS!) and new environments are
+created, and frameworks are created or re-tooled to target those
+environments. This is why we talk about mobile frameworks and desktop
+frameworks and the like.
 
 ## Why We Need Frameworks
+
+So now we know what a frame work is: a set of libraries that
+
+* Manages the complexity of coordinating the _resources_ needed to
+  write an application
+* By providing _abstractions_ for those resources
+* And _systems for communicating_ between those resources
+* Within an _environment_
+* So that programmers can focus on writing business logic
+
+Are they necessary?
+
+This might seem like a foolish question. There are a bajillion
+frameworks, and a lot of people make a lot of money using them. And
+yet, many in the Clojure community would say that there's an
+unofficial philosophy of _libraries instead of frameworks_.
+
 
 - a platform for ongoing resource integration
 - a tool for newcomers
