@@ -99,19 +99,22 @@ include directories and files. A GUI manages windows, menu bars, and
 other components.
 
 (I realize that this description of _resource_ is not the kind of
-airtight, axiomatic, comprehensive description that programmers like,
-but hopefully it's good enough that you nevertheless understand what
-tf I'm talking about when I talk about resources.)
+airtight, axiomatic, comprehensive description that programmers like.
+One shortcoming is that the boundary between resource and application
+is pretty thin: Postgres is an application in its own right, but from
+the perspective of a Rails app it's a resoruce. Stil, hopefully my use
+of _resource_ is clear enough that you nevertheless understand what tf
+I'm talking about when I talk about resources.)
 
 Coordinating these resources is inherently complex. You have to decide
 how to create, validate, secure, and dispose of resources, and how to
 convey one resource's entities to another resource, and how to deal
-with issues like timing, race conditions, and failure handling that
+with issues like timing (race conditions) and failure handling that
 arise whenever resources interact. Rails, for instance, was designed
 to coordinate browsers, HTTP servers, and databases. It had to convey
 user input to a database, and also retrieve and render database
 records for display by the user interface, via HTTP requests and
-responses.  HTTP requests would get dispatched to a Controller, which
+responses. HTTP requests would get dispatched to a Controller, which
 was responsible for interacting with a database and making data
 available to a View, which would render HTML that could be sent back
 to the browser.
@@ -134,7 +137,7 @@ SQL. You'd often have to hand-write SQL, eliminating some of the
 benefits of using AR in the first place.
 
 For complete beginners, the task of making these tradeoffs is
-impossible because to do so requires experience. Beginners won't even
+impossible because doing so requires experience. Beginners won't even
 know that it's necessary to make these decisions.
 
 Frameworks make these decisions for us, allowing us to focus on
@@ -191,16 +194,16 @@ books ever written) describes:
 Now here's the amazing magical kicker: _file_ doesn't have to mean
 _file on disk_. The OS implements the file interface for **pipes**,
 terminals, sockets, and other resources, meaning that your programs
-can write to them using the same system calls as you'd use to
-write files to disk - indeed, from the program's standpoint, all it
-knows is that it's writing to a file; it doesn't know that the "file"
-might actually be a pipe. 
+can write to them using the same system calls as you'd use to write
+files to disk - indeed, from your program's standpoint, all it knows
+is that it's writing to a file; it doesn't know that the "file" might
+actually be a pipe.
 
 This is a huge part of UNIX's famed simplicity. It's what lets us run
 this in a shell:
 
 ```
-ls | grep *.log
+ls | wc
 ```
 
 The shell interprets this by launching an `ls` process. Normally, when
@@ -209,7 +212,7 @@ remember, represent open files): `0` for `STDIN`, `1` for `STDOUT`,
 and `2` for `STDERR`, and each of these file descriptors refer to your
 terminal (terminals can be files!! what!?!?). Your shell sees the
 pipe, `|`, and sets `ls`'s `STDOUT` to the pipe's `STDIN`, and the
-pipe's `STDOUT` to `greps`'s `STDIN`. The pipe links processes' file
+pipe's `STDOUT` to `wc`'s `STDIN`. The pipe links processes' file
 descriptors, while the processes get to read and write "files" without
 having to know what's actually on the other end. (No joke, every time
 I think of this I get a little excited tingle at the base of my
@@ -226,30 +229,172 @@ One final point about abstractions: they provide mechanisms for
 calling your application's code. We saw this a bit earlier with
 ActiveRecord's lifecycle methods. Frameworks will usually provide the
 overall structure for how an application should interact with its
-environment, defining sets of events for you to write custom handlers
+environment, defining sets of events that you write custom handlers
 for. With ActiveRecord lifecycles, the structure of `before_create`,
 `create`, `after_create` is predetermined, but you can define what
 happens at each step. This pattern is called _inversion of control_,
 and many developers consider it a key feature of frameworks.
 
-With *nix operating systems, you could say that programs written in C
-implement a kind of `onStart` callback using a function named
-`main`. The OS calls `main`, and `main` tells the OS what instructions
-should be run. However, the OS controls when instructions are actually
-executed because the OS is in charge of scheduling. It's a kind of
-inversion of control, right? 🤔
+With *nix operating systems, you could say that in C programs the
+`main` function is a kind of `onStart` callback. The OS calls `main`,
+and `main` tells the OS what instructions should be run. However, the
+OS controls when instructions are actually executed because the OS is
+in charge of scheduling. It's a kind of inversion of control, right? 🤔
 
 ### Communication
 
-- the filesystem
-- IPC
-- signals
-- sockets
+Frameworks coordinate resources, and (it's almost a tautology to say
+this) coordination requires _communication_. Communication is
+_hard_. Frameworks make it easier by translating the disparate
+"languages" spoken by different resources into one or more common
+languages that are easy to understand and efficient, while also
+ensuring extensibility and composability. Frameworks also do some of
+the work of ensuring resilience. This usually entails:
 
-in the browser
+* Establishing naming and addressing conventions
+* Establishing conventions for how to structure content
+* Handling communication failures: the database is down! that file
+  doesn't exist!
 
-- cookies
-- ajax calls
+The file model is a common language, and the OS uses device drivers
+between it and whatever local language is spoken by hardware
+devices. It has naming and addressing conventions, allowing you
+specify files on the filesystem using character strings separated by
+slashes that it translates to an internal inode (a data structure that
+stores file and directory details, like ownership and
+permissions). We're so used to this that it's easy to forget it's a
+convention; *nix systems could have been designed so that you had to
+refer to files using a number or a UUID. The file descriptors I
+described in the last section are also a convention.
+
+Another convention the file model introduces is to structure content
+as byte streams, as opposed to bit streams, character streams, or xml
+documents. In most cases, however, bytes are too low-level, so the OS
+includes a suite of command line tools that interpret the 
+
+The file model's simplicity is what allows it to be the "universal I/O
+model." Having a simple, universal communication system makes it
+extremely easy for new resources to participate without having to be
+directly aware of each other. It allows us to easily compose command
+line tools, as seen in the last section. It allows one program to
+write to a log while another reads from it. In other words, it enables
+loose coupling and all the attendant benefits.
+
+Another example is the HTTP stack:
+
+* HTTP structures content
+* TCP handles communication failures
+* IP handles addressing
+
+The degree to which resources participate in the simplest
+communication layers of the system.
+
+
+Notice that all of these universal, successful protocols are all
+data-centric. We've tried RPC I guess, but it's not RPC that runs the
+world wide web. If you want your framework to be successful over the
+long term, it should be data-centric.
+
+addressing
+transmission control
+content structure
+
+
+* initialization
+* transmission
+* failure handling
+* addressing
+* data format
+* translation - how extensible is it?
+
+* Communication is required
+* Communication involves constraints
+* It's necessary for data at rest to be globally accessible
+
+Efficient communication requires conventions.
+
+There is a need to make tools that can participate in the
+communication system.
+
+The file I/O model imposes a convention that includes constraints. It
+allows the suite of command line tools, making it easy to compose them.
+
+
+Communication models:
+
+* Event bus
+* Callbacks
+* Universal I/O
+* Direct invocation - method calls
+* Addressing
+* Protocols
+* Intra-process vs inter-process
+* Data formats
+* object-relational impedence mismatch
+* request/response
+* queues
+* message-oriented
+
+examples
+
+* graphql
+* queues
+* signals
+* sockets
+* ajax calls
+* coordinating various UI components - toggling display of a component
+* submitting forms
+* requesting a page
+* sending an email
+* text messages
+* cocoa event handling https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/EventArchitecture/EventArchitecture.html
+
+communication model includes
+* initialization
+* sometimes, failure handling
+* addressing
+* data format
+
+framework responsible for using tools to communicate with the world
+outside the application
+
+* http
+it's text
+
+the importance of a global datastore, of addressing conventions, for
+composability
+* data at rest
+* what if processes always had to immediately hand their data off to
+  another process, always and forever, for eternity?
+
+
+what are we communicating?
+state - a snapshot of the world at a point in time
+
+rails represents sql as chains of method calls
+clojure represents sql as primitive data structures
+datomic does not have a text interface, it has a data interface
+
+the communication format - structured or not, determines its
+composability
+bytes vs text vs data structures like JSON or maps
+people hated soap and xml because it's overstructured
+
+universal serial bus
+
+if this all sounds like it falls under the domain of software
+architecture, it does! frameworks impose architecture. the constraints
+that they choose are architectural constraints.
+
+how accessible are a resource's entities? A form resource- how
+accessible are the values of the inputs? the form's error state?
+whether it succeeded or failed? speaks to the need to find the right
+representation of an entity, and then consider how to convey that
+entity
+
+how do we convey entities?
+
+to what degree do we want to be able to compose these entities?
 
 ### Environments
 
