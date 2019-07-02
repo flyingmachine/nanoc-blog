@@ -642,6 +642,8 @@ traps that you can stumble into when creating an app.
 
 ## A Clojure Framework
 
+**IN PROGRESS**
+
 Just because you can't be everything to everybody doesn't mean you
 can't be something to most people.
 
