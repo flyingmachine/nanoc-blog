@@ -162,8 +162,8 @@ with via the `ActiveRecord` abstraction. Tables correspond to classes,
 and rows to objects of that class. This a choice with tradeoffs - rows
 could have been represented as Ruby hashes, which might have made them
 more portable while making it more difficult to concisely express
-database operations like `save` and `destroy`.  Some of the messages
-the abstraction responds to are `find`, `create`, `update`, and
+database operations like `save` and `destroy`. Additional messages the
+abstraction responds to are `find`, `create`, `update`, and
 `destroy`. It calls your application's code via lifecycle callback
 methods like `before_validation`. Often, these callbacks are
 _synthetic_, meaning they are introduced by the framework and not
@@ -265,6 +265,8 @@ resources:
 * TCP handles communication failures
 * IP handles addressing
 
+#### Conventions
+
 The file model is also a common language, and the OS uses device
 drivers between it and whatever local language is spoken by hardware
 devices. It has naming and addressing conventions, allowing you
@@ -297,6 +299,8 @@ allows us to easily compose command line tools. It allows one program
 to write to a log while another reads from it. In other words, it
 enables loose coupling and all the attendant benefits.
 
+#### Communication Brokers
+
 In particular, _globally addressable communication brokers_ (like the
 filesystem, or Kafka queues, or databases) are essential to enabling
 composable systems. _Global_ means that every resource has access to
@@ -310,10 +314,10 @@ If Linux had no filesystem and processes were only allowed to
 communicate via pipes, it would be a nightmare. Indirect communication
 is more flexible than direct communication. It supports decoupling
 over time, in that reads and writes don't have to happen
-synchronously. It also allows to participants to drop in and out of
-the communication system without some kind of central control. (By the
-way, I can't think of the name for this concept or some better way to
-express it, and would love feedback here.)
+synchronously. It also allows participants to drop in and out of the
+communication system without a central controller. (By the way, I
+can't think of the name for this concept or some better way to express
+it, and would love feedback here.)
 
 I think this is the trickiest part of framework design. At the
 beginning of the article I mentioned that developers might end up
@@ -326,15 +330,23 @@ wants to introduce new abstractions, they have to untangle all the
 magic and hook deep into the framework's internals, using -- or even
 overwriting! -- code that's meant to be private.
 
-For example, a frontend framework might identify the form as a
-resource, and create a nice abstraction for it that handles things
-like validation and the submission lifecycle. If the form abstraction
-uses local state to represent everything, then it will be very
-difficult to fulfill a common use case like using a form to filter the
-rows in a table because no other part of the application will have
-access to the form's state. You might come up with some hack like
-defining handlers for exporting the form's state, but doing this on an
-ad-hoc basis results in confusing and brittle code.
+I remember running into this with Rails back when MongoDB was
+released; the _document database_ resource was sufficiently different
+from the _relational database resource_ that it was pretty much
+impossible for MongoDB to take part in the ActiveRecord abstraction,
+and it was also very difficult to introduce a new abstraction that
+would play well with the rest of the Rails ecosystem.
+
+For a more current example, a frontend framework might identify the
+form as a resource, and create a nice abstraction for it that handles
+things like validation and the submission lifecycle. If the form
+abstraction is written in a framework that has no communication broker
+(like a global state atom), then it will be very difficult to meet the
+common use case of using a form to filter rows in a table because
+there's no way for the code that renders table data to access the
+form's state. You might come up with some hack like defining handlers
+for exporting the form's state, but doing this on an ad-hoc basis
+results in confusing and brittle code.
 
 By contrast, the presence of a communication broker can make life much
 easier. In the Clojure world, the React frameworks
@@ -356,7 +368,8 @@ build anything but the simplest applications. By providing
 communication systems, frameworks relieve much of the cognitive burden
 of building a program. By establishing communication standards,
 frameworks make it possible for developers to create composable tools,
-tools that benefit everybody who uses that framework.
+tools that benefit everybody who uses that framework. Standards make
+infrastructure possible, and infrastructure enables productivity.
 
 In this section I focused primarily on the file model because it's
 been so successful and I think we can learn a lot from it. Other
@@ -373,14 +386,19 @@ user's perspective different environments entail different usage
 patterns and expectations about availability, licensing, and payment.
 
 As technology advances, new resources become available (the Internet!
-smart phones! powerful browsers! AWS!) and new environments are
-created, and frameworks are created or re-tooled to target those
-environments. This is why we talk about mobile frameworks and desktop
-frameworks and the like.
+databases! smart phones! powerful browsers! AWS!) and new environments
+evolve to combine those resources, and frameworks are created to
+target those environments. This is why we talk about mobile frameworks
+and desktop frameworks and the like.
 
-## Why We Need Frameworks
+## More Benefits of Using Frameworks
 
-So now we know what a frame work is: a set of libraries that
+So far I've mostly discussed how frameworks bring benefits to the
+individual developer. In this section I'll explain how frameworks
+benefit communities, how they make programming fun, and (perhaps most
+importantly) how they are a great boon for beginners.
+
+First, to recap, a framework is a set of libraries that:
 
 * Manages the complexity of coordinating the _resources_ needed to
   write an application
@@ -389,19 +407,72 @@ So now we know what a frame work is: a set of libraries that
 * Within an _environment_
 * So that programmers can focus on writing business logic
 
-Are they necessary?
+This alone lifts a huge burden off of developers. In case I haven't
+said it enough, this kind of work is _hard_, and if you had to do it
+every time you wanted to make an application it would be frustrating
+an exhausting. Actually, let me rephrase that: I _have_ had to do this
+work, and it's frustrating and exhausting. It's why Rails was such a
+godsend when I first encountered it in 2005.
 
-This might seem like a foolish question. There are a bajillion
-frameworks, and a lot of people make a lot of money using them. And
-yet, many in the Clojure community would say that there's an
-unofficial philosophy of _libraries instead of frameworks_.
+### Frameworks Bring Community Benefits
 
+Clear abstractions and communication systems allow people to share
+modules, plugins, or whatever you want to call framework extensions,
+creating a vibrant ecosystem of reusable components.
 
-- a platform for ongoing resource integration
-- a tool for newcomers
-- development of resources independently of the code that uses them;
-  separation of concerns
-- common skillset for developers
+If you accept my assertion that an Operating System is a framework,
+then you can consider any program which communicates via one of the
+OS's communication systems (sockets, the file model, etc) to be an
+extension of the framework. Postgres is a framework extension that adds
+an RDBMS resource. statsd is an extension that adds a monitoring
+resource.
+
+Similarly, Rails makes it possible for developers to identify
+specialized resources and extend the framework to easily support
+them. One of the most popular and powerful is
+[Devise](https://github.com/plataformatec/devise), coordinates Rails
+resources to introduce a new authentication resource. Just as using
+Postgres is usually preferable to rolling your own database, using
+Devise is usually preferable to rolling your own authentication
+system.
+
+Would it be possible to create a Devise for Clojure? I don't think
+so. Devise is designed to be database agnostic, but because Clojure
+doesn't really have a go-to framework that anoints or introduces a
+database abstraction, no one can write the equivalent of Devise in
+such a way that it could easily target any RDBMS. Without a framework,
+it's unlikely that someone will be able to write a full-featured
+authentication solution that you can reuse, and if you write one it's
+unlikely others would see much benefit if you shared it. I think it's
+too bad that Clojure is missing out on these kinds of ecosystem
+benefits.
+
+### Fun
+
+If you still think frameworks are overkill or more trouble than
+they're worth, believe me I get it. When I switched from Rails to
+Clojure and its "libraries not frameworks" approach, I _loved_ it. A
+framework felt unnecessary because all the pieces were so simple that
+it was trivial for me to glue them together myself. Also, it was just
+plain fun to solve a problem I was familiar with because it helped me
+learn the language.
+
+Well, call me a jaded millenial fart, but I don't think that this work
+is fun anymore. I want to build products, not build the infrastructure
+for building products. I want a plugin that will handle the reset
+password process for me. I want an admin panel that I can get working
+in five minutes.
+
+For me, programming is a creative endeavor. I love making dumb things
+and putting them in front of people to see what will happen. Rails let
+me build (now defunct) sites like phobiatopia.com, where users could
+share what they're afraid of and the site would use their IP address
+to come up with some geo coordinates and use Google Maps to display a
+global fear map. A lot of people were afraid of bears.
+
+### Beginners
+
+There's a kind of scorn for beginners
 
 ## A Clojure Framework
 
@@ -443,3 +514,6 @@ with them. Whereas before I never got anywhere and gave up, now I'm
 actually making music. I have the joy of singing an actual song. We
 can do that with apps - make it easy for someone to sing a simple
 song, and provide the resources they need for mastery.
+
+* simple made easy
+* simplicity matters
