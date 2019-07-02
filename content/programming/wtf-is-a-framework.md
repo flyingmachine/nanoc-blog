@@ -322,11 +322,12 @@ enables loose coupling and all the attendant benefits.
 In particular, _globally addressable communication brokers_ (like the
 filesystem, or Kafka queues, or databases) are essential to enabling
 composable systems. _Global_ means that every resource can have access
-to it. _Addressable_ means that it's possible for any participant to
-specify entities. _Communication broker_ means that the system's
-purpose is to convey data from one resource to another, and it has
-well-defined semantics: a queue has FIFO semantics, the file system
-has update-in-place semantics, etc.
+to it. _Addressable_ means that the broker maintains identifiers for
+entities independently of its clients, and it's possible for clients
+to specify entities using those identifiers. _Communication broker_
+means that the system's purpose is to convey data from one resource to
+another, and it has well-defined semantics: a queue has FIFO
+semantics, the file system has update-in-place semantics, etc.
 
 If Linux had no filesystem and processes were only allowed to
 communicate via pipes, it would be a nightmare. Indirect communication
@@ -401,13 +402,14 @@ web apps, and mobile apps, we're talking about different
 environments. From the developer's perspective, environments are
 distinguished by the resources that are available, while from the
 user's perspective different environments entail different usage
-patterns and expectations about availability, licensing, and payment.
+patterns and expectations about distribution, availability, licensing,
+and payment.
 
 As technology advances, new resources become available (the Internet!
-databases! smart phones! powerful browsers! AWS!) and new environments
-evolve to combine those resources, and frameworks are created to
-target those environments. This is why we talk about mobile frameworks
-and desktop frameworks and the like.
+databases! smart phones! powerful browsers! AWS!), new environments
+evolve to combine those resources and frameworks are created to target
+those environments. This is why we talk about mobile frameworks and
+desktop frameworks and the like.
 
 One of the reasons I stopped using Rails was because it was a _web
 application framework_, but I wanted to build _single page
@@ -524,23 +526,24 @@ honest-to-god running applications that they can show to their friends
 and even make money with, without having to fully understand or even
 be aware of all the technology they're using. Being able to conjure up
 a complete creation, no matter how small or ill-made, is the very
-breath of wonder and delight.
+breath of wonder and delight. (I don't know exactly what this means,
+but I like how it sounds!)
 
 There's a kind of thinking that says frameworks are bad because they
 allow beginners to make stuff without having to know how it all
 works. ActiveRecord is corrupting the youth, allowing them to build
 apps without even knowing how to pronounce _SQL_.
 
-Hogwash. Fiddlefaddle. Poppycock. If that's how you feel, maybe you
-should roll your own operating system. I will always and forever
-disagree with people who argue against making it easier for beginners
-to experience the joy of creation.
+Hogwash. Fiddlefaddle. Poppycock. I will always and forever disagree
+with people who argue against making it easier for beginners to
+experience the joy of creation.
 
 Unfortunately, some in the Clojure community subscribe to the idea
 that it's misguided to make tools easier for beginners to use,
 including Clojure's creator Rich Hickey. From his talk [Design,
 Composition, and
-Performance](https://www.infoq.com/presentations/Design-Composition-Performance/):
+Performance](https://www.infoq.com/presentations/Design-Composition-Performance/)
+(around minute 34):
 
 > Instruments are made for people who can play them... They're made
 > for people who can actually play them. And that's a problem, right?
@@ -578,10 +581,11 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 I don't understand this argument. I don't understand what prompted
 it. It's bizarre and self-contradictory: on the one hand, cellos are
 made for players and we shouldn't try to change them to accommodate
-novices, but on the other hand Rich acknowledges child learners _play
-child-sized cellos_. I'm quite sure that Yo-Yo Ma doesn't play a
-child-sized cello, yet here are these children somehow learning to
-play without using Yo-Yo Ma-sized cellos.
+novices, but on the other hand Rich acknowledges _child learners play
+child-sized cellos_. I'm quite sure that Yo-Yo Ma, _a player_ doesn't
+perform with a child-sized cello, and at the same time here are these
+_non-player_ children somehow learning to play without using Yo-Yo
+Ma-sized cellos.
 
 Maybe pilots should forego flight simulators and only learn to fly
 with actual planes. The rant defies logic, but it's there any way,
@@ -595,39 +599,46 @@ What really gets me is this bit:
 > has become so important to us. It's really like a stupid thing to be
 > important, especially to an entire industry.
 
-Yes indeed, why does the industry care at all about making it easier
-for novices to create products? It's so stupid!
+Why is this stupid? Isn't it a sign of progress that difficult tasks
+have gotten easier over time? Isn't that something to strive for?
+Maybe I'm missing something. Maybe it truly is stupid to want to
+figure out how to help people build a web site in a day. It's
+definitely possible that I'm grossly misinterpreting this talk. I mean
+this sincerely: someone please explain to me why it's a bad idea to
+consider the beginner experience when you're building tools.
 
-> NOTE TO SELF tone down this part
-
-The talk also raises and dismisses the idea of using red and green
-lights to tell the player when he's in tune or out of town. This is
-funny because years ago I started learning to play violin, and as I
-was learning the finger positions I would keep a tuner on to give me
-feedback on when I was in tune and out of tune. I didn't know what
-in-tune and out-of-tune sounded like, or where to position my fingers
-to create the correct sounds. Using the tuner is what actually helped
-me learn how to listen.
+Incidentally, the talk also raises and dismisses the idea of using red
+and green lights to tell the player when he's in tune or out of
+town. This is funny because years ago I started learning to play
+violin, and as I was learning the finger positions I would keep a
+tuner on to give me feedback on when I was in tune and out of tune --
+using read and green lights. Initially I didn't know what in-tune and
+out-of-tune sounded like, or where to position my fingers to create
+the correct sounds. The tuner gave me the feedback I needed to make
+corrections. Using the tuner is what actually helped me learn how to
+listen.
 
 One more counter-example: I am a photographer. My instrument, if you
 want to call it that, is the camera. I have a professional camera, and
-I know how to use it. The photos I've been creating require a fair
-amount of technical knowledge and specialized equipment:
+I know how to use it. Some of my photos required a fair amount of
+technical knowledge and specialized equipment:
 
 (insert photo here)
 
-Yet somehow I'm able to enjoy myself and my craft without saying it's
-stupid that point-and-shoot cameras exist and that companies cater to
-budding photographers (or even people who only take casual snapshots),
-and that these babies need to get callouses on their hands from
-handling real cameras.
+Yet somehow I'm able to enjoy myself and my art without saying it's
+stupid that point-and-shoot cameras exist and that companies shouldn't
+cater to budding photographers or even people who only take casual
+snapshots, and that those babies need to get callouses on their hands
+from handling real cameras.
 
-Novices benefit greatly from experts to guiding them. I don't think
-you can become a master photographer using your phone's camera, but
-you can take some damn good photos and be proud of them. And if you do
-want to become a master, that kind of positive feedback and sense of
-accomplishment will give you the motivation to stick with it and learn
-the hard stuff.
+Novices benefit greatly from expert guidance. I don't think you can
+become a master photographer using your phone's camera, but with the
+phone's "guidance" you can take some damn good photos and be proud of
+them. And if you do want to become a master, that kind of positive
+feedback and sense of accomplishment will give you the motivation to
+stick with it and learn the hard stuff. Frameworks provide this
+guidance by creating a safe path around all the quicksand and pit
+traps that you can stumble into when creating an app.
 
 ## A Clojure Framework
 
