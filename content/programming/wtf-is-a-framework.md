@@ -598,6 +598,8 @@ What really gets me is this bit:
 Yes indeed, why does the industry care at all about making it easier
 for novices to create products? It's so stupid!
 
+> NOTE TO SELF tone down this part
+
 The talk also raises and dismisses the idea of using red and green
 lights to tell the player when he's in tune or out of town. This is
 funny because years ago I started learning to play violin, and as I
