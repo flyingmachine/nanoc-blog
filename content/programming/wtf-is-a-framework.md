@@ -12,23 +12,38 @@ frameworks can eat shit. Other languages might need frameworks, but
 not ours! Libraries all the way, baby!
 
 This attitude did not develop without reason. Many of us came to
-Clojure after getting burned on magical monolith web app frameworks
-like Rails, where we ended up spending an inordinate amount of time
-coming up with hacks for the framework's shortcomings. Another
-"problem" is that Clojure tools like
-[Luminus](http://www.luminusweb.net/) and the top-rate web dev
-libraries it bundles provide such a productive experience that
+Clojure after getting burned on magical frameworks like Rails, where
+we ended up spending an inordinate amount of time coming up with hacks
+for the framework's shortcomings. Another "problem" is that Clojure
+tools like [Luminus](http://www.luminusweb.net/) and the top-rate web
+dev libraries it bundles provide such a productive experience that
 frameworks seem superfluous.
 
 Be that as it may, I'm going to make the case for why the community's
-dominant view of frameworks -- specifically, web frameworks, since
-that what I'm most familiar with -- needs revision. To explain why,
-I'll first define _framework_ in a way that I hope you'll find both
-novel and satisfying. Then I'll explain the benefits frameworks bring
-to you as an individual developer and to the broader Clojure
-ecosystem. Lastly, we'll engage in some techno-futurism and dream up
-some ways that Clojure is uniquely suited to creating a kick-ass
-framework.
+dominant view of frameworks needs revision. Frameworks are
+useful. They should not all universally eat shit. To convince you,
+I'll start by explaining what a framework is. I have yet to read a
+definition of _framework_ that satisfies me, and I think a lot of the
+hate directed at them stems from a lack of clarity about what exactly
+they are. Are they just libraries? Do they have to be magical?  Is
+there some law decreeing that they have to be more trouble than
+they're worth? All this and more shall be revealed.
+
+I think the utility of frameworks will become evident by describing
+the purpose they serve and the ways they serve that purpose. I also
+think that the description will clarify what makes a _good_ framework,
+and provide some diagnostic criteria for why some frameworks end up
+hurting us. My hope is that you'll find this discussion interesting
+and satisfying, and that it will give you a new, useful perspective
+not just on frameworks but on programming in general.
+
+Frameworks have second-order benefits, and I'll cover those too. They
+make it possible for an ecosystem of reusable components to
+exist. They make programming fun. They make it easier for beginners to
+make stuff.
+
+Last, I'll cover some ways that I think Clojure is uniquely suited to
+creating kick-ass frameworks.
 
 ## What is a Framework?
 
@@ -66,7 +81,8 @@ screens and the systems used to display stuff on them: gui toolkits,
 browsers and the DOM, etc.
 
 Specialized resources are built on top of more general-purpose
-resources. We start with hardware and build virtual resources on
+resources. (You might call these specialized resources _services_ or
+_components_.) We start with hardware and build virtual resources on
 top. For example, with storage the OS starts with disks and memory and
 creates the filesystem as a (virtual) storage resource on
 top. Databases like Postgres use the filesystem to create another
@@ -102,9 +118,9 @@ other components.
 airtight, axiomatic, comprehensive description that programmers like.
 One shortcoming is that the boundary between resource and application
 is pretty thin: Postgres is an application in its own right, but from
-the perspective of a Rails app it's a resoruce. Stil, hopefully my use
-of _resource_ is clear enough that you nevertheless understand what tf
-I'm talking about when I talk about resources.)
+the perspective of a Rails app it's a resoruce. Still, hopefully my
+use of _resource_ is clear enough that you nevertheless understand
+what tf I'm talking about when I talk about resources.)
 
 Coordinating these resources is inherently complex. You have to decide
 how to create, validate, secure, and dispose of resources, and how to
@@ -114,10 +130,13 @@ arise whenever resources interact. Rails, for instance, was designed
 to coordinate browsers, HTTP servers, and databases. It had to convey
 user input to a database, and also retrieve and render database
 records for display by the user interface, via HTTP requests and
-responses. HTTP requests would get dispatched to a Controller, which
-was responsible for interacting with a database and making data
-available to a View, which would render HTML that could be sent back
-to the browser.
+responses.
+
+There is no obvious or objectively correct way to coordinate these
+resources. In Rails, HTTP requests would get dispatched to a
+Controller, which was responsible for interacting with a database and
+making data available to a View, which would render HTML that could be
+sent back to the browser.
 
 You don't _have_ to coordinate web app resources using the MVC
 approach Rails uses, but you do have to coordinate these resources
@@ -258,10 +277,9 @@ the work of ensuring resilience. This usually entails:
   doesn't exist!
 
 One example many people are familiar with is the HTTP stack, a
-"language" that be used to communicate between browser and server
-resources:
+"language" used to communicate between browser and server resources:
 
-* HTTP structures content (request headers, request body)
+* HTTP structures content (request headers and request body as text)
 * TCP handles communication failures
 * IP handles addressing
 
@@ -303,10 +321,10 @@ enables loose coupling and all the attendant benefits.
 
 In particular, _globally addressable communication brokers_ (like the
 filesystem, or Kafka queues, or databases) are essential to enabling
-composable systems. _Global_ means that every resource has access to
-it. _Addressable_ means that it's possible for any participant to
+composable systems. _Global_ means that every resource can have access
+to it. _Addressable_ means that it's possible for any participant to
 specify entities. _Communication broker_ means that the system's
-purpose is convey data from one resource to another, and it has
+purpose is to convey data from one resource to another, and it has
 well-defined semantics: a queue has FIFO semantics, the file system
 has update-in-place semantics, etc.
 
@@ -315,9 +333,9 @@ communicate via pipes, it would be a nightmare. Indirect communication
 is more flexible than direct communication. It supports decoupling
 over time, in that reads and writes don't have to happen
 synchronously. It also allows participants to drop in and out of the
-communication system without a central controller. (By the way, I
-can't think of the name for this concept or some better way to express
-it, and would love feedback here.)
+communication system independently of each other. (By the way, I can't
+think of the name for this concept or some better way to express it,
+and would love feedback here.)
 
 I think this is the trickiest part of framework design. At the
 beginning of the article I mentioned that developers might end up
@@ -391,6 +409,18 @@ evolve to combine those resources, and frameworks are created to
 target those environments. This is why we talk about mobile frameworks
 and desktop frameworks and the like.
 
+One of the reasons I stopped using Rails was because it was a _web
+application framework_, but I wanted to build _single page
+applications_. At the time (around 2012?), I was learning to use
+Angular and wanted to deploy applications that used it, but it didn't
+really fit with Rails's design.
+
+And that's OK. Some people write programs for Linux, some people write
+for macOS, some people still write for Windows for some reason (just
+kidding! don't kill me!). A framework is a tool, and tools are built
+for a specific purpose. If you're trying to achieve a purpose the tool
+isn't built for, use a different tool.
+
 ## More Benefits of Using Frameworks
 
 So far I've mostly discussed how frameworks bring benefits to the
@@ -447,7 +477,7 @@ unlikely others would see much benefit if you shared it. I think it's
 too bad that Clojure is missing out on these kinds of ecosystem
 benefits.
 
-### Fun
+### Frameworks Make Development Fun
 
 If you still think frameworks are overkill or more trouble than
 they're worth, believe me I get it. When I switched from Rails to
@@ -470,9 +500,23 @@ share what they're afraid of and the site would use their IP address
 to come up with some geo coordinates and use Google Maps to display a
 global fear map. A lot of people were afraid of bears.
 
-### Beginners
+### Frameworks Help Beginners
 
-There's a kind of scorn for beginners
+There's a kind of thinking that says frameworks are bad because they
+allow beginners to make stuff without having to know how it all
+works. ActiveRecord is corrupting the youth, allowing them to build
+apps without even knowing how to pronounce _SQL_.
+
+Hogwash. Fiddlefaddle. Poppycock. If that's how you feel, maybe you
+should roll your own operating system. I will always and forever argue
+against people who think it should be more difficult for beginners to
+experience the joy of creation.
+
+Earlier
+
+What's good for beginners isn't bad for experienced developers. Are
+operating systems bad for experienced developers? Is Apple's Cocoa
+framework bad for experienced developers?
 
 ## A Clojure Framework
 
