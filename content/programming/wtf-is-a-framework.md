@@ -72,19 +72,19 @@ this for us so we can focus on application-specific tasks.
 ### Coordinating Resources
 
 _Resources_ are the "materials" used by programs to do their work, and
-can be divided into four categories: storage, computation, networks,
-and interfaces. Examples of storage include files, databases, caches,
-search engines, and more. Computation examples include processes,
-threads, actors, background jobs, and parallel jobs. Network examples
-include HTTP requests and message queues. Interfaces typically include
-screens and the systems used to display stuff on them: gui toolkits,
-browsers and the DOM, etc.
+can be divided into four categories: storage, computation,
+communication, and interfaces. Examples of storage include files,
+databases, caches, search engines, and more. Computation examples
+include processes, threads, actors, background jobs, and parallel
+jobs. Communication examples include HTTP requests and message
+queues. Interfaces typically include screens and the systems used to
+display stuff on them: gui toolkits, browsers and the DOM, etc.
 
 Specialized resources are built on top of more general-purpose
-resources. (You might call these specialized resources _services_ or
-_components_.) We start with hardware and build virtual resources on
-top. For example, with storage the OS starts with disks and memory and
-creates the filesystem as a (virtual) storage resource on
+resources. (You might refer to these specialized resources _services_
+or _components_.) We start with hardware and build virtual resources
+on top. For example, with storage the OS starts with disks and memory
+and creates the filesystem as a virtual storage resource on
 top. Databases like Postgres use the filesystem to create another
 virtual storage resource to handle use cases not met by the
 filesystem. Recently we've even seen databases like Datomic use other
@@ -441,8 +441,8 @@ This alone lifts a huge burden off of developers. In case I haven't
 said it enough, this kind of work is _hard_, and if you had to do it
 every time you wanted to make an application it would be frustrating
 an exhausting. Actually, let me rephrase that: I _have_ had to do this
-work, and it's frustrating and exhausting. It's why Rails was such a
-godsend when I first encountered it in 2005.
+work, and it _is_ frustrating and exhausting. It's why Rails was such
+a godsend when I first encountered it in 2005.
 
 ### Frameworks Bring Community Benefits
 
@@ -469,13 +469,25 @@ system.
 Would it be possible to create a Devise for Clojure? I don't think
 so. Devise is designed to be database agnostic, but because Clojure
 doesn't really have a go-to framework that anoints or introduces a
-database abstraction, no one can write the equivalent of Devise in
-such a way that it could easily target any RDBMS. Without a framework,
-it's unlikely that someone will be able to write a full-featured
-authentication solution that you can reuse, and if you write one it's
-unlikely others would see much benefit if you shared it. I think it's
-too bad that Clojure is missing out on these kinds of ecosystem
-benefits.
+go-to database abstraction, no one can write the equivalent of Devise
+in such a way that it could easily target any RDBMS. Without a
+framework, it's unlikely that someone will be able to write a
+full-featured authentication solution that you can reuse, and if you
+write one it's unlikely others would see much benefit if you shared
+it. I think it's too bad that Clojure is missing out on these kinds of
+ecosystem benefits.
+
+Another subtler benefit frameworks bring is that they present a
+coherent story for how developers can build applications in your
+language, and that makes your language more attractive. Building an
+application means coordinating resources for the environment you're
+targeting (desktop, mobile, SPA, whatever). If your language has no
+frameworks for a target environment, then learning or using the
+language is much riskier. There's a much higher barrier to building
+applications: not only does a dev have to learn the language's syntax
+and paradigms, she has to figure out how to perform the complex task
+of abstracting and coordinating resources using the language's
+paradigms.
 
 ### Frameworks Make Development Fun
 
@@ -491,7 +503,9 @@ Well, call me a jaded millenial fart, but I don't think that this work
 is fun anymore. I want to build products, not build the infrastructure
 for building products. I want a plugin that will handle the reset
 password process for me. I want an admin panel that I can get working
-in five minutes.
+in five minutes. Frameworks handle the kind of work that ideally only
+has to be done once. I don't want to have to do this work over and
+over every time I want to make something.
 
 For me, programming is a creative endeavor. I love making dumb things
 and putting them in front of people to see what will happen. Rails let
@@ -500,7 +514,17 @@ share what they're afraid of and the site would use their IP address
 to come up with some geo coordinates and use Google Maps to display a
 global fear map. A lot of people were afraid of bears.
 
+Frameworks let you focus on the fun parts of building an app. They let
+you release an idea, however dumb, more quickly.
+
 ### Frameworks Help Beginners
+
+Frameworks help beginners by empowering them to build real,
+honest-to-god running applications that they can show to their friends
+and even make money with, without having to fully understand or even
+be aware of all the technology they're using. Being able to conjure up
+a complete creation, no matter how small or ill-made, is the very
+breath of wonder and delight.
 
 There's a kind of thinking that says frameworks are bad because they
 allow beginners to make stuff without having to know how it all
@@ -508,15 +532,97 @@ works. ActiveRecord is corrupting the youth, allowing them to build
 apps without even knowing how to pronounce _SQL_.
 
 Hogwash. Fiddlefaddle. Poppycock. If that's how you feel, maybe you
-should roll your own operating system. I will always and forever argue
-against people who think it should be more difficult for beginners to
-experience the joy of creation.
+should roll your own operating system. I will always and forever
+disagree with people who argue against making it easier for beginners
+to experience the joy of creation.
 
-Earlier
+Unfortunately, some in the Clojure community subscribe to the idea
+that it's misguided to make tools easier for beginners to use,
+including Clojure's creator Rich Hickey. From his talk [Design,
+Composition, and
+Performance](https://www.infoq.com/presentations/Design-Composition-Performance/):
 
-What's good for beginners isn't bad for experienced developers. Are
-operating systems bad for experienced developers? Is Apple's Cocoa
-framework bad for experienced developers?
+> Instruments are made for people who can play them... They're made
+> for people who can actually play them. And that's a problem, right?
+> Because beginners can't play. They're not yet players, they don't
+> know how to do it.
+>
+> ...We should fix like, the cello. Should cellos auto-tune? Or maybe
+> they should have red and green lights? It's green when it's in-tune
+> and it's red when it's out of tune. Or maybe they shouldn't make any
+> sound at all until you get it right. Is that how it works?
+>
+> No, that's not how it works! Look at these kids. (slide shows a
+> picture of kids playing cello). They're being subjected to
+> cellos. There's nothing helping them here. But otherwise -- they're
+> smaller, but those are real cellos. They're hard to play, they're
+> awkward, they sound terrible, they're going to be out of tune. It's
+> going to be tough, for a while, for these kids.
+>
+> But if they had any of those kinds of aids, they would never
+> actually learn how to play cello. They'd never learn to hear
+> themselves, or to tune themselves, or to listen. And playing a cello
+> is about being able to hear, more than anything else.
+>
+> ...We should not sell humanity short by trying to solve the problem
+> of beginners in our stuff.
+>
+> ...Just as we shouldn't target beginners in our designs, nor should
+> we try to eliminate all effort. It's an anti-pattern. It's not going
+> to yield a good instrument. It's OK for there to be effort.
+>
+> ...Coltrane couldn't build a web site in a day. I don't know why
+> this has become so important to us. It's really like a stupid thing
+> to be important, especially to an entire industry
+
+I don't understand this argument. I don't understand what prompted
+it. It's bizarre and self-contradictory: on the one hand, cellos are
+made for players and we shouldn't try to change them to accommodate
+novices, but on the other hand Rich acknowledges child learners _play
+child-sized cellos_. I'm quite sure that Yo-Yo Ma doesn't play a
+child-sized cello. Maybe pilots should forego flight simulators and
+only learn to fly with actual planes. The rant defies logic, but it's
+there any way, which makes me conclude that its only purpose is to
+heap scorn on the notion of accommodating beginners, and on the idea
+that beginners might need accommodation.
+
+What really gets me is this bit:
+
+> Coltrane couldn't build a web site in a day. I don't know why this
+> has become so important to us. It's really like a stupid thing to be
+> important, especially to an entire industry.
+
+Yes indeed, why does the industry care at all about making it easier
+for novices to create products? It's so stupid!
+
+The talk also raises and dismisses the idea of using red and green
+lights to tell the player when he's in tune or out of town. This is
+funny because years ago I started learning to play violin, and as I
+was learning the finger positions I would keep a tuner on to give me
+feedback on when I was in tune and out of tune. I didn't know what
+in-tune and out-of-tune sounded like, or where to position my fingers
+to create the correct sounds. Using the tuner is what actually helped
+me learn how to listen.
+
+One more counter-example: I am a photographer. My instrument, if you
+want to call it that, is the camera. I have a professional camera, and
+I know how to use it. The photos I've been creating require a fair
+amount of technical knowledge and specialized equipment:
+
+(insert photo here)
+
+Yet somehow I'm able to enjoy myself and my craft without saying it's
+stupid that point-and-shoot cameras exist and that companies cater to
+budding photographers (or even people who only take casual snapshots),
+and that these babies need to get callouses on their hands from
+handling real cameras.
+
+Novices benefit greatly from experts to guiding them. I don't think
+you can become a master photographer using your phone's camera, but
+you can take some damn good photos and be proud of them. And if you do
+want to become a master, that kind of positive feedback and sense of
+accomplishment will give you the motivation to stick with it and learn
+the hard stuff.
 
 ## A Clojure Framework
 
@@ -543,21 +649,6 @@ indirectly, gaining independence of each other - loose coupling
 - example of tight coupling at the OS level might be reading and
   writing to memory addresses
 
-
-There is almost scorn for the beginner. Leaders in the community
-explicitly position Clojure as a language for experienced developers.
-
-In one of Rich's talks he discusses mastery in relation to music, and
-how we don't try to dumb down the guitar to make it easier. No, but we
-can come up with better ways to introduce people to guitar. When I
-first tried to learn guitar, I tried to learn how to read music, play
-complex songs, and sing. I just started again this year, and I've
-found better resources. The guide I'm using has me learning just three
-chords and how to switch between them. Next step is singing a song
-with them. Whereas before I never got anywhere and gave up, now I'm
-actually making music. I have the joy of singing an actual song. We
-can do that with apps - make it easy for someone to sing a simple
-song, and provide the resources they need for mastery.
 
 * simple made easy
 * simplicity matters
