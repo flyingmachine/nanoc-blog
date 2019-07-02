@@ -580,11 +580,14 @@ it. It's bizarre and self-contradictory: on the one hand, cellos are
 made for players and we shouldn't try to change them to accommodate
 novices, but on the other hand Rich acknowledges child learners _play
 child-sized cellos_. I'm quite sure that Yo-Yo Ma doesn't play a
-child-sized cello. Maybe pilots should forego flight simulators and
-only learn to fly with actual planes. The rant defies logic, but it's
-there any way, which makes me conclude that its only purpose is to
-heap scorn on the notion of accommodating beginners, and on the idea
-that beginners might need accommodation.
+child-sized cello, yet here are these children somehow learning to
+play without using Yo-Yo Ma-sized cellos.
+
+Maybe pilots should forego flight simulators and only learn to fly
+with actual planes. The rant defies logic, but it's there any way,
+which makes me conclude that its only purpose is to heap scorn on the
+notion of accommodating beginners, and on the idea that beginners
+might need accommodation.
 
 What really gets me is this bit:
 
