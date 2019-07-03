@@ -625,13 +625,13 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 > to be important, especially to an entire industry
 
 I don't understand this argument. I don't understand what prompted it.
-It's bizarre and self-contradictory: on the one hand, cellos are made
-for players and we shouldn't change them to accommodate novices, but
-on the other hand Rich acknowledges child novices play child-sized
-cellos. Making the cello smaller is changing it. I'm quite sure that
-Yo-Yo Ma, a player, doesn't perform with a child-sized cello.
+It's bizarre and self-contradictory: some of the talk is dedicated to
+explaining how design reduces the effort to understand a system, how
+design reduces the effort to extend a system, how it enables reuse -
+which also reduces effort. But for some reason, when it comes to
+helping beginners, reducing effort is a bad thing?
 
-Or take this adorable video of a father playing _Everything Counts_ by
+Take this adorable video of a father playing _Everything Counts_ by
 Depeche Mode with his young children:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BxQSEvHdyjQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -664,16 +664,18 @@ literally transformed their lives by learning Rails and Django, tools
 that prioritize beginner friendliness and being able to do stupid
 things like "build a web site in a day."
 
-Back to the talk: it raises and dismisses the idea of using red and
-green lights to tell the player when he's in tune or out of town. This
-is funny because years ago I decided to pick up violin, and as I was
-learning the finger positions I would keep a tuner on to give me
-feedback on when I was in tune and out of tune -- using red and green
+The talk raises and dismisses the idea of using red and green lights
+to tell the player when he's in tune or out of town. This is funny
+because years ago I decided to pick up violin, and as I was learning
+the finger positions I would keep a tuner on to give me feedback on
+when I was in tune and out of tune -- using red and green
 lights. Initially I didn't know what in-tune and out-of-tune sounded
 like, or where exactly to position my fingers to create the correct
 sounds. The tuner gave me the feedback I needed to make
 corrections. Using the tuner is what actually helped me learn how to
-listen.
+listen. It truly boggles my mind that someone would argue against
+creating or using tools that give you helpful feedback so you can
+learn more quickly.
 
 One more counter-example: I am a photographer. My instrument, if you
 want to call it that, is the camera. I have a professional camera, and
