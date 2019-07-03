@@ -93,16 +93,14 @@ create their own virtual environments and introduce new resources like
 local storage and cookies.
 
 For computation, the OS introduces processes and threads as virtual
-resources representing and organizing program execution. I'm not
-familiar with Erlang but my understanding is its BEAM virtual machine
+resources representing and organizing program execution. Erlang
 creates an environment with a process model that's dramatically
-different from the underlying operating system's. Clojure's
-`core.async` library also provides a computational model
-(communicating sequential processes) that's meant to make async and
-concurrent programming much easier than anything provided by the OS or
-by the JVM's concurrency libraries. It's a virtual computation model
-that's then compiled to JVM bytecode (or JavaScript!), which then has
-to be executed by operating system processes.
+different from the underlying OS's. Same deal with Clojure's
+`core.async`, which introduces the _communicating sequential
+processes_ computation model. It's a virtual model defined by Clojure
+macros, "compiled" to core clojure, then compiled to JVM bytecode (or
+JavaScript!), which then has to be executed by operating system
+processes.
 
 Interfaces follow the same pattern: on the visual display side, the OS
 paints to monitors, applications paint to their own virtual canvas,
@@ -123,8 +121,8 @@ use of _resource_ is clear enough that you nevertheless understand
 what tf I'm talking about when I talk about resources.)
 
 Coordinating these resources is inherently complex. You have to decide
-how to create, validate, secure, and dispose of resources, and how to
-convey one resource's entities to another resource, and how to deal
+how to create, validate, secure, and dispose of resources; how to
+convey one resource's entities to another resource; and how to deal
 with issues like timing (race conditions) and failure handling that
 arise whenever resources interact. Rails, for instance, was designed
 to coordinate browsers, HTTP servers, and databases. It had to convey
@@ -192,10 +190,10 @@ As another example, *nix operating systems introduce the _file_
 abstraction, whose core functions are `open`, `read`, `write`, and
 `close`. Files are represented as sequential streams of bytes, which
 is just as much a choice as ActiveRecord's choice to use Ruby
-objects. Open files are represented as _file descriptors_, which are
-usually a small integer. As [_The Linux Programming
-Interface_](https://amzn.to/2FK39zQ) (one of the best programming
-books ever written) describes:
+objects. Within processes, open files are represented as _file
+descriptors_, which are usually a small integer. As [_The Linux
+Programming Interface_](https://amzn.to/2FK39zQ) (one of the best
+programming books ever written) describes:
 
 > The following are the four key system calls for performing file I/O:
 >
@@ -203,25 +201,28 @@ books ever written) describes:
 >   _pathname_, returning a file descriptor used to refer to the open
 >   file in subsuquent calls.
 > * _numread_ = read(fd, buffer, count)_ reads at most _count_ bytes
->   from the open file referred to by _fd_ and stores them in _buffer_.
+>   from the open file referred to by _fd_ and stores them in
+>   _buffer_. Returns number of bytes read.
 > * _numwriten = write(fd, buffer, count)_ writes up to _count_ bytes
->   from _buffer_ to the open file referred to by _fd_.
+>   from _buffer_ to the open file referred to by _fd_. Returns number
+>   of bytes written.
 > * _status = close(fd)_ is  called after all I/O has been completed,
 >   in order to release the file descriptor _fd_ and its associated
 >   kernel resources.
 
 Now here's the amazing magical kicker: _file_ doesn't have to mean
-_file on disk_. The OS implements the file interface for **pipes**,
-terminals, sockets, and other resources, meaning that your programs
-can write to them using the same system calls as you'd use to write
-files to disk - indeed, from your program's standpoint, all it knows
-is that it's writing to a file; it doesn't know that the "file" might
-actually be a pipe.
+_file on disk_. The OS implements the file abstraction for **pipes**,
+terminals, and other resources, meaning that your programs can write
+to them using the same system calls as you'd use to write files to
+disk - indeed, from your program's standpoint, all it knows is that
+it's writing to a file; it doesn't know that the "file" might actually
+be a pipe.
 
 This is a huge part of UNIX's famed simplicity. It's what lets us run
 this in a shell:
 
-```
+```bash
+# list files in the current directory and perform a word count on the output
 ls | wc
 ```
 
@@ -285,16 +286,17 @@ One example many people are familiar with is the HTTP stack, a
 
 #### Conventions
 
-The file model is also a common language, and the OS uses device
-drivers between it and whatever local language is spoken by hardware
-devices. It has naming and addressing conventions, allowing you
-specify files on the filesystem using character strings separated by
-slashes that it translates to an internal inode (a data structure that
-stores file and directory details, like ownership and
-permissions). We're so used to this that it's easy to forget it's a
-convention; *nix systems could have been designed so that you had to
-refer to files using a number or a UUID. The file descriptors I
-described in the last section are also a convention.
+The file model is a "common language", and the OS uses device drivers
+to translate between between the file model and whatever local
+language is spoken by hardware devices. It has naming and addressing
+conventions, allowing you specify files on the filesystem using
+character strings separated by slashes that it translates to an
+internal inode (a data structure that stores file and directory
+details, like ownership and permissions). We're so used to this that
+it's easy to forget it's a convention; *nix systems could have been
+designed so that you had to refer to files using a number or a
+UUID. The file descriptors I described in the last section are also a
+convention.
 
 Another convention the file model introduces is to structure content
 as byte streams, as opposed to bit streams, character streams, or xml
@@ -344,17 +346,20 @@ hacking around a framework's constraints, and I think the main
 constraint is often the absence of a communication broker. The
 framework's designers introduce new resources and abstractions, but
 the only way to compose them is through direct communication, and
-sometimes that direct communication is handled magically. If someone
-wants to introduce new abstractions, they have to untangle all the
-magic and hook deep into the framework's internals, using -- or even
-overwriting! -- code that's meant to be private.
+sometimes that direct communication is handled magically. (I believe
+Rails worked with this way, with tight coupling between Controller and
+Views and a lack of options for conveying Controller data to other
+parts of the system). If someone wants to introduce new abstractions,
+they have to untangle all the magic and hook deep into the framework's
+internals, using -- or even overwriting! -- code that's meant to be
+private.
 
 I remember running into this with Rails back when MongoDB was
 released; the _document database_ resource was sufficiently different
 from the _relational database resource_ that it was pretty much
 impossible for MongoDB to take part in the ActiveRecord abstraction,
-and it was also very difficult to introduce a new abstraction that
-would play well with the rest of the Rails ecosystem.
+and it was also very difficult to introduce a new data store
+abstraction that would play well with the rest of the Rails ecosystem.
 
 For a more current example, a frontend framework might identify the
 form as a resource, and create a nice abstraction for it that handles
@@ -377,8 +382,8 @@ communication protocols. I'm not very familiar with
 [Redux](https://redux.js.org/) but I've heard tell that it also has
 embraced a global, central state container.
 
-If you create a form abstraction using re-frame, it's possible to keep
-track of its state in a global state atom. It's further possible to
+If you create a form abstraction using re-frame, it's possible to
+track its state in a global state atom. It's further possible to
 establish a naming convention for forms, making it easier for other
 participants to look up the form's data and react to it.
 
@@ -618,14 +623,14 @@ consider the beginner experience when you're building tools.
 
 Incidentally, the talk also raises and dismisses the idea of using red
 and green lights to tell the player when he's in tune or out of
-town. This is funny because years ago I started learning to play
+town. This is funny because years ago I decided to pick up violin
 violin, and as I was learning the finger positions I would keep a
 tuner on to give me feedback on when I was in tune and out of tune --
 using read and green lights. Initially I didn't know what in-tune and
-out-of-tune sounded like, or where to position my fingers to create
-the correct sounds. The tuner gave me the feedback I needed to make
-corrections. Using the tuner is what actually helped me learn how to
-listen.
+out-of-tune sounded like, or where exactly to position my fingers to
+create the correct sounds. The tuner gave me the feedback I needed to
+make corrections. Using the tuner is what actually helped me learn how
+to listen.
 
 One more counter-example: I am a photographer. My instrument, if you
 want to call it that, is the camera. I have a professional camera, and
