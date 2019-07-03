@@ -353,8 +353,8 @@ enables loose coupling and all the attendant benefits.
 
 In particular, _globally addressable communication brokers_ (like the
 filesystem, or Kafka queues, or databases) are essential to enabling
-composable systems. _Global_ means that every resource can have access
-to it. _Addressable_ means that the broker maintains identifiers for
+composable systems. _Global_ means that every resource can access
+it. _Addressable_ means that the broker maintains identifiers for
 entities independently of its clients, and it's possible for clients
 to specify entities using those identifiers. _Communication broker_
 means that the system's purpose is to convey data from one resource to
@@ -395,12 +395,12 @@ For a more current example, a frontend framework might identify the
 form as a resource, and create a nice abstraction for it that handles
 things like validation and the submission lifecycle. If the form
 abstraction is written in a framework that has no communication broker
-(like a global state atom), then it will be very difficult to meet the
-common use case of using a form to filter rows in a table because
-there's no way for the code that renders table data to access the
-form's state. You might come up with some hack like defining handlers
-for exporting the form's state, but doing this on an ad-hoc basis
-results in confusing and brittle code.
+(like a global state container), then it will be very difficult to
+meet the common use case of using a form to filter rows in a table
+because there's no way for the code that renders table data to access
+the form inputs' values. You might come up with some hack like
+defining handlers for exporting the form's state, but doing this on an
+ad-hoc basis results in confusing and brittle code.
 
 By contrast, the presence of a communication broker can make life much
 easier. In the Clojure world, the React frameworks
@@ -427,7 +427,8 @@ infrastructure possible, and infrastructure enables productivity.
 
 In this section I focused primarily on the file model because it's
 been so successful and I think we can learn a lot from it. Other
-models include event buses and message queues.
+models include event buses and message queues. I'm not going to write
+about these because I'm not made of words, ok?!?
 
 ### Environments
 
@@ -524,7 +525,16 @@ language is much riskier. There's a much higher barrier to building
 products: not only does a dev have to learn the language's syntax
 and paradigms, she has to figure out how to perform the complex task
 of abstracting and coordinating resources using the language's
-paradigms.
+paradigms. If your goal is to create a mass-market product, choosing a
+language that doesn't have frameworks for your target environments is
+a risky choice.
+
+Finally, frameworks become a base layer that you can create tooling
+for. The introduction of the filesystem made it possible for people to
+write tools that easily create and manipulate files. Rails's
+abstractions made it easy togenerate code for creating a new database
+table, along with an entire stack - model, view, controller - for
+interacting with it.
 
 ### Frameworks Make Development Fun
 
@@ -547,8 +557,8 @@ over every time I want to make something.
 For me, programming is a creative endeavor. I love making dumb things
 and putting them in front of people to see what will happen. Rails let
 me build (now defunct) sites like phobiatopia.com, where users could
-share what they're afraid of and the site would use their IP address
-to come up with some geo coordinates and use Google Maps to display a
+share what they're afraid of. The site would use their IP address to
+come up with some geo coordinates and use Google Maps to display a
 global fear map. A lot of people were afraid of bears.
 
 Frameworks let you focus on the fun parts of building an app. They let
@@ -616,12 +626,10 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 
 I don't understand this argument. I don't understand what prompted it.
 It's bizarre and self-contradictory: on the one hand, cellos are made
-for _players_ and we shouldn't change them to accommodate novices, but
-on the other hand Rich acknowledges _child novices play child-sized
-cellos_. This is a change. I'm quite sure that Yo-Yo Ma, a _player_,
-doesn't perform with a child-sized cello, and at the same time here
-are these _non-player_ children somehow learning to play without using
-Yo-Yo Ma-sized cellos.
+for players and we shouldn't change them to accommodate novices, but
+on the other hand Rich acknowledges child novices play child-sized
+cellos. Making the cello smaller is changing it. I'm quite sure that
+Yo-Yo Ma, a player, doesn't perform with a child-sized cello.
 
 Or take this adorable video of a father playing _Everything Counts_ by
 Depeche Mode with his young children:
@@ -689,36 +697,72 @@ stick with it and learn the hard stuff. Frameworks provide this
 guidance by creating a safe path around all the quicksand and pit
 traps that you can stumble into when creating an app.
 
-Creating or adapting tools to help beginners is not stupid. Frameworks
-help beginners. This is a feature, not a bug.
+I apologize for going on about this so much. I feel strongly about
+it. Clojure does not have a reputation for beginner-friendliness,
+despite the incredible efforts of many people in the community to make
+it more accessible. The strain of anti-beginner-friendliness that's
+present is unnecessary, and I think it can and should change.
+Creating or adapting tools to help beginners is not stupid. (That
+doesn't mean I think anybody is obligated to do that work.) I want to
+welcome and embrace beginners. I want them to be able to quickly make
+cool stuff. Frameworks help beginners. This is a feature, not a bug.
 
 ## A Clojure Framework
 
-**IN PROGRESS**
+Frameworks are all about managing the complexity of coordinating
+resources. Well, guess what: Managing Complexity is Clojure's middle
+name. Clojure "Managing Complexity" McCarthy-Lisp. Personally, I want
+a single-page app (SPA) framework, and there are many aspects of
+Clojure's design and philosophy that I think will make it possible to
+create one that seriously kicks ass. I'll give just a few examples.
 
-Just because you can't be everything to everybody doesn't mean you
-can't be something to most people.
+First, consider how Linux tools like `sed` and `awk` are
+text-oriented. Developers can add additional structure to text by
+formatting it as JSON or YAML, and those text-processing tools can
+still work the structured text.
 
-Immutability provides a remarkable foundation.
+In the same way, Clojure's emphasis on simple data structures means
+that we can create specialized structures to represent forms and ajax
+request, and tools to process those structures. If we define those
+structures in terms of maps and vectors, though, we'll still be able
+to use a vast ecosystem of functions for working with those simpler
+structures. In other words, creating specialized structures does not
+preclude us from using the tools built for simpler structures, and
+this isn't the case for other languages.
 
-integrant receives the external message `start`. it also manages
-composition, or how pieces interact with each other it makes it easy
-to break down a component into subcomponents, allowing different
-strategies and avoiding lock-in
+Second, Clojure's abstraction mechanisms (prototypes and multimethods)
+are extremely flexible, making it easy for us to implement those
+abstractions for new resources as they become available.
 
-philosophy of simplicity and decomplecting
+Third, _you can use the same language for the frontend and backend!!!_
+Not only that, Transit allows the two to effortlessly
+communicate. This eliminates an entire class of coordination problems
+that frameworks in other languages have to contend with.
 
-data composition - better than hiding data
-in OO systems it's necessary to hide data
+There's more I could write here, but I'm honestly still figuring it
+out. Why am I bothering to figure out? It's time to come clean: when I
+wrote that I don't want to build the infrastructure for building
+frameworks, I lied. I'm building a framework! My ambition is to make
+it possible to _build a web site in half a day_.
 
-like in a filesystem, you can coordinate different components
-indirectly, gaining independence of each other - loose coupling
+Well, maybe not that quickly, but I do want we Clojure developers to
+be able to get our ideas into production _fast_. I want us to be able
+to spend more time on the hard stuff, the fun stuff, the interesting
+stuff. And I want us to be able to easily ship with confidence.
 
-- do they communicate using an open, universal standard? or by direct
-  access?
-- example of tight coupling at the OS level might be reading and
-  writing to memory addresses
+The framework is built on top of some truly amazing libraries,
+primarily Integrant, re-frame, and Liberator. Integrant introduces a
+_component_ abstraction and handles the start/stop lifecycle of an
+application. re-frame provides a filesystem and communication broker
+for the frontend. Liberator introduces a standard model for handling
+HTTP requests.
 
-
-* simple made easy
-* simplicity matters
+If my framework is useful at all it's because the creators of those
+tools have done all the heavy lifting. My framework introduces more
+resources and abstractions that specific to creating single-page
+apps. For example, it creates an abstraction for wrapping AJAX
+requests so that you can easily display activity indicators when a
+request is active. It creates a form abstraction that handles all the
+plumbing of handling input changes and dispatching form submission, as
+well the entire form lifecycle of _fresh_, _dirty_, _submitted_,
+_invalid_, _succeeded_, etc.
