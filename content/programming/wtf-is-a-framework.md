@@ -759,10 +759,10 @@ HTTP requests.
 
 If my framework is useful at all it's because the creators of those
 tools have done all the heavy lifting. My framework introduces more
-resources and abstractions that specific to creating single-page
-apps. For example, it creates an abstraction for wrapping AJAX
-requests so that you can easily display activity indicators when a
-request is active. It creates a form abstraction that handles all the
-plumbing of handling input changes and dispatching form submission, as
-well the entire form lifecycle of _fresh_, _dirty_, _submitted_,
-_invalid_, _succeeded_, etc.
+resources and abstractions specific to creating single-page apps. For
+example, it creates an abstraction for wrapping AJAX requests so that
+you can easily display activity indicators when a request is
+active. It creates a form abstraction that handles all the plumbing of
+handling input changes and dispatching form submission, as well the
+entire form lifecycle of _fresh_, _dirty_, _submitted_, _invalid_,
+_succeeded_, etc. It imposes some convetions for organizing data.
