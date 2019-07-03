@@ -640,6 +640,9 @@ stick with it and learn the hard stuff. Frameworks provide this
 guidance by creating a safe path around all the quicksand and pit
 traps that you can stumble into when creating an app.
 
+Creating tools to help beginners is not stupid. The fact that
+frameworks help beginners is a feature, not a bug.
+
 ## A Clojure Framework
 
 **IN PROGRESS**
