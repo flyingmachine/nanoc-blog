@@ -625,11 +625,13 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 > to be important, especially to an entire industry
 
 I don't understand this argument. I don't understand what prompted it.
-It's bizarre and self-contradictory: some of the talk is dedicated to
-explaining how design reduces the effort to understand a system, how
-design reduces the effort to extend a system, how it enables reuse -
-which also reduces effort. But for some reason, when it comes to
-helping beginners, reducing effort is a bad thing?
+It's bizarre and self-contradictory: adapting an instrument is bad,
+but these children are using child-sized instruments and that's fine.
+If you watch the whole talk, some of it is dedicated to explaining how
+design reduces the effort to understand a system, how design reduces
+the effort to extend a system, how it enables reuse - which also
+reduces effort. But for some reason, reducing effort is a bad thing
+when it helps beginners?
 
 Take this adorable video of a father playing _Everything Counts_ by
 Depeche Mode with his young children:
