@@ -587,11 +587,20 @@ perform with a child-sized cello, and at the same time here are these
 _non-player_ children somehow learning to play without using Yo-Yo
 Ma-sized cellos.
 
-Maybe pilots should forego flight simulators and only learn to fly
-with actual planes. The rant defies logic, but it's there any way,
-which makes me conclude that its only purpose is to heap scorn on the
-notion of accommodating beginners, and on the idea that beginners
-might need accommodation.
+Or take this adorable video of a father playing _Everything Counts_ by
+Depeche Mode with his young children:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BxQSEvHdyjQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Notice the colored stickers designating notes on the xylophone and
+keyboard. Is this the kind of instrument adaptation that we should put
+down because it's reducing effort?
+
+Should forego flight simulators and only learn to fly with actual
+planes? The rant defies logic, but it's there any way, which makes me
+conclude that its only purpose is to heap scorn on the notion of
+accommodating beginners, and on the idea that beginners might need
+accommodation.
 
 What really gets me is this bit:
 
@@ -627,9 +636,9 @@ technical knowledge and specialized equipment:
 
 Yet somehow I'm able to enjoy myself and my art without saying it's
 stupid that point-and-shoot cameras exist and that companies shouldn't
-cater to budding photographers or even people who only take casual
-snapshots, and that those babies need to get callouses on their hands
-from handling real cameras.
+cater to budding photographers (not to mention people who only take
+casual snapshots), and that those babies need to get callouses on
+their hands from handling real cameras.
 
 Novices benefit greatly from expert guidance. I don't think you can
 become a master photographer using your phone's camera, but with the
@@ -640,8 +649,8 @@ stick with it and learn the hard stuff. Frameworks provide this
 guidance by creating a safe path around all the quicksand and pit
 traps that you can stumble into when creating an app.
 
-Creating tools to help beginners is not stupid. The fact that
-frameworks help beginners is a feature, not a bug.
+Creating or adapting tools to help beginners is not stupid. Frameworks
+help beginners. This is a feature, not a bug.
 
 ## A Clojure Framework
 
