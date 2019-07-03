@@ -457,7 +457,7 @@ Clear abstractions and communication systems allow people to share
 modules, plugins, or whatever you want to call framework extensions,
 creating a vibrant ecosystem of reusable components.
 
-If you accept my assertion that an Operating System is a framework,
+If you accept my assertion that an operating system is a framework,
 then you can consider any program which communicates via one of the
 OS's communication systems (sockets, the file model, etc) to be an
 extension of the framework. Postgres is a framework extension that adds
@@ -468,9 +468,9 @@ Similarly, Rails makes it possible for developers to identify
 specialized resources and extend the framework to easily support
 them. One of the most popular and powerful is
 [Devise](https://github.com/plataformatec/devise), coordinates Rails
-resources to introduce a new authentication resource. Just as using
-Postgres is usually preferable to rolling your own database, using
-Devise is usually preferable to rolling your own authentication
+resources to introduce a new user authentication resource. Just as
+using Postgres is usually preferable to rolling your own database,
+using Devise is usually preferable to rolling your own authentication
 system.
 
 Would it be possible to create a Devise for Clojure? I don't think
@@ -619,18 +619,21 @@ Maybe I'm missing something. Maybe it truly is stupid to want to
 figure out how to help people build a web site in a day. It's
 definitely possible that I'm grossly misinterpreting this talk. I mean
 this sincerely: someone please explain to me why it's a bad idea to
-consider the beginner experience when you're building tools.
+consider the beginner experience when you're building tools. Perhaps I
+am taking this personally because I have friends and family who have
+literally transformed their lives by learning Rails and Django, tools
+that prioritize beginner friendliness.
 
-Incidentally, the talk also raises and dismisses the idea of using red
-and green lights to tell the player when he's in tune or out of
-town. This is funny because years ago I decided to pick up violin
-violin, and as I was learning the finger positions I would keep a
-tuner on to give me feedback on when I was in tune and out of tune --
-using read and green lights. Initially I didn't know what in-tune and
-out-of-tune sounded like, or where exactly to position my fingers to
-create the correct sounds. The tuner gave me the feedback I needed to
-make corrections. Using the tuner is what actually helped me learn how
-to listen.
+Back to the talk: it raises and dismisses the idea of using red and
+green lights to tell the player when he's in tune or out of town. This
+is funny because years ago I decided to pick up violin violin, and as
+I was learning the finger positions I would keep a tuner on to give me
+feedback on when I was in tune and out of tune -- using read and green
+lights. Initially I didn't know what in-tune and out-of-tune sounded
+like, or where exactly to position my fingers to create the correct
+sounds. The tuner gave me the feedback I needed to make
+corrections. Using the tuner is what actually helped me learn how to
+listen.
 
 One more counter-example: I am a photographer. My instrument, if you
 want to call it that, is the camera. I have a professional camera, and
