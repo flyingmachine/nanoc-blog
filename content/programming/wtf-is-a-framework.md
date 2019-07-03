@@ -35,7 +35,10 @@ think that the description will clarify what makes a _good_ framework,
 and provide some diagnostic criteria for why some frameworks end up
 hurting us. My hope is that you'll find this discussion interesting
 and satisfying, and that it will give you a new, useful perspective
-not just on frameworks but on programming in general.
+not just on frameworks but on programming in general. Even if you
+still don't want to use a framework after you finish reading, I hope
+you'll have a better understanding of the problems frameworks are
+meant to solve and that this will help you design applications better.
 
 Frameworks have second-order benefits, and I'll cover those too. They
 make it possible for an ecosystem of reusable components to
@@ -74,23 +77,24 @@ this for us so we can focus on application-specific tasks.
 _Resources_ are the "materials" used by programs to do their work, and
 can be divided into four categories: storage, computation,
 communication, and interfaces. Examples of storage include files,
-databases, caches, search engines, and more. Computation examples
-include processes, threads, actors, background jobs, and parallel
-jobs. Communication examples include HTTP requests and message
-queues. Interfaces typically include screens and the systems used to
-display stuff on them: gui toolkits, browsers and the DOM, etc.
+databases, caches, and search engines. Computation examples include
+processes, threads, actors, background jobs, and core.async
+processes. For communication there are HTTP requests, message queues,
+and event buses. Interfaces typically include keyboard and mouse, plus
+screens and the systems used to display stuff on them: gui toolkits,
+browsers and the DOM, etc.
 
 Specialized resources are built on top of more general-purpose
-resources. (You might refer to these specialized resources _services_
-or _components_.) We start with hardware and build virtual resources
-on top. For example, with storage the OS starts with disks and memory
-and creates the filesystem as a virtual storage resource on
-top. Databases like Postgres use the filesystem to create another
-virtual storage resource to handle use cases not met by the
-filesystem. Recently we've even seen databases like Datomic use other
-databases like Cassandra or DynamoDB as their storage layer. Browsers
-create their own virtual environments and introduce new resources like
-local storage and cookies.
+resources. (Some refer to these specialized resources as _services_ or
+_components_.) We start with hardware and build virtual resources on
+top. With storage, the OS starts with disks and memory and creates the
+filesystem as a virtual storage resource on top. Databases like
+Postgres use the filesystem to create another virtual storage resource
+to handle use cases not met by the filesystem. Recently we've even
+seen databases like Datomic use other databases like Cassandra or
+DynamoDB as their storage layer. Browsers create their own virtual
+environments and introduce new resources like local storage and
+cookies.
 
 For computation, the OS introduces processes and threads as virtual
 resources representing and organizing program execution. Erlang
@@ -105,7 +109,9 @@ processes.
 Interfaces follow the same pattern: on the visual display side, the OS
 paints to monitors, applications paint to their own virtual canvas,
 browsers are applications which introduce their own resources (the DOM
-and `<canvas>`), and React introduces a virtual DOM.
+and `<canvas>`), and React introduces a virtual DOM. Emacs is an
+operating system on top of the operating system, and it provides
+windows, frames, and buffers.
 
 Resources manage their own _entities_: in a database, entities could
 include tables, rows, triggers, and sequences. Filesystem entities
@@ -116,19 +122,28 @@ other components.
 airtight, axiomatic, comprehensive description that programmers like.
 One shortcoming is that the boundary between resource and application
 is pretty thin: Postgres is an application in its own right, but from
-the perspective of a Rails app it's a resoruce. Still, hopefully my
+the perspective of a Rails app it's a resource. Still, hopefully my
 use of _resource_ is clear enough that you nevertheless understand
-what tf I'm talking about when I talk about resources.)
+what the f I'm talking about when I talk about resources.)
 
-Coordinating these resources is inherently complex. You have to decide
-how to create, validate, secure, and dispose of resources; how to
-convey one resource's entities to another resource; and how to deal
-with issues like timing (race conditions) and failure handling that
-arise whenever resources interact. Rails, for instance, was designed
-to coordinate browsers, HTTP servers, and databases. It had to convey
-user input to a database, and also retrieve and render database
-records for display by the user interface, via HTTP requests and
-responses.
+Coordinating these resources is inherently complex. Hell, coordinating
+anything is complex. I still remember the first time I got smacked in
+the face with a baseball in little league thanks to a lack of
+coordination. There was also an time period where I, as a child, took
+tae kwon do classes and frequently ended up sitting with my back
+against the wall with my eyes closed in pain because a) my mom for
+some reason refused to buy me an athletic cup and b) I did not possess
+the coordination to otherwise protect myself during sparring.
+
+When building a product, you have to decide how to create, validate,
+secure, and dispose of resource entities; how to convey entities from
+one resource to another; and how to deal with issues like timing (race
+conditions) and failure handling that arise whenever resources
+interact, all without getting hit in the face (or elsewhere). Rails,
+for instance, was designed to coordinate browsers, HTTP servers, and
+databases. It had to convey user input to a database, and also
+retrieve and render database records for display by the user
+interface, via HTTP requests and responses.
 
 There is no obvious or objectively correct way to coordinate these
 resources. In Rails, HTTP requests would get dispatched to a
@@ -136,18 +151,18 @@ Controller, which was responsible for interacting with a database and
 making data available to a View, which would render HTML that could be
 sent back to the browser.
 
-You don't _have_ to coordinate web app resources using the MVC
-approach Rails uses, but you do have to coordinate these resources
-_somehow_. These decisions involve making tradeoffs and imposing
-constraints to achieve a balance of extensibility (creating a system
-generic enough for new resources to participate) and power (allowing
-the system to fully exploit the unique features of a specific
-resource.)
+You don't _have_ to coordinate web app resources using the
+Model/View/Controller (MVC) approach Rails uses, but you do have to
+coordinate these resources _somehow_. These decisions involve making
+tradeoffs and imposing constraints to achieve a balance of
+extensibility (creating a system generic enough for new resources to
+participate) and power (allowing the system to fully exploit the
+unique features of a specific resource).
 
 This is a very difficult task even for experienced developers, and the
 choices you make could have negative repercussions that aren't
 apparent until you're heavily invested in them. With Rails, for
-instance, ActiveRecord provided a good generic abstraction for
+instance, ActiveRecord (AR) provided a good generic abstraction for
 databases, but early on it was very easy to produce extremely
 inefficient SQL, and sometimes very difficult to produce efficient
 SQL. You'd often have to hand-write SQL, eliminating some of the
@@ -155,7 +170,9 @@ benefits of using AR in the first place.
 
 For complete beginners, the task of making these tradeoffs is
 impossible because doing so requires experience. Beginners won't even
-know that it's necessary to make these decisions.
+know that it's necessary to make these decisions. At the same time,
+more experienced developers would prefer to spend their time and
+energy solving more important problems.
 
 Frameworks make these decisions for us, allowing us to focus on
 business logic, and they do so by introducing _communication systems_
@@ -177,17 +194,26 @@ correspond to yours just cut me a little slack and run with it :)
 Rails exposes a database resource that your application code interacts
 with via the `ActiveRecord` abstraction. Tables correspond to classes,
 and rows to objects of that class. This a choice with tradeoffs - rows
-could have been represented as Ruby hashes, which might have made them
-more portable while making it more difficult to concisely express
-database operations like `save` and `destroy`. Additional messages the
-abstraction responds to are `find`, `create`, `update`, and
-`destroy`. It calls your application's code via lifecycle callback
-methods like `before_validation`. Often, these callbacks are
-_synthetic_, meaning they are introduced by the framework and not
-provided by the resource.
+could have been represented as Ruby hashes (a primitive akin to a JSON
+object), which might have made them more portable while making it more
+difficult to concisely express database operations like `save` and
+`destroy`. The abstraction also responds to `find`, `create`,
+`update`, and `destroy`. It calls your application's code via
+lifecycle callback methods like `before_validation`. Frameworks add
+value by identifying these lifecycles and providing interfaces for
+them when they're absent from the underlying resource.
 
-As another example, *nix operating systems introduce the _file_
-abstraction, whose core functions are `open`, `read`, `write`, and
+You already know this, but it bears saying: abstractions let us code
+at a higher level. Framework abstractions handle the concerns that are
+specific to resource management, letting us focus on building
+products. Designed well, they enable loose coupling.
+
+Nothing exemplifies this better than the massively successful _file_
+abstraction that the UNIX framework introduced. We're going to look at
+in detail because it embodies design wisdom that can help us
+understand what makes a good framework.
+
+The core file functions are `open`, `read`, `write`, and
 `close`. Files are represented as sequential streams of bytes, which
 is just as much a choice as ActiveRecord's choice to use Ruby
 objects. Within processes, open files are represented as _file
@@ -211,15 +237,17 @@ programming books ever written) describes:
 >   kernel resources.
 
 Now here's the amazing magical kicker: _file_ doesn't have to mean
-_file on disk_. The OS implements the file abstraction for **pipes**,
-terminals, and other resources, meaning that your programs can write
-to them using the same system calls as you'd use to write files to
-disk - indeed, from your program's standpoint, all it knows is that
-it's writing to a file; it doesn't know that the "file" might actually
-be a pipe.
+_file on disk_. Just as Rails implements the ActiveRecord abstraction
+for MySQL and Postgres, the OS implements the file abstraction for
+**pipes**, terminals, and other resources, meaning that your programs
+can write to them using the same system calls as you'd use to write
+files to disk - indeed, from your program's standpoint, all it knows
+is that it's writing to a file; it doesn't know that the "file" might
+actually be a pipe. Exercise for the reader: which design choices
+enable this degree of loose coupling?
 
-This is a huge part of UNIX's famed simplicity. It's what lets us run
-this in a shell:
+This design is a huge part of UNIX's famed simplicity. It's what lets
+us run this in a shell:
 
 ```bash
 # list files in the current directory and perform a word count on the output
@@ -227,16 +255,18 @@ ls | wc
 ```
 
 The shell interprets this by launching an `ls` process. Normally, when
-the shell launches a process it sets three file descriptors (which,
+the shell launches a process it creates three file descriptors (which,
 remember, represent open files): `0` for `STDIN`, `1` for `STDOUT`,
-and `2` for `STDERR`, and each of these file descriptors refer to your
-terminal (terminals can be files!! what!?!?). Your shell sees the
-pipe, `|`, and sets `ls`'s `STDOUT` to the pipe's `STDIN`, and the
+and `2` for `STDERR`, and the shell sets each file descriptor to refer
+to your terminal (terminals can be files!! what!?!?). Your shell sees
+the pipe, `|`, and sets `ls`'s `STDOUT` to the pipe's `STDIN`, and the
 pipe's `STDOUT` to `wc`'s `STDIN`. The pipe links processes' file
 descriptors, while the processes get to read and write "files" without
-having to know what's actually on the other end. (No joke, every time
-I think of this I get a little excited tingle at the base of my
-spine.)
+having to know what's actually on the other end. No joke, every time I
+think of this I get a little excited tingle at the base of my
+spine because I am a:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IRsPheErBj8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 This is why file I/O is referred to as _the universal I/O model_. I'll
 have more to say about this in the next section, but I share it here
@@ -289,7 +319,7 @@ One example many people are familiar with is the HTTP stack, a
 The file model is a "common language", and the OS uses device drivers
 to translate between between the file model and whatever local
 language is spoken by hardware devices. It has naming and addressing
-conventions, allowing you specify files on the filesystem using
+conventions, letting you specify files on the filesystem using
 character strings separated by slashes that it translates to an
 internal inode (a data structure that stores file and directory
 details, like ownership and permissions). We're so used to this that
@@ -351,7 +381,7 @@ Rails worked with this way, with tight coupling between Controller and
 Views and a lack of options for conveying Controller data to other
 parts of the system). If someone wants to introduce new abstractions,
 they have to untangle all the magic and hook deep into the framework's
-internals, using -- or even overwriting! -- code that's meant to be
+internals, using -- or even patching! -- code that's meant to be
 private.
 
 I remember running into this with Rails back when MongoDB was
@@ -467,9 +497,9 @@ resource.
 Similarly, Rails makes it possible for developers to identify
 specialized resources and extend the framework to easily support
 them. One of the most popular and powerful is
-[Devise](https://github.com/plataformatec/devise), coordinates Rails
-resources to introduce a new user authentication resource. Just as
-using Postgres is usually preferable to rolling your own database,
+[Devise](https://github.com/plataformatec/devise), which coordinates
+Rails resources to introduce a new user authentication resource. Just
+as using Postgres is usually preferable to rolling your own database,
 using Devise is usually preferable to rolling your own authentication
 system.
 
@@ -491,7 +521,7 @@ application means coordinating resources for the environment you're
 targeting (desktop, mobile, SPA, whatever). If your language has no
 frameworks for a target environment, then learning or using the
 language is much riskier. There's a much higher barrier to building
-applications: not only does a dev have to learn the language's syntax
+products: not only does a dev have to learn the language's syntax
 and paradigms, she has to figure out how to perform the complex task
 of abstracting and coordinating resources using the language's
 paradigms.
@@ -588,7 +618,7 @@ I don't understand this argument. I don't understand what prompted it.
 It's bizarre and self-contradictory: on the one hand, cellos are made
 for _players_ and we shouldn't change them to accommodate novices, but
 on the other hand Rich acknowledges _child novices play child-sized
-cellos_. This is a change. I'm quite sure that Yo-Yo Ma, _a player_
+cellos_. This is a change. I'm quite sure that Yo-Yo Ma, a _player_,
 doesn't perform with a child-sized cello, and at the same time here
 are these _non-player_ children somehow learning to play without using
 Yo-Yo Ma-sized cellos.
@@ -604,8 +634,8 @@ down because it's reducing effort?
 
 Should pilots forego flight simulators and only learn to fly with
 actual planes? The rant against beginner-friendliness defies logic,
-but it's there any way, which makes me conclude that its only purpose
-is to heap scorn on the notion of accommodating beginners, and on the
+but it's there anyway, which makes me conclude that its only purpose
+is to heap scorn on the notion of accommodating beginners and on the
 idea that beginners might need accommodation.
 
 What really gets me is this bit:
@@ -623,14 +653,14 @@ this sincerely: someone please explain to me why it's a bad idea to
 consider the beginner experience when you're building tools. Perhaps I
 am taking this personally because I have friends and family who have
 literally transformed their lives by learning Rails and Django, tools
-that prioritize beginner friendliness and being able to do things like
-"build a web site in a day."
+that prioritize beginner friendliness and being able to do stupid
+things like "build a web site in a day."
 
 Back to the talk: it raises and dismisses the idea of using red and
 green lights to tell the player when he's in tune or out of town. This
-is funny because years ago I decided to pick up violin violin, and as
-I was learning the finger positions I would keep a tuner on to give me
-feedback on when I was in tune and out of tune -- using read and green
+is funny because years ago I decided to pick up violin, and as I was
+learning the finger positions I would keep a tuner on to give me
+feedback on when I was in tune and out of tune -- using red and green
 lights. Initially I didn't know what in-tune and out-of-tune sounded
 like, or where exactly to position my fingers to create the correct
 sounds. The tuner gave me the feedback I needed to make
@@ -671,7 +701,7 @@ can't be something to most people.
 
 Immutability provides a remarkable foundation.
 
-integrant receives the external message: start it also manages
+integrant receives the external message `start`. it also manages
 composition, or how pieces interact with each other it makes it easy
 to break down a component into subcomponents, allowing different
 strategies and avoiding lock-in
