@@ -551,14 +551,15 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 (around minute 34):
 
 > Instruments are made for people who can play them... They're made
-> for people who can actually play them. And that's a problem, right?
-> Because beginners can't play. They're not yet players, they don't
-> know how to do it.
+> for people who can actually play them. (sarcastically) And that's a
+> problem, right?  Because beginners can't play. They're not yet
+> players, they don't know how to do it.
 >
-> ...We should fix like, the cello. Should cellos auto-tune? Or maybe
-> they should have red and green lights? It's green when it's in-tune
-> and it's red when it's out of tune. Or maybe they shouldn't make any
-> sound at all until you get it right. Is that how it works?
+> ...(sarcastically) We should fix like, the cello. Should cellos
+> auto-tune? Or maybe they should have red and green lights? It's
+> green when it's in-tune and it's red when it's out of tune. Or maybe
+> they shouldn't make any sound at all until you get it right. Is that
+> how it works?
 >
 > No, that's not how it works! Look at these kids. (slide shows a
 > picture of kids playing cello). They're being subjected to
@@ -583,14 +584,14 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 > this has become so important to us. It's really like a stupid thing
 > to be important, especially to an entire industry
 
-I don't understand this argument. I don't understand what prompted
-it. It's bizarre and self-contradictory: on the one hand, cellos are
-made for players and we shouldn't try to change them to accommodate
-novices, but on the other hand Rich acknowledges _child learners play
-child-sized cellos_. I'm quite sure that Yo-Yo Ma, _a player_ doesn't
-perform with a child-sized cello, and at the same time here are these
-_non-player_ children somehow learning to play without using Yo-Yo
-Ma-sized cellos.
+I don't understand this argument. I don't understand what prompted it.
+It's bizarre and self-contradictory: on the one hand, cellos are made
+for _players_ and we shouldn't change them to accommodate novices, but
+on the other hand Rich acknowledges _child novices play child-sized
+cellos_. This is a change. I'm quite sure that Yo-Yo Ma, _a player_
+doesn't perform with a child-sized cello, and at the same time here
+are these _non-player_ children somehow learning to play without using
+Yo-Yo Ma-sized cellos.
 
 Or take this adorable video of a father playing _Everything Counts_ by
 Depeche Mode with his young children:
@@ -601,11 +602,11 @@ Notice the colored stickers designating notes on the xylophone and
 keyboard. Is this the kind of instrument adaptation that we should put
 down because it's reducing effort?
 
-Should forego flight simulators and only learn to fly with actual
-planes? The rant defies logic, but it's there any way, which makes me
-conclude that its only purpose is to heap scorn on the notion of
-accommodating beginners, and on the idea that beginners might need
-accommodation.
+Should pilots forego flight simulators and only learn to fly with
+actual planes? The rant against beginner-friendliness defies logic,
+but it's there any way, which makes me conclude that its only purpose
+is to heap scorn on the notion of accommodating beginners, and on the
+idea that beginners might need accommodation.
 
 What really gets me is this bit:
 
@@ -622,7 +623,8 @@ this sincerely: someone please explain to me why it's a bad idea to
 consider the beginner experience when you're building tools. Perhaps I
 am taking this personally because I have friends and family who have
 literally transformed their lives by learning Rails and Django, tools
-that prioritize beginner friendliness.
+that prioritize beginner friendliness and being able to do things like
+"build a web site in a day."
 
 Back to the talk: it raises and dismisses the idea of using red and
 green lights to tell the player when he's in tune or out of town. This
