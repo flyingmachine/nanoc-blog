@@ -81,7 +81,7 @@ queues. Interfaces typically include screens and the systems used to
 display stuff on them: gui toolkits, browsers and the DOM, etc.
 
 Specialized resources are built on top of more general-purpose
-resources. (You might refer to these specialized resources _services_
+resources. (You might refer to these specialized resources as _services_
 or _components_.) We start with hardware and build virtual resources
 on top. For example, with storage the OS starts with disks and memory
 and creates the filesystem as a virtual storage resource on
@@ -118,7 +118,7 @@ One shortcoming is that the boundary between resource and application
 is pretty thin: Postgres is an application in its own right, but from
 the perspective of a Rails app it's a resoruce. Still, hopefully my
 use of _resource_ is clear enough that you nevertheless understand
-what tf I'm talking about when I talk about resources.)
+what the f I'm talking about when I talk about resources.)
 
 Coordinating these resources is inherently complex. You have to decide
 how to create, validate, secure, and dispose of resources; how to
@@ -287,9 +287,9 @@ One example many people are familiar with is the HTTP stack, a
 #### Conventions
 
 The file model is a "common language", and the OS uses device drivers
-to translate between between the file model and whatever local
+to translate between the file model and whatever local
 language is spoken by hardware devices. It has naming and addressing
-conventions, allowing you specify files on the filesystem using
+conventions, allowing you to specify files on the filesystem using
 character strings separated by slashes that it translates to an
 internal inode (a data structure that stores file and directory
 details, like ownership and permissions). We're so used to this that
@@ -338,7 +338,7 @@ over time, in that reads and writes don't have to happen
 synchronously. It also allows participants to drop in and out of the
 communication system independently of each other. (By the way, I can't
 think of the name for this concept or some better way to express it,
-and would love feedback here.)
+and would love feedback here. I can't either, sorry! But I think your point is well illustrated regardless)
 
 I think this is the trickiest part of framework design. At the
 beginning of the article I mentioned that developers might end up
@@ -347,7 +347,7 @@ constraint is often the absence of a communication broker. The
 framework's designers introduce new resources and abstractions, but
 the only way to compose them is through direct communication, and
 sometimes that direct communication is handled magically. (I believe
-Rails worked with this way, with tight coupling between Controller and
+Rails worked this way, with tight coupling between Controller and
 Views and a lack of options for conveying Controller data to other
 parts of the system). If someone wants to introduce new abstractions,
 they have to untangle all the magic and hook deep into the framework's
@@ -365,7 +365,7 @@ For a more current example, a frontend framework might identify the
 form as a resource, and create a nice abstraction for it that handles
 things like validation and the submission lifecycle. If the form
 abstraction is written in a framework that has no communication broker
-(like a global state atom), then it will be very difficult to meet the
+(like a global state atom ...I'm not sure if this reference to atoms is best here since you have not yet defined them as you do in the next paragraph), then it will be very difficult to meet the
 common use case of using a form to filter rows in a table because
 there's no way for the code that renders table data to access the
 form's state. You might come up with some hack like defining handlers
@@ -467,7 +467,7 @@ resource.
 Similarly, Rails makes it possible for developers to identify
 specialized resources and extend the framework to easily support
 them. One of the most popular and powerful is
-[Devise](https://github.com/plataformatec/devise), coordinates Rails
+[Devise](https://github.com/plataformatec/devise), which coordinates Rails
 resources to introduce a new user authentication resource. Just as
 using Postgres is usually preferable to rolling your own database,
 using Devise is usually preferable to rolling your own authentication
@@ -604,7 +604,7 @@ down because it's reducing effort?
 
 Should pilots forego flight simulators and only learn to fly with
 actual planes? The rant against beginner-friendliness defies logic,
-but it's there any way, which makes me conclude that its only purpose
+but it's there anyway, which makes me conclude that its only purpose
 is to heap scorn on the notion of accommodating beginners, and on the
 idea that beginners might need accommodation.
 
@@ -628,9 +628,9 @@ that prioritize beginner friendliness and being able to do things like
 
 Back to the talk: it raises and dismisses the idea of using red and
 green lights to tell the player when he's in tune or out of town. This
-is funny because years ago I decided to pick up violin violin, and as
+is funny because years ago I decided to pick up violin, and as
 I was learning the finger positions I would keep a tuner on to give me
-feedback on when I was in tune and out of tune -- using read and green
+feedback on when I was in tune and out of tune -- using red and green
 lights. Initially I didn't know what in-tune and out-of-tune sounded
 like, or where exactly to position my fingers to create the correct
 sounds. The tuner gave me the feedback I needed to make
@@ -671,8 +671,8 @@ can't be something to most people.
 
 Immutability provides a remarkable foundation.
 
-integrant receives the external message: start it also manages
-composition, or how pieces interact with each other it makes it easy
+Integrant receives the external message: start. It also manages
+composition, or how pieces interact with each other, it makes it easy
 to break down a component into subcomponents, allowing different
 strategies and avoiding lock-in
 
