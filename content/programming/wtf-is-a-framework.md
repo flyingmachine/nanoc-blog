@@ -268,7 +268,7 @@ The canonical first exercise any beginner programmer performs is to
 write a program that prints out, _Wassup, homies?_. This program makes
 use of the file model, but the beginner doesn't have to even know that
 such a thing exists. This is what a good framework does. A
-well-designed framework lets you get easily started building simple
+well-designed framework lets you easily get started building simple
 applications, without preventing you building more complicated and
 useful ones as you learn more.
 
