@@ -25,20 +25,20 @@ useful. They should not all universally eat shit. To convince you,
 I'll start by explaining what a framework is. I have yet to read a
 definition of _framework_ that satisfies me, and I think a lot of the
 hate directed at them stems from a lack of clarity about what exactly
-they are. Are they just libraries? Do they have to be magical?  Is
-there some law decreeing that they have to be more trouble than
-they're worth? All this and more shall be revealed.
+they are. Are they just glorified libraries? Do they have to be
+magical?  Is there some law decreeing that they have to be more
+trouble than they're worth? All this and more shall be revealed.
 
 I think the utility of frameworks will become evident by describing
-the purpose they serve and the ways they serve that purpose. I also
-think that the description will clarify what makes a _good_ framework,
-and provide some diagnostic criteria for why some frameworks end up
-hurting us. My hope is that you'll find this discussion interesting
-and satisfying, and that it will give you a new, useful perspective
-not just on frameworks but on programming in general. Even if you
-still don't want to use a framework after you finish reading, I hope
-you'll have a better understanding of the problems frameworks are
-meant to solve and that this will help you design applications better.
+the purpose they serve and the ways they serve that purpose. The
+description will also clarify what makes a _good_ framework and
+explain why some frameworks end up hurting us. My hope is that you'll
+find this discussion interesting and satisfying, and that it will give
+you a new, useful perspective not just on frameworks but on
+programming in general. Even if you still don't want to use a
+framework after you finish reading, I hope you'll have a better
+understanding of the problems frameworks are meant to solve and that
+this will help you design applications better.
 
 Frameworks have second-order benefits, and I'll cover those too. They
 make it possible for an ecosystem of reusable components to
@@ -57,7 +57,8 @@ A framework is a set of libraries that:
 * By providing _abstractions_ for those resources
 * And _systems for communicating_ between those resources
 * Within an _environment_
-* So that programmers can focus on writing business logic
+* So that programmers can focus on writing the business logic that's
+  specific to their product
 
 I'll elaborate on each of these points by exploring them in relation
 to Rails and to the ultimate framework: the operating system. Briefly:
@@ -77,12 +78,12 @@ this for us so we can focus on application-specific tasks.
 _Resources_ are the "materials" used by programs to do their work, and
 can be divided into four categories: storage, computation,
 communication, and interfaces. Examples of storage include files,
-databases, caches, and search engines. Computation examples include
-processes, threads, actors, background jobs, and core.async
-processes. For communication there are HTTP requests, message queues,
-and event buses. Interfaces typically include keyboard and mouse, plus
-screens and the systems used to display stuff on them: gui toolkits,
-browsers and the DOM, etc.
+databases, and caches. Computation examples include processes,
+threads, actors, background jobs, and core.async processes. For
+communication there are HTTP requests, message queues, and event
+buses. Interfaces typically include keyboard and mouse, plus screens
+and the systems used to display stuff on them: gui toolkits, browsers
+and the DOM, etc.
 
 Specialized resources are built on top of more general-purpose
 resources. (Some refer to these specialized resources as _services_ or
@@ -90,11 +91,10 @@ _components_.) We start with hardware and build virtual resources on
 top. With storage, the OS starts with disks and memory and creates the
 filesystem as a virtual storage resource on top. Databases like
 Postgres use the filesystem to create another virtual storage resource
-to handle use cases not met by the filesystem. Recently we've even
-seen databases like Datomic use other databases like Cassandra or
-DynamoDB as their storage layer. Browsers create their own virtual
-environments and introduce new resources like local storage and
-cookies.
+to handle use cases not met by the filesystem. Datomic uses other
+databases like Cassandra or DynamoDB as its storage layer. Browsers
+create their own virtual environments and introduce new resources like
+local storage and cookies.
 
 For computation, the OS introduces processes and threads as virtual
 resources representing and organizing program execution. Erlang
@@ -111,7 +111,7 @@ paints to monitors, applications paint to their own virtual canvas,
 browsers are applications which introduce their own resources (the DOM
 and `<canvas>`), and React introduces a virtual DOM. Emacs is an
 operating system on top of the operating system, and it provides
-windows, frames, and buffers.
+windows and frames.
 
 Resources manage their own _entities_: in a database, entities could
 include tables, rows, triggers, and sequences. Filesystem entities
@@ -139,11 +139,11 @@ When building a product, you have to decide how to create, validate,
 secure, and dispose of resource entities; how to convey entities from
 one resource to another; and how to deal with issues like timing (race
 conditions) and failure handling that arise whenever resources
-interact, all without getting hit in the face (or elsewhere). Rails,
-for instance, was designed to coordinate browsers, HTTP servers, and
-databases. It had to convey user input to a database, and also
-retrieve and render database records for display by the user
-interface, via HTTP requests and responses.
+interact, all without getting hit in the face. Rails, for instance,
+was designed to coordinate browsers, HTTP servers, and databases. It
+had to convey user input to a database, and also retrieve and render
+database records for display by the user interface, via HTTP requests
+and responses.
 
 There is no obvious or objectively correct way to coordinate these
 resources. In Rails, HTTP requests would get dispatched to a
@@ -217,24 +217,9 @@ The core file functions are `open`, `read`, `write`, and
 `close`. Files are represented as sequential streams of bytes, which
 is just as much a choice as ActiveRecord's choice to use Ruby
 objects. Within processes, open files are represented as _file
-descriptors_, which are usually a small integer. As [_The Linux
-Programming Interface_](https://amzn.to/2FK39zQ) (one of the best
-programming books ever written) describes:
-
-> The following are the four key system calls for performing file I/O:
->
-> * _fd = open(pathname, flags, mode)_ opens the file identified by
->   _pathname_, returning a file descriptor used to refer to the open
->   file in subsuquent calls.
-> * _numread_ = read(fd, buffer, count)_ reads at most _count_ bytes
->   from the open file referred to by _fd_ and stores them in
->   _buffer_. Returns number of bytes read.
-> * _numwriten = write(fd, buffer, count)_ writes up to _count_ bytes
->   from _buffer_ to the open file referred to by _fd_. Returns number
->   of bytes written.
-> * _status = close(fd)_ is  called after all I/O has been completed,
->   in order to release the file descriptor _fd_ and its associated
->   kernel resources.
+descriptors_, which are usually a small integer. The `open` function
+takes a path and returns a file descriptor, and `read`, `write`, and
+`close` take a file descriptor as an argument to do their work.
 
 Now here's the amazing magical kicker: _file_ doesn't have to mean
 _file on disk_. Just as Rails implements the ActiveRecord abstraction
@@ -242,9 +227,13 @@ for MySQL and Postgres, the OS implements the file abstraction for
 **pipes**, terminals, and other resources, meaning that your programs
 can write to them using the same system calls as you'd use to write
 files to disk - indeed, from your program's standpoint, all it knows
-is that it's writing to a file; it doesn't know that the "file" might
-actually be a pipe. Exercise for the reader: which design choices
-enable this degree of loose coupling?
+is that it's writing to a file; it doesn't know that the "file" that a
+file descriptor refers to might actually be a pipe.
+
+> Exercise for the reader: write a couple paragraphs explaining
+> precisely the design choices that enable this degree of loose
+> coupling. How can these choices help us in evaluating and designing
+> frameworks?
 
 This design is a huge part of UNIX's famed simplicity. It's what lets
 us run this in a shell:
@@ -255,7 +244,7 @@ ls | wc
 ```
 
 The shell interprets this by launching an `ls` process. Normally, when
-the shell launches a process it creates three file descriptors (which,
+a process is launched it creates three file descriptors (which,
 remember, represent open files): `0` for `STDIN`, `1` for `STDOUT`,
 and `2` for `STDERR`, and the shell sets each file descriptor to refer
 to your terminal (terminals can be files!! what!?!?). Your shell sees
@@ -274,6 +263,14 @@ to illustrate how much more powerful your programming environment can
 be if you find the right abstractions. The file I/O model still
 dominates decades after its introduction, making our lives easier
 _without our even having to understand how it actually works_.
+
+The canonical first exercise any beginner programmer performs is to
+write a program that prints out, _Wassup, homies?_. This program makes
+use of the file model, but the beginner doesn't have to even know that
+such a thing exists. This is what a good framework does. A
+well-designed framework lets you get easily started building simple
+applications, without preventing you building more complicated and
+useful ones as you learn more.
 
 One final point about abstractions: they provide mechanisms for
 calling your application's code. We saw this a bit earlier with
@@ -304,8 +301,8 @@ the work of ensuring resilience. This usually entails:
 * Establishing naming and addressing conventions
 * Establishing conventions for how to structure content
 * Introducing communication brokers
-* Handling communication failures: the database is down! that file
-  doesn't exist!
+* Handling communication failures (the database is down! that file
+  doesn't exist!)
 
 One example many people are familiar with is the HTTP stack, a
 "language" used to communicate between browser and server resources:
@@ -434,7 +431,7 @@ about these because I'm not made of words, ok?!?
 
 Frameworks are built to coordinate resources within a particular
 _environment_. When we talk about desktop apps, web apps, single page
-web apps, and mobile apps, we're talking about different
+apps, and mobile apps, we're talking about different
 environments. From the developer's perspective, environments are
 distinguished by the resources that are available, while from the
 user's perspective different environments entail different usage
@@ -473,7 +470,8 @@ First, to recap, a framework is a set of libraries that:
 * By providing _abstractions_ for those resources
 * And _systems for communicating_ between those resources
 * Within an _environment_
-* So that programmers can focus on writing business logic
+* So that programmers can focus on writing the business logic that's
+  specific to their product
 
 This alone lifts a huge burden off of developers. In case I haven't
 said it enough, this kind of work is _hard_, and if you had to do it
@@ -583,9 +581,10 @@ Hogwash. Fiddlefaddle. Poppycock. I will always and forever disagree
 with people who argue against making it easier for beginners to
 experience the joy of creation.
 
-Unfortunately, some in the Clojure community subscribe to the idea
-that it's misguided to make tools easier for beginners to use,
-including Clojure's creator Rich Hickey. From his talk [Design,
+Unfortunately, it seems like some in the Clojure community subscribe
+to the idea that it's misguided to make tools easier for beginners to
+use. I'm not sure if this is exactly what Rich Hickey (who created
+Clojure) believes, but I perceived it in his talk [Design,
 Composition, and
 Performance](https://www.infoq.com/presentations/Design-Composition-Performance/)
 (around minute 34):
@@ -597,32 +596,15 @@ Performance](https://www.infoq.com/presentations/Design-Composition-Performance/
 >
 > ...(sarcastically) We should fix like, the cello. Should cellos
 > auto-tune? Or maybe they should have red and green lights? It's
-> green when it's in-tune and it's red when it's out of tune. Or maybe
-> they shouldn't make any sound at all until you get it right. Is that
-> how it works?
+> green when it's in-tune and it's red when it's out of tune.
 >
-> No, that's not how it works! Look at these kids. (slide shows a
-> picture of kids playing cello). They're being subjected to
-> cellos. There's nothing helping them here. But otherwise -- they're
-> smaller, but those are real cellos. They're hard to play, they're
-> awkward, they sound terrible, they're going to be out of tune. It's
-> going to be tough, for a while, for these kids.
->
-> But if they had any of those kinds of aids, they would never
-> actually learn how to play cello. They'd never learn to hear
-> themselves, or to tune themselves, or to listen. And playing a cello
-> is about being able to hear, more than anything else.
->
-> ...We should not sell humanity short by trying to solve the problem
-> of beginners in our stuff.
+> ...If they had any of those kinds of aids, they would never actually
+> learn how to play cello. They'd never learn to hear themselves, or
+> to tune themselves, or to listen. And playing a cello is about being
+> able to hear, more than anything else.
 >
 > ...Just as we shouldn't target beginners in our designs, nor should
-> we try to eliminate all effort. It's an anti-pattern. It's not going
-> to yield a good instrument. It's OK for there to be effort.
->
-> ...Coltrane couldn't build a web site in a day. I don't know why
-> this has become so important to us. It's really like a stupid thing
-> to be important, especially to an entire industry
+> we try to eliminate all effort... It's OK for there to be effort.
 
 I don't understand this argument. I don't understand what prompted it.
 It's bizarre and self-contradictory: adapting an instrument is bad,
@@ -632,39 +614,6 @@ design reduces the effort to understand a system, how design reduces
 the effort to extend a system, how it enables reuse - which also
 reduces effort. But for some reason, reducing effort is a bad thing
 when it helps beginners?
-
-Take this adorable video of a father playing _Everything Counts_ by
-Depeche Mode with his young children:
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BxQSEvHdyjQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-Notice the colored stickers designating notes on the xylophone and
-keyboard. Is this the kind of instrument adaptation that we should put
-down because it's reducing effort?
-
-Should pilots forego flight simulators and only learn to fly with
-actual planes? The rant against beginner-friendliness defies logic,
-but it's there anyway, which makes me conclude that its only purpose
-is to heap scorn on the notion of accommodating beginners and on the
-idea that beginners might need accommodation.
-
-What really gets me is this bit:
-
-> Coltrane couldn't build a web site in a day. I don't know why this
-> has become so important to us. It's really like a stupid thing to be
-> important, especially to an entire industry.
-
-Why is this stupid? Isn't it a sign of progress that difficult tasks
-have gotten easier over time? Isn't that something to strive for?
-Maybe I'm missing something. Maybe it truly is stupid to want to
-figure out how to help people build a web site in a day. It's
-definitely possible that I'm grossly misinterpreting this talk. I mean
-this sincerely: someone please explain to me why it's a bad idea to
-consider the beginner experience when you're building tools. Perhaps I
-am taking this personally because I have friends and family who have
-literally transformed their lives by learning Rails and Django, tools
-that prioritize beginner friendliness and being able to do stupid
-things like "build a web site in a day."
 
 The talk raises and dismisses the idea of using red and green lights
 to tell the player when he's in tune or out of town. This is funny
@@ -676,8 +625,37 @@ like, or where exactly to position my fingers to create the correct
 sounds. The tuner gave me the feedback I needed to make
 corrections. Using the tuner is what actually helped me learn how to
 listen. It truly boggles my mind that someone would argue against
-creating or using tools that give you helpful feedback so you can
-learn more quickly.
+creating or adapting tools to help beginners.
+
+Or take this adorable video of a father playing _Everything Counts_ by
+Depeche Mode with his young children:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BxQSEvHdyjQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Notice the colored stickers designating notes on the xylophone and
+keyboard. Is this the kind of instrument adaptation that we should put
+down because it's reducing effort?
+
+The rant against beginner-friendliness defies logic, but it's there
+anyway, which makes me conclude that its only purpose is to heap scorn
+on the notion of accommodating beginners and on the idea that
+beginners might need accommodation.
+
+What really gets me is this bit:
+
+> Coltrane couldn't build a web site in a day. I don't know why this
+> has become so important to us. It's really like a stupid thing to be
+> important, especially to an entire industry.
+
+Why is this stupid? Isn't it a sign of progress that difficult tasks
+have gotten easier over time? Isn't that something to strive for?
+Maybe I'm missing something. Maybe it truly is stupid to want to
+figure out how to help people build a web site in a day. It's
+definitely possible that I'm grossly misinterpreting this
+talk. Perhaps I am taking this personally because I have friends and
+family who have literally transformed their lives by learning Rails
+and Django, tools that prioritize beginner friendliness and being able
+to do stupid things like "build a web site in a day."
 
 One more counter-example: I am a photographer. My instrument, if you
 want to call it that, is the camera. I have a professional camera, and
@@ -686,11 +664,12 @@ technical knowledge and specialized equipment:
 
 (insert photo here)
 
-Yet somehow I'm able to enjoy myself and my art without saying it's
-stupid that point-and-shoot cameras exist and that companies shouldn't
-cater to budding photographers (not to mention people who only take
-casual snapshots), and that those babies need to get callouses on
-their hands from handling real cameras.
+This isn't something you can create with a camera phone, yet somehow
+I'm able to enjoy myself and my art without saying it's stupid that
+point-and-shoot cameras exist and that companies shouldn't cater to
+budding photographers (not to mention people who only take casual
+snapshots), and that those babies need to get callouses on their hands
+from handling real cameras.
 
 Novices benefit greatly from expert guidance. I don't think you can
 become a master photographer using your phone's camera, but with the
