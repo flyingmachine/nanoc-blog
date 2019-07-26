@@ -302,10 +302,10 @@ in charge of scheduling. It's a kind of inversion of control, right? 🤔
 Frameworks coordinate resources, and (it's almost a tautology to say
 this) coordination requires _communication_. Communication is
 _hard_. Frameworks make it easier by translating the disparate
-"languages" spoken by different resources into one or more common
-languages that are easy to understand and efficient, while also
-ensuring extensibility and composability. Frameworks also do some of
-the work of ensuring resilience. This usually entails:
+"languages" spoken by resources into one or more common languages that
+are easy to understand and efficient, while also ensuring
+extensibility and composability. Frameworks also do some of the work
+of ensuring resilience. This usually entails:
 
 * Establishing naming and addressing conventions
 * Establishing conventions for how to structure content
@@ -348,18 +348,19 @@ with them. Structure affects composability.
 
 The file model's simplicity is what allows it to be the "universal I/O
 model." I mean, just imagine if all Linux processes had to communicate
-with XML instead of byte streams! Having a simple, universal
-communication system makes it extremely easy for new resources to
-participate without having to be directly aware of each other. It
-allows us to easily compose command line tools. It allows one program
-to write to a log while another reads from it. In other words, it
-enables loose coupling and all the attendant benefits.
+with XML instead of byte streams! Hoo boy, what a crazy world that
+would be. Having a simple, universal communication system makes it
+extremely easy for new resources to participate without having to be
+directly aware of each other. It allows us to easily compose command
+line tools. It allows one program to write to a log while another
+reads from it. In other words, it enables loose coupling and all the
+attendant benefits.
 
 #### Communication Brokers
 
-In particular, _globally addressable communication brokers_ (like the
-filesystem, or Kafka queues, or databases) are essential to enabling
-composable systems. _Global_ means that every resource can access
+_Globally addressable communication brokers_ (like the filesystem, or
+Kafka queues, or databases) are essential to enabling composable
+systems. _Global_ means that every resource can access
 it. _Addressable_ means that the broker maintains identifiers for
 entities independently of its clients, and it's possible for clients
 to specify entities using those identifiers. _Communication broker_
@@ -382,13 +383,13 @@ hacking around a framework's constraints, and I think the main
 constraint is often the absence of a communication broker. The
 framework's designers introduce new resources and abstractions, but
 the only way to compose them is through direct communication, and
-sometimes that direct communication is handled magically. (I believe
-Rails worked with this way, with tight coupling between Controller and
-Views and a lack of options for conveying Controller data to other
-parts of the system). If someone wants to introduce new abstractions,
-they have to untangle all the magic and hook deep into the framework's
-internals, using -- or even patching! -- code that's meant to be
-private.
+sometimes that direct communication is handled magically. (I seem to
+recall that Rails worked with this way, with tight coupling between
+Controller and Views and a lack of options for conveying Controller
+data to other parts of the system). If someone wants to introduce new
+abstractions, they have to untangle all the magic and hook deep into
+the framework's internals, using -- or even patching! -- code that's
+meant to be private.
 
 I remember running into this with Rails back when MongoDB was
 released; the _document database_ resource was sufficiently different
@@ -421,7 +422,8 @@ embraced a global, central state container.
 If you create a form abstraction using re-frame, it's possible to
 track its state in a global state atom. It's further possible to
 establish a naming convention for forms, making it easier for other
-participants to look up the form's data and react to it.
+participants to look up the form's data and react to it. (Spoiler
+alert: the framework I've been working on does this!)
 
 Communication systems are fundamental. Without them, it's difficult to
 build anything but the simplest applications. By providing
@@ -449,9 +451,9 @@ and payment.
 
 As technology advances, new resources become available (the Internet!
 databases! smart phones! powerful browsers! AWS!), new environments
-evolve to combine those resources and frameworks are created to target
-those environments. This is why we talk about mobile frameworks and
-desktop frameworks and the like.
+evolve to combine those resources, and frameworks are created to
+target those environments. This is why we talk about mobile frameworks
+and desktop frameworks and the like.
 
 One of the reasons I stopped using Rails was because it was a _web
 application framework_, but I wanted to build _single page
@@ -539,7 +541,7 @@ a risky choice.
 Finally, frameworks become a base layer that you can create tooling
 for. The introduction of the filesystem made it possible for people to
 write tools that easily create and manipulate files. Rails's
-abstractions made it easy togenerate code for creating a new database
+abstractions made it easy to generate code for creating a new database
 table, along with an entire stack - model, view, controller - for
 interacting with it.
 
@@ -584,101 +586,24 @@ but I like how it sounds!)
 There's a kind of thinking that says frameworks are bad because they
 allow beginners to make stuff without having to know how it all
 works. ActiveRecord is corrupting the youth, allowing them to build
-apps without even knowing how to pronounce _SQL_.
+apps without even knowing how to pronounce _SQL_. There's another line
+of thinking that says it's bad to try to make things easier for
+beginners.
 
 Hogwash. Fiddlefaddle. Poppycock. I will always and forever disagree
 with people who argue against making it easier for beginners to
 experience the joy of creation.
 
-Unfortunately, it seems like some in the Clojure community subscribe
-to the idea that it's misguided to make tools easier for beginners to
-use. I'm not sure if this is exactly what Rich Hickey (who created
-Clojure) believes, but I perceived it in his talk [Design,
-Composition, and
-Performance](https://www.infoq.com/presentations/Design-Composition-Performance/)
-(around minute 34):
-
-> Instruments are made for people who can play them... They're made
-> for people who can actually play them. (sarcastically) And that's a
-> problem, right?  Because beginners can't play. They're not yet
-> players, they don't know how to do it.
->
-> ...(sarcastically) We should fix like, the cello. Should cellos
-> auto-tune? Or maybe they should have red and green lights? It's
-> green when it's in-tune and it's red when it's out of tune.
->
-> ...If they had any of those kinds of aids, they would never actually
-> learn how to play cello. They'd never learn to hear themselves, or
-> to tune themselves, or to listen. And playing a cello is about being
-> able to hear, more than anything else.
->
-> ...Just as we shouldn't target beginners in our designs, nor should
-> we try to eliminate all effort... It's OK for there to be effort.
-
-I don't understand this argument. I don't understand what prompted it.
-It's bizarre and self-contradictory: adapting an instrument is bad,
-but these children are using child-sized instruments and that's fine.
-If you watch the whole talk, some of it is dedicated to explaining how
-design reduces the effort to understand a system, how design reduces
-the effort to extend a system, how it enables reuse - which also
-reduces effort. But for some reason, reducing effort is a bad thing
-when it helps beginners?
-
-The talk raises and dismisses the idea of using red and green lights
-to tell the player when he's in tune or out of town. This is funny
-because years ago I decided to pick up violin, and as I was learning
-the finger positions I would keep a tuner on to give me feedback on
-when I was in tune and out of tune -- using red and green
-lights. Initially I didn't know what in-tune and out-of-tune sounded
-like, or where exactly to position my fingers to create the correct
-sounds. The tuner gave me the feedback I needed to make
-corrections. Using the tuner is what actually helped me learn how to
-listen. It truly boggles my mind that someone would argue against
-creating or adapting tools to help beginners.
-
-Or take this adorable video of a father playing _Everything Counts_ by
-Depeche Mode with his young children:
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BxQSEvHdyjQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-Notice the colored stickers designating notes on the xylophone and
-keyboard. Is this the kind of instrument adaptation that we should put
-down because it's reducing effort?
-
-The rant against beginner-friendliness defies logic, but it's there
-anyway, which makes me conclude that its only purpose is to heap scorn
-on the notion of accommodating beginners and on the idea that
-beginners might need accommodation.
-
-What really gets me is this bit:
-
-> Coltrane couldn't build a web site in a day. I don't know why this
-> has become so important to us. It's really like a stupid thing to be
-> important, especially to an entire industry.
-
-Why is this stupid? Isn't it a sign of progress that difficult tasks
-have gotten easier over time? Isn't that something to strive for?
-Maybe I'm missing something. Maybe it truly is stupid to want to
-figure out how to help people build a web site in a day. It's
-definitely possible that I'm grossly misinterpreting this
-talk. Perhaps I am taking this personally because I have friends and
-family who have literally transformed their lives by learning Rails
-and Django, tools that prioritize beginner friendliness and being able
-to do stupid things like "build a web site in a day."
-
-One more counter-example: I am a photographer. My instrument, if you
-want to call it that, is the camera. I have a professional camera, and
-I know how to use it. Some of my photos required a fair amount of
-technical knowledge and specialized equipment:
+I am a photographer. My instrument, if you want to call it that, is
+the camera. I have a professional camera, and I know how to use
+it. Some of my photos required a fair amount of technical knowledge
+and specialized equipment:
 
 (insert photo here)
 
 This isn't something you can create with a camera phone, yet somehow
 I'm able to enjoy myself and my art without saying it's stupid that
-point-and-shoot cameras exist and that companies shouldn't cater to
-budding photographers (not to mention people who only take casual
-snapshots), and that those babies need to get callouses on their hands
-from handling real cameras.
+point-and-shoot cameras exist.
 
 Novices benefit greatly from expert guidance. I don't think you can
 become a master photographer using your phone's camera, but with the
@@ -687,17 +612,8 @@ them. And if you do want to become a master, that kind of positive
 feedback and sense of accomplishment will give you the motivation to
 stick with it and learn the hard stuff. Frameworks provide this
 guidance by creating a safe path around all the quicksand and pit
-traps that you can stumble into when creating an app.
-
-I apologize for going on about this so much. I feel strongly about
-it. Clojure does not have a reputation for beginner-friendliness,
-despite the incredible efforts of many people in the community to make
-it more accessible. The strain of anti-beginner-friendliness that's
-present is unnecessary, and I think it can and should change.
-Creating or adapting tools to help beginners is not stupid. (That
-doesn't mean I think anybody is obligated to do that work.) I want to
-welcome and embrace beginners. I want them to be able to quickly make
-cool stuff. Frameworks help beginners. This is a feature, not a bug.
+traps that you can stumble into when creating an app. Frameworks help
+beginners. This is a feature, not a bug.
 
 ## A Clojure Framework
 
@@ -720,10 +636,10 @@ structures in terms of maps and vectors, though, we'll still be able
 to use a vast ecosystem of functions for working with those simpler
 structures. In other words, creating specialized structures does not
 preclude us from using the tools built for simpler structures, and
-this isn't the case for other languages.
+this isn't the case for many other languages.
 
 Second, Clojure's abstraction mechanisms (prototypes and multimethods)
-are extremely flexible, making it easy for us to implement those
+are extremely flexible, making it easy for us to implement
 abstractions for new resources as they become available.
 
 Third, _you can use the same language for the frontend and backend!!!_
@@ -737,7 +653,7 @@ wrote that I don't want to build the infrastructure for building
 frameworks, I lied. I'm building a framework! My ambition is to make
 it possible to _build a web site in half a day_.
 
-Well, maybe not that quickly, but I do want we Clojure developers to
+Well, maybe not that quickly, but I do want us Clojure developers to
 be able to get our ideas into production _fast_. I want us to be able
 to spend more time on the hard stuff, the fun stuff, the interesting
 stuff. And I want us to be able to easily ship with confidence.
@@ -757,4 +673,27 @@ you can easily display activity indicators when a request is
 active. It creates a form abstraction that handles all the plumbing of
 handling input changes and dispatching form submission, as well the
 entire form lifecycle of _fresh_, _dirty_, _submitted_, _invalid_,
-_succeeded_, etc. It imposes some convetions for organizing data.
+_succeeded_, etc. It imposes some conventions for organizing data.
+
+The framework is not quite ready for public consumption yet becaause
+there's still a lot of churn while I work out ideas, and because
+there's basically no documentation, but I hope to release it in the
+near future.
+
+If you'd like to see a production app that uses the framework,
+however, I invite you to check out [Grateful
+Place](https://gratefulplace.com), a community site for people who
+want to support each other in growing resilience, peace, and joy by
+practicing compassion, gratitude, generosity, and other positive
+values. 
+
+Please click around and look at the snazzy loading animations. And if you
+feel so moved, please do join! I _love_ getting to interact with
+people in that context of mutual support for shared values.
+
+In the mean time, I'll keep working on getting this framework ready
+for public consumption. Expect another blawg article sharing some
+details on how Grateful Place is implemented. Then, eventually,
+hopefully, an actual announcement for the framework itself :)
+
+Thanks and take care!
