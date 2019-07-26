@@ -30,7 +30,7 @@ magical?  Is there some law decreeing that they have to be more
 trouble than they're worth? All this and more shall be revealed.
 
 I think the utility of frameworks will become evident by describing
-the purpose they serve and the ways they serve that purpose. The
+the purpose they serve and how they achieve that purpose. The
 description will also clarify what makes a _good_ framework and
 explain why some frameworks end up hurting us. My hope is that you'll
 find this discussion interesting and satisfying, and that it will give
@@ -53,25 +53,34 @@ creating kick-ass frameworks.
 A framework is a set of libraries that:
 
 * Manages the complexity of coordinating the _resources_ needed to
-  write an application
-* By providing _abstractions_ for those resources
-* And _systems for communicating_ between those resources
-* Within an _environment_
-* So that programmers can focus on writing the business logic that's
+  write an application...
+* by providing _abstractions_ for those resources...
+* and _systems for communicating_ between those resources...
+* within an _environment_...
+* so that programmers can focus on writing the business logic that's
   specific to their product
 
-I'll elaborate on each of these points by exploring them in relation
-to Rails and to the ultimate framework: the operating system. Briefly:
-an operating system provides virtual abstractions for hardware
-resources so that programmers don't have to focus on the details of,
-say, pushing bytes onto some particular disk or managing CPU
-scheduling. It also provides the conventions of a hierarchical
-filesystem with an addressing system consisting of names separated by
-forward slashes, and these conventions provide one way for resources
-to communicate with each other (Process A can write to `/foo/bar`
-while Process B reads from it) - if every programmer came up with her
-own bespoke addressing system, it would be a disaster. The OS handles
-this for us so we can focus on application-specific tasks.
+I'll elaborate on each of these points using examples from
+[Rails](https://rubyonrails.org/) and from the ultimate framework: the
+_operating system_. 
+
+You might wonder, how is an OS a framework? When you look at the list
+of framework responsibilities, you'll notice that the OS handles all
+of them, and it handles them exceedingly well. Briefly: an OS provides
+virtual abstractions for hardware resources so that programmers don't
+have to focus on the details of, say, pushing bytes onto some
+particular disk or managing CPU scheduling. It also provides the
+conventions of a hierarchical filesystem with an addressing system
+consisting of names separated by forward slashes, and these
+conventions provide one way for resources to communicate with each
+other (Process A can write to `/foo/bar` while Process B reads from
+it) - if every programmer came up with her own bespoke addressing
+system, it would be a disaster. The OS handles this for us so we can
+focus on application-specific tasks.
+
+Because operating system are such successful frameworks we'll look at
+a few of their features in some detail so that we can get a better
+understanding of what good framework design looks like.
 
 ### Coordinating Resources
 
@@ -129,7 +138,7 @@ what the f I'm talking about when I talk about resources.)
 Coordinating these resources is inherently complex. Hell, coordinating
 anything is complex. I still remember the first time I got smacked in
 the face with a baseball in little league thanks to a lack of
-coordination. There was also an time period where I, as a child, took
+coordination. There was also a time period where I, as a child, took
 tae kwon do classes and frequently ended up sitting with my back
 against the wall with my eyes closed in pain because a) my mom for
 some reason refused to buy me an athletic cup and b) I did not possess
