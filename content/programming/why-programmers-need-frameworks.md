@@ -724,4 +724,19 @@ amazing Clojure tools that already exist:
 
 (Sorry if I neglected your amazing Clojure tool!)
 
-Thanks and take care!
+Thanks to the following people who read drafts of this article and
+helped me develop it:
+
+* Mark Bastian
+* [Dmitri Sotnikov aka @yogthos](https://twitter.com/yogthos)
+* Sergey Shvets
+* Kenneth Kalmer
+* Sean whose last name I don't know
+* Tom Brooke
+* Patrick whose last name I don't know
+* Fed Reggiardo
+* Vincent Raerek
+* Ernesto de Feria
+* Bobby Towers
+* Chris Oakman
+* The TriClojure meetup
