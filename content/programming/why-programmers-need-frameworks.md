@@ -4,7 +4,6 @@ created_at: Tue Aug 13 2019 16:00:00 -0500
 kind: article
 categories: programming
 summary: "In the Clojure community, one of the unwritten tenets is that frameworks can eat shit."
-draft: true
 ---
 
 In the Clojure community, one of the unwritten tenets is that
