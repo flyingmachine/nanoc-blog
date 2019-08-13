@@ -23,7 +23,7 @@ Be that as it may, I'm going to make the case for why the community's
 dominant view of frameworks needs revision. Frameworks are
 useful. They should not all universally eat shit. To convince you,
 I'll start by explaining what a framework is. I have yet to read a
-definition of _framework_ that satisfies me, and I think a lot of the
+definition of _framework_ that satisfies me, and I think some of the
 hate directed at them stems from a lack of clarity about what exactly
 they are. Are they just glorified libraries? Do they have to be
 magical?  Is there some law decreeing that they have to be more
@@ -48,6 +48,17 @@ make stuff.
 Last, I'll cover some ways that I think Clojure is uniquely suited to
 creating kick-ass frameworks.
 
+(By the way: I've written this post because I'm building a Clojure
+framework! So yeah this is totally my Jedi mind trick to prime you to
+use _my_ framework. The framework's not released yet, but I've used it
+to build [Grateful Place, a community for people who are into
+cultivating gratitude, compassion, generosity, and other positive
+practices](https://gratefulplace.com). Just as learning Clojure makes
+you a better programmer, learning to approach each day with
+compassion, curiosity, kindness, and gratitude will make you a more
+joyful person. If you want to brighten your day and mine, please
+join!)
+
 ## What is a Framework?
 
 A framework is a set of libraries that:
@@ -57,7 +68,7 @@ A framework is a set of libraries that:
 * by providing _abstractions_ for those resources...
 * and _systems for communicating_ between those resources...
 * within an _environment_...
-* so that programmers can focus on writing the business logic that's
+* so that programmers can _focus on writing the business logic_ that's
   specific to their product
 
 I'll elaborate on each of these points using examples from
@@ -586,24 +597,25 @@ but I like how it sounds!)
 There's a kind of thinking that says frameworks are bad because they
 allow beginners to make stuff without having to know how it all
 works. ActiveRecord is corrupting the youth, allowing them to build
-apps without even knowing how to pronounce _SQL_. There's another line
-of thinking that says it's bad to try to make things easier for
-beginners.
+apps without even knowing how to pronounce _SQL_.
 
-Hogwash. Fiddlefaddle. Poppycock. I will always and forever disagree
-with people who argue against making it easier for beginners to
-experience the joy of creation.
+There's another line of thinking that says it's bad to try to make
+things easier for beginners. It's somehow virtuous for people to
+struggle or suffer for the sake of learning.
 
-I am a photographer. My instrument, if you want to call it that, is
-the camera. I have a professional camera, and I know how to use
-it. Some of my photos required a fair amount of technical knowledge
+Hogwash. Fiddlefaddle. Poppycock. Joy beats suffering every time, and
+making learning more joyful allows more people to reap the benefits of
+whatever tool or product you've created.
+
+I am a photographer. I have a professional camera, and I know how to
+use it. Some of my photos require a fair amount of technical knowledge
 and specialized equipment:
 
-(insert photo here)
+![tea](/assets/images/posts/why-programmers-need-frameworks/tea.jpg)
 
 This isn't something you can create with a camera phone, yet somehow
-I'm able to enjoy myself and my art without saying it's stupid that
-point-and-shoot cameras exist.
+I'm able to enjoy myself and my art without complaining that
+point-and-shoot cameras exist and that people like them.
 
 Novices benefit greatly from expert guidance. I don't think you can
 become a master photographer using your phone's camera, but with the
@@ -647,23 +659,23 @@ Not only that, Transit allows the two to effortlessly
 communicate. This eliminates an entire class of coordination problems
 that frameworks in other languages have to contend with.
 
-There's more I could write here, but I'm honestly still figuring it
-out. Why am I bothering to figure out? It's time to come clean: when I
-wrote that I don't want to build the infrastructure for building
-frameworks, I lied. I'm building a framework! My ambition is to make
-it possible to _build a web site in half a day_.
+In my opinion, the Clojurian stance that frameworks are more trouble
+than they're worth is completely backwards: Clojure gives us the
+foundation to build a completely kick-ass framework! One that's simple
+_and_ easy. One can dream, right?
 
-Well, maybe not that quickly, but I do want us Clojure developers to
-be able to get our ideas into production _fast_. I want us to be able
-to spend more time on the hard stuff, the fun stuff, the interesting
-stuff. And I want us to be able to easily ship with confidence.
+My ambition in building a SPA framework is to empower current and
+future Clojure devs to get our ideas into production _fast_. I want us
+to be able to spend more time on the hard stuff, the fun stuff, the
+interesting stuff. And I want us to be able to easily ship with
+confidence.
 
-The framework is built on top of some truly amazing libraries,
-primarily Integrant, re-frame, and Liberator. Integrant introduces a
-_component_ abstraction and handles the start/stop lifecycle of an
-application. re-frame provides a filesystem and communication broker
-for the frontend. Liberator introduces a standard model for handling
-HTTP requests.
+The framework I'm building is built on top of some truly amazing
+libraries, primarily Integrant, re-frame, and Liberator. Integrant
+introduces a _component_ abstraction and handles the start/stop
+lifecycle of an application. re-frame provides a filesystem and
+communication broker for the frontend. Liberator introduces a standard
+model for handling HTTP requests.
 
 If my framework is useful at all it's because the creators of those
 tools have done all the heavy lifting. My framework introduces more
@@ -675,25 +687,42 @@ handling input changes and dispatching form submission, as well the
 entire form lifecycle of _fresh_, _dirty_, _submitted_, _invalid_,
 _succeeded_, etc. It imposes some conventions for organizing data.
 
-The framework is not quite ready for public consumption yet becaause
-there's still a lot of churn while I work out ideas, and because
-there's basically no documentation, but I hope to release it in the
-near future.
+As I mentioned, the framework is not quite ready for public
+consumption yet becaause there's still a lot of churn while I work out
+ideas, and because there's basically no documentation, but I hope to
+release it in the near future.
 
 If you'd like to see a production app that uses the framework,
 however, I invite you to check out [Grateful
 Place](https://gratefulplace.com), a community site for people who
 want to support each other in growing resilience, peace, and joy by
 practicing compassion, gratitude, generosity, and other positive
-values. 
+values. By joining, you're not just helping yourself, you're helping
+others by letting them know that you support them and share their
+values.
 
-Please click around and look at the snazzy loading animations. And if you
-feel so moved, please do join! I _love_ getting to interact with
-people in that context of mutual support for shared values.
+Please click around and look at the snazzy loading animations. And if
+you feel so moved, please do join! I _love_ getting to interact with
+people in that context of mutual support for shared values. One of the
+only things I care about more than Clojure is helping people develop
+the tools to navigate this crazy-ass world :D
 
 In the mean time, I'll keep working on getting this framework ready
 for public consumption. Expect another blawg article sharing some
 details on how Grateful Place is implemented. Then, eventually,
 hopefully, an actual announcement for the framework itself :)
+
+If you don't want to wait for my slow butt, then check out some ofthe
+amazing Clojure tools that already exist:
+
+* [Luminus](http://www.luminusweb.net)
+* [Fulcro](http://book.fulcrologic.com/) which probably does
+  everything I want my framework to, only better
+* [re-frame](https://github.com/Day8/re-frame/) remains my favorite
+  frontend framework
+* [duct](https://github.com/duct-framework/duct) is great but its docs
+  aren't that great yet
+
+(Sorry if I neglected your amazing Clojure tool!)
 
 Thanks and take care!
