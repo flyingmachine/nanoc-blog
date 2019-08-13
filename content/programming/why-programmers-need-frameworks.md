@@ -6,9 +6,9 @@ categories: programming
 summary: "In the Clojure community, one of the unwritten tenets is that frameworks can eat shit."
 ---
 
-In the Clojure community, one of the unwritten tenets is that
-frameworks can eat shit. Other languages might need frameworks, but
-not ours! Libraries all the way, baby!
+As I've used Clojure over the years, I've gotten the impression that
+there's a strong aversion to using frameworks. Other languages might
+need frameworks, but not ours! Libraries all the way, baby!
 
 This attitude did not develop without reason. Many of us came to
 Clojure after getting burned on magical frameworks like Rails, where
