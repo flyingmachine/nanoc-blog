@@ -733,7 +733,7 @@ helped me develop it:
 * Kenneth Kalmer
 * Sean whose last name I don't know
 * Tom Brooke
-* Patrick whose last name I don't know
+* Patrick whose last name I don't know (update: It's Patrick French!)
 * Fed Reggiardo
 * Vincent Raerek
 * Ernesto de Feria
