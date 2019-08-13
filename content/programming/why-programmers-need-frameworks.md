@@ -1,6 +1,6 @@
 ---
 title: Frameworks and Why (Clojure) Programmers Need Them
-created_at: Sat Jul 20 2013 19:23:00 -0500
+created_at: Tue Aug 13 2019 16:00:00 -0500
 kind: article
 categories: programming
 summary: "In the Clojure community, one of the unwritten tenets is that frameworks can eat shit."
