@@ -6,9 +6,9 @@ categories: programming
 summary: "As I've used Clojure over the years, I've gotten the impression that there's a strong aversion to using frameworks."
 ---
 
-As I've used Clojure over the years, I've gotten the impression that
-there's a strong aversion to using frameworks. Other languages might
-need frameworks, but not ours! Libraries all the way, baby!
+It seems like there's a strong aversion to using frameworks in the
+Cloljure community. Other languages might need frameworks, but not
+ours!  Libraries all the way, baby!
 
 This attitude did not develop without reason. Many of us came to
 Clojure after getting burned on magical frameworks like Rails, where
@@ -19,13 +19,12 @@ dev libraries it bundles provide such a productive experience that
 frameworks seem superfluous.
 
 Be that as it may, I'm going to make the case for why the community's
-dominant view of frameworks needs revision. Frameworks are
-useful. They should not all universally eat shit. To convince you,
-I'll start by explaining what a framework is. I have yet to read a
-definition of _framework_ that satisfies me, and I think some of the
-hate directed at them stems from a lack of clarity about what exactly
-they are. Are they just glorified libraries? Do they have to be
-magical?  Is there some law decreeing that they have to be more
+dominant view of frameworks needs revision. Frameworks are useful. To
+convince you, I'll start by explaining what a framework is. I have yet
+to read a definition of _framework_ that satisfies me, and I think
+some of the hate directed at them stems from a lack of clarity about
+what exactly they are. Are they just glorified libraries? Do they have
+to be magical?  Is there some law decreeing that they have to be more
 trouble than they're worth? All this and more shall be revealed.
 
 I think the utility of frameworks will become evident by describing
