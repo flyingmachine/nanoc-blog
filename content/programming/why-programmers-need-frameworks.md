@@ -88,7 +88,7 @@ it) - if every programmer came up with her own bespoke addressing
 system, it would be a disaster. The OS handles this for us so we can
 focus on application-specific tasks.
 
-Because operating system are such successful frameworks we'll look at
+Because operating systems are such successful frameworks we'll look at
 a few of their features in some detail so that we can get a better
 understanding of what good framework design looks like.
 
