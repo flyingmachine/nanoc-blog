@@ -3,12 +3,12 @@ title: Frameworks and Why (Clojure) Programmers Need Them
 created_at: Tue Aug 13 2019 16:00:00 -0500
 kind: article
 categories: programming
-summary: "As I've used Clojure over the years, I've gotten the impression that there's a strong aversion to using frameworks."
+summary: "It seems like there's a strong aversion to using frameworks in the Clojure community. Other languages might need frameworks, but not ours! Libraries all the way, baby!"
 ---
 
 It seems like there's a strong aversion to using frameworks in the
-Cloljure community. Other languages might need frameworks, but not
-ours!  Libraries all the way, baby!
+Clojure community. Other languages might need frameworks, but not
+ours! Libraries all the way, baby!
 
 This attitude did not develop without reason. Many of us came to
 Clojure after getting burned on magical frameworks like Rails, where
@@ -648,7 +648,7 @@ structures. In other words, creating specialized structures does not
 preclude us from using the tools built for simpler structures, and
 this isn't the case for many other languages.
 
-Second, Clojure's abstraction mechanisms (prototypes and multimethods)
+Second, Clojure's abstraction mechanisms (protocols and multimethods)
 are extremely flexible, making it easy for us to implement
 abstractions for new resources as they become available.
 
@@ -720,6 +720,8 @@ amazing Clojure tools that already exist:
   frontend framework
 * [duct](https://github.com/duct-framework/duct) is great but its docs
   aren't that great yet
+* [Coast on Clojure](https://github.com/coast-framework/coast), a full
+  stack web framework
 
 (Sorry if I neglected your amazing Clojure tool!)
 
