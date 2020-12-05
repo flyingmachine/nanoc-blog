@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>How Clojure Babies Are Made: Compiling and Running a Java Program</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>How Clojure Babies Are Made: Compiling and Running a Java Program</h1>
+          <div class='date'>12 March 2013</div>
+          <p>If you're at all like me, the moment you got your first Clojure
+          program running you belted out, "SOOO MUUUUUUUCH POOOOOOOWEEEEEEEER!"
+          and thrust one or both fists into the air. Then, fifteen minutes
+          later, you found yourself muttering things like "What's a maven?" and
+          "Classpath what now?" and "What is Leiningen actually doing, anyway?
+          Sure, those are the most handsome mustaches I ever laid eyes on, but
+          can I really trust them?"</p>
+          
+          <p>This post is here to help you out. In it, I will describe how Java
+          compiles and runs programs, and how this relates to Clojure. In an
+          upcoming post, I will also describe how Leiningen makes this process
+          way easier. Here's an outline of what's to come:</p>
+          
+          <ul>
+          <li>Java
+          
+          <ul>
+          <li>Compilation
+          
+          <ul>
+          <li>javac</li>
+          <li>Class lookup rules &amp; classpath</li>
+          <li>imports</li>
+          <li>packages</li>
+          <li>JAR files</li>
+          </ul>
+          </li>
+          <li>Running
+          
+          <ul>
+          <li>Class file</li>
+          <li>classpath</li>
+          <li>Executable JAR</li>
+          </ul>
+          </li>
+          </ul>
+          </li>
+          <li>Leiningen
+          
+          <ul>
+          <li>Running an app without Leiningen</li>
+          <li>classpath management</li>
+          <li>Incorporating Clojure automatically</li>
+          <li>Dependency managemenet</li>
+          </ul>
+          </li>
+          </ul>
+          
+          <p>(Update: Part 2 of this series is
+          <a href="/programming/how-clojure-babies-are-made-lein-run/">now available</a>!)</p>
+          
+          <h2>Java</h2>
+          
+          <p>Java is going to rule the universe. The sooner you accept that, the
+          better. If you don't have the
+          <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK installed</a>
+          installed, you might want to do that now. To check, just try running
+          <code>java</code> and <code>javac</code> in your terminal. By the way - this post assumes
+          you're somewhat familiar with the terminal. It also assumes you're
+          familiar with object-oriented programming.</p>
+          
+          <h2>Compiling and Running a Basic Program</h2>
+          
+          <p>This section will lay a foundation for your understanding of Java. It
+          doesn't address Clojure directly, but the knowledge you gain will be
+          useful in your Clojuring.</p>
+          
+          <p>Let's put our game faces on and start with a basic program. Visit the
+          <a href="https://github.com/flyingmachine/make-a-clojure-baby">github repo</a>
+          for the examples in this post and clone that baby for all you're
+          worth.</p>
+          
+          <p>In the folder <code>ShiverMeTimbers</code>, you should find an article named
+          <code>ShiverMeTimbers.java</code>. Here are its contents:</p>
+          <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShiverMeTimbers</span>&#x000A;<span class="o">{</span>&#x000A;    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>&#x000A;    <span class="o">{</span>&#x000A;        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Shiver me timbers!!!"</span><span class="o">);</span>&#x000A;    <span class="o">}</span>&#x000A;<span class="o">}</span></pre></div>
+          <p>Once you've recovered from your swoon, <code>cd</code> to <code>ShiverMeTimbers</code> and
+          run <code>javac ShiverMeTimbers.java</code>. If you typed everything correctly
+          <em>and</em> you're pure of heart, you should now see a file named
+          <code>ShiverMeTimbers.class</code>.</p>
+          <div class="highlight"><pre><span class="nv">$ </span>ls&#x000A;ShiverMeTimbers.class ShiverMeTimbers.java</pre></div>
+          <p>You've just compiled your first Java program, son! Now run it with
+          <code>java ShiverMeTimbers</code>. You should see:</p>
+          <div class="highlight"><pre><span class="vg">Shiver</span><span class="w"> </span><span class="vg">me</span><span class="w"> </span><span class="vg">timbers!</span><span class="o">!!</span></pre></div>
+          <p>Which I'm pretty sure is like the Lord's prayer, but for pirates.
+          Anyway, what's happening here is you used the Java compiler, <code>javac</code>,
+          to create a Java class file, <code>ShiverMeTimbers.class</code>. This file is
+          packed with oodles of Java bytecode which the
+          <a href="http://en.wikipedia.org/wiki/Java_virtual_machine">Java Virtual Machine</a>
+          executes when running a program.</p>
+          
+          <p>When you ran <code>java ShiverMeTimbers</code>, the JVM first looked on your
+          <code>classpath</code> for a class named <code>ShiverMeTimbers</code>. In Java, you're only
+          allowed to have one public class per file and the filename and class
+          name must be the same. This is how <code>java</code> knows to try looking in
+          <code>ShiverMeTimbers.class</code> for the ShiverMeTimbers class's bytecode.</p>
+          
+          <p>Also, by default, the <code>classpath</code> includes the directory <code>.</code>, or the
+          current directory. Try running <code>java -classpath /tmp ShiverMeTimbers</code>
+          and you will get an error, even though <code>ShiverMeTimbers.class</code> is
+          right there in the same directory.</p>
+          
+          <p>After <code>java</code> found the bytecode for the <code>ShiverMeTimbers</code> class, it
+          executed that class's <code>main</code> method. Java's kind of like C that way,
+          in that whenever you say "run something, and use this class as your
+          entry point", it always will run that class's <code>main</code> method. Which
+          means that that method has to be <code>public</code>, as you can see above.
+          (<a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Here's more info on Java's access modifiers</a>
+          if you're curious.)</p>
+          
+          <p><strong>Key Ideas</strong></p>
+          
+          <ul>
+          <li>
+          <code>javac</code> compiles java source code to bytecode which the JVM can
+          execute</li>
+          <li>
+          <code>java</code> searches the <code>classpath</code> for the class you specified and
+          executes its <code>main</code> method. That method must be public.</li>
+          </ul>
+          
+          <p>In the next section you'll learn about handling program code that's
+          spread over more than one file. If you don't remove your socks now,
+          they're liable to get knocked off!</p>
+          
+          <h2>Packages and Imports</h2>
+          
+          <p>In this section, you'll learn about how Java handles programs which
+          are spread over more than one file. You'll also learn how to use Java
+          libraries. Once again, we'll look at both compiling and running a
+          program. This section has direct implications for Clojure programming,
+          so pay attention!</p>
+          
+          <p>Let's start with a couple definitions:</p>
+          
+          <ul>
+          <li>
+          <strong>package:</strong> Similar to Clojure's namespaces, packages serve two
+          purposes. They provide code organization, just like clojure
+          namespaces. They also enforce access rules, which we don't really
+          care about. The directory that a Java file lives in must mirror the
+          package it belongs to. If a file has the line <code>package com.shapemaster</code>
+          in it, then it must be located at <code>com/shapemaster</code> somewhere on your
+          classpath. More about classpath later.</li>
+          <li>
+          <strong>import:</strong> Java allows you to import classes, which basically means
+          that you can refer to them without using their namespace prefix. So,
+          if you have a class in <code>com.shapemaster</code> named <code>Square</code>, you could
+          write <code>import com.shapemaster.Square;</code> or <code>import com.shapemaster.*;</code>
+          at the top of a <code>.java</code> file so that you can use <code>Square</code> in your
+          code instead of <code>com.shapemaster.Square</code>. Code example below.</li>
+          </ul>
+          
+          <p>Now let's see <code>package</code> and <code>import</code> in action. Here they are as used
+          by the files in 
+          <code>make-a-clojure-baby/ContrivedPackageExample</code>. Pay
+          attention to the comments, as they explain a lot of what's going on</p>
+          
+          <p>Contents of <code>make-a-clojure-baby/ContrivedPackageExample/Conversation.java</code>:</p>
+          <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Conversation</span>&#x000A;<span class="o">{</span>    &#x000A;    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>&#x000A;    <span class="o">{</span>&#x000A;        <span class="c1">// The "ns1" prefix is necessary because ShyGhost belongs to</span>&#x000A;        <span class="c1">// the "ns1" package, and we haven't imported the classes in</span>&#x000A;        <span class="c1">// that package</span>&#x000A;        <span class="n">ns1</span><span class="o">.</span><span class="na">ShyGhost</span> <span class="n">shyGhost</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ns1</span><span class="o">.</span><span class="na">ShyGhost</span><span class="o">();</span>&#x000A;        <span class="n">shyGhost</span><span class="o">.</span><span class="na">talk</span><span class="o">();</span>&#x000A;    <span class="o">}</span>&#x000A;<span class="o">}</span></pre></div>
+          <p>Contents of <code>make-a-clojure-baby/ContrivedPackageExample/ns1/ShyGhost.java</code>:</p>
+          <div class="highlight"><pre><span class="c1">// The classes defined in this file belong to the "ns1" package.</span>&#x000A;<span class="c1">// Notice that this file is in the "ns1" directory.</span>&#x000A;<span class="kn">package</span> <span class="n">ns1</span><span class="o">;</span>&#x000A;&#x000A;<span class="c1">// This basically means, "I hate typing the namespace prefix all the</span>&#x000A;<span class="c1">// time so please allow me to not do that"</span>&#x000A;<span class="kn">import</span> <span class="nn">ns2.*</span><span class="o">;</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShyGhost</span>&#x000A;<span class="o">{</span>&#x000A;    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">talk</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// the shy ghost can't speak for himself and has to get</span>&#x000A;        <span class="c1">// someone else to do it for him</span>&#x000A;&#x000A;        <span class="c1">// Notice that even though SuperManlyIguana belongs to the ns2</span>&#x000A;        <span class="c1">// namespace, we don't have to use the ns2 prefix</span>&#x000A;        <span class="n">SuperManlyIguana</span> <span class="n">smi</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SuperManlyIguana</span><span class="o">();</span>&#x000A;        <span class="n">smi</span><span class="o">.</span><span class="na">talk</span><span class="o">();</span>&#x000A;    <span class="o">}</span>&#x000A;<span class="o">}</span></pre></div>
+          <p>Contents of <code>make-a-clojure-baby/ContrivedPackageExample/ns2/SuperManlyIguana.java</code>:</p>
+          <div class="highlight"><pre><span class="c1">// The classes defined in this file belong to the "ns2" package</span>&#x000A;<span class="kn">package</span> <span class="n">ns2</span><span class="o">;</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SuperManlyIguana</span>&#x000A;<span class="o">{</span>&#x000A;    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">talk</span><span class="o">()</span>&#x000A;    <span class="o">{</span>&#x000A;        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Why hello there"</span><span class="o">);</span>&#x000A;    <span class="o">}</span>&#x000A;<span class="o">}</span></pre></div>
+          <p>You can run all the above code with the following:</p>
+          <div class="highlight"><pre><span class="vg">cd</span><span class="w"> </span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">ContrivedPackageExample</span>&#x000A;<span class="vg">javac</span><span class="w"> </span><span class="vg">Conversation</span><span class="o">.</span><span class="vg">java</span>&#x000A;<span class="vg">java</span><span class="w"> </span><span class="vg">Conversation</span></pre></div>
+          <p>Can you guess what this outputs? I bet you can!</p>
+          
+          <p>Anyway, so far we've established the relationship between importing,
+          packages, and directory structure: Packages organize code and require
+          a matching directory structure. Importing classes allows you to
+          "de-namespace" them.</p>
+          
+          <p>One piece that's missing, which I alluded to above, is the role of the
+          classpath. Try the following:</p>
+          <div class="highlight"><pre><span class="vg">cd</span><span class="w"> </span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">ContrivedPackageExample</span><span class="o">/</span><span class="vg">ns1</span>&#x000A;<span class="vg">javac</span><span class="w"> </span><span class="o">../</span><span class="vg">Conversation</span><span class="o">.</span><span class="vg">java</span></pre></div>
+          <p>Boom! The Java compiler just told you to hang your head in shame, and
+          maybe weep a little:</p>
+          <div class="highlight"><pre><span class="cp">../Conversation.java:13: error: package ns1 does not exist</span>&#x000A;<span class="cp">        ns1.ShyGhost shyGhost = new ns1.ShyGhost();</span>&#x000A;<span class="cp">           ^</span>&#x000A;<span class="cp">../Conversation.java:13: error: package ns1 does not exist</span>&#x000A;<span class="cp">        ns1.ShyGhost shyGhost = new ns1.ShyGhost();</span>&#x000A;<span class="cp">                                       ^</span></pre></div>
+          <p>It thinks that the <code>ns1</code> package doesn't exist. But that's stupid,
+          right? I mean, you're in the <code>ns1</code> directory and everything!</p>
+          
+          <p>What's happening here is that the java compiler is looking for
+          <code>./ns1/ShyGhost</code> which it can't find because you're already in the
+          <code>ns1</code> directory. This is because the default classpath includes '.'.
+          Without changing directories, try running <code>javac -classpath ../&#x000A;../Conversation.java</code></p>
+          
+          <p>Et voila! It works! So let's amend our understanding of the
+          relationship between importing, packages, and the directory
+          structures: when you're compiling a Java program, Java searches your
+          classpath for packages.</p>
+          
+          <p>Guess what: the same things happens when you're running a Java
+          program, too. Run the following:</p>
+          <div class="highlight"><pre><span class="vg">cd</span><span class="w"> </span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">ContrivedPackageExample</span>&#x000A;<span class="vg">mkdir</span><span class="w"> </span><span class="vg">hide</span>&#x000A;<span class="vg">mv</span><span class="w"> </span><span class="vg">ns1</span><span class="w"> </span><span class="vg">hide</span>&#x000A;<span class="vg">java</span><span class="w"> </span><span class="vg">Conversation</span></pre></div>
+          <p>Another explosion! Now try:</p>
+          <div class="highlight"><pre><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">classpath</span><span class="w"> </span><span class="o">.:</span><span class="vg">hide</span><span class="w"> </span><span class="vg">Converstaion</span></pre></div>
+          <p>Success!</p>
+          
+          <p>I hope this clarifies the relationship between your directory
+          structure, the classpath, packages, and importing.</p>
+          
+          <p><strong>Key Ideas</strong></p>
+          
+          <ul>
+          <li>Packages provide a way for you to organize classes. Your directory
+          structure must reflect your package names</li>
+          <li>Imports allow you to be lazy and not prefix a class name with its
+          package</li>
+          <li>
+          <code>javac</code> and <code>java</code> search the classpath for packages</li>
+          </ul>
+          
+          <h2>JAR Files</h2>
+          
+          <p>JAR, or Java ARchive, files allow you to bundle all your .class files
+          into one single file. Run the following:</p>
+          <div class="highlight"><pre><span class="vg">cd</span><span class="w"> </span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">ContrivedPackageExample</span>&#x000A;<span class="vg">jar</span><span class="w"> </span><span class="vg">cvfe</span><span class="w"> </span><span class="vg">contrived</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">Conversation</span><span class="w"> </span><span class="o">*.</span><span class="vg">class</span><span class="w"> </span><span class="vg">ns</span><span class="o">*/*.</span><span class="vg">class</span>&#x000A;<span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">jar</span><span class="w"> </span><span class="vg">contrived</span><span class="o">.</span><span class="vg">jar</span></pre></div>
+          <p>It works, just like before. You bundled all the class files into
+          <code>contrived.jar</code> with the file patterns <code>*.class</code> and <code>ns*/*.class</code>.
+          You also indicated that the <code>Conversation</code> class is the "entry point"
+          with the <code>e</code> flag. The "entry point" is the class which contains the
+          <code>main</code> method which should be executed when the JAR as a whole is run.</p>
+          
+          <p>Behind the scenes, java knows which class is the entry point because
+          when you create a jar, the file <code>META-INF/MANIFEST.MF</code> automaticaally
+          gets generated and added. When you add the <code>e</code> flag, the following
+          line gets added:</p>
+          <div class="highlight"><pre><span class="vg">Main</span><span class="o">-</span><span class="nl">Class:</span><span class="w"> </span><span class="vg">Conversation</span></pre></div>
+          <p>By the way, you might be wondering why Java isn't throwing any
+          exceptions like "can't find package". The reason is that the JAR file
+          maintains the directory structure. You can see its contents with:</p>
+          <div class="highlight"><pre><span class="vg">jar</span><span class="w"> </span><span class="vg">tf</span><span class="w"> </span><span class="vg">contrived</span><span class="o">.</span><span class="vg">jar</span></pre></div>
+          <p>You'll see that the directory structure is maintained.</p>
+          
+          <p>One final point: a JAR file is really just a Zip file with a ".jar"
+          extension. You can treat it just the same as any other zip file.</p>
+          
+          <h2>Pulling it All Together: clojure.jar</h2>
+          
+          <p>Let's pull all of this together with some Clojure! Download
+          <a href="http://repo1.maven.org/maven2/org/clojure/clojure/1.5.1/clojure-1.5.1.zip">the 1.5.1 stable release</a>
+          and unzip it. Then <code>cd</code> to the directory that gets created and run</p>
+          <div class="highlight"><pre><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">jar</span><span class="w"> </span><span class="vg">clojure</span><span class="mf">-1.5.1</span><span class="o">.</span><span class="vg">jar</span></pre></div>
+          <p>You should get that most soothing of sights, the Clojure REPL. So, how
+          did it actually start up? Let's have a look at <code>META-INF/MANIFEST.MF</code>
+          in the jar file:</p>
+          <div class="highlight"><pre><span class="vg">Manifest</span><span class="o">-</span><span class="nl">Version:</span><span class="w"> </span><span class="mf">1.0</span>&#x000A;<span class="vg">Archiver</span><span class="o">-</span><span class="nl">Version:</span><span class="w"> </span><span class="vg">Plexus</span><span class="w"> </span><span class="vg">Archiver</span>&#x000A;<span class="vg">Created</span><span class="o">-</span><span class="nl">By:</span><span class="w"> </span><span class="vg">Apache</span><span class="w"> </span><span class="vg">Maven</span>&#x000A;<span class="vg">Built</span><span class="o">-</span><span class="nl">By:</span><span class="w"> </span><span class="vg">hudson</span>&#x000A;<span class="vg">Build</span><span class="o">-</span><span class="nl">Jdk:</span><span class="w"> </span><span class="mf">1.6.0</span><span class="vg">_20</span>&#x000A;<span class="vg">Main</span><span class="o">-</span><span class="nl">Class:</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span></pre></div>
+          <p>It looks like <code>clojure.main</code> is specified as the entry point. Where
+          does this class come from? Well, have a look at
+          <a href="https://github.com/clojure/clojure/blob/master/src/jvm/clojure/main.java">clojure/main.java on github</a>:</p>
+          <div class="highlight"><pre><span class="cm">/**</span>&#x000A;<span class="cm"> *   Copyright (c) Rich Hickey. All rights reserved.</span>&#x000A;<span class="cm"> *   The use and distribution terms for this software are covered by the</span>&#x000A;<span class="cm"> *   Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)</span>&#x000A;<span class="cm"> *   which can be found in the file epl-v10.html at the root of this distribution.</span>&#x000A;<span class="cm"> *   By using this software in any fashion, you are agreeing to be bound by</span>&#x000A;<span class="cm"> *   the terms of this license.</span>&#x000A;<span class="cm"> *   You must not remove this notice, or any other, from this software.</span>&#x000A;<span class="cm"> **/</span>&#x000A;&#x000A;<span class="kn">package</span> <span class="n">clojure</span><span class="o">;</span>&#x000A;&#x000A;<span class="kn">import</span> <span class="nn">clojure.lang.Symbol</span><span class="o">;</span>&#x000A;<span class="kn">import</span> <span class="nn">clojure.lang.Var</span><span class="o">;</span>&#x000A;<span class="kn">import</span> <span class="nn">clojure.lang.RT</span><span class="o">;</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">class</span> <span class="nc">main</span><span class="o">{</span>&#x000A;&#x000A;<span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Symbol</span> <span class="n">CLOJURE_MAIN</span> <span class="o">=</span> <span class="n">Symbol</span><span class="o">.</span><span class="na">intern</span><span class="o">(</span><span class="s">"clojure.main"</span><span class="o">);</span>&#x000A;<span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Var</span> <span class="n">REQUIRE</span> <span class="o">=</span> <span class="n">RT</span><span class="o">.</span><span class="na">var</span><span class="o">(</span><span class="s">"clojure.core"</span><span class="o">,</span> <span class="s">"require"</span><span class="o">);</span>&#x000A;<span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Var</span> <span class="n">LEGACY_REPL</span> <span class="o">=</span> <span class="n">RT</span><span class="o">.</span><span class="na">var</span><span class="o">(</span><span class="s">"clojure.main"</span><span class="o">,</span> <span class="s">"legacy-repl"</span><span class="o">);</span>&#x000A;<span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Var</span> <span class="n">LEGACY_SCRIPT</span> <span class="o">=</span> <span class="n">RT</span><span class="o">.</span><span class="na">var</span><span class="o">(</span><span class="s">"clojure.main"</span><span class="o">,</span> <span class="s">"legacy-script"</span><span class="o">);</span>&#x000A;<span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Var</span> <span class="n">MAIN</span> <span class="o">=</span> <span class="n">RT</span><span class="o">.</span><span class="na">var</span><span class="o">(</span><span class="s">"clojure.main"</span><span class="o">,</span> <span class="s">"main"</span><span class="o">);</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">legacy_repl</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>&#x000A;    <span class="n">REQUIRE</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">CLOJURE_MAIN</span><span class="o">);</span>&#x000A;    <span class="n">LEGACY_REPL</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">RT</span><span class="o">.</span><span class="na">seq</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>&#x000A;<span class="o">}</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">legacy_script</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>&#x000A;    <span class="n">REQUIRE</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">CLOJURE_MAIN</span><span class="o">);</span>&#x000A;    <span class="n">LEGACY_SCRIPT</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">RT</span><span class="o">.</span><span class="na">seq</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>&#x000A;<span class="o">}</span>&#x000A;&#x000A;<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>&#x000A;    <span class="n">REQUIRE</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">CLOJURE_MAIN</span><span class="o">);</span>&#x000A;    <span class="n">MAIN</span><span class="o">.</span><span class="na">applyTo</span><span class="o">(</span><span class="n">RT</span><span class="o">.</span><span class="na">seq</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>&#x000A;<span class="o">}</span>&#x000A;<span class="o">}</span></pre></div>
+          <p>As you can see, the class <code>main</code> is defined. It belongs to the package
+          <code>clojure</code> and defines a <code>public static main</code> method. This is all Java
+          needs to run a program.</p>
+          
+          <p>I hope this has helped clarify Java and how it relates to Clojure! In
+          my next post, I'll dig in to Leiningen. Fun for everybody!!!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

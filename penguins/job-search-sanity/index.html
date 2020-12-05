@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Announcing Job Search Sanity</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Announcing Job Search Sanity</h1>
+          <div class='date'>09 December 2015</div>
+          <p>One of the least fun experiences in my life was getting fired twice in
+          three months back in 2008 when the economy decided to go all <em>YOLO</em>
+          and drive off a cliff with its middle finger waving out the
+          window. The first time, I was a wreck. I was in a relationship with
+          someone who had a chronic medical condition and the attendant medical
+          bills. As the sole money earner, I was pretty bummed! Every day I felt
+          dread and panic as I pored over job listings. I made many
+          stress-induced mistakes like emailing the same contact twice or
+          forgetting phone interviews.</p>
+          
+          <p>But somehow I found a job at a startup pretty quickly, only to be
+          regrettably let go a couple months later because they were running out
+          of money. This time, I did things differently. I took a <em>Getting
+          Things Done</em> inspired approach to the job search. Approaching the 
+          search in an organized, methodical way made me feel in control. It
+          also gave me confidence that I was making real progress on finding a
+          job because I could actually see all the steps I was taking. At the
+          end of the day I knew I had done what I could to move forward.</p>
+          
+          <p>Today I'm releasing a free web application,
+          <a href="https://jobsearchsanity.com">Job Search Sanity</a>, to help others do
+          the same. It helps you keep track of each job opportunity and the next
+          actions you need to do to move forward. It also keeps cover letters
+          and interview remindres in place. And one of its best features is that
+          it lets you save your job searches on the site so you can keep them
+          all in one place instead of visiting dozens of sites every day.</p>
+          
+          <p>If you're looking for a job and feel overwhelmed, then
+          please give it a try! If you know someone who's looking for a job,
+          please send them a link!</p>
+          
+          <h2>Personal Notes</h2>
+          
+          <p>The main thing that motivated me to create this site was seeing my
+          brother struggle with finding employment after graduating with a
+          Pharm.D. (doctor of pharmacy) degree last year. After spending a
+          decade putting himself through school, he had the modest expectation
+          of finding decent-paying, stable work. Instead, he found that the
+          pharmacy market had radically changed while he was getting his degree,
+          and jobs were scarce.</p>
+          
+          <p>I can only imagine how crushing it would feel to commit so much of
+          your life (and accumulating large student loan debts) to learning
+          profession, only to find that the rules had changed and there was
+          actually little demand for your skills. To find that the future you've
+          been working toward for so long has vanished, replaced with utter
+          uncertainty.</p>
+          
+          <p>It was a rough time for him, but thankfully he did eventually find a
+          job as a pharmacist. While he was looking, he came to live with me,
+          and I was so glad that I was able to help in some way (and that I got
+          to spend so much time with him), but part of me wished I could have
+          done more.</p>
+          
+          <p>Cut to the present day, where my wife has been looking for a better
+          job for a while, and I can see the stress affecting her in similar
+          ways (though to a much lesser degree, thankfully).</p>
+          
+          <p>All of which is to say - I know that looking for a job can be
+          incredibly stressful, and I hope that by providing this free app I can
+          help people in similar situations. I kind of need to make something
+          that I actually accept payments for soon, but for this site I didn't
+          want their to be any barriers to signing up and using it. Perhaps I'll
+          figure out way to monetize it, but for now I'm proud of the site and
+          I'll count it a success if it helps even a dozen people as they find a
+          job.</p>
+          
+          <h2>Development Notes</h2>
+          
+          <p>Job Search Sanity was built using:</p>
+          
+          <ul>
+          <li>The <a href="http://boot-clj.com/">Boot</a> build tool. Boot made it easy to
+          integrate a Clojure backend, ClojureScript frontend, and Sass
+          compilation</li>
+          <li>
+          <a href="http://clojure-liberator.github.io/liberator/">Liberator</a>, to
+          structure the handling of back-end API calls</li>
+          <li>
+          <a href="/programming/datomic-for-five-year-olds/">Datomic</a> for the database</li>
+          <li>
+          <a href="https://github.com/Day8/re-frame">re-frame</a> as the lightweight
+          front-end structure imposed on
+          <a href="https://reagent-project.github.io/">reagent</a>
+          </li>
+          </ul>
+          
+          <p>I absolutely <em>loved</em> working on the site because the tools made it so
+          much <em>fun</em>. One of my personal goals was to stretch myself design- and
+          UX-wise, and the above programming tools made that possible by making
+          it so simple and easy to implement the basic functionality.</p>
+          
+          <p>ClojureScript has come incredibly far in the past couple years. A year
+          or two ago I looked at it but stuck with Coffeescript because cljs
+          looked like a pain in the ass to use, but that isn't the case any
+          longer. The only downside here is that, once again, Clojure has
+          spoiled me, and I never want to go back to my previous tools.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

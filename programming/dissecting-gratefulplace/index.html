@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Look, Ma! No batteries! A Clojure Web App Without Noir</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Look, Ma! No batteries! A Clojure Web App Without Noir</h1>
+          <div class='date'>10 November 2012</div>
+          <p><em>UPDATE</em> <a href="http://gratefulplace.com">http://gratefulplace.com</a> now uses
+          a completely different codebase. You can find it on
+          <a href="https://github.com/flyingmachine/gratefulplace2">github</a>. You can
+          read about the new codebase at <a href="/programming/building-a-forum-with-clojure-datomic-angular/">Building a Forum with Clojure,
+          Datomic, Angular, and
+          Ansible</a>.</p>
+          
+          <p>Awhile back I released
+          <a href="/programming/dissecting-omgsmackdown/">OMG! SMACKDOWN!!!</a>, which
+          still holds the title for dumbest Clojure app in existence. To make up
+          for that ludicrostrosity, I've created
+          <a href="http://gratefulplace.com">Grateful Place</a>. This time I around I
+          didn't use Noir, instead going closer to the metal with Compojure and
+          Enlive. The experience was a lot easier than I anticipated, perhaps
+          easier than using Noir. This post will cover some of the more
+          interesting bits of code:</p>
+          
+          <ul>
+          <li>Templating heaven with Enlive and Middleman</li>
+          <li>Using macros to enforce full stack consistency</li>
+          <li>Roll-your-own validations</li>
+          <li>Pagination is more fun with macros</li>
+          <li>Using fierce mustaches to run tasks</li>
+          <li>Fun utilities</li>
+          </ul>
+          
+          <p>You can find all source code on
+          <a href="https://github.com/flyingmachine/gratefulplace/tree/v1.0.0">github</a>. Also,
+          I'm going to be at the Clojure Conj and would love do meet folks. If
+          you'd like to chat, please do tweet me (@nonrecursive) or find me at
+          the conj!</p>
+          
+          <h2>App Overview</h2>
+          
+          <p>Grateful Place is a social app with only a few models: Users,
+          Comments, Posts, and Likes. Nothing too fancy. If you're interested in
+          why I made it, here's a <a href="/essays/gratitude/">post I wrote about
+          gratitude</a>.</p>
+          
+          <h2>Templating heaven with Enlive and Middleman</h2>
+          
+          <h3>Enlive is the bee's knees</h3>
+          
+          <p>I can say without reservation that
+          [Enlive]:(https://github.com/cgrand/enlive) is the best templating
+          library I've ever used. I absolutely love it! If you try out one thing
+          from this post, try out the workflow I describe here. Enlive is
+          completely different from Hiccup, ERB, HAML and the like and it's
+          worth giving it a shot.</p>
+          
+          <p>If you're not familiar with Enlive, it's a selector-based templating
+          library. In the same way that CSS allows you to separate structure and
+          presentation, Enlive lets you separate structure and view logic. This
+          is huge! Unless you're the kind of person who still likes to use
+          @font@ and @bold@ tags in your HTML, you should give Enlive a try.</p>
+          
+          <h3>Middleman/Enlive Workflow</h3>
+          
+          <p>Using Enlive allowed me to do all my design work using the Ruby
+          library <a href="http://middlemanapp.com/">Middleman</a>. This allowed me to
+          build stand-alone web pages so that I could see how they looked
+          without worrying about any view logic. For example, here's the example
+          home page I put together:</p>
+          <div class="highlight"><pre><span class="o">---</span>&#x000A;<span class="nl">title</span><span class="p">:</span> <span class="n">Grateful</span> <span class="n">Place</span>&#x000A;<span class="o">---</span>&#x000A;<span class="cp">#posts</span>&#x000A;  <span class="p">.</span><span class="n">post</span>&#x000A;    <span class="p">.</span><span class="n">content</span>&#x000A;      <span class="nf">%p</span> <span class="n">Here</span> <span class="n">is</span> <span class="n">some</span> <span class="n">content</span><span class="p">.</span>&#x000A;    <span class="nf">%footer</span>&#x000A;      <span class="p">.</span><span class="n">date</span> <span class="n">Jan</span> <span class="mo">03</span><span class="p">,</span> <span class="mi">2012</span>&#x000A;      <span class="p">.</span><span class="n">author</span>&#x000A;        <span class="n">by</span>&#x000A;        <span class="nf">%a</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">""</span><span class="p">}</span> <span class="n">Joe</span> <span class="n">Schmoe</span>&#x000A;      <span class="p">.</span><span class="n">favorite</span>&#x000A;        <span class="nf">%a</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">9733</span><span class="p">;</span>&#x000A;        <span class="p">.</span><span class="n">status</span> <span class="n">Like</span> <span class="k">this</span>&#x000A;      <span class="nf">%a</span><span class="p">.</span><span class="n">comments</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">""</span><span class="p">}</span> <span class="mi">35</span> <span class="n">Comments</span>&#x000A;&#x000A;&#x000A;  <span class="p">.</span><span class="n">post</span>&#x000A;    <span class="p">.</span><span class="n">content</span>&#x000A;      <span class="nf">%p</span> <span class="n">Here</span> <span class="n">is</span> <span class="n">some</span> <span class="n">content</span><span class="p">,</span> <span class="n">too</span><span class="p">.</span>&#x000A;    <span class="nf">%footer</span>&#x000A;      <span class="p">.</span><span class="n">date</span> <span class="n">Jan</span> <span class="mo">03</span><span class="p">,</span> <span class="mi">2012</span>&#x000A;      <span class="p">.</span><span class="n">author</span>&#x000A;        <span class="n">by</span>&#x000A;        <span class="nf">%a</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">""</span><span class="p">}</span> <span class="n">Joe</span> <span class="n">Schmoe</span>&#x000A;      <span class="p">.</span><span class="n">favorite</span>&#x000A;        <span class="nf">%a</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">9733</span><span class="p">;</span>&#x000A;        <span class="p">.</span><span class="n">status</span> <span class="n">Like</span> <span class="k">this</span>&#x000A;      <span class="nf">%a</span><span class="p">.</span><span class="n">comments</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">""</span><span class="p">}</span> <span class="mi">35</span> <span class="n">Comments</span>&#x000A;&#x000A;  <span class="p">.</span><span class="n">pagination</span>&#x000A;    <span class="nf">%a</span><span class="p">.</span><span class="n">previous</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span>&#x000A;      <span class="n">Previous</span>  &#x000A;    <span class="nf">%span</span><span class="p">.</span><span class="n">page</span><span class="o">-</span><span class="n">link</span><span class="p">.</span><span class="n">current</span>&#x000A;      <span class="mi">1</span>&#x000A;    <span class="nf">%a</span><span class="p">.</span><span class="n">page</span><span class="o">-</span><span class="n">link</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span>&#x000A;      <span class="mi">2</span>&#x000A;    <span class="nf">%a</span><span class="p">.</span><span class="n">page</span><span class="o">-</span><span class="n">link</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span>&#x000A;      <span class="mi">3</span>&#x000A;    <span class="nf">%a</span><span class="p">.</span><span class="n">next</span><span class="p">{</span><span class="o">:</span><span class="n">href</span> <span class="o">=&gt;</span> <span class="s">"#"</span><span class="p">}</span>&#x000A;      <span class="n">Next</span></pre></div>
+          <p>You might have noticed a few weird things. First, this is written
+          using HAML. Yep, HAML. I prefer HAML over HTML because it's more
+          concise and the consistent structure allows me to visually scan it
+          more easily. And since my HTML templates and view logic are completely
+          separate, I can write my designs in HAML, preview them with Middleman,
+          and then generate an HTML file for Enlive to work with. Here's my
+          process in full:</p>
+          
+          <ul>
+          <li>Build on every change by cd'ing to <code>assets/generator/</code> and running
+          <code>fswatch . ./g</code>. This runs a bash script which generates the HTML,
+          CSS, and Javascript files and moves them to the proper directories.</li>
+          <li>Start up Middleman by cd'ing to <code>assets/generator/</code> and running
+          <code>middleman</code>
+          </li>
+          <li>View site at http://localhost:4567 and make changes to my heart's
+          content</li>
+          <li>When I'm happy with the changes, create or recompile a Clojure file
+          which makes use of the HTML file with Enlive. It's necessary to
+          recompile the files so that Enlive uses the updated HTML. That
+          doesn't happen automatically.</li>
+          </ul>
+          
+          <p>Another thing you might have noticed is that in the HAML file I'm
+          showing two example posts. With Enlive, you actually have to add some
+          logic to remove one of the post divs:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">defpage</span> <span class="nv">all</span> <span class="s">"index.html"</span>&#x000A;  <span class="p">[</span><span class="nv">posts</span> <span class="nv">current-auth</span> <span class="nv">record-count</span> <span class="nv">page</span> <span class="nv">max-pages</span><span class="p">]</span>&#x000A;  <span class="c1">;; don't show the second post as it's just an example</span>&#x000A;  <span class="p">[[</span><span class="ss">:.post</span> <span class="p">(</span><span class="nf">h/nth-of-type</span> <span class="mi">2</span><span class="p">)]]</span> <span class="nv">nil</span></pre></div>
+          <h3>Some code to reduce boilerplate</h3>
+          
+          <p>Finally, here's some code I put together to reduce boilerplate:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defonce </span><span class="nv">template-dir</span> <span class="s">"gratefulplace/templates/"</span><span class="p">)</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">h/defsnippet</span> <span class="nv">nav</span> <span class="p">(</span><span class="nb">str </span><span class="nv">template-dir</span> <span class="s">"index.html"</span><span class="p">)</span> <span class="p">[</span><span class="ss">:nav</span><span class="p">]</span>&#x000A;  <span class="p">[</span><span class="nv">logged-in</span><span class="p">]</span>&#x000A;  <span class="p">[</span><span class="ss">:.auth</span><span class="p">]</span> <span class="p">(</span><span class="k">if </span><span class="nv">logged-in</span>&#x000A;             <span class="p">(</span><span class="nf">h/do-&gt;</span> <span class="p">(</span><span class="nf">h/content</span> <span class="s">"Log Out"</span><span class="p">)</span>&#x000A;                     <span class="p">(</span><span class="nf">h/set-attr</span> <span class="ss">:href</span> <span class="s">"/logout"</span><span class="p">))</span>&#x000A;             <span class="p">(</span><span class="nf">h/do-&gt;</span> <span class="p">(</span><span class="nf">h/content</span> <span class="s">"Log In"</span><span class="p">)</span>&#x000A;                     <span class="p">(</span><span class="nf">h/set-attr</span> <span class="ss">:href</span> <span class="s">"/login"</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">h/deftemplate</span> <span class="nv">layout</span> <span class="p">(</span><span class="nb">str </span><span class="nv">template-dir</span> <span class="s">"index.html"</span><span class="p">)</span>&#x000A;  <span class="p">[</span><span class="nv">html</span><span class="p">]</span>&#x000A;  <span class="p">[</span><span class="ss">:html</span><span class="p">]</span> <span class="p">(</span><span class="nf">h/substitute</span> <span class="nv">html</span><span class="p">)</span>&#x000A;  <span class="p">[</span><span class="ss">:nav</span><span class="p">]</span> <span class="p">(</span><span class="nf">h/substitute</span> <span class="p">(</span><span class="nf">nav</span> <span class="p">(</span><span class="nf">current-authentication</span><span class="p">)))</span>&#x000A;&#x000A;  <span class="p">[</span><span class="ss">:nav</span> <span class="ss">:ul.secondary</span> <span class="ss">:#logged-in</span> <span class="ss">:a</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">username</span> <span class="p">(</span><span class="ss">:username</span> <span class="p">(</span><span class="nf">current-authentication</span><span class="p">))]</span>&#x000A;    <span class="p">(</span><span class="nf">h/do-&gt;</span>&#x000A;     <span class="p">(</span><span class="nf">h/content</span> <span class="nv">username</span><span class="p">)</span>&#x000A;     <span class="p">(</span><span class="nf">h/set-attr</span> <span class="ss">:href</span> <span class="p">(</span><span class="nb">str </span><span class="s">"/users/"</span> <span class="nv">username</span><span class="p">))))</span>&#x000A;&#x000A;  <span class="p">[</span><span class="ss">:nav</span> <span class="ss">:ul.secondary</span> <span class="ss">:#logged-in</span> <span class="ss">:span</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nf">current-authentication</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">h/content</span> <span class="s">"Logged in as"</span><span class="p">)))</span>&#x000A;&#x000A;<span class="c1">;; Need to come up with better name</span>&#x000A;<span class="c1">;; Bundles together some defsnippet commonalities for user with the</span>&#x000A;<span class="c1">;; layout template</span>&#x000A;<span class="c1">;;</span>&#x000A;<span class="c1">;; TODO destructuring doesn't work in argnames</span>&#x000A;<span class="p">(</span><span class="kd">defmacro </span><span class="nv">defpage</span>&#x000A;  <span class="p">[</span><span class="nb">name </span><span class="nv">file</span> <span class="p">[</span><span class="o">&amp;</span> <span class="nv">argnames</span><span class="p">]</span> <span class="o">&amp;</span> <span class="nv">body</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="nf">do</span>&#x000A;     <span class="p">(</span><span class="nf">h/defsnippet</span> <span class="o">~</span><span class="p">(</span><span class="nb">symbol </span><span class="p">(</span><span class="nb">str name </span><span class="s">"*"</span><span class="p">))</span> <span class="p">(</span><span class="nb">str </span><span class="nv">template-dir</span> <span class="o">~</span><span class="nv">file</span><span class="p">)</span> <span class="p">[</span><span class="ss">:html</span><span class="p">]</span>&#x000A;       <span class="p">[</span><span class="o">~@</span><span class="nv">argnames</span><span class="p">]</span>&#x000A;       <span class="o">~@</span><span class="nv">body</span><span class="p">)</span>&#x000A;     <span class="p">(</span><span class="kd">defn </span><span class="o">~</span><span class="nv">name</span>&#x000A;       <span class="p">[{</span><span class="ss">:keys</span> <span class="p">[</span><span class="o">~@</span><span class="nv">argnames</span><span class="p">]}]</span>&#x000A;       <span class="p">(</span><span class="nf">layout</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="nb">symbol </span><span class="p">(</span><span class="nb">str name </span><span class="s">"*"</span><span class="p">))</span> <span class="o">~@</span><span class="nv">argnames</span><span class="p">)))))</span></pre></div>
+          <p>The ultimate purpose of this code is the <code>defpage</code> macro. This helps
+          me in a few ways. It lets me easily write view code for each page
+          without having to worry about the surrounding layout. For example,
+          before writing the above code I had to include the navigation
+          transformations in every page, which quickly got annoying.</p>
+          
+          <p>The <code>defpage</code> macro also bundles up the <code>template-dir</code> variable,
+          saving me some keystrokes and some duplication. Finally, it
+          establishes a consistent way of interacting with the controller, a
+          topic I'll explore more in the next section. Before that, here's an
+          example of <code>defpage</code> in action:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">defpage</span> <span class="nv">show</span> <span class="s">"posts/show.html"</span>&#x000A;  <span class="p">[</span><span class="nv">post</span> <span class="nv">comments</span> <span class="nv">current-auth</span><span class="p">]</span>&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.author</span> <span class="ss">:a</span><span class="p">]</span>   <span class="p">(</span><span class="nf">linked-username</span> <span class="nv">post</span><span class="p">)</span>&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.date</span><span class="p">]</span>        <span class="p">(</span><span class="nf">h/content</span> <span class="p">(</span><span class="nf">created-on</span> <span class="nv">post</span><span class="p">))</span>&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.content</span><span class="p">]</span>     <span class="p">(</span><span class="nf">md-content</span> <span class="nv">post</span><span class="p">)</span>&#x000A;&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.edit</span><span class="p">]</span>        <span class="p">(</span><span class="nf">keep-when</span> <span class="p">(</span><span class="nf">can-modify-record?</span> <span class="nv">post</span><span class="p">))</span>&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.edit</span> <span class="ss">:a</span><span class="p">]</span>     <span class="p">(</span><span class="nf">set-path</span> <span class="nv">post</span> <span class="nv">post-edit-path</span><span class="p">)</span>&#x000A;&#x000A;&#x000A;&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.moderate</span><span class="p">]</span>    <span class="p">(</span><span class="nf">keep-when</span> <span class="p">(</span><span class="nf">moderator?</span> <span class="p">(</span><span class="ss">:username</span> <span class="nv">current-auth</span><span class="p">)))</span>&#x000A;  <span class="p">[</span><span class="ss">:.post</span> <span class="ss">:.moderate</span> <span class="ss">:a</span><span class="p">]</span> <span class="p">(</span><span class="nf">h/do-&gt;</span>&#x000A;                          <span class="p">(</span><span class="nf">set-path</span> <span class="nv">post</span> <span class="nv">post-path</span><span class="p">)</span>&#x000A;                          <span class="p">(</span><span class="nf">h/content</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="ss">:hidden</span> <span class="nv">post</span><span class="p">)</span> <span class="s">"unhide"</span> <span class="s">"hide"</span><span class="p">)))</span>&#x000A;&#x000A;  <span class="p">[</span><span class="ss">:#post_id</span><span class="p">]</span>            <span class="p">(</span><span class="nf">h/set-attr</span> <span class="ss">:value</span> <span class="p">(</span><span class="ss">:id</span> <span class="nv">post</span><span class="p">))</span>&#x000A;  <span class="p">[</span><span class="ss">:.favorite</span><span class="p">]</span>           <span class="p">(</span><span class="nf">favorite</span> <span class="nv">current-auth</span> <span class="nv">post</span><span class="p">)</span></pre></div>
+          <p>Thanks to <code>defpage</code>, my view code contains only logic specific to that
+          view. I love it!</p>
+          
+          <h2>Using macros to enforce full-stack consistency</h2>
+          
+          <h3>Creating a route-&gt;controller interface</h3>
+          
+          <p>When I was putting the app together, each of my compojure routes was a
+          unique and beautiful snowflake:</p>
+          <div class="highlight"><pre>  <span class="p">(</span><span class="nf">GET</span>  <span class="s">"/users/new"</span> <span class="p">[]</span>&#x000A;        <span class="p">(</span><span class="nf">users/show-new</span><span class="p">))</span>&#x000A;&#x000A;  <span class="p">(</span><span class="nf">POST</span> <span class="s">"/users"</span> <span class="p">{</span><span class="nv">params</span> <span class="ss">:params</span><span class="p">}</span>&#x000A;        <span class="p">(</span><span class="nf">users/create!</span> <span class="nv">params</span><span class="p">))</span>&#x000A;&#x000A;  <span class="p">(</span><span class="nf">GET</span>  <span class="s">"/users/:username"</span> <span class="p">[</span><span class="nv">username</span><span class="p">]</span>&#x000A;        <span class="p">(</span><span class="nf">users/show</span> <span class="nv">username</span><span class="p">))</span></pre></div>
+          <p>As you can see, each route captures variables in a completely
+          different way. At first I thought this made sense; I was passing
+          exactly the data that was needed to each controller.</p>
+          
+          <p>However, this quickly became a pain in the ass. For example, if I
+          wanted to make a request param available to a view, I had to modify
+          functions all up and down the stack: in the routes, in the controller
+          function, and in the view function. I ended up making all routes send
+          the full request object to their functions:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defmacro </span><span class="nv">route</span>&#x000A;  <span class="p">[</span><span class="nv">method</span> <span class="nb">path </span><span class="o">&amp;</span> <span class="nv">handlers</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="o">~</span><span class="nv">method</span> <span class="o">~</span><span class="nb">path </span><span class="nv">req#</span>&#x000A;            <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="nv">req#</span>&#x000A;                <span class="o">~@</span><span class="nv">handlers</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defroutes</span> <span class="nv">routes</span>&#x000A;  <span class="p">(</span><span class="nf">compojure.route/files</span> <span class="s">"/"</span> <span class="p">{</span><span class="ss">:root</span> <span class="s">"public"</span><span class="p">})</span>&#x000A;&#x000A;  <span class="c1">;; posts</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">GET</span> <span class="s">"/"</span> <span class="nv">posts/all</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">GET</span> <span class="s">"/posts"</span> <span class="nv">posts/all</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">GET</span> <span class="s">"/posts/new"</span> <span class="nv">posts/show-new</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">POST</span> <span class="s">"/posts"</span> <span class="nv">posts/create!</span> <span class="p">(</span><span class="nf">friend/authorize</span> <span class="o">#</span><span class="p">{</span><span class="ss">:user</span><span class="p">}))</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">GET</span> <span class="s">"/posts/:id"</span> <span class="nv">posts/show</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">GET</span> <span class="s">"/posts/:id/edit"</span> <span class="nv">posts/edit</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">route</span> <span class="nv">POST</span> <span class="s">"/posts/:id"</span> <span class="nv">posts/update</span><span class="p">)</span></pre></div>
+          <p>The @route@ macro is very handy. It saves me from typing and (for the most part) from burning precious brain cells on thinking, and it enforces the "send the full request" constraint by not allowing me to deviate. Of course, I <em>can</em> still deviate, and this is useful if you're using a library:</p>
+          <div class="highlight"><pre>  <span class="p">(</span><span class="nf">friend/logout</span>&#x000A;   <span class="p">(</span><span class="nf">ANY</span> <span class="s">"/logout"</span> <span class="p">[]</span>&#x000A;        <span class="p">(</span><span class="nf">ring.util.response/redirect</span> <span class="s">"/"</span><span class="p">)))</span></pre></div>
+          <p>If I want to get to the params, I just use a <code>let</code>; no big deal:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">show</span>&#x000A;  <span class="p">[</span><span class="nv">req</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">id</span> <span class="p">(</span><span class="nf">get-in</span> <span class="nv">req</span> <span class="p">[</span><span class="ss">:params</span> <span class="ss">:id</span><span class="p">])</span></pre></div>
+          <h3>Creating a controller-&gt;view interface</h3>
+          
+          <p>In the same way that it was useful to create a route-&gt;controller
+          interface, it became useful to create a controller-&gt;view
+          interface. That was accomplished with this macro:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defmacro </span><span class="nv">view</span>&#x000A;  <span class="s">"provides defaults for the map provided to view functions and allows</span>&#x000A;<span class="s">  you to provide additional key value pairs. Assumes that a variable</span>&#x000A;<span class="s">  named req exists"</span>&#x000A;&#x000A;  <span class="p">[</span><span class="nv">view-fn</span> <span class="o">&amp;</span> <span class="nv">keys</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">x#</span> <span class="p">{</span><span class="ss">:current-auth</span> <span class="p">(</span><span class="nf">friend/current-authentication</span><span class="p">)</span>&#x000A;             <span class="ss">:errors</span> <span class="p">{}</span>&#x000A;             <span class="ss">:params</span> <span class="p">(</span><span class="ss">:params</span> <span class="o">~</span><span class="ss">'req</span><span class="p">)</span>&#x000A;             <span class="ss">:req</span> <span class="o">~</span><span class="ss">'req</span><span class="p">}]</span>&#x000A;     <span class="p">(</span><span class="o">~</span><span class="nv">view-fn</span> <span class="p">(</span><span class="nb">into </span><span class="nv">x#</span> <span class="p">(</span><span class="nb">map </span><span class="nv">vec</span> <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="o">~</span><span class="p">(</span><span class="nf">vec</span> <span class="nv">keys</span><span class="p">)))))))</span></pre></div>
+          <p>This also helped with one weird problem I ran into with cemerick's
+          friend library where <code>(friend/current-authentication)</code> returns nil
+          from within an anonymous function (and there are many anonymous
+          functions in my view code). I could circumvent this problem by
+          assigning doing something like <code>(let&#x000A;[current-auth (friend/current-authentication)])</code>. But it seemed to
+          make more sense to just always pass that data along when calling view
+          functions, as you can see in the macro above.</p>
+          
+          <p>The <code>defpage</code> macro also helped in establishing this interface in that
+          it allowed me to destructure the arguments sent by the controller. For
+          example, if a controller had</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">view</span> <span class="nv">posts/show</span> <span class="p">{</span><span class="ss">:post</span> <span class="nv">post</span><span class="p">})</span></pre></div>
+          <p>I could create the corresponding view with</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">defpage</span> <span class="nv">show</span> <span class="p">[</span><span class="nv">post</span> <span class="nv">current-authentication</span><span class="p">])</span></pre></div>
+          <p>And I wouldn't even have to worry about the order of the arguments. It
+          really reduced some "incidental complexity" (and I'm almost certainly
+          using that term incorrectly).</p>
+          
+          <h2>Roll-your-own validations</h2>
+          
+          <p>It wasn't too difficult to write my own way of doing validations, and
+          I'm satisfied with it for now. Here's a description of the data
+          structure, with an example following:</p>
+          
+          <ul>
+          <li>Validation: a combination of a key and "validation check groups"</li>
+          <li>Validation check group: first element is an error message and the
+          rest are "validation checks". If any validation check returns false
+          then the error message is added to a list of error messages for the
+          given key.</li>
+          <li>Validation check: a boolean function to apply to one of a record's
+          values. The value corresponds to the validation key</li>
+          </ul>
+          
+          <p>Here's an example:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">validate</span>&#x000A; <span class="p">{</span><span class="ss">:username</span> <span class="s">"joebob"</span>, <span class="ss">:password</span> <span class="s">"hey"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:password</span>&#x000A;   <span class="p">[</span><span class="s">"Your password must be at least 4 characters long"</span>&#x000A;    <span class="o">#</span><span class="p">(</span><span class="nb">&gt;= </span><span class="p">(</span><span class="nb">count </span><span class="nv">%</span><span class="p">)</span> <span class="mi">4</span><span class="p">)]})</span></pre></div>
+          <p>This validation would fail because the value <code>"hey"</code> for the
+          <code>:password</code> is not at least four characters long. Here's the main
+          validation code:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defmacro </span><span class="nv">if-valid</span>&#x000A;  <span class="p">[</span><span class="nv">to-validate</span> <span class="nv">validations</span> <span class="nv">errors-name</span> <span class="o">&amp;</span> <span class="nv">then-else</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">to-validate#</span> <span class="o">~</span><span class="nv">to-validate</span>&#x000A;         <span class="nv">validations#</span> <span class="o">~</span><span class="nv">validations</span>&#x000A;         <span class="o">~</span><span class="nv">errors-name</span> <span class="p">(</span><span class="nf">validate</span> <span class="nv">to-validate#</span> <span class="nv">validations#</span><span class="p">)]</span>&#x000A;     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="o">~</span><span class="nv">errors-name</span><span class="p">)</span>&#x000A;       <span class="o">~</span><span class="p">(</span><span class="nb">first </span><span class="nv">then-else</span><span class="p">)</span>&#x000A;       <span class="o">~</span><span class="p">(</span><span class="nb">second </span><span class="nv">then-else</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">error-messages-for</span>&#x000A;  <span class="s">"return a vector of error messages or nil if no errors</span>&#x000A;<span class="s">validation-check-groups is a seq of alternating messages and</span>&#x000A;<span class="s">validation checks"</span>&#x000A;  <span class="p">[</span><span class="nv">value</span> <span class="nv">validation-check-groups</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">filter</span>&#x000A;   <span class="nv">identity</span>&#x000A;   <span class="p">(</span><span class="nf">map</span>&#x000A;    <span class="o">#</span><span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">not </span><span class="p">((</span><span class="nb">last </span><span class="nv">%</span><span class="p">)</span> <span class="nv">value</span><span class="p">))</span> <span class="p">(</span><span class="nb">first </span><span class="nv">%</span><span class="p">))</span>&#x000A;    <span class="p">(</span><span class="nf">partition</span> <span class="mi">2</span> <span class="nv">validation-check-groups</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">validate</span>&#x000A;  <span class="s">"returns a map of errors"</span>&#x000A;  <span class="p">[</span><span class="nv">to-validate</span> <span class="nv">validations</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">validations</span> <span class="p">(</span><span class="nf">vec</span> <span class="nv">validations</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">errors</span> <span class="p">{}</span> <span class="nv">v</span> <span class="nv">validations</span><span class="p">]</span>&#x000A;      <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">validation</span> <span class="p">(</span><span class="nb">first </span><span class="nv">v</span><span class="p">)]</span>&#x000A;        <span class="p">(</span><span class="k">let </span><span class="p">[[</span><span class="nv">fieldname</span> <span class="nv">validation-check-groups</span><span class="p">]</span> <span class="nv">validation</span>&#x000A;              <span class="nv">value</span> <span class="p">(</span><span class="nb">get </span><span class="nv">to-validate</span> <span class="nv">fieldname</span><span class="p">)</span>&#x000A;              <span class="nv">error-messages</span> <span class="p">(</span><span class="nf">error-messages-for</span> <span class="nv">value</span> <span class="nv">validation-check-groups</span><span class="p">)]</span>&#x000A;          <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="nv">error-messages</span><span class="p">)</span>&#x000A;            <span class="p">(</span><span class="nf">recur</span> <span class="nv">errors</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">v</span><span class="p">))</span>&#x000A;            <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">assoc </span><span class="nv">errors</span> <span class="nv">fieldname</span> <span class="nv">error-messages</span><span class="p">)</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">v</span><span class="p">))))</span>&#x000A;        <span class="nv">errors</span><span class="p">))))</span></pre></div>
+          <p><code>if-valid</code> wasn't strictly necessary but I made it and ended up liking
+          it. It's a small improvement, but a handy one.</p>
+          
+          <h2>Pagination is more fun with macros</h2>
+          
+          <p>It was a bit difficult for me to pull the pagination code together. I
+          tried many approaches, and I'm not 100% satisfied with what I have,
+          but it's better than nothing! The basic approach was to add a couple
+          Korma clauses to a base set of clauses. Here are the base clauses,
+          along with a macro that allows me to add more clauses willy-nilly:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">base</span>&#x000A;  <span class="p">(</span><span class="nf">-&gt;</span>&#x000A;   <span class="p">(</span><span class="nf">select*</span> <span class="nv">e/post</span><span class="p">)</span>&#x000A;   <span class="p">(</span><span class="nf">with</span> <span class="nv">e/user</span>&#x000A;         <span class="p">(</span><span class="nf">fields</span> <span class="ss">:username</span><span class="p">))</span>&#x000A;   <span class="p">(</span><span class="nf">with</span> <span class="nv">e/comment</span>&#x000A;         <span class="p">(</span><span class="nf">aggregate</span> <span class="p">(</span><span class="nb">count </span><span class="ss">:*</span><span class="p">)</span> <span class="ss">:count</span><span class="p">)</span>&#x000A;         <span class="p">(</span><span class="nf">where</span> <span class="p">{</span><span class="ss">:hidden</span> <span class="nv">false</span><span class="p">}))</span>&#x000A;   <span class="p">(</span><span class="nf">with</span> <span class="nv">e/favorite</span>&#x000A;         <span class="p">(</span><span class="nf">aggregate</span> <span class="p">(</span><span class="nb">count </span><span class="ss">:*</span><span class="p">)</span> <span class="ss">:count</span><span class="p">))</span>&#x000A;   <span class="p">(</span><span class="nf">order</span> <span class="ss">:created_on</span> <span class="ss">:DESC</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defmacro </span><span class="nv">all</span>&#x000A;  <span class="p">[</span><span class="o">&amp;</span> <span class="nv">clauses</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="nb">-&gt; </span><span class="nv">base</span>&#x000A;       <span class="o">~@</span><span class="nv">clauses</span>&#x000A;       <span class="nv">select</span><span class="p">))</span></pre></div>
+          <p>Here's the pagination macro:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defmacro </span><span class="nv">paginate</span>&#x000A;  <span class="p">([</span><span class="nv">page</span> <span class="nv">num-per-page</span> <span class="nv">query</span><span class="p">]</span>&#x000A;     <span class="o">`</span><span class="p">(</span><span class="o">~@</span><span class="nv">query</span>&#x000A;       <span class="p">(</span><span class="nf">limit</span> <span class="o">~</span><span class="nv">num-per-page</span><span class="p">)</span>&#x000A;       <span class="p">(</span><span class="nf">offset</span> <span class="p">(</span><span class="nb">dec </span><span class="o">~</span><span class="nv">page</span><span class="p">)))))</span></pre></div>
+          <p>And here's the whole thing in action:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">all</span>&#x000A;  <span class="p">[</span><span class="nv">req</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">current-auth</span> <span class="p">(</span><span class="nf">friend/current-authentication</span><span class="p">)</span>&#x000A;        <span class="nv">per-page</span> <span class="mi">20</span>&#x000A;        <span class="nv">page</span> <span class="p">(</span><span class="nf">str-&gt;int</span> <span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nf">get-in</span> <span class="nv">req</span> <span class="p">[</span><span class="ss">:params</span> <span class="ss">:page</span><span class="p">]</span> <span class="mi">1</span><span class="p">)))</span>&#x000A;        <span class="nv">conditions</span> <span class="p">(</span><span class="nf">with-visibility</span>&#x000A;                     <span class="nv">current-auth</span>&#x000A;                     <span class="p">{</span><span class="ss">:moderator</span> <span class="nv">true</span>&#x000A;                      <span class="ss">:logged-in</span> <span class="p">(</span><span class="nb">or </span><span class="p">{</span><span class="ss">:hidden</span> <span class="nv">false</span><span class="p">}</span>&#x000A;                                     <span class="p">{</span><span class="ss">:user_id</span> <span class="p">[</span><span class="nb">= </span><span class="p">(</span><span class="ss">:id</span> <span class="nv">current-auth</span><span class="p">)]})</span>&#x000A;                      <span class="ss">:not-logged-in</span> <span class="p">{</span><span class="ss">:hidden</span> <span class="nv">false</span><span class="p">}})</span>&#x000A;        <span class="nv">record-count</span> <span class="p">(</span><span class="nf">post/record-count</span> <span class="p">(</span><span class="nf">where</span> <span class="nv">conditions</span><span class="p">))]</span>&#x000A;    <span class="p">(</span><span class="nf">view</span>&#x000A;     <span class="nv">view/all</span>&#x000A;     <span class="ss">:posts</span> <span class="p">(</span><span class="nf">paginate</span> <span class="nv">page</span> <span class="nv">per-page</span> <span class="p">(</span><span class="nf">post/all</span> <span class="p">(</span><span class="nf">where</span> <span class="nv">conditions</span><span class="p">)))</span>&#x000A;     <span class="ss">:record-count</span> <span class="nv">record-count</span>&#x000A;     <span class="ss">:page</span> <span class="nv">page</span>&#x000A;     <span class="ss">:max-pages</span> <span class="p">(</span><span class="nf">ceil</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">record-count</span> <span class="nv">per-page</span><span class="p">)))))</span></pre></div>
+          <p>I definitely think there's room for improvement here and would love
+          suggestions.</p>
+          
+          <h2>Using fierce mustaches to run tasks</h2>
+          
+          <p>So it turns out that you can use leiningen to run tasks, kind of like
+          Rake. As far as I know, it's not as powerful in that you can't specify
+          dependencies, but it's still better than nothing! Here's a file I
+          wrote to allow me to rebuild and re-seed by db:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">ns </span><span class="nv">tasks.db</span>&#x000A;  <span class="p">(</span><span class="ss">:refer-clojure</span> <span class="ss">:exclude</span> <span class="p">[</span><span class="nb">alter drop </span><span class="nv">complement</span>&#x000A;                            <span class="nv">bigint</span> <span class="nb">boolean char double float </span><span class="nv">time</span><span class="p">])</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">gratefulplace.models.user</span> <span class="ss">:as</span> <span class="nv">user</span><span class="p">])</span>&#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="p">(</span><span class="nf">lobos</span> <span class="nv">core</span> <span class="nv">connectivity</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">rebuild</span>&#x000A;  <span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="nf">rollback</span> <span class="ss">:all</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">migrate</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">seed</span>&#x000A;  <span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="nb">println </span><span class="p">(</span><span class="nf">user/create!</span> <span class="p">{</span><span class="ss">:username</span>     <span class="s">"higginbotham"</span>&#x000A;                          <span class="ss">:email</span>        <span class="s">"daniel@flyingmachinestudios.com"</span>&#x000A;                          <span class="ss">:display_name</span> <span class="s">"higginbotham"</span>&#x000A;                          <span class="ss">:password</span>     <span class="s">"password"</span><span class="p">})))</span>&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">-main</span>&#x000A;  <span class="p">[</span><span class="nv">task-name</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">condp</span> <span class="nb">= </span><span class="nv">task-name</span>&#x000A;    <span class="s">"rebuild"</span> <span class="p">(</span><span class="nf">rebuild</span><span class="p">)</span>&#x000A;    <span class="s">"seed"</span> <span class="p">(</span><span class="nf">seed</span><span class="p">)))</span></pre></div>
+          <p>I ran <code>lein run -m tasks.db rebuild</code> and <code>lein run -m tasks.db seed</code>.</p>
+          
+          <h3>Fun utilities</h3>
+          
+          <p>Here's some stuff that was fun to write:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">ns </span><span class="nv">gratefulplace.utils</span><span class="p">)</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">str-&gt;int</span>&#x000A;  <span class="p">([</span><span class="nv">str</span><span class="p">]</span>&#x000A;     <span class="p">(</span><span class="nf">Integer.</span>  <span class="nv">str</span><span class="p">))</span>&#x000A;&#x000A;  <span class="p">([</span><span class="nv">m</span> <span class="o">&amp;</span> <span class="nv">keys</span><span class="p">]</span>&#x000A;     <span class="p">(</span><span class="nf">reduce</span>&#x000A;      <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">m</span> <span class="nv">k</span><span class="p">]</span>&#x000A;        <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nb">val </span><span class="p">(</span><span class="nf">k</span> <span class="nv">m</span><span class="p">)]</span>&#x000A;          <span class="p">(</span><span class="nb">assoc </span><span class="nv">m</span> <span class="nv">k</span> <span class="p">(</span><span class="nf">str-&gt;int</span> <span class="nv">val</span><span class="p">))</span>&#x000A;          <span class="nv">m</span><span class="p">))</span>&#x000A;      <span class="nv">m</span> <span class="nv">keys</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">deserialize</span>&#x000A;  <span class="p">[</span><span class="nv">m</span> <span class="o">&amp;</span> <span class="nv">ks</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="nb">assoc </span><span class="nv">%</span> <span class="nv">%2</span> <span class="p">(</span><span class="nf">read-string</span> <span class="p">(</span><span class="nf">%2</span> <span class="nv">%</span><span class="p">)))</span> <span class="nv">m</span> <span class="nv">ks</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defmacro </span><span class="nv">self-unless-fn</span>&#x000A;  <span class="p">[</span><span class="nv">self</span> <span class="k">fn </span><span class="nv">otherwise</span><span class="p">]</span>&#x000A;  <span class="o">`</span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">self#</span> <span class="o">~</span><span class="nv">self</span><span class="p">]</span>&#x000A;     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="o">~</span><span class="k">fn </span><span class="nv">self#</span><span class="p">)</span>&#x000A;       <span class="o">~</span><span class="nv">otherwise</span>&#x000A;       <span class="nv">self#</span><span class="p">)))</span></pre></div>
+          <h2>The End</h2>
+          
+          <p>And that's it! I hope you've found this useful. I'd love any feedback,
+          so please do leave a comment or tweet me or email me. And like I
+          mentioned above - it'd be great to meet some folks at the Conj next
+          week!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

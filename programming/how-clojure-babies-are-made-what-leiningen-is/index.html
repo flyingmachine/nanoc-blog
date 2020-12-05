@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>How Clojure Babies are Made: What Leiningen Is</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>How Clojure Babies are Made: What Leiningen Is</h1>
+          <div class='date'>07 April 2013</div>
+          <p>"What the hell is Leiningen?" is a question you've probably overheard
+          many times in your day-to-day life. You've probably even asked it
+          yourself. Up until now we've described specific capabilities that
+          Leiningen has and how those capabilities are implemented. It can
+          <a href="/programming/how-clojure-babies-are-made-lein-run">build and run your app</a>,
+          it <a href="/programming/lein-run">has a trampoline</a>, and so forth.</p>
+          
+          <p>But it's time to take a step back and get a high-level understanding
+          of what Leiningen is. It's time to stare deeply into Leiningen's eyes
+          and say "I see you," like Jake Sully in that Avatar documentary. We'll
+          do this by giving an overview of the non-coding related tasks you need
+          to accomplish when building software. Next, we'll describe how
+          Leiningen helps you accomplish these tasks and compare it to similar
+          tools in Ruby.</p>
+          
+          <p>This post isn't as nitty-gritty as the previous posts in the Clojure
+          Babies series, but it will help lay the groundwork for an upcoming
+          post on packaging. Additionally, I hope it will clarify what a
+          programming language artifact ecosystem is. This concept is often
+          overlooked when teaching a programming language, and when it <em>is</em>
+          covered it's not covered in a systematic way. Together, noble-chinned
+          reader, we will remedy that situation. For our generation and all
+          generations to come.</p>
+          
+          <h2>Programming Language Artifact Ecosystems</h2>
+          
+          <p>In order to become proficient at a language, you need to know much
+          more than just its syntax and semantics. You need to familiarize
+          yourself with the entire programming language ecosystem, which is
+          comprised of everything you need in order to build working software in
+          that language. It can be broken down into at least the following
+          sub-ecosystems:</p>
+          
+          <ul>
+          <li>The documentation ecosystem</li>
+          <li>The developer community</li>
+          <li>The development environment ecosystem (editor support)</li>
+          <li>The artifact ecosystem</li>
+          </ul>
+          
+          <p>Right now we only care about the artifact ecosystem. For our purposes,
+          a programming artifact is a library or executable. Ruby gems, shell
+          scripts, Java jars, shared libraries, and "HAL9000.exe" are all
+          programming artifacts.</p>
+          
+          <p>An artifact ecosystem is the set of tools and services that allow
+          you to do the following with regard to artifacts:</p>
+          
+          <ul>
+          <li>Retrieve them from repositories</li>
+          <li>Incorporate them in your own project, (possibly) resolving conflicts</li>
+          <li>Build them</li>
+          <li>Publish them to repositories</li>
+          <li>Run them</li>
+          </ul>
+          
+          <p>Tools are often layered on top of each other, one tool smoothing out
+          the warts of the tools it wraps. For example, the following tools (and
+          more) are part of the Ruby artifact ecosystem:</p>
+          
+          <ul>
+          <li>
+          <em>Ruby Gems</em> provides a package specification, the means to
+          incorporate gems in your project, and the means to build and publish
+          gems</li>
+          <li>
+          <em><a href="http://rubygems.org">rubygems.org</a></em> is a central repo for gems</li>
+          <li>
+          <em>Bundler</em> provides a layer on top of Ruby Gems, providing dependency
+          resolution and gem retrieval</li>
+          <li>
+          <em>Jeweler</em> is one of many tools for easing the process of creating
+          gemspecs and building gems.</li>
+          </ul>
+          
+          <p>Other languages have their own tools. Java has Maven, PHP has Pear or
+          whatever. Artifact management is a common need across languages.</p>
+          
+          <p>In previous Clojure Baby posts, we've seen that we can use Leiningen
+          to build and run Clojure programs. It turns out that Leiningen also
+          handles the remaining tasks - retrieving packages, incorporating them
+          in your project, and publishing them. It's truly the Swiss Army
+          Bazooka (I'm going to keep repeating that phrase until it catches on)
+          of the Clojure artifact ecosystem.</p>
+          
+          <p>But why is it that in Ruby you need an entire constellation of tools,
+          while in Clojure you only need one?</p>
+          
+          <h2>Leiningen Is a Task Runner with Clojure Tasks Built In</h2>
+          
+          <p>Leiningen is able to handle so many responsibilities because it is, at
+          heart, a task runner. It just happens to come with an
+          <a href="https://github.com/technomancy/leiningen/tree/master/src/leiningen">excellent set of built-in tasks</a>
+          for handling Clojure artifacts. (Incidentally, this is probably where
+          Leiningen's name came from. "Leiningen Versus the Ants" is a short
+          story where the protagonist fights ants. Ant is a Java build tool that
+          evidently is unpleasant to use for Clojure builds.) By comparison,
+          Ruby's Rake is also a task runner used by many of Ruby's artifact
+          tools, but Rake provides no built-in tasks for working with Ruby
+          artifacts.</p>
+          
+          <p>"Task runner" is a little bit ambiguous, so let's break it down.
+          Ultimately, all Leiningen tasks are just Clojure functions. However,
+          in <a href="/programming/how-clojure-babies-are-made-lein-run">previous posts</a>
+          we've seen how fun it is to try and run Clojure functions from the
+          command line. In case you need a short refresher: it's not fun at all!</p>
+          
+          <p>Leiningen allows the Clojure party to remain fun by serving as an
+          adapter between the CLI and Clojure. It takes care of the plumbing
+          required for you to run a Clojure function. Whether the function is
+          provided by your project, by Leiningen's built-in tasks, or by a
+          <a href="https://github.com/technomancy/leiningen/blob/master/doc/PLUGINS.md">Leiningen plugin</a>,
+          Leiningen does everything necessary to get the function to run. In a
+          way, Leiningen's like an attentive butler who quietly and competently
+          takes care of all your chores so that you can focus on your true
+          passions, like knitting sweaters for gerbils or whatever.</p>
+          
+          <p>This manner of executing code was foreign to me when I first came to
+          Clojure. At that time I had mostly coded in Ruby and JavaScript, and I
+          had a decent amount of experience in Objective C. Those languages
+          employ two different paradigms of code execution.</p>
+          
+          <p>Ruby and Javascript, being scripting languages, don't require
+          compilation and execute statements as they're encountered. Objective C
+          requires compilation and always starts by executing a <code>main</code> method.
+          With Leiningen, Clojure has achieved an amalgamation of the two
+          paradigms by allowing you to easily run arbitrary functions with a
+          compiled language.</p>
+          
+          <h2>The End</h2>
+          
+          <p>Hopefully, this article has given you a firmer grasp of what Leiningen
+          is. The idea that Leiningen is a task runner with a powerful set of
+          built-in tasks designed to aid Clojure artifact management should help
+          you organize your disparate chunks of Leiningen knowledge.</p>
+          
+          <p>In the next article, we'll add another chunk of Leiningen knowledge
+          by examining the way Leiningen retrieves artifacts from repositories
+          and incorporates them in your project.</p>
+          
+          <p>Goodbye for now!</p>
+          
+          <h2>Shout Outs</h2>
+          
+          <p>Thanks to <a href="http://patshaughnessy.net/">Pat Shaughnessy</a> and
+          <a href="http://technomancy.us/">technomancy</a> for reviewing this article.
+          technomancy provided the line "Leiningen is an adapter between the CLI
+          and Clojure", which really helped!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

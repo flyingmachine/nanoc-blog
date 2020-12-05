@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>A Philosophy of Programming, Rough Sketch</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>A Philosophy of Programming, Rough Sketch</h1>
+          <div class='date'>05 January 2012</div>
+          <p>Below is a first attempt at describing an integrated approach to
+          programming. My hope is that it'll give programmers some tools to
+          reason about their current practices and generate ideas on new
+          practices to implement.</p>
+          
+          <p>The unifying idea is that our work is governed by cognitive processes
+          and that we can better understand our work by understanding those
+          processes. There is a wealth of information available on such topics
+          as memory, attention, focus, and emotion, and I believe that it will
+          be fruitful to relate such information directly to the processes
+          involved in programming.</p>
+          
+          <p>Put another way, understanding our hardware will help us understand
+          the behavior of our software.</p>
+          
+          <p>There are a lot of gaps. My hope is that I'll get a lot of feedback
+          that will help me fill in those gaps.</p>
+          
+          <h2>The Processes</h2>
+          
+          <p>There are three main processes involved in programming:</p>
+          
+          <ol>
+          <li>Learning</li>
+          <li>Problem Solving</li>
+          <li>Social interaction</li>
+          </ol>
+          
+          <p>This article only addresses learning. Future articles will address
+          the other two topics.</p>
+          
+          <h2>Learning</h2>
+          
+          <p>We constantly need to learn: existing codebases, new libraries, the problem
+          domain, the application environment.</p>
+          
+          <p>Learning consists of relating new information to existing knowledge.</p>
+          
+          <h2>Memory</h2>
+          
+          <p>Ease of learning is in part determined by short term memory. To learn,
+          it is necessary to hold multiple mental objects in short term memory in
+          order to compare them to each other and discover the relationships
+          between them.</p>
+          
+          <p>Not all mental objects are created equal. Some take up more "space"
+          than others. Familiar objects take up less space than unfamiliar
+          objects. For example, the following list is relatively easy to hold in
+          memory:</p>
+          
+          <ul>
+          <li>bed</li>
+          <li>cup</li>
+          <li>light</li>
+          </ul>
+          
+          <p>The following list is harder to hold in memory:</p>
+          
+          <ul>
+          <li>clorp</li>
+          <li>farg</li>
+          <li>dwesh</li>
+          </ul>
+          
+          <p>Short term memory also has a temporal limitation (obviously). We
+          should avoid creating the need to hold objects in memory for longer
+          than our brains are designed for. We've all experienced the strain
+          produced by having to navigate back and forth among multiple files in
+          order to figure something out. More on this later.</p>
+          
+          <h3>Naming</h3>
+          
+          <p>The nature of memory explains why it is necessary to name things well
+          in code. The explanation is two-fold (using method names as an
+          example):</p>
+          
+          <ul>
+          <li>Without proper naming, it is more likely to be necessary to derive
+          the behavior of a method from its constituent parts. This requires
+          loading more items into your short-term memory, possibly resulting
+          in your forgetting why you were looking at the method in the first
+          place. The result is that learning time is increased.</li>
+          <li>Indescript names also take up more "space" in short term memory,
+          making it more difficult to understand how a method relates to the
+          larger system.</li>
+          </ul>
+          
+          <p>Examples needed.</p>
+          
+          <h3>Metaphor</h3>
+          
+          <p>Metaphor is at the heart of programming: stacks, queues, pipes,
+          memory, objects, domain models. These are all metaphors. 
+          Metaphor is at the heart of our craft.</p>
+          
+          <p>We also use the term "abstraction", but I think "metaphor" is better
+          when it comes to naming, as it more directly denotes that we are
+          relating new concepts to existing concepts. But the distinction really
+          doesn't matter.</p>
+          
+          <p>Good metaphors allow us to hold more information-dense items in
+          memory. They provide more "hooks" which allow for easier retrieval
+          from long-term memory.</p>
+          
+          <p>Other "metaphors":</p>
+          
+          <ul>
+          <li>Visual form of code. Indentiation stands for hierarchy.</li>
+          <li>Code colorization. Color stands for syntax.</li>
+          <li>Programming style. Shared programming style allows people to derive
+          meaning from the structure of the code.</li>
+          </ul>
+          
+          <p>All of these examples of metaphor reduce the number of mental objects
+          we need to retain in short-term memory, thus making learning easier.
+          You can easily confirm that it's much easier to hold "stack" in memory
+          than it is to hold "a last in, first out abstract data type and linear
+          data structure."</p>
+          
+          <h3>Visual Aids</h3>
+          
+          <p>Visual aids are information-dense. Our visual brains are pretty
+          awesome at processing visual aids. My little treatise on visual
+          design: <a href="http://www.visualmess.com">Clean Up Your Mess</a>.</p>
+          
+          <h3>Documentation</h3>
+          
+          <p>API documentation is not enough. People who use your code have the
+          following questions, among others:</p>
+          
+          <ul>
+          <li>What is the purpose of the system?</li>
+          <li>What are the subsystems, and what are their purposes?</li>
+          <li>How do the parts interact?</li>
+          <li>How do I extend it?</li>
+          </ul>
+          
+          <p>It's not reasonable to expect someone to answer these questions by
+          reading code and API documentation. Because there are so many pieces
+          involved, it is very difficult for someone to a) determine which
+          pieces are relevant and b) hold the relevant pieces in mind long
+          enough to deduce the answer to his question. Such a process often
+          involves navigating multiple files, constantly having to refresh our
+          memories by looking at the same pieces of code over and over.</p>
+          
+          <p>It's possible to answer questions like the ones listed above using the
+          process I listed above, but it's not optimal. Good documentation
+          condenses the information, making it understandable without producing
+          so much cognitive load.</p>
+          
+          <p>Examples of good documentation:</p>
+          
+          <ul>
+          <li>
+          <a href="http://nanoc.stoneship.org/docs/">nanoc</a>. It was very easy to learn
+          how to use nanoc because the documentation is excellent. If I had to
+          learn how to use it by reading the code, I wouldn't have bothered.
+          If I had to learn solely by going through examples, it would still
+          have been very difficult. Instead, the documentation provides a
+          mixture of prose and examples which made learning the system very
+          easy.</li>
+          <li>
+          <a href="http://www.whoopsapp.com/">Whoops</a>. Well, maybe I'm being a little
+          vain and/or delusional here, but I think my documentation for Whoops
+          is above-average. There's still a good amount that I could cover,
+          though.</li>
+          </ul>
+          
+          <p>Also see <a href="/programming/writing-better-documentation/">my article on
+          documentation</a></p>
+          
+          <h2>Learning Skills</h2>
+          
+          <h3>Describe What You Don't Know</h3>
+          
+          <p>Being able to concretely determine what it is you need to know is of
+          great value. Learn to quickly transform the emotion of confusion into
+          a concrete statement of what you need to learn.</p>
+          
+          <h3>Ask About it Directly</h3>
+          
+          <p>Often, when seeking help, we ask the wrong question. Need examples.</p>
+          
+          <h3>Confirm Your Knowledge</h3>
+          
+          <p>State and restate what you think you know to someone else who can tell
+          you whether you're wrong. Often, we make a lot of unconscious
+          assumptions when trying to learn, and this process will help you
+          uncover those assumptions.</p>
+          
+          <h2>To explore</h2>
+          
+          <ul>
+          <li>How does emotional state affect learning?</li>
+          <li>How is emotion related to certrainty?</li>
+          <li>What is the relationship between testing, memory, and learning?</li>
+          <li>How can teams support learning?</li>
+          <li>Find concrete examples of codebases which support learning</li>
+          <li>How information navigation is related to learning, e.g. including a 
+          table of contents in documentation</li>
+          </ul>
+          
+          <h2>Further Reading</h2>
+          
+          <ul>
+          <li>
+          <a href="http://amzn.to/1Ww8WwI">Pragmatic Thinking and
+          Learning</a>
+          . Learn how to learn.</li>
+          <li>
+          <a href="http://amzn.to/1Ww8YEO">Your Brain at Work: Strategies for Overcoming Distraction,
+          Regaining Focus, and Working Smarter All Day
+          Long</a>
+          . This is one of the most useful books I've ever read. It gave me a
+          useful understanding of how my brain works, and how to make use of
+          that knowledge to improve my work life.</li>
+          </ul>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

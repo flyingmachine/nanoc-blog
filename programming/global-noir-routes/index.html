@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Global Noir Routes</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Global Noir Routes</h1>
+          <div class='date'>25 June 2012</div>
+          <p>"[^"]*":[^ *]</p>
+          
+          <h2>The Problem</h2>
+          
+          <p>Noir has a
+          <a href="http://webnoir.org/autodoc/1.2.1/noir.core-api.html#noir.core/url-for">"helper function"</a>,
+          <code>url-for</code>, which you can use to generate URL's when given a named
+          route. The problem arises when you have two different views which need
+          to have links to each other:</p>
+          <div class="highlight"><pre><span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/url_for_alternative/views/view_a.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.view-a</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">url-for-alternative.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">url-for-alternative.views.view-b</span> <span class="ss">:as</span> <span class="nv">view-b</span><span class="p">])</span>  &#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]</span>&#x000A;        <span class="p">[</span><span class="nv">hiccup.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">html</span><span class="p">]]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage</span> <span class="nb">list </span><span class="s">"/view-a"</span> <span class="p">[]</span>&#x000A;         <span class="p">(</span><span class="nf">common/layout</span>&#x000A;           <span class="p">[</span><span class="ss">:p</span> <span class="s">"This is View A"</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for</span> <span class="nv">view-b/list</span><span class="p">)}</span> <span class="s">"Go to View B"</span><span class="p">]))</span>&#x000A;&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/url_for_alternative/views/view_b.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.view-b</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">url-for-alternative.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">url-for-alternative.views.view-a</span> <span class="ss">:as</span> <span class="nv">view-a</span><span class="p">])</span>&#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="p">[</span><span class="nv">noir.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">defpage</span><span class="p">]]</span>&#x000A;        <span class="p">[</span><span class="nv">hiccup.core</span> <span class="ss">:only</span> <span class="p">[</span><span class="nv">html</span><span class="p">]]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage</span> <span class="nb">list </span><span class="s">"/view-b"</span> <span class="p">[]</span>&#x000A;         <span class="p">(</span><span class="nf">common/layout</span>&#x000A;           <span class="p">[</span><span class="ss">:p</span> <span class="s">"This is View B"</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for</span> <span class="nv">view-a/list</span><span class="p">)}</span> <span class="s">"Go to View A"</span><span class="p">]))</span></pre></div>
+          <p>If you try to start your server with the above code in place you'll
+          get a <code>Cyclic load dependency</code> exception. View A requires View B,
+          which requires View A, which requires View B, etc. etc. etc. ibdknox
+          <a href="https://groups.google.com/d/msg/clj-noir/QTc_dlJiLWQ/FiDEcCeFVIcJ">"mentioned this problem"</a>
+          recently on the noir mailing list.</p>
+          
+          <p>Here's some code I threw together to address the problem, along with
+          two basic examples of the code being used:</p>
+          <div class="highlight"><pre><span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/url_for_alternative/views/routes.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.routes</span>&#x000A;  <span class="p">(</span><span class="nf">require</span> <span class="p">[</span><span class="nv">clojure.string</span> <span class="ss">:as</span> <span class="nv">string</span><span class="p">]))</span>&#x000A;&#x000A;<span class="c1">;; this is taken from noir</span>&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">throwf</span> <span class="p">[</span><span class="nv">msg</span> <span class="o">&amp;</span> <span class="nv">args</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">throw</span> <span class="p">(</span><span class="nf">Exception.</span> <span class="p">(</span><span class="nb">apply </span><span class="nv">format</span> <span class="nv">msg</span> <span class="nv">args</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">routes</span> <span class="o">'</span><span class="p">{</span><span class="ss">:view-a/listing</span>         <span class="s">"/view-a"</span>&#x000A;              <span class="ss">:view-b/listing</span>         <span class="s">"/view-b"</span><span class="p">})</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">url-for-r</span>&#x000A;  <span class="p">([</span><span class="nv">route-name</span><span class="p">]</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="nv">route-name</span> <span class="p">{}))</span>&#x000A;  <span class="p">([</span><span class="nv">route-name</span> <span class="nv">route-args</span><span class="p">]</span>     &#x000A;     <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">entry</span> <span class="p">(</span><span class="nf">route-name</span> <span class="nv">routes</span><span class="p">)</span>&#x000A;           <span class="nv">route</span>  <span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nb">filter string? </span><span class="p">(</span><span class="nf">flatten</span> <span class="nv">entry</span><span class="p">)))</span> <span class="nv">entry</span><span class="p">)</span>&#x000A;           <span class="nv">route-arg-names</span> <span class="p">(</span><span class="nf">noir.core/route-arguments</span> <span class="nv">route</span><span class="p">)]</span>&#x000A;       <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">nil? </span><span class="nv">route</span><span class="p">)</span>&#x000A;         <span class="p">(</span><span class="nf">throwf</span> <span class="s">"missing route for %s"</span> <span class="nv">route-name</span><span class="p">))</span>&#x000A;       <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">every? </span><span class="o">#</span><span class="p">(</span><span class="nb">contains? </span><span class="nv">route-args</span> <span class="nv">%</span><span class="p">)</span> <span class="nv">route-arg-names</span><span class="p">))</span>&#x000A;         <span class="p">(</span><span class="nf">throwf</span> <span class="s">"missing route-arg for %s"</span> <span class="p">[</span><span class="nv">route-args</span> <span class="nv">route-arg-names</span><span class="p">]))</span>&#x000A;       <span class="p">(</span><span class="nb">reduce </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nb">path </span><span class="p">[</span><span class="nv">k</span> <span class="nv">v</span><span class="p">]]</span>&#x000A;                 <span class="p">(</span><span class="nb">assert </span><span class="p">(</span><span class="nb">keyword? </span><span class="nv">k</span><span class="p">))</span>&#x000A;                 <span class="p">(</span><span class="nf">string/replace</span> <span class="nb">path </span><span class="p">(</span><span class="nb">str </span><span class="nv">k</span><span class="p">)</span> <span class="p">(</span><span class="nb">str </span><span class="nv">v</span><span class="p">)))</span> <span class="nv">route</span> <span class="nv">route-args</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">view-ns</span> <span class="p">[</span><span class="nv">namespace</span><span class="p">]</span>&#x000A;  <span class="p">((</span><span class="nb">re-find </span><span class="o">#</span><span class="s">"views\.(.*)$"</span> <span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nb">ns-name </span><span class="nv">namespace</span><span class="p">)))</span> <span class="mi">1</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">dashed</span> <span class="p">[</span><span class="nv">namespace</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">string/replace</span> <span class="nb">namespace </span><span class="s">"."</span> <span class="s">"-"</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">slashed</span> <span class="p">[</span><span class="nv">namespace</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">string/replace</span> <span class="nb">namespace </span><span class="s">"."</span> <span class="s">"/"</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defmacro </span><span class="nv">defpage-r</span> <span class="p">[</span><span class="nv">route</span> <span class="o">&amp;</span> <span class="nv">body</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">ns-prefix#</span> <span class="p">(</span><span class="nf">view-ns</span> <span class="nv">*ns*</span><span class="p">)]</span>&#x000A;    <span class="o">`</span><span class="p">(</span><span class="nf">noir.core/defpage</span> <span class="o">~</span><span class="p">(</span><span class="nb">symbol </span><span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nf">dashed</span> <span class="nv">ns-prefix#</span><span class="p">)</span> <span class="s">"-"</span> <span class="nv">route</span><span class="p">))</span> <span class="o">~</span><span class="p">((</span><span class="nb">keyword </span><span class="p">(</span><span class="nb">str </span><span class="p">(</span><span class="nf">slashed</span> <span class="nv">ns-prefix#</span><span class="p">)</span> <span class="s">"/"</span> <span class="nv">route</span><span class="p">))</span> <span class="nv">routes</span><span class="p">)</span> <span class="o">~@</span><span class="nv">body</span><span class="p">)))</span>&#x000A;&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/url_for_alternative/views/view_a.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.view-a</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">url-for-alternative.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">url-for-alternative.views.view-b</span> <span class="ss">:as</span> <span class="nv">view-b</span><span class="p">])</span>  &#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="nv">noir.core</span>&#x000A;        <span class="nv">hiccup.core</span>&#x000A;        <span class="nv">url-for-alternative.views.routes</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage-r</span> <span class="nb">list </span><span class="p">[]</span>&#x000A;         <span class="p">(</span><span class="nf">common/layout</span>&#x000A;           <span class="p">[</span><span class="ss">:p</span> <span class="s">"This is View A"</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="ss">:view-b/list</span><span class="p">)}</span> <span class="s">"Go to View B"</span><span class="p">]))</span>&#x000A;&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/url_for_alternative/views/view_b.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.view-b</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">url-for-alternative.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">url-for-alternative.views.view-a</span> <span class="ss">:as</span> <span class="nv">view-a</span><span class="p">])</span>&#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="nv">noir.core</span>&#x000A;        <span class="nv">hiccup.core</span>&#x000A;        <span class="nv">url-for-alternative.views.routes</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage</span> <span class="nb">list </span><span class="p">[]</span>&#x000A;         <span class="p">(</span><span class="nf">common/layout</span>&#x000A;           <span class="p">[</span><span class="ss">:p</span> <span class="s">"This is View B"</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="ss">:view-a/list</span><span class="p">)}</span> <span class="s">"Go to View A"</span><span class="p">]))</span></pre></div>
+          <p>Lines 1-39 contain the code needed for defining "central" routes. The
+          <code>routes</code> variable maps route names to their path. For the path, you
+          can write the exact same code that you would write for <code>defpage</code>, for
+          example <code>[:get ["/user/:id" :id #"\d+"]]</code>.</p>
+          
+          <p><code>url-for-r</code> largely copies noir's <code>url-for</code> method, with the exception
+          that it expects a keyword and not a function in order to do its path
+          lookup. You'll need to use one of the keywords defined in the <code>routes</code>
+          map. For example, on line 54 you can see that we're using
+          <code>:view-b/list</code> to identify the route. If your path specification takes
+          variables, you specify them with a map just as you do with
+          <code>url-for</code>. For example, <code>(url-for-r :users/show {:id id-var})</code>.</p>
+          
+          <p><code>view-ns</code>, <code>dashed</code>, and <code>slashed</code> are merely helper methods that
+          probably belong in some utility namespace.</p>
+          
+          <p><code>defpage-r</code> is merely a wrapper around <code>defpage</code>. As you can see on
+          lines 51 and 66, you use it in almost the same way as you use
+          <code>defpage</code>, except that you don't specify the path.</p>
+          
+          <p>Note that the naming isn't arbitrary. The keywords you choose for your
+          route map keys take for the format
+          <code>view-namespace/function-name</code>. <code>view-namespace</code> is the part of your
+          namespace which comes after <code>views.</code>. So if your namespace is
+          <code>my-awesome-site.views.admin.books</code>, the view namespace would be
+          <code>admin.books</code>. The below example illustrates this:</p>
+          <div class="highlight"><pre><span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/my_awesome_site/views/routes.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;&#x000A;<span class="c1">;; url-for-r, defpage-r, other stuff ommitted</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">my-awesome-site.views.routes</span>&#x000A;  <span class="p">(</span><span class="nf">require</span> <span class="p">[</span><span class="nv">clojure.string</span> <span class="ss">:as</span> <span class="nv">string</span><span class="p">]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">routes</span> <span class="o">'</span><span class="p">{</span><span class="ss">:admin/books/list</span> <span class="s">"/admin/books"</span>&#x000A;              <span class="ss">:admin/books/show</span>    <span class="p">[</span><span class="ss">:get</span> <span class="p">[</span><span class="s">"/admin/books/:id"</span> <span class="ss">:id</span> <span class="o">#</span><span class="s">"\d+"</span><span class="p">]]</span>&#x000A;              <span class="ss">:admin/books/edit</span>    <span class="s">"/admin/books/:id/edit"</span>&#x000A;              <span class="ss">:admin/books/update</span>  <span class="p">[</span><span class="ss">:post</span> <span class="p">[</span><span class="s">"/admin/books/:id"</span> <span class="ss">:id</span> <span class="o">#</span><span class="s">"\d+"</span><span class="p">]]</span>&#x000A;&#x000A;              <span class="ss">:books/list</span>       <span class="s">"/books"</span>&#x000A;              <span class="ss">:books/show</span>          <span class="p">[</span><span class="ss">:get</span> <span class="p">[</span><span class="s">"/books/:id"</span> <span class="ss">:id</span> <span class="o">#</span><span class="s">"\d+"</span><span class="p">]]})</span>&#x000A;&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="c1">;; src/my_awesome_site/views/admin/books.clj</span>&#x000A;<span class="c1">;;----------</span>&#x000A;<span class="p">(</span><span class="kd">ns </span><span class="nv">url-for-alternative.views.admin.books</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">my-awesome-site.views.common</span> <span class="ss">:as</span> <span class="nv">common</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">my-awesome-site.views.books</span> <span class="ss">:as</span> <span class="nv">books</span><span class="p">])</span>&#x000A;&#x000A;  <span class="p">(</span><span class="ss">:use</span> <span class="nv">noir.core</span>&#x000A;        <span class="nv">hiccup.core</span>&#x000A;        <span class="nv">my-awesome-site.views.routes</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage-r</span> <span class="nb">list </span><span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="nf">common/layout</span>&#x000A;   <span class="p">[</span><span class="ss">:h1</span> <span class="s">"Admin Books"</span><span class="p">]</span>&#x000A;   <span class="p">[</span><span class="ss">:div#list</span>&#x000A;    <span class="p">[</span><span class="ss">:div.book</span>&#x000A;     <span class="p">[</span><span class="ss">:div.name</span>&#x000A;      <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="ss">:admin/books/show</span> <span class="p">{</span><span class="ss">:id</span> <span class="nv">id-var-which-magically-is-here</span><span class="p">})}</span> <span class="s">"Book Title"</span><span class="p">]]</span>&#x000A;     <span class="p">[</span><span class="ss">:div.actions</span>&#x000A;      <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="ss">:admin/books/edit</span> <span class="p">{</span><span class="ss">:id</span> <span class="nv">id-var-which-magically-is-here</span><span class="p">})}</span> <span class="s">"Edit"</span><span class="p">]</span>&#x000A;      <span class="p">[</span><span class="ss">:a</span> <span class="p">{</span><span class="ss">:href</span> <span class="p">(</span><span class="nf">url-for-r</span> <span class="ss">:books/show</span> <span class="p">{</span><span class="ss">:id</span> <span class="nv">id-var-which-magically-is-here</span><span class="p">})}</span> <span class="s">"Preview"</span><span class="p">]]]]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage-r</span> <span class="nv">show</span> <span class="p">{</span><span class="ss">:keys</span> <span class="p">[</span><span class="nv">id</span><span class="p">]}</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">book</span> <span class="p">(</span><span class="nf">magically-get-book</span> <span class="nv">id</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="nf">common/layout</span>&#x000A;     <span class="c1">;; display the book</span>&#x000A;     <span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">defpage-r</span> <span class="nv">update</span> <span class="p">{</span><span class="ss">:as</span> <span class="nv">book</span><span class="p">}</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">book</span> <span class="p">(</span><span class="nf">magically-get-book</span> <span class="p">(</span><span class="ss">:id</span> <span class="nv">book</span><span class="p">))]</span>&#x000A;    <span class="c1">;; update the book</span>&#x000A;    <span class="p">))</span></pre></div>
+          <p>I've only just started writing Clojure a couple weeks ago or so, so I'd love feedback on this. Does it make sense? Is it crazy? Would you use it? Right now I'm only using it on <a href="http://omgsmackdown.com">"OMG! SMACKDOWN!!!"</a></p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

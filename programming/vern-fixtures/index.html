@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Vern, a Library For Database Fixtures</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Vern, a Library For Database Fixtures</h1>
+          <div class='date'>04 December 2014</div>
+          <p>At work, I've been using
+          <a href="https://github.com/krisajenkins/yesql">yesql</a> and wanted a way to
+          compactly describe some seed data. My first attempt was an utter
+          abomination, but I think I've worked out something pleasant that could
+          be useful to other
+          people. <a href="https://github.com/flyingmachine/vern">vern</a> is a 54-line
+          project that I'd love to get feedback on before publishing. It's named
+          after one of my cats, this guy:</p>
+          
+          <p><img src="/assets/images/posts/vern-fixtures/vern.jpg" alt="vern"></p>
+          
+          <h2>Code</h2>
+          
+          <p>Here's an example of vern in use:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">fixtures</span> <span class="p">[</span><span class="ss">:endpoints</span>&#x000A;               <span class="p">[</span><span class="ss">:wallace</span>&#x000A;                <span class="p">{</span><span class="ss">:name</span> <span class="s">"wallace"</span> <span class="ss">:id</span> <span class="mi">1</span><span class="p">}</span>&#x000A;&#x000A;                <span class="ss">:gromit</span>&#x000A;                <span class="p">{</span><span class="ss">:name</span> <span class="s">"gromit"</span>  <span class="ss">:id</span> <span class="mi">2</span><span class="p">}]</span>&#x000A;&#x000A;               <span class="ss">:permissions</span>&#x000A;               <span class="p">[</span><span class="c1">;; these permissions belong to wallace</span>&#x000A;                <span class="p">[{</span><span class="ss">:endpoint</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:wallace</span><span class="p">]}</span>&#x000A;&#x000A;                 <span class="ss">:wallace-read</span>&#x000A;                 <span class="p">{</span><span class="ss">:name</span> <span class="s">"read"</span>  <span class="ss">:id</span> <span class="mi">10</span><span class="p">}</span>&#x000A;&#x000A;                 <span class="ss">:wallace-write</span>&#x000A;                 <span class="p">{</span><span class="ss">:name</span> <span class="s">"write"</span> <span class="ss">:id</span> <span class="mi">11</span><span class="p">}]</span>&#x000A;&#x000A;                <span class="c1">;; these permissions belong to gromit</span>&#x000A;                <span class="p">[{</span><span class="ss">:endpoint</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:gromit</span><span class="p">]}</span>&#x000A;&#x000A;                 <span class="ss">:gromit-read</span>&#x000A;                 <span class="p">{</span><span class="ss">:name</span> <span class="s">"read"</span>  <span class="ss">:id</span> <span class="mi">12</span><span class="p">}</span>&#x000A;&#x000A;                 <span class="ss">:gromit-write</span>&#x000A;                 <span class="p">{</span><span class="ss">:name</span> <span class="s">"write"</span> <span class="ss">:id</span> <span class="mi">13</span><span class="p">}]]])</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">entities</span> <span class="p">(</span><span class="nf">atom</span> <span class="p">[]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">do-named</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">processed</span> <span class="nv">group-name</span> <span class="nv">entity</span><span class="p">]</span>&#x000A;              <span class="p">(</span><span class="nf">swap!</span> <span class="nv">entities</span> <span class="o">#</span><span class="p">(</span><span class="nb">conj </span><span class="nv">%</span> <span class="p">(</span><span class="ss">:data</span> <span class="nv">entity</span><span class="p">)))</span>&#x000A;              <span class="p">(</span><span class="nf">get-in</span> <span class="nv">entity</span> <span class="p">[</span><span class="ss">:data</span> <span class="ss">:id</span><span class="p">]))</span>&#x000A;            <span class="nv">fixtures</span><span class="p">)</span>&#x000A;&#x000A;<span class="o">@</span><span class="nv">entities</span>&#x000A;<span class="c1">; =&gt;</span>&#x000A;<span class="p">[{</span><span class="ss">:id</span> <span class="mi">1</span> <span class="ss">:name</span> <span class="s">"wallace"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:id</span> <span class="mi">2</span> <span class="ss">:name</span> <span class="s">"gromit"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:id</span> <span class="mi">10</span> <span class="ss">:endpoint</span> <span class="mi">1</span> <span class="ss">:name</span> <span class="s">"read"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:id</span> <span class="mi">11</span> <span class="ss">:endpoint</span> <span class="mi">1</span> <span class="ss">:name</span> <span class="s">"write"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:id</span> <span class="mi">12</span> <span class="ss">:endpoint</span> <span class="mi">2</span> <span class="ss">:name</span> <span class="s">"read"</span><span class="p">}</span>&#x000A; <span class="p">{</span><span class="ss">:id</span> <span class="mi">13</span> <span class="ss">:endpoint</span> <span class="mi">2</span> <span class="ss">:name</span> <span class="s">"write"</span><span class="p">}]</span></pre></div>
+          <p>First, we assign the fixture the colorful name <code>data</code>, then create a
+          "database", which in this case is just an atom holding an empty
+          vector.</p>
+          
+          <p><code>do-named</code> is where the real action happens. <code>processed</code> is a map of
+          all the named entities that have been processed so far. For example,
+          after processing the first two entities, the value of <code>processed</code> will
+          be</p>
+          <div class="highlight"><pre><span class="p">{</span><span class="ss">:endpoints</span> <span class="p">{</span><span class="ss">:wallace</span> <span class="mi">1</span>&#x000A;             <span class="ss">:gromit</span> <span class="mi">2</span><span class="p">}}</span></pre></div>
+          <p>Most likely you won't need it but it's there in case you
+          do. <code>group-name</code> will be <code>:endpoints</code> and then <code>:permissions</code> in this
+          example. In real life, I use this to determine which table I need to
+          insert the entity's data into. <code>entity</code> will be something like</p>
+          <div class="highlight"><pre><span class="p">{</span><span class="ss">:name</span> <span class="ss">:wallace</span>&#x000A; <span class="ss">:data</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">"wallace"</span> <span class="ss">:id</span> <span class="mi">1</span><span class="p">}}</span></pre></div>
+          <p>In the example, you're just using conjing <code>(:data entity)</code> onto the
+          <code>entities</code> atom's vector. Here's what I do in real life, though:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">load-fixtures</span>&#x000A;  <span class="p">[</span><span class="nv">db</span> <span class="nv">fixtures</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">d/do-named</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">processed</span> <span class="nv">group-name</span> <span class="nv">entity</span><span class="p">]</span>&#x000A;                <span class="p">(</span><span class="ss">:generated_key</span> <span class="p">(</span><span class="nf">q/insert!</span> <span class="nv">group-name</span> <span class="nv">db</span> <span class="p">(</span><span class="ss">:data</span> <span class="nv">entity</span><span class="p">))))</span>&#x000A;              <span class="nv">fixtures</span><span class="p">))</span></pre></div>
+          <p>This uses yesql's functionality to insert a row in a database and
+          return the value of the key that was generated for every entity in the
+          fixture. The reason you want to return the generated key is so that
+          you can refer to this record in later entities. If a subsequent entity
+          is defined as</p>
+          <div class="highlight"><pre><span class="p">{</span><span class="ss">:name</span> <span class="s">"belongs-to-wallace"</span>&#x000A; <span class="ss">:endpoint-id</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:wallace</span><span class="p">]}</span></pre></div>
+          <p>then <code>do-named</code> uses the corresponding value in the <code>processed</code>
+          map. When <code>do-named</code> sends the first "permission" entity to its
+          function, the entity looks like this:</p>
+          <div class="highlight"><pre><span class="p">{</span><span class="ss">:name</span> <span class="ss">:wallace-read</span>&#x000A; <span class="ss">:data</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">"read"</span> <span class="ss">:id</span> <span class="mi">10</span> <span class="ss">:endpoint</span> <span class="mi">1</span><span class="p">}}</span></pre></div>
+          <p>The last feature is that you can group common attributes together in a
+          vector. You can see this in the permissions:</p>
+          <div class="highlight"><pre><span class="p">[[{</span><span class="ss">:endpoint</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:wallace</span><span class="p">]}</span>&#x000A;&#x000A;  <span class="ss">:wallace-read</span>&#x000A;  <span class="p">{</span><span class="ss">:name</span> <span class="s">"read"</span>  <span class="ss">:id</span> <span class="mi">10</span><span class="p">}</span>&#x000A;&#x000A;  <span class="ss">:wallace-write</span>&#x000A;  <span class="p">{</span><span class="ss">:name</span> <span class="s">"write"</span> <span class="ss">:id</span> <span class="mi">11</span><span class="p">}]]</span></pre></div>
+          <p>You could have written these entities as follows:</p>
+          <div class="highlight"><pre><span class="p">[</span><span class="ss">:wallace-read</span>&#x000A; <span class="p">{</span><span class="ss">:name</span> <span class="s">"read"</span>  <span class="ss">:id</span> <span class="mi">10</span>&#x000A;  <span class="ss">:endpoint</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:wallace</span><span class="p">]}</span>&#x000A;&#x000A; <span class="ss">:wallace-write</span>&#x000A; <span class="p">{</span><span class="ss">:name</span> <span class="s">"write"</span> <span class="ss">:id</span> <span class="mi">11</span>&#x000A;  <span class="ss">:endpoint</span> <span class="p">[</span><span class="ss">:endpoints</span> <span class="ss">:wallace</span><span class="p">]}]</span></pre></div>
+          <p>But that kind of repetition can pretty old pretty quickly.</p>
+          
+          <p>Here's the general form of the fixtures:</p>
+          <div class="highlight"><pre><span class="p">[</span><span class="ss">:entity-group-key</span>&#x000A; <span class="p">[</span><span class="ss">:entity-1-key</span> <span class="c1">;; entity keys are optional</span>&#x000A;  <span class="p">{</span><span class="ss">:name</span> <span class="s">"zip"</span><span class="p">}</span>&#x000A;&#x000A;  <span class="c1">;; using a sequential structure allows you to reference</span>&#x000A;  <span class="c1">;; another entity</span>&#x000A;  <span class="p">{</span><span class="ss">:parent-id</span> <span class="p">[</span><span class="ss">:entity-group-key</span> <span class="ss">:entity-1-key</span><span class="p">]</span>&#x000A;   <span class="ss">:name</span> <span class="s">"zip's child 1"</span><span class="p">}</span>&#x000A;&#x000A;  <span class="c1">;; you can define common associations by grouping entities in a</span>&#x000A;  <span class="c1">;; sequential; the first element contains the common associations</span>&#x000A;  <span class="p">[{</span><span class="ss">:parent-id</span> <span class="p">[</span><span class="ss">:entity-group-key</span> <span class="ss">:entity-1-key</span><span class="p">]}</span>&#x000A;   <span class="p">{</span><span class="ss">:name</span> <span class="s">"zip's child 2"</span><span class="p">}</span>&#x000A;   <span class="p">{</span><span class="ss">:name</span> <span class="s">"zip's child 3"</span><span class="p">}]]</span>&#x000A;&#x000A; <span class="ss">:entity-group-2</span>&#x000A; <span class="p">[{</span><span class="ss">:entity-group-1-id</span> <span class="p">[</span><span class="ss">:entity-group-key</span> <span class="ss">:entity-1-key</span><span class="p">]}]]</span></pre></div>
+          <h2>Request for Feedback</h2>
+          
+          <p>This is a
+          <a href="https://github.com/flyingmachine/vern/blob/master/src/com/flyingmachine/vern.clj">tiny library</a>,
+          and I hope it might yield a couple fun rounds of code golf. In
+          particular, I have the sneaking suspicion that I'm neglecting some
+          useful functions from Clojure's standard library. I considered using
+          <code>zip</code> but that seemed too heavyweight. Also, I think I could just pass
+          the entity's data to the <code>do-named</code> function.</p>
+          
+          <p>I'm also curious if there's a name for this kind of pattern, where you
+          aren't solely processing one sequence item at a time but care about
+          what you last processed as well (this is how names get assigned to
+          entities).</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

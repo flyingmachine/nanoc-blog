@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Why Clojure's a Great Next Language for Rubyists</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Why Clojure's a Great Next Language for Rubyists</h1>
+          <div class='date'>11 November 2015</div>
+          <blockquote>
+          <p>HAVE
+          <em>frothing at the mouth</em>
+          YOU
+          <em>flailing arms</em>
+          CONSIDERED
+          <em>eyes are unfocused and mad</em>
+          LISP
+          <em>flipping furniture over</em></p>
+          
+          <p>— <a href="https://twitter.com/ra/status/661707687386853376">@ra</a></p>
+          </blockquote>
+          
+          <p>If you're a Rubyist itching to learn a new language, then I want to
+          convince you (using only a minimum of mouth frothing and chair
+          flipping) that Clojure's a great pick for you. Please excuse me if
+          this article reeks of the glassy-eyed fanaticism of the true believer,
+          but the fact is that I think Clojure is crazy stupid fun to use, and
+          intellectually rewarding to boot.</p>
+          
+          <p>I fell in love with Ruby back in 2005, and since then only Clojure has
+          been able to elicit the same level of affection. I think this is
+          because Clojure has the same fundamental attributes that make Ruby so
+          appealing: it's <em>simple</em>, it's <em>powerful</em>, and above all, it's
+          <em>fun</em>. The rest of this love letter <em>cough</em> I mean, blog article, is
+          about how Ruby and Clojure exhibit these attributes in very different
+          ways, and how Clojure's different approach to computation makes it
+          fascinating and rewarding to learn.</p>
+          
+          <p>My first exposure to Ruby was
+          <a href="https://www.youtube.com/watch?v=Gzj723LkRJY">DHH's whoops-laden Ruby on Rails demo</a>.
+          That video saved me from the Lovecraftian horror that was PHP
+          circa 2005. You may have had a similar experience, with Ruby rescuing
+          you from C++ or Java or COBOL or whatever.</p>
+          
+          <p>It's a vast understatement to say that, compared to PHP, Ruby is
+          elegant. Whereas PHP seemed almost to strive for inconsistency, Ruby
+          employs only a few, simple ideas: everything is an object, you advance
+          your program by sending messagse to objects, and message dispatch is
+          governed by a couple easily-understood rules.</p>
+          
+          <p>Clojure is also a very simple language. It wouldn't be a stretch to
+          say that simplicity is one of the core tenets of the Clojure
+          philosophy; its creator, Rich Hickey, has given a number of talks
+          elaborating on what it means for something to be simple, including
+          <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a>
+          and
+          <a href="https://www.youtube.com/watch?v=VSdnJDO-xdg">Clojure, Made Simple</a>.</p>
+          
+          <p>Clojure's simplicity, however, takes a radically different form. In
+          Clojure, you primarily care about two things: data and functions. You
+          pass data to functions and get new data back. Yes, there's other
+          interesting stuff like state management constructs and macros, just as
+          there are other interesting aspects of Ruby like modules and
+          blocks. But the heart of Clojure is so simple any eighth grade algebra
+          student can understand it: hand some value to a function, and it hands
+          you a new value back.</p>
+          
+          <p>"But wait a minute," you might be thinking, "You can't just pass data
+          around like that. Haven't you read POODR? What about encapsulation?
+          What if those functions mutate your data?"</p>
+          
+          <p>In Clojure, data is <em>immutable</em>. You can't change existing data, you
+          can only derive new data; when you add 3 and 4, you don't change 3 or
+          4 to make 7, you derive 7. If this sounds crazypants and impossible to
+          work with, all I can do is assure you that it does work (and point you
+          to this book I wrote available free online,
+          <a href="http://www.braveclojure.com/">Clojure for the Brave and True</a> which
+          explains how) and hope that your intellectual curiosity will motivate
+          you to explore this crazypants paradigm that lots of people seem to
+          love. Here's a teaser: many of the problems addressed by
+          object-oriented design simply aren't problems in Clojure. You don't
+          have to care about inheritance vs. composition because behavior isn't
+          chained to data. You don't have to care about data hiding because
+          there's no risk that some object somewhere will silently change it.</p>
+          
+          <p>As a Rubyist, you know that simplicity buys you power, where power is
+          defined as the ability to express computational ideas concisely. For
+          example, Ruby's blocks allow you to write anonymous algorithms,
+          something that's impossible in C.  Another example: Ruby's simple
+          method dispatch scheme makes it easy for you to reason about and
+          design robust programs. It lets you easily extend code and buys you
+          reuse through multiple inheritance. Most enticingly, it lets you do
+          metaprogramming.</p>
+          
+          <p>Clojure's simplicity also buys you power. As a Lisp, Clojure employs a
+          syntax which just so happens to mirror the internal abstract syntax
+          trees that represent Clojure code. I'm going to wave my hands a bit
+          here and say that this lets you use <em>macros</em>, the most powerful
+          metaprogramming tool available to any language. In the Ruby community,
+          we like to talk about code that writes code; macros take this idea to
+          a whole different level. It's not an exaggeration to say that Ruby's
+          metaprogramming system provides only a subset of the capability
+          provided by Lisp macros.</p>
+          
+          <p>Super duper hand wavy, I know, but the point is: if you like how
+          powerful Ruby is, you will lose your flipping mind over how powerful
+          Clojure is. Macros let you easily implement ideas from all corners of
+          computer science. It's not an accident that Clojure has so many
+          libraries that let you use different paradigms. There's <em>core.logic</em>
+          for logic programming, <em>instaparse</em> for building parser generators,
+          <em>core.typed</em> for haskell-ish typed programming, and much more.</p>
+          
+          <p>And macros aren't even the coolest part. I'll let you in on a secret:
+          macros are the flashy, shiny bait that wild-eyed Clojurists lay out to
+          ensnare curious programmers. Nay, even more powerful is Clojure's
+          design of <em>programming to abstractions</em>. This design makes it
+          incredibly easy to reuse your code and extend existing code. Of course
+          I can't tell you <em>how</em> in the short space afforded by this digital
+          outburst, but you'll grow as a programmer if you learn about it.</p>
+          
+          <p>These last two paragraphs also hint at what makes Clojure so dadgum
+          fun. First, by learning Clojure you get introduced to one of the most
+          loved and respected computational traditions, Lisp and the lambda
+          calculus. It also has a clear philosophy, articulated by Rich Hickey,
+          that will make you a better programmer. Not only that, other
+          programming vistas become more readily accessible.</p>
+          
+          <p>Second, Clojure is a joy to write. Here's a quote from Matz (Ruby's
+          creator) on his design philosophy:</p>
+          
+          <blockquote>
+          <p>By using Ruby, I want to concentrate the things I do, not the
+          magical rules of the language, like starting with public void
+          something something something to say, "print hello world." I just
+          want to say, "print this!" I don't want all the surrounding magic
+          keywords. I just want to concentrate on the task. That's the basic
+          idea. So I have tried to make Ruby code concise and succinct.</p>
+          </blockquote>
+          
+          <p>Clojure, likewise, is concise. It lets you focus on solving the
+          problem at hand rather than figuring out the magic whatever. People
+          are falling in love with Clojure, spending their nights and weekends
+          learning it hacking with it, because the experience is its own reward.</p>
+          
+          <p>If you're looking to stretch yourself and explore more of what the
+          world of programming has to offer, then I recommend Clojure to you
+          with all of my crazed heart. Here are some resources for getting
+          started:</p>
+          
+          <ul>
+          <li>
+          <a href="http://yogthos.github.io/ClojureDistilled.html">Clojure Distilled</a>,
+          a very short overview of the language</li>
+          <li>
+          <a href="http://braveclojure.com">Clojure for the Brave and True</a>, my own
+          full-length crazypants introductory book</li>
+          <li>
+          <a href="http://amzn.to/1WIxT2Q">Living Clojure</a>, an excellent introductory
+          book by Carin Meier, someone who BUILDS ROBOTS</li>
+          <li>
+          <a href="http://www.purelyfunctional.tv/">LispCasts</a> for those of you who
+          prefer video</li>
+          <li>
+          <a href="https://github.com/tallesl/Rich-Hickey-fanclub">The Rich Hickey FanClub</a>
+          lists all his talks</li>
+          </ul>
+          
+          <p>Now go out there and start learning some Clojure!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

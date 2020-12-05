@@ -1,0 +1,567 @@
+/* line 5, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 14, /Users/daniel/.gem/ruby/2.3.3/gems/susy-2.1.3/sass/susy/language/susy/_box-sizing.scss */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 106, /Users/daniel/.gem/ruby/2.3.3/gems/compass-core-1.0.1/stylesheets/compass/typography/_vertical_rhythm.scss */
+html {
+  font-size: 125%;
+  line-height: 1.5em;
+}
+
+@font-face {
+  font-family: 'Leonardo Hand F';
+  src: url(/assets/fonts/leonardo/leonardo.ttf);
+  src: url(/assets/fonts/leonardo/leonardo.ttf) format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+/* line 1, content/assets/stylesheets/_base.scss */
+html {
+  box-sizing: border-box;
+}
+
+/* line 2, content/assets/stylesheets/_base.scss */
+* {
+  box-sizing: inherit;
+}
+
+/* line 3, content/assets/stylesheets/_base.scss */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 8, content/assets/stylesheets/_base.scss */
+a {
+  text-decoration: none;
+}
+
+/* line 12, content/assets/stylesheets/_base.scss */
+strong {
+  font-weight: bold;
+}
+
+/* line 3, content/assets/stylesheets/_layout.scss */
+body {
+  padding-bottom: 3em;
+}
+
+/* line 11, content/assets/stylesheets/_layout.scss */
+h2 {
+  margin-top: 1.60714em;
+  margin-bottom: 0.53571em;
+}
+
+/* line 16, content/assets/stylesheets/_layout.scss */
+h3, h4 {
+  margin-top: 1.95652em;
+  margin-bottom: 0.65217em;
+}
+
+/* line 21, content/assets/stylesheets/_layout.scss */
+p {
+  margin-bottom: 1.5em;
+}
+
+/* line 25, content/assets/stylesheets/_layout.scss */
+header.top {
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  position: relative;
+  z-index: 1;
+}
+/* line 30, content/assets/stylesheets/_layout.scss */
+header.top .display {
+  max-width: 59em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2em;
+}
+/* line 12, /Users/daniel/.gem/ruby/2.3.3/gems/susy-2.1.3/sass/susy/output/support/_clearfix.scss */
+header.top .display:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+
+/* line 36, content/assets/stylesheets/_layout.scss */
+#contact {
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+/* line 42, content/assets/stylesheets/_layout.scss */
+#contact li {
+  float: left;
+  margin-right: 1em;
+}
+
+/* line 47, content/assets/stylesheets/_layout.scss */
+.tagline {
+  margin-bottom: 1.5em;
+  font-style: italic;
+}
+
+/* line 52, content/assets/stylesheets/_layout.scss */
+.date {
+  font-size: 0.8em;
+  line-height: 1.875em;
+  margin-bottom: 1.875em;
+}
+
+/* line 57, content/assets/stylesheets/_layout.scss */
+form {
+  margin: 1.5em -1em 3em;
+  padding: 1.5em 1em;
+  clear: both;
+}
+
+/* line 64, content/assets/stylesheets/_layout.scss */
+.issue-info {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+/* line 70, content/assets/stylesheets/_layout.scss */
+#document {
+  max-width: 59em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2em;
+}
+/* line 12, /Users/daniel/.gem/ruby/2.3.3/gems/susy-2.1.3/sass/susy/output/support/_clearfix.scss */
+#document:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+
+/* line 76, content/assets/stylesheets/_layout.scss */
+#main img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+@media (min-width: 47em) {
+  /* line 75, content/assets/stylesheets/_layout.scss */
+  #main {
+    width: 66.10169%;
+    float: left;
+    margin-right: 1.69492%;
+  }
+}
+/* line 87, content/assets/stylesheets/_layout.scss */
+#main li {
+  margin-left: 1.2em;
+}
+/* line 91, content/assets/stylesheets/_layout.scss */
+#main ul, #main ol {
+  margin-bottom: 1.5em;
+}
+/* line 93, content/assets/stylesheets/_layout.scss */
+#main ul ul, #main ul ol, #main ol ul, #main ol ol {
+  margin-bottom: 0;
+}
+
+@media (min-width: 47em) {
+  /* line 99, content/assets/stylesheets/_layout.scss */
+  #nav {
+    width: 23.72881%;
+    float: right;
+    margin-right: 0;
+  }
+}
+
+/* line 108, content/assets/stylesheets/_layout.scss */
+.code {
+  padding-top: 0.375em;
+  padding-bottom: 0.375em;
+  margin-bottom: 1.5em;
+}
+
+/* line 114, content/assets/stylesheets/_layout.scss */
+.chapter-nav > ol {
+  margin-bottom: 1.5em;
+}
+
+/* line 118, content/assets/stylesheets/_layout.scss */
+ol ol {
+  margin-left: 1em;
+}
+
+/* line 122, content/assets/stylesheets/_layout.scss */
+#disqus_thread {
+  margin-top: 1.5em;
+}
+
+/* line 126, content/assets/stylesheets/_layout.scss */
+blockquote {
+  padding-left: 1em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  margin-bottom: 1.5em;
+}
+/* line 132, content/assets/stylesheets/_layout.scss */
+blockquote p {
+  white-space: pre-line;
+}
+/* line 134, content/assets/stylesheets/_layout.scss */
+blockquote p:last-child {
+  margin: 0;
+}
+
+/* line 140, content/assets/stylesheets/_layout.scss */
+table {
+  margin-bottom: 1.5em;
+}
+
+/* line 144, content/assets/stylesheets/_layout.scss */
+.previous-issues {
+  margin-top: 1.5em;
+}
+
+/* line 1, content/assets/stylesheets/_theme.scss */
+body, input[type=email] {
+  font-family: Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+  color: #333;
+}
+
+/* line 6, content/assets/stylesheets/_theme.scss */
+h1, h2, h3, h4 {
+  font-family: Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+}
+
+/* line 10, content/assets/stylesheets/_theme.scss */
+h1 {
+  font-size: 1.75em;
+  line-height: 0.85714em;
+}
+
+/* line 14, content/assets/stylesheets/_theme.scss */
+h2 {
+  font-size: 1.4em;
+  line-height: 1.07143em;
+}
+
+/* line 18, content/assets/stylesheets/_theme.scss */
+h3, h4 {
+  font-size: 1.15em;
+  line-height: 1.30435em;
+}
+
+/* line 23, content/assets/stylesheets/_theme.scss */
+#main h2, #main h3, #main h4 {
+  margin-left: -11px;
+  padding-left: 9px;
+  font-weight: bold;
+}
+
+/* line 30, content/assets/stylesheets/_theme.scss */
+a {
+  color: #6684af;
+}
+/* line 32, content/assets/stylesheets/_theme.scss */
+a:visited {
+  color: #669d97;
+}
+/* line 35, content/assets/stylesheets/_theme.scss */
+a:hover {
+  color: #b36994;
+}
+
+/* line 40, content/assets/stylesheets/_theme.scss */
+em {
+  font-style: italic;
+}
+
+/* line 44, content/assets/stylesheets/_theme.scss */
+small {
+  font-size: 75%;
+}
+
+/* line 48, content/assets/stylesheets/_theme.scss */
+form {
+  border-radius: 2px;
+  background: #eefcf3;
+}
+
+/* line 53, content/assets/stylesheets/_theme.scss */
+input {
+  font-size: 16px;
+}
+
+/* line 57, content/assets/stylesheets/_theme.scss */
+input[type=email] {
+  padding: .25em .125em;
+}
+
+/* line 61, content/assets/stylesheets/_theme.scss */
+input[type=submit] {
+  background: #669d97;
+  border-radius: 2px;
+  border: none;
+  padding: .4em;
+  display: inline-block;
+}
+
+/* line 69, content/assets/stylesheets/_theme.scss */
+header.top {
+  background: #f7f3ee url(/assets/images/flying-machine-small.png) no-repeat 85%;
+  border-top: 4px solid #444;
+  border-bottom: 1px solid #444;
+}
+/* line 73, content/assets/stylesheets/_theme.scss */
+header.top .title {
+  font-family: Ruthie, Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+  font-size: 2.6em;
+  line-height: 1.15385em;
+}
+/* line 76, content/assets/stylesheets/_theme.scss */
+header.top .title a {
+  color: black;
+}
+/* line 80, content/assets/stylesheets/_theme.scss */
+header.top .subtitle {
+  color: #193019;
+  font-family: Gentium Book Basic, Palatino Linotype, Book Antiqua, Palatino, serif;
+  font-style: italic;
+}
+
+/* line 87, content/assets/stylesheets/_theme.scss */
+.date {
+  font-style: italic;
+}
+
+/* line 92, content/assets/stylesheets/_theme.scss */
+#main ul li {
+  list-style: disc;
+}
+/* line 96, content/assets/stylesheets/_theme.scss */
+#main ol > li {
+  list-style: decimal;
+}
+
+/* line 101, content/assets/stylesheets/_theme.scss */
+#nav {
+  font-size: 0.85em;
+  line-height: 1.76471em;
+}
+/* line 103, content/assets/stylesheets/_theme.scss */
+#nav h2 {
+  font-size: 1.52941em;
+  line-height: 1.15385em;
+  margin-top: 1.73077em;
+  margin-bottom: 0.57692em;
+  color: #555;
+}
+/* line 109, content/assets/stylesheets/_theme.scss */
+#nav li {
+  color: #ccc;
+  list-style: disc;
+}
+/* line 112, content/assets/stylesheets/_theme.scss */
+#nav li a {
+  display: block;
+}
+/* line 115, content/assets/stylesheets/_theme.scss */
+#nav li p {
+  color: #333;
+}
+
+/* line 121, content/assets/stylesheets/_theme.scss */
+table {
+  margin-bottom: 1.5em;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* line 128, content/assets/stylesheets/_theme.scss */
+table, td, th {
+  vertical-align: top;
+}
+
+/* line 132, content/assets/stylesheets/_theme.scss */
+th, thead th {
+  font-weight: bold;
+}
+
+/* line 136, content/assets/stylesheets/_theme.scss */
+th, td, caption {
+  padding: 0.75em;
+  text-align: left;
+  font-weight: normal;
+}
+
+/* line 143, content/assets/stylesheets/_theme.scss */
+table.comparison th {
+  border-bottom-width: 0.05em;
+  border-bottom-style: solid;
+  padding-bottom: 0.7em;
+}
+/* line 146, content/assets/stylesheets/_theme.scss */
+table.comparison td {
+  border-bottom: 1px dotted black;
+}
+/* line 149, content/assets/stylesheets/_theme.scss */
+table.comparison tr:last-child td {
+  border-bottom: none;
+}
+
+/* line 154, content/assets/stylesheets/_theme.scss */
+.highlight {
+  margin-bottom: 1.5em;
+}
+
+/* line 158, content/assets/stylesheets/_theme.scss */
+.highlight pre {
+  display: block;
+  line-height: 1.2;
+  font-size: 16px;
+  white-space: pre;
+  overflow-y: auto;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  padding-top: 0.9375em;
+  padding-bottom: 0.9375em;
+}
+
+/* line 169, content/assets/stylesheets/_theme.scss */
+code {
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0.2em 0;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+/* line 174, content/assets/stylesheets/_theme.scss */
+code::before, code::after {
+  letter-spacing: -0.2em;
+  content: "\00a0 ";
+}
+
+/* line 2, content/assets/stylesheets/_home.scss */
+.home #main {
+  width: 100%;
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+/* line 5, content/assets/stylesheets/_home.scss */
+.home #articles {
+  width: 49.15254%;
+  float: left;
+  margin-right: 1.69492%;
+}
+/* line 8, content/assets/stylesheets/_home.scss */
+.home #projects {
+  width: 44.91525%;
+  float: left;
+  margin-right: 1.69492%;
+  float: right;
+}
+/* line 15, content/assets/stylesheets/_home.scss */
+.home #main h2 {
+  text-transform: uppercase;
+  border-left: none;
+  margin: 0;
+  margin-bottom: 1.07143em;
+  padding-left: 0;
+}
+/* line 23, content/assets/stylesheets/_home.scss */
+.home #main li {
+  margin-left: 0;
+}
+/* line 27, content/assets/stylesheets/_home.scss */
+.home #main ol li {
+  list-style: none;
+}
+/* line 31, content/assets/stylesheets/_home.scss */
+.home #main header {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+/* line 35, content/assets/stylesheets/_home.scss */
+.home #main .date {
+  margin: 0;
+  font-size: 0.7em;
+  line-height: 2.14286em;
+  font-style: normal;
+}
+/* line 41, content/assets/stylesheets/_home.scss */
+.home #main .shot {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  border: 1px solid #ddd;
+}

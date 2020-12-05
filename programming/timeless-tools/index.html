@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Timeless Programming Tools</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Timeless Programming Tools</h1>
+          <div class='date'>23 March 2016</div>
+          <p>I've been programming professionally for a dozen years. Some of what
+          I've learned is best forgotten (oh god, Cold Fusion), but there have
+          been many tools, techniques, and concepts that continue to be useful
+          every day. Here are mine; I'd love to hear what yours are so I can
+          experience both the joy of discovery and regret for not learning about
+          the tool earlier.</p>
+          
+          <h3>Relational Algebra / SQL</h3>
+          
+          <p>I feel lucky that, during my fourteenth summer, I apparently had no
+          friends and so had nothing better to do than try and slog through
+          <a href="http://amzn.to/1RyFQ7z">a book on MySQL and the now-defunct mSQL</a>. You
+          can see from the reviews that the book "is sketchy, incomplete, and
+          almost totally useless." But, it did introduce me to SQL and
+          databases. Soon after, I learned relational algebra (the theory
+          underlying RDBMSs) and that investment has been one of the best of my
+          life. I can't count the number of times a <code>LEFT OUTER JOIN</code> has saved
+          my bacon. Friends be damned!</p>
+          
+          <p>Learning relational algebra provided the foundation I needed to move
+          easily from MySQL to Oracle and MS SQL Server when I joined
+          EnterpriseCo, and in general knowing how to interact with databases
+          without a framework or ORM helped me quickly advance career-wise. It's
+          why, at 20, I was able to land a contract building a custom site for
+          the city of Santa Fe, New Mexico, instead of just cobbling together
+          Wordpress and Drupal plugins.</p>
+          
+          <p>If you come from Rails or some other framework that handles all the
+          database interaction for you, one of the best things you can do for
+          your career is to learn relational theory and SQL. Read
+          <a href="http://amzn.to/1Rm6WzL">a book by C. J. Date</a>.</p>
+          
+          <h3>The Unix Process Model</h3>
+          
+          <p>Understanding Unix processes helped me understand what's actually
+          happening when I run a program. It's also helped me understand what
+          exactly a web server is and what I'm doing when I write a web
+          application. The book Advanced Linux Programming has
+          <a href="http://advancedlinuxprogramming.com/alp-folder/alp-ch03-processes.pdf">a chapter on processes for free online</a>. Actually,
+          the whole book is free.</p>
+          
+          <p>When you don't know about processes, programming is much harder and
+          more mysterious. It's harder to understand performance, and it's
+          harder to understand how programs interact with each other. If you
+          ever feel a vague sense that you don't really get what's going when
+          you run the apps you write, learning the process model will go a long
+          way toward clearing things up.</p>
+          
+          <h3>Regular Expressions</h3>
+          
+          <p>Yeah, yeah, we've all heard the joke: "something something regular
+          expressions, then you have two problems." Personally, I don't get it,
+          because regular expressions are <em>seriously badass</em>. I remember going
+          through O'Reilly's big fat regex book while I worked from 11pm till
+          7am as a night auditor at a hotel when I was 18, and being blown away
+          at how powerful they are. To say that we programmers deal with text
+          all the time is so obvious, it's not even worth saying. Regular
+          expressions are an essential tool,
+          <a href="http://regexone.com/">and here's where you can learn to use them</a>.</p>
+          
+          <h3>Finite State Machines</h3>
+          
+          <p>Regular expressions are built as <em>finite state machines</em>. Here's
+          <a href="http://www.gamedev.net/page/resources/_/technical/general-programming/finite-state-machines-and-regular-expressions-r3176">a great tutorial on FSMs</a>
+          showing how to actually build a regular expression. It's extremely
+          cool!</p>
+          
+          <p>I think FSMs are covered in computer science 101, but since I only
+          went to college for a year and even then I studied works written a
+          couple millennia before before the computer revolution, I didn't
+          actually learn about them until about six years ago. My colleagues and
+          I were having trouble with a mobile app - we needed the initialization
+          process to happen in a particular way, and the logic for ensuring that
+          was getting pretty tangled.</p>
+          
+          <p>Once we took the time to learn about FSMs, though, it was easy to
+          express the process as a series of states and transitions. I've since
+          found that most tricky UI code can be improved this way. Just a couple
+          months ago I was having trouble building a typeahead element from
+          scratch with <a href="http://hoplon.io/">hoplon</a>. Once I identified that the
+          difficulty was in keeping track of all the possible states, it only
+          took a few minutes drawing a state machine diagram and I was back on
+          track.</p>
+          
+          <h3>Emotion Management</h3>
+          
+          <p>In my personal life I'm constantly learning about and practicing ways
+          to manage emotions. This stems from both my personal aspiration to
+          improve the lives of others and from the completely selfish reason
+          that it helps me do good work. Emotion management is probably the most
+          important meta-skill you can develop. I mean, emotions are at the core
+          of who you are as a human being.</p>
+          
+          <p>The book <a href="http://amzn.to/1Rm6EZE">Non-Violent Communication</a> is an
+          excellent resource for dealing with emotions. Also, my friend Alex
+          Harms recently wrote
+          <a href="http://empathetictechnicalleader.com/">a book specifically for technical people</a>.</p>
+          
+          <p>Those are my programming power tools - I hope you find them useful!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

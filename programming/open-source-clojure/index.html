@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>A Directory of Open Source Clojure Projects</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>A Directory of Open Source Clojure Projects</h1>
+          <div class='date'>20 March 2016</div>
+          <p>Every now and again I'll come across a post where someone asks about
+          getting involved in open source clojure projects. Because every
+          question deserves a single-page app dedicated to its answer, I made
+          <a href="http://open-source.braveclojure.com/">Open Source Clojure Projects</a>,
+          a directory of active projects welcoming new contributors.</p>
+          
+          <p>Each project has (or should have) clear instructions on:</p>
+          
+          <ul>
+          <li>Developing the project locally</li>
+          <li>Running tests if there are tests</li>
+          <li>Contributing code (pull request? tests required?)</li>
+          <li>Contacting other devs - slack, mailing list, IRC, etc</li>
+          </ul>
+          
+          <p>Also, there's a "beginner-friendly" flag so that new Clojurists can
+          easily find projects with tasks that are appropriate for their skill
+          level.</p>
+          
+          <p>So far, 22 projects have been added, which is awesome. A random
+          sampling:</p>
+          
+          <ul>
+          <li>
+          <a href="http://open-source.braveclojure.com/projects/milestones">milestones</a>,
+          which generates the best possible schedule from a set of tasks</li>
+          <li>
+          <a href="http://open-source.braveclojure.com/projects/reverie">reverie</a>, a
+          CMS for power users</li>
+          <li>
+          <a href="http://open-source.braveclojure.com/projects/scheje">Scheje</a>, a
+          little Scheme on Top of Clojure (!!!)</li>
+          <li>
+          <a href="http://open-source.braveclojure.com/projects/system">system</a>, a
+          friendly layer on top of Stuart Sierra's component library</li>
+          </ul>
+          
+          <p>If you have an open source project and want people to contribute,
+          please <a href="http://open-source.braveclojure.com/projects/new">add it</a>!</p>
+          
+          <h2>The Stack</h2>
+          
+          <p>A few folks have asked me about what tools I used to create the
+          site. I'll explain more below but briefly:</p>
+          
+          <ul>
+          <li>The backend is a weird, unholy mess of fantastic classic libraries
+          and sideshow code that I keep transplanting from one project to
+          another so that I can answer the question <em>what kind of abomination
+          will this morph into this time?</em>. The backend uses Github as a
+          database, though, and that's pretty neat.</li>
+          <li>The frontend uses re-frame and includes some form handling code that
+          I'm proud of and that's actually worth stealing.</li>
+          <li>Finally, there's also some code for deploying with Ansible that's
+          worth stealing.</li>
+          </ul>
+          
+          <p>In the time-honored fashion of technical blog posts everywhere, I'll
+          now "dive in" and elaborate on each of those bullet points.</p>
+          
+          <h3>Backend</h3>
+          
+          <p>For the backend, the site uses ring, compojure, liberator, http-kit,
+          and the weird set of tools that have accreted in my projects over the
+          years. Even though the code footprint for the backend is pretty small,
+          it's pretty idiosyncratic, containing handfuls of half-formed ideas I
+          keep noodling around with. Hopefully someday soon I'll be able to
+          really nail down my approach to backend dev and share it, because it
+          <em>does</em> allow me to write apps quickly.</p>
+          
+          <p>One cool part of the site is that it uses a Github repo,
+          <a href="https://github.com/braveclojure/open-source-projects">Open Source Projects</a>,
+          as its database. Browse the <code>projects</code> directory and you can see every
+          project that's listed on the site stored as an EDN file. When the
+          backend starts up it reads from Github, and whenever someone posts or
+          edits a listing it writes the EDN file using Github's API.</p>
+          
+          <p>The nice thing about this approach is that I didn't have to worry
+          about standing up a server or keeping backups. And it was just fun to
+          code. <a href="https://github.com/braveclojure/open-source/blob/master/src/backend/open_source/db/github.clj">Here's the source</a>
+          for using Github as a db - I definitely see potential in reusing this
+          approach for similar lightweight directory sites.</p>
+          
+          <h3>Frontend</h3>
+          
+          <p><a href="https://github.com/Day8/re-frame">re-frame</a> has a delightful README
+          that gracefully introduces you to reactive programming. If you haven't
+          read it then stop reading this article and read that instead; I am
+          100% confident that it's a better use of your time.</p>
+          
+          <p>re-frame is a joy to use, and it's become my go-to tool for frontend
+          projects. I've written a fair amount of code
+          <a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/components/form_helpers.cljs">for working with forms</a>
+          and
+          <a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/handlers/common.cljs#L13">submitting values</a>. This
+          code forms a kind of nano-framework on top of re-frame, and it's
+          allowed me to speed up the development process from project to
+          project. Here's
+          <a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/pub/projects/project_form.cljs">an example form which uses the form helpers</a>. If
+          you'd like for me to write a detailed explanation of this code, please
+          leave a comment letting me know :)</p>
+          
+          <p><a href="http://boot-clj.com/">Boot</a> deserves a special mention because it
+          makes it so easy to develop ClojureScript apps. With Boot you get live
+          reload (every time you change your frontend files, the changes are
+          automatically injected into the browser), giving you a
+          near-instantaneous feedback cycle that makes development much more
+          enjoyable. It's also easy to incorporate <a href="http://sass-lang.com/">Sass</a>
+          compilation - and your Sass files also get the live reload treatment.</p>
+          
+          <p>If you're not using Boot to build your ClojureScript app then chances
+          are you're causing yourself undue suffering. And hey, maybe you're
+          into that? No judgment. But if you're not, then take the time to learn
+          it - it's a great investment in yourself as a Clojure developer.</p>
+          
+          <h3>Deployment</h3>
+          
+          <p>The
+          <a href="https://github.com/braveclojure/open-source/tree/master/infrastructure">infrastructure</a>
+          directory contains scripts for provisioning and deploying to a server
+          with <a href="http://ansible.com/">Ansible</a>. It also has a
+          <a href="https://www.vagrantup.com/">Vagrantfile</a> so that you can stand up a
+          test server locally; just run <code>vagrant up</code> to both create the virtual
+          machine and provision it. To deploy, <code>cd</code> into the <code>infrastructure</code>
+          directory and run <code>./build.sh &amp;&amp; ./deploy-dev.sh</code>. Those two shell
+          scripts are extemely simple, so take a look at them to see what's
+          involved in deployment.</p>
+          
+          <p>The Ansible configuration is almost completely reusable. You can check
+          it out in <code>infrastructure/ansible</code>. The <code>roles</code> directory in
+          particular has Ansible tasks for creating an nginx server that can run
+          Clojure app. It also includes an Upstart script for controlling
+          startup/shutdown of your Clojure app (assuming you use Ubuntu).</p>
+          
+          <h2>The Future</h2>
+          
+          <p>Eventually, I'd like to add more tools for project discovery and for
+          showing project stats. @yogthos, for example, suggested incorporating
+          a project's stats from github so that users can see how active and
+          popular each project is, information that can help them decide which
+          project to contribute to.</p>
+          
+          <p>Also, I'm in the process of revamping
+          <a href="http://braveclojure.com">braveclojure.com</a> to include more resources
+          for Clojure programmers. The site hovers around 3rd or 4th Google
+          result for "Clojure", just below clojure.org and the Wikipedia
+          entry. So, it's kind of popular I guess. My hope is that by featuring
+          Open Source Clojure Projects, I'll help more new developers get
+          involved and also help project maintainers squash some tickets.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

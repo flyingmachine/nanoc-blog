@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Writing Better Documentation</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Writing Better Documentation</h1>
+          <div class='date'>19 January 2011</div>
+          <p>The learning curve for code libraries is often unnecessarily steep. I
+          frequently feel that if the author had written better documentation,
+          I'd be able to use his work much more quickly, or at least figure out
+          that it's wrong for me and move on.</p>
+          
+          <p>My own work could use better documentation, and that's part of why
+          I've started using <a href="http://effectif.com/nesta">nesta</a> as my blogging
+          engine. Nesta looks like it provides just enough of a framework for me
+          to efficiently write articles which are mainly text. More importantly,
+          there's room for me to easily extend it in order to explore different
+          ideas for creating code documentation efficiently. As a first step,
+          I've written a few lines that will allow me to easily include source
+          code in a <a href="http://textile.thresholdstate.com/">textile</a> document:</p>
+          <div class="highlight"><pre><span class="k">module</span> <span class="nn">CustomTags</span>&#x000A;  <span class="c1">#TODO - allow method specification instead of line numbers</span>&#x000A;  <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>&#x000A;    <span class="n">local_path</span><span class="p">,</span> <span class="n">highlighted</span><span class="p">,</span> <span class="n">range</span> <span class="o">=</span> <span class="sr">/([^ :]*)(?::(\d+))?(?: (\d+-\d+))?/</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">opts</span><span class="o">[</span><span class="ss">:text</span><span class="o">]</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="o">]</span>&#x000A;    <span class="n">code</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">readlines</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">__FILE__</span><span class="p">)),</span> <span class="n">local_path</span><span class="p">))</span>&#x000A;&#x000A;    <span class="n">langs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"rb"</span> <span class="o">=&gt;</span> <span class="s2">"ruby"</span><span class="p">,</span> <span class="s2">"clj"</span> <span class="o">=&gt;</span> <span class="s2">"clojure"</span><span class="p">,</span> <span class="s2">"haml"</span> <span class="o">=&gt;</span> <span class="s2">"haml"</span><span class="p">}</span>&#x000A;    <span class="n">lang</span> <span class="o">=</span> <span class="n">langs</span><span class="o">[</span><span class="no">File</span><span class="o">.</span><span class="n">extname</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">]</span>&#x000A;&#x000A;    <span class="k">if</span> <span class="n">range</span>&#x000A;      <span class="n">start</span><span class="p">,</span> <span class="n">finish</span> <span class="o">=</span> <span class="n">range</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span><span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span><span class="o">.</span><span class="n">to_i</span><span class="p">}</span>&#x000A;      <span class="n">code</span> <span class="o">=</span> <span class="n">code</span><span class="o">[</span><span class="p">(</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">.</span><span class="p">(</span><span class="n">finish</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">]</span>&#x000A;    <span class="k">end</span>&#x000A;    <span class="n">start</span> <span class="o">||=</span> <span class="mi">1</span>&#x000A;&#x000A;    <span class="n">indentation_level</span> <span class="o">=</span> <span class="sr">/^ */</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">code</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">size</span>&#x000A;    <span class="n">code</span><span class="o">.</span><span class="n">collect!</span><span class="p">{</span><span class="o">|</span><span class="n">l</span><span class="o">|</span> <span class="n">l</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/^ {</span><span class="si">#{</span><span class="n">indentation_level</span><span class="si">}</span><span class="sr">}/</span><span class="p">,</span> <span class="s1">''</span><span class="p">)}</span> <span class="c1">#remove indendation</span>&#x000A;    <span class="n">code</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">join</span>&#x000A;&#x000A;    <span class="n">html</span> <span class="o">=</span> <span class="s2">"&lt;div class='attachment-path source'&gt;"</span>&#x000A;    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s2">"&lt;a href='/assets/source/</span><span class="si">#{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">'&gt;</span><span class="si">#{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/div&gt;&lt;div class='code pygments'&gt;"</span>&#x000A;&#x000A;    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="no">IO</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">"pygmentize -O linenos=table,linenostart=</span><span class="si">#{</span><span class="n">start</span><span class="si">}</span><span class="s2"> -f html -l </span><span class="si">#{</span><span class="n">lang</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s1">'a+'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">pygmentize</span><span class="o">|</span>&#x000A;      <span class="n">pygmentize</span><span class="o">.</span><span class="n">puts</span> <span class="n">code</span>&#x000A;      <span class="n">pygmentize</span><span class="o">.</span><span class="n">close_write</span>&#x000A;      <span class="n">result</span> <span class="o">=</span> <span class="s2">""</span>&#x000A;      <span class="k">while</span> <span class="p">(</span><span class="n">line</span> <span class="o">=</span> <span class="n">pygmentize</span><span class="o">.</span><span class="n">gets</span><span class="p">)</span>&#x000A;        <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">line</span>&#x000A;      <span class="k">end</span>&#x000A;      <span class="n">result</span>&#x000A;    <span class="k">end</span>&#x000A;&#x000A;    <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s2">"&lt;/div&gt;"</span>&#x000A;&#x000A;    <span class="n">html</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="c1"># Ignore notes text; just want to keep it on page for later development</span>&#x000A;  <span class="k">def</span> <span class="nf">notes</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>&#x000A;    <span class="k">return</span> <span class="s2">""</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span>&#x000A;<span class="no">RedCloth</span><span class="o">::</span><span class="no">Formatters</span><span class="o">::</span><span class="no">HTML</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="no">CustomTags</span><span class="p">)</span></pre></div>
+          <p>Hopefully that will come in handy when I want to include other, less
+          self-referential snippets.</p>
+          
+          <p>In the mean time I've also been thinking about what makes good
+          documentation. <a href="http://tom.preston-werner.com">Tom Preston-Werner</a>
+          recently wrote
+          <a href="http://tom.preston-werner.com/2010/08/23/readme-driven-development.html">an article</a>
+          urging developers to write a README before coding, and I think that's
+          advice worth trying, though I haven't tried it myself. Unfortunately,
+          he's not very specific on what should be included in the
+          README. Personally, it'd be a lot easier for me to write a README if
+          there were some formula I could follow. I also believe that other
+          programmers would write better documentation if they had the tools
+          that facilitated the joy and creativity that they experience with
+          programming.</p>
+          
+          <p>My initial thought on good documentation is that it should include the following:</p>
+          
+          <ul>
+          <li>The purpose of the code</li>
+          <li>When it should be used and when it shouldn't (i.e. "This authentication library is great if you don't require much customization.")</li>
+          <li>Installation</li>
+          <li>Basic usage</li>
+          <li>How to extend it</li>
+          <li>Its "home"</li>
+          <li>Links to further documentation</li>
+          <li>Other quality libraries which address the same problem</li>
+          <li>A brief tutorial</li>
+          </ul>
+          
+          <p>That... looks like a lot of work. (Googling "what goes in a readme"
+          also reveals that it looks a bit like
+          <a href="http://books.google.com/books?id=WOyuE3YYjiIC&amp;lpg=PA211&amp;ots=csqyUBZoOq&amp;dq=what%20goes%20in%20a%20readme&amp;pg=PA211#v=onepage&amp;q&amp;f=false">this excerpt from Ruby Best Practices</a>). It
+          also looks like it shouldn't all be put in the README.</p>
+          
+          <p>In any case, my next little project is to write some documentation for
+          a little library I created. After that I'm sure I'll have a better
+          idea of what makes good documentation.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

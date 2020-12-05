@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Design: The Art of Reducing Frustration</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Design: The Art of Reducing Frustration</h1>
+          <div class='date'>31 May 2012</div>
+          <p>In this article I attempt to describe a simple, cohesive approach to design. My hope is that those learning design will find in it a conceptual skeleton which they can use to integrate their growing body of design knowledge. Additionally, I want to show that the design &#8220;skeleton&#8221; is the same for different kinds of design, including visual design and software design.</p>
+          <h2>Why Does Frustration Matter?</h2>
+          <p>The obvious answer is that frustration is the name we give to an unpleasant experience, and by definition something we should avoid it and avoid creating it in others.</p>
+          <p>Another way of thinking about it is that frustration matters because happiness matters. Positive psychologists like Mihaly Csikszentmihalyi argue that a crucial component of happiness is experiencing <a href="http://www.ted.com/talks/mihaly_csikszentmihalyi_on_flow.html">flow</a>. Frustration is an indication that something is preventing you from experiencing flow.</p>
+          <h2>The General Cause of Frustration</h2>
+          <p>You become frustrated when something prevents you from doing what you want. For example &#8211; there&#8217;s a medical affliction called &#8220;Alien Hand Syndrome&#8221; where a person will have no control over one of his hands. He might try to button his shirt with his right hand, only to have his left hand unbotton it. He might try to hug his wife with one hand, only to have the other hand slap her. You can imagine how frustrating this would be.</p>
+          <p>A design can cause frustration in the same way. Well, almost the same way. For example, if you&#8217;re visiting a furniture web site and see a piece you want to buy, you&#8217;ll look for a way to buy the item. Your brain will make many predictions based on experience: look for an &#8220;add to cart&#8221; link &#8211; ok, that&#8217;s not there; look for a phone number &#8211; and if the site&#8217;s design does not support your predictions, you will become frustrated. You will have been thwarted in your attempt to buy a Hulk Hogan love seat.</p>
+          <h2>The Specific Causes of Frustration</h2>
+          <p>We can break down the causes of frustration into three categories:</p>
+          <ul>
+          	<li><strong>Latency</strong>: The longer something takes, the more frustrating it is. Unless you&#8217;re a monk or something in which case waiting is the point.</li>
+          	<li><strong>Unpredictability</strong>: We&#8217;re constantly making unconscious predictions about how the world works in order so that we can generate behavior that meets our goals. That&#8217;s just what humans <em>do</em>. An unpredictable design messes up the whole process of being a human.</li>
+          	<li><strong>Incompleteness</strong>: If something only gets you halfway to where you need to go then leaves you stranded, it&#8217;s frustrating.</li>
+          </ul>
+          <p>I explore each in greater detail below.</p>
+          <h2>Latency (or, Waiting)</h2>
+          <p>Latency is the most basic and immediate of the causes of frustration. No one ever says to himself, &#8220;Boy, I hope I get stuck waiting in a line today. There&#8217;s nothing I love more than standing around staring blankly when I could be doing something else.&#8221;</p>
+          <p>What&#8217;s worse is when you don&#8217;t know how long you&#8217;ll need to wait. The five-dollar term for this, by the way, is <a href="http://en.wikipedia.org/wiki/Liminality">liminal zone</a> . See also <a href="http://www.amazon.com/gp/product/1560978066/ref=as_li_ss_tl?ie=UTF8&amp;tag=aflyingmachin-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1560978066">kafkaesque</a> .</p>
+          <p>Anyway, not knowing how long you&#8217;ll need to wait sucks because it makes you feel like you don&#8217;t have control. You&#8217;re reluctant to start anything requiring concentration because you think you could be interrupted at any moment. You don&#8217;t know if you&#8217;ll have to change other plans you&#8217;ve made for the day as you wait longer, and longer, and longer.</p>
+          <p>When it comes to application design, one of the best ways to reduce the frustration caused by waiting is to indicate how much longer a user will have to wait and close he is, percentage-wise, to being done. Modern web browsers do their best to show this information with downloads. 3d rendering software will also tell you how far long it is and how much longer it&#8217;s going to take to render a scene.</p>
+          <p>When programming, be aware of how much waiting you do while working. Do your tests take five minutes? Are you constantly doing large file transfers? It&#8217;s not always possible to eliminate these sources of latency, but it&#8217;s good to be vigilant and attack them where you can.</p>
+          <h2>Unpredictability</h2>
+          <p>A <a href="http://en.wikipedia.org/wiki/Flow_(psychology)#Components_of_flow">key component of flow</a> is a sense of personal control over a situation or activity. In order for you to feel a sense of personal control, you must be able to make correct predictions about your current context. This gives you the confidence that the actions you perform will change your environment in the way you desire.</p>
+          <p>One key to achieving predictability is through consistency. Our brains are great at detecting patterns and using those to generate predictions. In fact, Jeff Hawkins (creator of the PalmPilot and co-founder of <a href="http://www.numenta.com/">Numenta, Inc.</a> ) <a href="http://www.amazon.com/On-Intelligence-Jeff-Hawkins/dp/0805078533/ref=sr_1_1?ie=UTF8&amp;qid=1338508112&amp;sr=8-1">argues</a> that that&#8217;s pretty much all they do. Our brains are constantly generating predictions about the world and using those patterns to generate behavior.</p>
+          <p>When you&#8217;re walking down stairs, your brain makes predictions about where each step will be and uses them to guide your foot placement. Sometimes it&#8217;s wrong and you miss the last stair and look ridiculous, but your champ of a brain goes on to make more predictions to about where to place your feet and how to wave your arms so that at least you don&#8217;t fall flat on your face.</p>
+          <h3>Predictability in Visual Design</h3>
+          <p>I wrote a kind of mini-book on using consistency in visual design: <a href="http://visualmess.com">Clean Up Your Mess</a> . But the high-level idea is that you should use visual attributes consistently for the different roles of your visual elements. For example, &#8220;Heading 1&#8221; is a role, and each &#8220;Heading 1&#8221; element should be the same size and color and have the same font. A caption is another role, and captions should be styled similarly. (This is a gross oversimplification so please don&#8217;t send me hate mail if you&#8217;re a designer.)</p>
+          <h3>Predictability in Code</h3>
+          <p>Whereas in visual design we use visual attributes like size, alignment, color, and space to communicate, with code we primarily use language. And just as an application interface can be rendered frustrating and unpredictable because of inconsistent design choices, our code can be rendered frustrating and unpredictable because of poor language choices.</p>
+          <p>For example, suppose you have three model classes named &#8220;UserModel&#8221;, &#8220;CommentModel&#8221;, and &#8220;PostModel&#8221;. Then you add a new model named &#8220;Attachment&#8221;. You&#8217;ve created a pattern by adding the &#8220;Model&#8221; suffix to each classname, then you violate this pattern by leaving it out of &#8220;Attachment&#8221;. Another &#8220;user&#8221; (programmer) will predict that this is <em>not</em> a model then become confused for an indeterminate amount of time as he puzzles out the true purpose of this class.</p>
+          <p>One of the great things about the Rails web framework was that it imposed consistency on many levels: file naming, database naming, file organization, test naming and organization in relation to the code they&#8217;re testing, etc. etc. etc. This kind of consistency is like having a shared language; instead of having 50 different words for the object in front of us, we can all call it &#8220;Judge Judy&#8221; and move on with our lives.</p>
+          <h3>Predictability in Application Design</h3>
+          <p>Things that similarly should behave similarly. Things that look similar to conventional designs should behavior according to those conventions. Your application shouldn&#8217;t up and do something your user didn&#8217;t ask it to. Really, I feel like so much has been <a href="http://www.amazon.com/gp/product/0321344758/ref=as_li_ss_tl?ie=UTF8&amp;tag=aflyingmachin-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0321344758">written</a> on this I don&#8217;t think there&#8217;s much more I can add except to place the ideas within a broader framework.</p>
+          <h2>Incompleteness</h2>
+          <p>(This section left intentionally blank)</p>
+          <p>Ah ha, I kid, I kid.</p>
+          <p>We experience frustration when something should be present, but isn&#8217;t. When a manual tells you how to turn on your blender but doesn&#8217;t tell you how to turn it off, it&#8217;s frustrating (and noisy).</p>
+          <p>When a web site is missing a &#8220;contact&#8221; link, it&#8217;s frustrating. When the comment you just left has no &#8220;delete&#8221; button, it&#8217;s frustrating. When you&#8217;re looking at legacy code and there&#8217;s no indication as to the purpose of a class or method, it&#8217;s frustrating.</p>
+          <p>These absences prevent us from doing what we want to do and sometimes make us want to go Hulk Smash.</p>
+          <h2>Conclusion</h2>
+          <p>I hope this little guide has been useful in helping you organize your thoughts about design, whether visual design or software design or UX design or product design.</p>
+          <p>Personally, I found it conspicuously incomplete &#8211; where&#8217;s the table of contents? Arrrrggghhh!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

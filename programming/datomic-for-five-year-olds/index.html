@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Datomic for Five Year Olds</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Datomic for Five Year Olds</h1>
+          <div class='date'>23 February 2013</div>
+          <p>If you're interested in
+          <a href="http://docs.datomic.com/tutorial.html">Datomic</a>, you may have been
+          deterred from checking it out because you lack the enthusiasm
+          necessary to slog through
+          <a href="http://www.infoq.com/search.action?queryString=datomic&amp;searchOrder=relevance&amp;search=datomic">3 keynotes, 8 interviews, and innumerable walls of text</a>
+          in order to get a basic idea of what the hell it is and whether you
+          should use it.</p>
+          
+          <p>Well, good news! I've done all that for you! How could I resist your
+          winning smile, you charmer you? After you're done with this article,
+          you will have a solid conceptual grasp of the three key ways that
+          Datomic is unique. You will also understand key Datomic terms. This
+          will make it much easier to actually get your hands dirty with Datomic
+          if you decide to investigate it further.</p>
+          
+          <h2>Overview of Datomic's Three Righteous Pillars of Databasing</h2>
+          
+          <p>Datomic differs from existing solutions in its <em>information model</em>,
+          its <em>architecture</em> and its <em>programmability</em>. Below is a quick
+          overview. We'll cover each of these righteous pillars of databasing in
+          much more detail.</p>
+          
+          <table class="comparison">
+              <tr>
+                  <th></th>
+                  <th>Relational DB</th>
+                  <th>Schemaless DB</th>
+                  <th>Datomic</th>
+              </tr>
+              <tr>
+                  <td>Information Model</td>
+                  <td>The unit of information is an entity in a relation and you
+                      alter it in place, forgetting previous values</td>
+                  <td>The unit of information is a schemaless document and you
+                      update it in place, forgetting previous values</td>
+                  <td>The unit of information is a fact comprised of an entity,
+                      attributes, values, and time. You accrete the assertion and
+                      retraction of facts instead of updating in place.</td>
+              </tr>
+              <tr>
+                  <td>Architecture</td>
+                  <td>Database is a monolithic system responsible for querying,
+                      ACID compliance, and storage</td>
+                  <td>Same as RDBMS</td>
+                  <td>Separate querying, transacting, and storage in such a way
+                      that you get ACID compliance, read scalability, and more
+                      power within the application using Datomic</td>
+              </tr>
+              <tr>
+                  <td>Programmability</td>
+                  <td>Applications abstract SQL by performing string
+                      manipulation</td>
+                  <td>Interact with proprietary data structures which are more
+                      programming-friendly than SQL but less powerful</td>
+                  <td>Datalog, completely uses data structures and has as much
+                      power as SQL</td>
+              </tr>
+          </table>
+          
+          <h2>First Righteous Pillar of Databasing: Information Model</h2>
+          
+          <p>A database's information model is defined by its rules regarding the
+          way entities and attributes relate to each other — for lack of a
+          better term, its schema system.</p>
+          
+          <p>Yea, the choice between a relational and schemaless database is
+          probably your primary concern in choosing a database because of its
+          influence on how you write and grow your programs. You'll see that
+          Datomic's schema system isn't as rigid as the relational model but
+          affords more power than a schemaless database.</p>
+          
+          <p>Additionally, a database's information model is defined by its
+          approach to time. Datomic's approach to time is different from most,
+          if not all, existing databases.</p>
+          
+          <p>Below are the schema systems for relational dbs, schemaless dbs, and
+          datomic, followed by a comparison of the way the information models
+          handle time.</p>
+          
+          <h3>Relational Schemas</h3>
+          
+          <p>You're probably already familiar with the
+          <a href="http://en.wikipedia.org/wiki/Relational_model">relational model</a>.
+          Here are key definitions:</p>
+          
+          <table>
+              <tr>
+                  <td>Entity</td>
+                  <td>An entity is <em>tuple</em> within a <em>relation</em>. It
+                  is comprised of a fixed set of attributes. In practice, an
+                  entity is a row in a table.
+              </td>
+          </tr>
+              <tr>
+                  <td>Attribute</td>
+                  <td>A name + a data type. A column in a table. Attributes do not
+                  exist outside of relations. Attributes in different relations
+                  are always logically distinct, even if they hold the same
+                  type of data.</td>
+              </tr>
+          </table>
+          
+          <p><img src="/assets/images/posts/datomic/relational.png" alt="Relational"></p>
+          
+          <p>Probably the most important fact about the relational model is that
+          it's rigid. Every entity must belong to a rigid relation. There's no
+          way to add or remove attributes except by altering the structure of
+          the relation, which in turn alters every other entity in that relation.</p>
+          
+          <h3>Schemaless</h3>
+          
+          <p>Schemaless (NoSQL) databases were created to address the rigidity of
+          relational databases. They offer a few facilities for organization -
+          for example, collections in MongoDB - but forego any structure for
+          entities. This lack of structure comes at a cost: it limits your query
+          power and forces data integrity concerns into your application.</p>
+          
+          <table>
+              <tr>
+                  <td>Entity</td>
+                  <td>For our purposes, a document. A document has no
+                  restrictions on what attributes it can have.</td>
+              </tr>
+              <tr>
+                  <td>Attribute</td>
+                  <td>A name. Attributes can hold values of any type, and an attribute
+                  belonging to one entity is logically distinct from all other
+                  attributes, even those belonging to other entities within the same
+                  collection. Relationships between attributes are enforced
+                  within the client application.</td>
+              </tr>
+          </table>
+          
+          <p><img src="/assets/images/posts/datomic/schemaless.png" alt="Schemaless"></p>
+          
+          <h3>Datomic Schemas</h3>
+          
+          <p>In Datomic, a schema defines a core set of attributes which
+          effectively act as data types. An entity can possess any attribute
+          without restriction. In this way, entities have more structure than a
+          schemaless database but are more flexible than in relational
+          databases. Additionally, you retain the query power of the
+          relational model without having to handle data integrity concerns in
+          your client applications.</p>
+          
+          <table>
+              <tr>
+                  <td>Entity</td>
+                  <td>A map of attribute/value pairs. Entities have no fixed
+                  shape; they can be comprised of any attributes defined in the
+                  schema. </td>
+              </tr>
+              <tr>
+                  <td>Attribute</td>
+                  <td>Name + data type + cardinality. Attributes themselves can
+                  be thought of as data types. They differ from attributes in
+                  the relational model in that they exist independently of rigid tables</td>
+              </tr>
+          </table>
+                  
+          
+          <p><img src="/assets/images/posts/datomic/datomic.png" alt="Datomic"></p>
+          
+          <h3>Time</h3>
+          
+          <p>Datomic's notion of time might be unfamiliar for those unacquainted
+          with Rich Hickey's thoughts on time and how it relates to identity,
+          value, and state. To get up to speed, check out my article,
+          <a href="/programming/the-unofficial-guide-to-rich-hickeys-brain/">"The Unofficial Guide to Rich Hickey's Brain"</a></p>
+          
+          <p>In both relational and schemaless databases, there's no built-in
+          notion of time. It's always "now" - the database doesn't hold on to
+          the past. Whenever you update or delete a row, you have no way of
+          retrieving previous states for that row.</p>
+          
+          <p>This is the source of many headaches for us. If you've ever used or
+          any code that requires multiple trips to the database in order to
+          perform one unit of work, you know what I mean. In between each trip,
+          you have no way of knowing whether the database has been been altered.
+          You can end up writing all kinds of hacks to avoid race conditions and
+          still not end up with a bulletproof system.</p>
+          
+          <p>In addition, it's virtually impossible to query past states. You might
+          not think this is really matters because you're used to the
+          limitation, but being able to easily query past states is very
+          powerful.</p>
+          
+          <p>In Datomic, time is a first-class concept. All changes to the database
+          are associated with a transaction, and each transaction has a
+          timestamp. Rather than updating an entity in place and "forgetting"
+          its previous state, datomic "accretes" states. In this way, you're
+          able to retrieve all previous states for an entity.</p>
+          
+          <p><img src="/assets/images/posts/datomic/time.png" alt="Datomic"></p>
+          
+          <p>Another way of thinking about it is that the database is an identity
+          which we superimpose on a time-ordered collection of values. In this
+          line of thinking, a "value" is the database as whole - its collection
+          of entities and attributes. When you run a transaction which creates,
+          updates, or deletes entities, you create a new database value. You're
+          always able to say, "I want to work with the value of the database at
+          this point in time."</p>
+          
+          <h3>Datomic's Information Model Summarized</h3>
+          
+          <p>In Datomic, the unit of information is a fact. A fact is comprised of
+          an entity, an attribute, a value, and time. If you were to say "The
+          princess", that would not be a fact. If you were to say, "The
+          princess's favorite condiment", that would not be a fact. A fact would
+          be "The princess's favorite condiment is mustard," that would be very
+          close to a fact. "The princess's favorite condiment is mustard as of
+          10pm on February 10th." is a fact.</p>
+          
+          <p>Facts don't go away. If the princess's tastes change so that she
+          prefers sriracha, it's still useful to know that in the past she
+          preferred mustard. More importantly, new facts don't obliterate old
+          facts. In Datomic, all prior facts are available. Also, in Datomic,
+          facts are called "datoms" and not "facts" because it's more exciting
+          that way.</p>
+          
+          <p>For more, check out
+          <a href="http://www.infoq.com/articles/Datomic-Information-Model">The Datomic Information Model</a>,
+          an article by Datomic's creator, Rich Hickey.</p>
+          
+          <h2>Second Righteous Pillar of Databasing: Architecture</h2>
+          
+          <p>Existing databases couple the following into one monolithic product:</p>
+          
+          <ul>
+          <li>Reading</li>
+          <li>Writing</li>
+          <li>Storage</li>
+          </ul>
+          
+          <p>Datomic decouples these capabilities. All writing is handled by a
+          single "transactor", ensuring ACID compliance. This is the only point
+          of similarity to existing solutions.</p>
+          
+          <p>Side note: the diagrams at the
+          <a href="http://www.datomic.com/overview.html">Datomic Architectural Overview</a>
+          page are quite awful. Besides being ugly, it is difficult to tell what
+          the visual components signify. What do the arrows mean? What does the
+          dashed border mean? WTF is "Comm"? Please, please fix these. OK, rant
+          over.</p>
+          
+          <p>Your application communicates with datomic through the Peer Library, a
+          component which exists within your applicaiton. Using the Peer Library
+          makes your application a Peer. I think the Datomic guys were trying to
+          avoid the term "client" here, but a Peer is essentially a client. What
+          makes a Peer diffeerent from the usual database client, however, is
+          that querying happens primarily in the Peer. By the way, when I say
+          "querying" I mean "read querying."</p>
+          
+          <p>Instead of sending a query "over there" to the database server, which
+          runs the query and gives the client results, the Peer Library is
+          responsible for pulling the "value of the database" into the Peer so
+          that querying happens within your actual application. If you were to
+          create a script out of this action-packed drama, it would look like:</p>
+          
+          <ul>
+          <li>
+          <strong><em>Peer:</em></strong> Peer Library! Find me all redheads who know how to play the
+          ukelele!</li>
+          <li>
+          <strong><em>Peer Library:</em></strong> Yes yes! Right away sir! Database - give me your
+          data!</li>
+          <li>(Peer Library retrieves the database and performs query on it)</li>
+          <li>
+          <strong><em>Peer Library:</em></strong> Here are all ukelele-playing redheads!</li>
+          <li>
+          <strong><em>Peer:</em></strong> Hooraaaaaaaay!</li>
+          </ul>
+          
+          <p>The most novel thing here is "retrieves the database". In Datomic, you
+          have the concept of the "value of the database" - the database as a
+          whole, as a data structure. The Peer Library is responsible for
+          pulling as much of that data structure into memory as necessary to
+          satisfy your queries.</p>
+          
+          <p>In this way, your queries run largely in your application rather than
+          in a central database server, allowing for easy read scalability. It
+          gives more power to your application rather than keeping all the power
+          in a central server, where you have to worry about bottlenecks.</p>
+          
+          <p>Finally, Datomic does not implement its own storage solution but
+          instead relies on storage as a service, allowing you to choose which
+          storage backend you use. Right now, the following backends are
+          supported:</p>
+          
+          <ul>
+          <li>The filesystem</li>
+          <li>DynamoDB</li>
+          <li>Riak</li>
+          <li>Couchbase</li>
+          <li>Infinispan</li>
+          <li>SQL database</li>
+          </ul>
+          
+          <h2>Third Righteous Pillar of Databasing: Programmability</h2>
+          
+          <p>In Datomic, everything is data! Your schema is data! Queries are data!
+          Transactions are data! This is great because it's easier to manipulate
+          data structures than it is to perform crazy string concatenation like
+          you do with SQL. Check out
+          <a href="https://github.com/Datomic/day-of-datomic/blob/master/samples/seattle/getting-started.clj">these example queries</a>.</p>
+          
+          <h2>Resources</h2>
+          
+          <ul>
+          <li><a href="http://www.infoq.com/presentations/The-Design-of-Datomic">The Design of Datomic</a></li>
+          <li><a href="http://www.infoq.com/interviews/hickey-datomic">Rich Hickey on Datomic</a></li>
+          <li><a href="http://www.infoq.com/presentations/Value-Values">The Value of Values</a></li>
+          <li><a href="http://www.infoq.com/articles/Datomic-Information-Model">The Datomic Information Model</a></li>
+          <li><a href="http://docs.datomic.com">Datomic docs</a></li>
+          </ul>
+          
+          <h2>The End</h2>
+          
+          <p>That's it for now! If you have any suggestions or corrections please
+          let me know.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

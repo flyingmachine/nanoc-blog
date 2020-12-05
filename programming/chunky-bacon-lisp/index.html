@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Chunky Bacon in the Land of Lisp: a Rubyist Becomes Intimately Acquainted with Parentheses</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Chunky Bacon in the Land of Lisp: a Rubyist Becomes Intimately Acquainted with Parentheses</h1>
+          <div class='date'>03 March 2012</div>
+          <h2>Ruby is Awesome</h2>
+          
+          <p>Like many Rubyists, I came to the language through Rails while fleeing
+          the horror of convoluted PHP sphagetti hell. For web development, the
+          Rails framework was a relief; for programming, Ruby was a revelation.</p>
+          
+          <p>When asked, most other Ruby programmers I know will say they feel the
+          same way. Ruby was
+          <a href="http://www.artima.com/intv/rubyP.html">designed to make programmers happy</a>
+          and it shows. Ruby is remarkably free of cruft. Its succinctness and
+          cohesion allow you to go from idea to implementation quickly.</p>
+          
+          <p>What this all boils down to is that Ruby requires far less "mental
+          overhead", leaving room for creative problem solving. Our memories and
+          attention spans are limited, and every time we get caught up in the
+          weird minutiae of a programming language we're likely to forget what
+          we were trying to do in the first place. We then need to piece
+          together our original purpose and plan of attack, breaking our flow
+          and causing frustration. Because Ruby introduces less of a cognitive
+          burden, we're able to stay "in the zone" longer and experience the
+          pleasure of creativity.</p>
+          
+          <p>In addition to its design, Ruby offers power and flexibility. As in
+          the old Perl mantra, it makes easy things easy and hard things
+          possible through such features as closures, meta programming, mixins,
+          message passing and "duck typing". All of these ideas were new to me
+          back in 2005 when I got my first taste of Ruby, and it was so exciting
+          to learn about them and use them that for months I spent almost every
+          morning and evening seeing what I could do with this awesome language.</p>
+          
+          <h2>Lisp is Awesome</h2>
+          
+          <p>It's been awhile since I've felt this excited about a
+          language. Javascript, which I pretty much learned in tandem with Ruby,
+          was a lot of fun. Objective-C was frustrating because I didn't know C
+          and couldn't find a comprehensive guide to the mammoth framework(s?)
+          used for cocoa development. Learning C was a fun challenge and it's
+          been useful in understanding Unix, but it hasn't really sustained my
+          interest.</p>
+          
+          <p>And now I've met Lisp. Common Lisp, to be exact. And I find myself
+          just as excited as when I started learning Ruby. I don't even really
+          know what I would use the language <em>for</em> - it's just fun to learn it
+          and see what I can do. For the time being, I've been occupying myself
+          with implementing
+          <a href="https://github.com/flyingmachine/minimax-tictactoe">Tic-Tac-Toe in Lisp and Ruby</a>,
+          as I wrote about in my <a href="/programming/minimax">article on minimax</a>. (By
+          the way - I plan on writing an article comparing the two versions.)
+          Next I plan to optimize those implementations a little bit, and after
+          that I shall work on my magnum opus: <em>Hobbit vs. Giant</em>.</p>
+          
+          <p>But back to Lisp. Like with Ruby, the language does not get in my
+          way. And just like when I came from PHP, I'm finding myself with a
+          wealth of new ideas and programming tools to play with. Generic
+          functions and classes, multi-methods, first-class treatment of
+          functions and closures - the list could go on. But chief among Lisp's
+          features is the mighty <em>macro</em>.</p>
+          
+          <h2>Macros are Awesome</h2>
+          
+          <p>One thing that really blew my mind about Ruby is the power you get
+          from its meta-programming. Though I've barely scratched the surface in
+          Lisp, I have the sense that Lisp's macro system offers <em>so much more</em>.</p>
+          
+          <p>It's hard for me to explain why I think macros are cool except by
+          analogy. So - consider that, in Ruby, everything is an object. This
+          simplifying concept reduces cognitive burden, but it also means that
+          you can extend Ruby's power to everything. You can open up the String
+          class and define methods on it because it's just a class like every
+          other.</p>
+          
+          <p>In Lisp, code is data. What this means is that the code you write to
+          do stuff takes the same form as the code you write to represent a
+          basic Lisp data structure, the list. For example, this is how you
+          would add two numbers in Lisp:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="mi">2</span><span class="p">)</span></pre></div>
+          <p>Now consider how you would write a list constant:</p>
+          <div class="highlight"><pre><span class="c1">'(+ 1 2)</span></pre></div>
+          <p>The single quote indicates, "Don't evaluate me, just use me as data".</p>
+          
+          <p>Because the code that you write in order to <em>do stuff</em> takes the same
+          form as a list, Lisp is able to treat code as data and use the full
+          power of the language to manipulate your code.</p>
+          
+          <p>This is what gives macros their power. By contrast, in Ruby you
+          perform metaprogramming largely through string manipulation and
+          symbols, As Peter Seibel explains in <a href="http://www.gigamonkeys.com/book/macros-defining-your-own.html">Practical Common
+          Lisp</a>:</p>
+          <div class="highlight"><pre><span class="vg">The</span><span class="w"> </span><span class="vg">key</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">understanding</span><span class="w"> </span><span class="vg">macros</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">quite</span><span class="w"> </span><span class="vg">clear</span><span class="w"> </span><span class="vg">about</span><span class="w"> </span><span class="vg">the</span>&#x000A;<span class="vg">distinction</span><span class="w"> </span><span class="vg">between</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="vg">that</span><span class="w"> </span><span class="vg">generates</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="p">(</span><span class="vg">macros</span><span class="p">)</span><span class="w"> </span><span class="vg">and</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">code</span>&#x000A;<span class="vg">that</span><span class="w"> </span><span class="vg">eventually</span><span class="w"> </span><span class="vg">makes</span><span class="w"> </span><span class="vg">up</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="p">(</span><span class="vg">everything</span><span class="w"> </span><span class="vg">else</span><span class="p">)</span><span class="o">.</span><span class="w"> </span><span class="vg">When</span><span class="w"> </span><span class="vg">you</span><span class="w"> </span><span class="vg">write</span>&#x000A;<span class="vg">macros</span><span class="p">,</span><span class="w"> </span><span class="vg">you</span><span class="c1">'re writing programs that will be used by the compiler to</span>&#x000A;<span class="vg">generate</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="vg">that</span><span class="w"> </span><span class="vg">will</span><span class="w"> </span><span class="vg">then</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">compiled</span><span class="o">.</span><span class="w"> </span><span class="vg">Only</span><span class="w"> </span><span class="vg">after</span><span class="w"> </span><span class="vg">all</span><span class="w"> </span><span class="vg">the</span>&#x000A;<span class="vg">macros</span><span class="w"> </span><span class="vg">have</span><span class="w"> </span><span class="vg">been</span><span class="w"> </span><span class="vg">fully</span><span class="w"> </span><span class="vg">expanded</span><span class="w"> </span><span class="vg">and</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">resulting</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="vg">compiled</span><span class="w"> </span><span class="vg">can</span>&#x000A;<span class="vg">the</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">actually</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">run</span><span class="o">.</span><span class="w"> </span><span class="vg">The</span><span class="w"> </span><span class="vg">time</span><span class="w"> </span><span class="vg">when</span><span class="w"> </span><span class="vg">macros</span><span class="w"> </span><span class="vg">run</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">called</span><span class="w"> </span><span class="vg">macro</span>&#x000A;<span class="vg">expansion</span><span class="w"> </span><span class="vg">time</span><span class="p">;</span><span class="w"> </span><span class="vg">this</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">distinct</span><span class="w"> </span><span class="vg">from</span><span class="w"> </span><span class="vg">runtime</span><span class="p">,</span><span class="w"> </span><span class="vg">when</span><span class="w"> </span><span class="vg">regular</span><span class="w"> </span><span class="vg">code</span><span class="p">,</span>&#x000A;<span class="vg">including</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="vg">generated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">macros</span><span class="p">,</span><span class="w"> </span><span class="vg">runs</span><span class="o">.</span></pre></div>
+          <p>As I write this, I find that I'm not really doing the subject
+          justice. That's probably inevitable. Before really learning what
+          closures are and how to use them, most Rubyists probably didn't see
+          what the big deal was. However, I hope that this explanation might
+          inspire other Rubyists did give this language a try. My guess is that
+          most who really give it a shot will come to enjoy it as I do. The
+          point is that Lisp offers a great deal of power and flexibility in an
+          elegant package, all language aspects that Rubyists appreciate. The
+          territory is worth exploring.</p>
+          
+          <h2>Lisp Resources</h2>
+          
+          <p>To get started, I recommend
+          <a href="http://amzn.to/1MyWXUg">Land of Lisp: Learn to Program in Lisp, One Game at a Time!</a>. I
+          would say that it rivals _why's book in fun, creativity, and
+          usefulness.</p>
+          
+          <p>As a follow-up, I recommend the aforementioned
+          <a href="http://www.gigamonkeys.com/book/">Practical Common Lisp</a>. It's also a
+          good choice to get started immediately as it's available online for
+          free. (Incidentally, it's quite pleasant to read as the typography is
+          good.) It's similar to the Pickaxe in that it gives a much more
+          thorough and straightforward explanation of the language. It has
+          really helped me fill in the gaps. The following resources are also
+          useful:</p>
+          
+          <ul>
+          <li>
+          <a href="http://www.reddit.com/r/lisp">r/lisp</a> - It's fun to see what's going on in the lisp world. The community has also been friendly and helpful.</li>
+          <li>
+          <a href="http://www.lispworks.com/documentation/HyperSpec/Front/index.htm">The Common Lisp HyperSpec</a> - The master CL reference.</li>
+          <li>
+          <a href="http://www.paulgraham.com/onlisp.html">On Lisp</a> - Paul Graham's
+          classic, for free. I haven't actually started this one yet but I'll
+          be going through it next.</li>
+          <li>
+          <a href="http://amzn.to/1Ww8AWV">Let Over Lambda</a> - I've only just started this and it's probably too advanced for me, but holy crap is it exciting to read!</li>
+          </ul>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

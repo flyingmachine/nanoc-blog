@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>How Clojure Babies are Made: Leiningen's Trampoline</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>How Clojure Babies are Made: Leiningen's Trampoline</h1>
+          <div class='date'>23 March 2013</div>
+          <p>In
+          <a href="/programming/how-clojure-babies-are-made-lein-run/">the last "How Clojure Babies are Made" article</a>
+          I hinted that Leiningen avoids waste by using a trampoline. In this
+          installment of this awkwardly-named Clojure series, you'll learn what
+          the trampoline does and how it does it.</p>
+          
+          <h2>The Rationale Behind the Trampoline</h2>
+          
+          <p>I know what you're thinking, wise-hearted reader. "Why would anyone
+          need to provide a rationale for a trampoline? That's like trying to
+          give a reason for rainbows, or a newborn's laughter, or Michael
+          Jackson's <em>Thriller</em>."</p>
+          
+          <p>Allow me to explain myself. <code>lein trampoline</code> does indeed give you a
+          feeling of weightless freedom, just not in the way that you're used
+          to.</p>
+          
+          <p>See, whenever you use Leiningen to run code from your project, you end
+          up with two Java processes running. Each process loads a separate
+          instance of the
+          <a href="http://en.wikipedia.org/wiki/Java_virtual_machine">JVM</a>. We saw this
+          in
+          <a href="/programming/how-clojure-babies-are-made-lein-run/">the previous article</a>
+          in the output of <code>ps | grep lein</code>. The first process is for Leiningen
+          itself, and it's responsible for setting up everything necessary for
+          your project code to run. The second process is where your code
+          actually executes. If you were to run <code>lein -h</code>, you would only start
+          one Java process, as none of your project code would need to be
+          executed.</p>
+          
+          <p>Leiningen starts a separate process for your project in order to
+          enforce isolation. This is because Leiningen is a true gentleman who
+          does not allow his namespaces and dependencies (like, say, a
+          completely different version of Clojure) to interfere with your
+          meticulously hand-crafted, artisinal program.</p>
+          
+          <p>However, like a doting father, the Leiningen process continues to stay
+          open for the entire duration of your program's execution. If you have
+          a long-running process, like a web server for your Justin Bieber fan
+          site, then Leiningen stays open the whole time consuming memory that
+          could be put to use in compositing images of the Biebs with hearts all
+          over them.</p>
+          
+          <p>This is where the trampoline comes into play. It allows the Leiningen
+          process to exit completely before your project's process starts. Now,
+          instead of two JVM's running, you only have one.</p>
+          
+          <p>I think the name "trampoline" was chosen to evoke an image of
+          Leiningen providing a launching point for your program. However, I
+          choose to envision the trampoline process as follows:</p>
+          
+          <ol>
+          <li>Leiningen takes your program, which is embodied as one of those
+          cymbal-clanging monkeys with unsettling eyes, and winds it up.</li>
+          <li>Leiningen gingerly places the wind-up monkey which is your program
+          on the floor of a cozy Hobbit hole.</li>
+          <li>Leiningen steps outside and mounts a gigantic trampoline in Bilbo's
+          front yard.</li>
+          <li>Leiningen takes two warm-up bounces and then, with a mighty
+          "Hyup!", rockets himself into the sky, his mustaches flapping in
+          the wind. He grows smaller and smaller until, with a bright
+          sparkle, he disappears entirely.</li>
+          <li>Your cymbal-clanging web server starts up, allowing users to
+          profess their undying love for teenage pop stars.</li>
+          </ol>
+          
+          <h2>How lein trampoline Works</h2>
+          
+          <p>Though you don't really need to understand how <code>lein trampoline</code> works
+          in order to use it, I think it's pretty cool. Below I walk you through
+          it step by step, with relevant code. We'll be using the project under
+          <code>leiningen/lein-build</code> of the
+          <a href="https://github.com/flyingmachine/make-a-clojure-baby/tree/master/leiningen/lein-build">make-a-clojure-baby github repo</a>.</p>
+          
+          <ol>
+          <li><p>Run <code>lein trampoline run</code> from the command line. If you're on a linux machine,
+          this executes a
+          <a href="https://github.com/technomancy/leiningen/blob/6a70dc32362406be17189adc3c3a8d49e6594810/bin/lein">bash script</a>.
+          This script is probably at ~/bin/lein on your system.</p></li>
+          <li>
+          <p>The bash script
+          <a href="https://github.com/technomancy/leiningen/blob/6a70dc32362406be17189adc3c3a8d49e6594810/bin/lein#L273">sets the <code>TRAMPOLINE_FILE</code></a>
+          environment variable to a path. Later in this process, Leiningen
+          will write a command to this file. Here's the part of the script
+          that sets the environment variable:</p>
+          <div class="highlight"><pre><span class="k">if</span> <span class="o">([</span> <span class="s2">"$LEIN_FAST_TRAMPOLINE"</span> !<span class="o">=</span> <span class="s2">""</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> -r .lein-fast-trampoline <span class="o">])</span> <span class="o">&amp;&amp;</span>&#x000A;    <span class="o">[</span> -r project.clj <span class="o">]</span><span class="p">;</span> <span class="k">then</span>&#x000A;    <span class="nv">INPUTS</span><span class="o">=</span><span class="s2">"$@ $(cat project.clj) $LEIN_VERSION $(cat "</span><span class="nv">$LEIN_HOME</span>/profiles.clj<span class="s2">")"</span>&#x000A;    <span class="nv">INPUT_CHECKSUM</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$INPUTS</span> <span class="p">|</span> shasum - <span class="p">|</span> cut -f <span class="m">1</span> -d <span class="s2">" "</span><span class="k">)</span>&#x000A;    <span class="c"># Just don't change :target-path in project.clj, mkay?</span>&#x000A;    <span class="nv">TRAMPOLINE_FILE</span><span class="o">=</span><span class="s2">"target/trampolines/$INPUT_CHECKSUM"</span>&#x000A;<span class="k">else</span>&#x000A;    <span class="nv">TRAMPOLINE_FILE</span><span class="o">=</span><span class="s2">"/tmp/lein-trampoline-$$"</span>&#x000A;    <span class="nb">trap</span> <span class="s2">"rm -f $TRAMPOLINE_FILE"</span> EXIT&#x000A;<span class="k">fi</span></pre></div>
+          </li>
+          <li>
+          <p>The first Java process starts:</p>
+          <div class="highlight"><pre><span class="o">/</span><span class="vg">usr</span><span class="o">/</span><span class="vg">bin</span><span class="o">/</span><span class="vg">java</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">client</span><span class="w"> </span><span class="o">-</span><span class="nl">XX:</span><span class="o">+</span><span class="vg">TieredCompilation</span><span class="w">  </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Xbootclasspath</span><span class="o">/</span><span class="nl">a:</span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/.</span><span class="vg">lein</span><span class="o">/</span><span class="vg">self</span><span class="o">-</span><span class="vg">installs</span><span class="o">/</span><span class="vg">leiningen</span><span class="mf">-2.0.0</span><span class="o">-</span><span class="vg">standalone</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dfile</span><span class="o">.</span><span class="vg">encoding</span><span class="o">=</span><span class="vg">UTF</span><span class="il">-8</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dmaven</span><span class="o">.</span><span class="vg">wagon</span><span class="o">.</span><span class="vg">http</span><span class="o">.</span><span class="vg">ssl</span><span class="o">.</span><span class="vg">easy</span><span class="o">=</span><span class="vg">false</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dleiningen</span><span class="o">.</span><span class="vg">original</span><span class="o">.</span><span class="vg">pwd</span><span class="o">=/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dleiningen</span><span class="o">.</span><span class="vg">script</span><span class="o">=/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">bin</span><span class="o">/</span><span class="vg">lein</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">classpath</span><span class="w"> </span><span class="o">:/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/.</span><span class="vg">lein</span><span class="o">/</span><span class="vg">self</span><span class="o">-</span><span class="vg">installs</span><span class="o">/</span><span class="vg">leiningen</span><span class="mf">-2.0.0</span><span class="o">-</span><span class="vg">standalone</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="o">\</span><span class="w"> </span><span class="err">`#</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">entry</span><span class="w"> </span><span class="vg">point</span><span class="err">`</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">m</span><span class="w"> </span><span class="vg">leiningen</span><span class="o">.</span><span class="vg">core</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="vg">trampoline</span><span class="w"> </span><span class="vg">run</span><span class="w"> </span><span class="il">1</span></pre></div>
+          </li>
+          <li><p>This causes Java to execute the <code>-main</code> method in <code>clojure.main</code>,
+          which in turn loads <code>leiningen.core.main</code> and executes its <code>-main</code>
+          function.</p></li>
+          <li>
+          <p><code>leiningen.core.main/-main</code> applies the
+          <a href="https://github.com/technomancy/leiningen/blob/6a70dc32362406be17189adc3c3a8d49e6594810/src/leiningen/trampoline.clj#L44">trampoline task</a>:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="o">^</span><span class="ss">:higher-order</span> <span class="nv">trampoline</span>&#x000A;  <span class="s">"Run a task without nesting the project's JVM inside Leiningen's.</span>&#x000A;&#x000A;<span class="s">Calculates the Clojure code to run in the project's process for the</span>&#x000A;<span class="s">given task and allows Leiningen's own JVM process to exit before</span>&#x000A;<span class="s">running it rather than launching a subprocess of Leiningen's JVM.</span>&#x000A;&#x000A;<span class="s">Use this to save memory or to work around stdin issues."</span>&#x000A;  <span class="p">[</span><span class="nb">project </span><span class="nv">task-name</span> <span class="o">&amp;</span> <span class="nv">args</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">= </span><span class="ss">:leiningen</span> <span class="p">(</span><span class="ss">:eval-in</span> <span class="nv">project</span><span class="p">))</span>&#x000A;    <span class="p">(</span><span class="nf">main/info</span> <span class="s">"Warning: trampoline has no effect with :eval-in-leiningen."</span><span class="p">))</span>&#x000A;  <span class="p">(</span><span class="nb">binding </span><span class="p">[</span><span class="nv">*trampoline?*</span> <span class="nv">true</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="nf">main/apply-task</span> <span class="p">(</span><span class="nf">main/lookup-alias</span> <span class="nv">task-name</span> <span class="nv">project</span><span class="p">)</span>&#x000A;                     <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">assoc project </span><span class="ss">:eval-in</span> <span class="ss">:trampoline</span><span class="p">)</span>&#x000A;                         <span class="p">(</span><span class="nf">vary-meta</span> <span class="nv">update-in</span> <span class="p">[</span><span class="ss">:without-profiles</span><span class="p">]</span> <span class="nv">assoc</span>&#x000A;                                    <span class="ss">:eval-in</span> <span class="ss">:trampoline</span><span class="p">))</span>&#x000A;                     <span class="nv">args</span><span class="p">))</span>&#x000A;  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">seq </span><span class="o">@</span><span class="nv">eval/trampoline-forms</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">write-trampoline</span> <span class="nb">project </span><span class="o">@</span><span class="nv">eval/trampoline-forms</span> <span class="o">@</span><span class="nv">eval/trampoline-profiles</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">main/abort</span> <span class="nv">task-name</span> <span class="s">"did not run any project code for trampolining."</span><span class="p">)))</span></pre></div>
+          </li>
+          <li><p><code>trampoline</code> calls <code>leiningen.core.main/apply-task</code> but with a
+          twist: it passes that function an updated project configuration,
+          setting <code>:eval-in</code> to <code>:trampoline</code>. You can see this is the
+          snippet above.</p></li>
+          <li>
+          <p>Eventually, <code>leiningen.core.eval/eval-in-project</code> gets applied. The
+          cool thing about this function is that it then calls
+          <code>leiningen.core.eval/eval-in</code>, which is a multi-method. It has
+          different definitions for <code>:subprocess</code>, <code>:trampoline</code>, <code>:nrepl</code>,
+          and a few more. This is one of the first times I've seen
+          <code>defmethod</code> "in the wild" and it really tickled my pfeffernuesse.
+          Definitely
+          <a href="https://github.com/technomancy/leiningen/blob/6a70dc32362406be17189adc3c3a8d49e6594810/leiningen-core/src/leiningen/core/eval.clj#L203">check it out on github</a>.</p>
+          
+          <p>Since we updated our project configuration in the last step so that
+          <code>:eval-in</code> is <code>:trampoline</code>, the <code>:trampoline</code> method gets matched:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defmethod </span><span class="nv">eval-in</span> <span class="ss">:trampoline</span> <span class="p">[</span><span class="nb">project </span><span class="nv">form</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">swap!</span> <span class="nv">trampoline-forms</span> <span class="nb">conj </span><span class="nv">form</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">swap!</span> <span class="nv">trampoline-profiles</span> <span class="nb">conj </span><span class="p">(</span><span class="nb">select-keys </span><span class="nv">project</span>&#x000A;                                               <span class="p">[</span><span class="ss">:dependencies</span> <span class="ss">:source-paths</span>&#x000A;                                                <span class="ss">:resource-paths</span> <span class="ss">:test-paths</span><span class="p">])))</span></pre></div>
+          <p>This updates the <code>trampoline-forms</code> and <code>trampoline-profiles</code> atoms
+          within the <code>leiningen.core.eval</code> namespace.</p>
+          </li>
+          <li>
+          <p>The <code>trampoline</code> function shown in step 5 above continues
+          executing:</p>
+          <div class="highlight"><pre>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">seq </span><span class="o">@</span><span class="nv">eval/trampoline-forms</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">write-trampoline</span> <span class="nb">project </span><span class="o">@</span><span class="nv">eval/trampoline-forms</span> <span class="o">@</span><span class="nv">eval/trampoline-profiles</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">main/abort</span> <span class="nv">task-name</span> <span class="s">"did not run any project code for trampolining."</span><span class="p">)))</span></pre></div>
+          <p><code>write-trampoline</code> writes out the entire Java command necessary to
+          finally run our project's <code>main</code> function. It writes this command
+          to the path in the <code>TRAMPOLINE_FILE</code> environment variable set by
+          the bash script in step 2 above.</p>
+          </li>
+          <li>
+          <p>The Leiningen process exits and the bash process from step 2
+          continues. It checks for the existence of <code>TRAMPOLINE_FILE</code>, and
+          since it exists, it essentially evaluates the command in it,
+          kicking off the Java process which will run your code:</p>
+          <div class="highlight"><pre><span class="k">if</span> <span class="o">[</span> -r <span class="s2">"$TRAMPOLINE_FILE"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">"$LEIN_TRAMPOLINE_WARMUP"</span> <span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>&#x000A;    <span class="nv">TRAMPOLINE</span><span class="o">=</span><span class="s2">"$(cat $TRAMPOLINE_FILE)"</span>&#x000A;    <span class="k">if</span> <span class="o">[</span> <span class="s2">"$INPUT_CHECKSUM"</span> <span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>&#x000A;        rm <span class="nv">$TRAMPOLINE_FILE</span>&#x000A;    <span class="k">fi</span>&#x000A;    <span class="nb">exec </span>sh -c <span class="s2">"exec $TRAMPOLINE"</span>&#x000A;<span class="k">else</span>&#x000A;    <span class="nb">exit</span> <span class="nv">$EXIT_CODE</span>&#x000A;<span class="k">fi</span></pre></div>
+          </li>
+          </ol>
+          
+          <p>It's a bit of circuitous route, but Leiningen is not one to shy away
+          from hard work!</p>
+          
+          <h2>The End</h2>
+          
+          <p>I hope you found this article interesting! The following topics are
+          next on my list of things to write about:</p>
+          
+          <ul>
+          <li>How Leiningen manages dependencies</li>
+          <li>How to distribute a full application</li>
+          <li>How to distribute a library</li>
+          </ul>
+          
+          <p>So long for now, and may the lambda be with you!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

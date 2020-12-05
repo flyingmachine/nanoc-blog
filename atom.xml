@@ -1,0 +1,2843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://www.flyingmachinestudios.com/</id>
+  <title>Flying Machine Studios</title>
+  <updated>2019-11-22T05:00:00Z</updated>
+  <link rel="alternate" href="http://www.flyingmachinestudios.com/"/>
+  <link rel="self" href="http://www.flyingmachinestudios.com/atom.xml"/>
+  <author>
+    <name>Daniel Higginbotham</name>
+    <uri>http://www.flyingmachinestudios.com</uri>
+  </author>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2019-08-13:/programming/why-programmers-need-frameworks/</id>
+    <title type="html">Frameworks and Why (Clojure) Programmers Need Them</title>
+    <published>2019-08-13T21:00:00Z</published>
+    <updated>2019-08-13T21:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/why-programmers-need-frameworks/"/>
+    <content type="html">&lt;p&gt;It seems like there's a strong aversion to using frameworks in the
+Clojure community. Other languages might need frameworks, but not
+ours! Libraries all the way, baby!&lt;/p&gt;
+
+&lt;p&gt;This attitude did not develop without reason. Many of us came to
+Clojure after getting burned on magical frameworks like Rails, where
+we ended up spending an inordinate amount of time coming up with hacks
+for the framework's shortcomings. Another "problem" is that Clojure
+tools like &lt;a href="http://www.luminusweb.net/"&gt;Luminus&lt;/a&gt; and the top-rate web
+dev libraries it bundles provide such a productive experience that
+frameworks seem superfluous.&lt;/p&gt;
+
+&lt;p&gt;Be that as it may, I'm going to make the case for why the community's
+dominant view of frameworks needs revision. Frameworks are useful. To
+convince you, I'll start by explaining what a framework is. I have yet
+to read a definition of &lt;em&gt;framework&lt;/em&gt; that satisfies me, and I think
+some of the hate directed at them stems from a lack of clarity about
+what exactly they are. Are they just glorified libraries? Do they have
+to be magical?  Is there some law decreeing that they have to be more
+trouble than they're worth? All this and more shall be revealed.&lt;/p&gt;
+
+&lt;p&gt;I think the utility of frameworks will become evident by describing
+the purpose they serve and how they achieve that purpose. The
+description will also clarify what makes a &lt;em&gt;good&lt;/em&gt; framework and
+explain why some frameworks end up hurting us. My hope is that you'll
+find this discussion interesting and satisfying, and that it will give
+you a new, useful perspective not just on frameworks but on
+programming in general. Even if you still don't want to use a
+framework after you finish reading, I hope you'll have a better
+understanding of the problems frameworks are meant to solve and that
+this will help you design applications better.&lt;/p&gt;
+
+&lt;p&gt;Frameworks have second-order benefits, and I'll cover those too. They
+make it possible for an ecosystem of reusable components to
+exist. They make programming fun. They make it easier for beginners to
+make stuff.&lt;/p&gt;
+
+&lt;p&gt;Last, I'll cover some ways that I think Clojure is uniquely suited to
+creating kick-ass frameworks.&lt;/p&gt;
+
+&lt;p&gt;(By the way: I've written this post because I'm building a Clojure
+framework! So yeah this is totally my Jedi mind trick to prime you to
+use &lt;em&gt;my&lt;/em&gt; framework. The framework's not released yet, but I've used it
+to build &lt;a href="https://gratefulplace.com"&gt;Grateful Place, a community for people who are into
+cultivating gratitude, compassion, generosity, and other positive
+practices&lt;/a&gt;. Just as learning Clojure makes
+you a better programmer, learning to approach each day with
+compassion, curiosity, kindness, and gratitude will make you a more
+joyful person. If you want to brighten your day and mine, please
+join!)&lt;/p&gt;
+
+&lt;h2&gt;What is a Framework?&lt;/h2&gt;
+
+&lt;p&gt;A framework is a set of libraries that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Manages the complexity of coordinating the &lt;em&gt;resources&lt;/em&gt; needed to
+write an application...&lt;/li&gt;
+&lt;li&gt;by providing &lt;em&gt;abstractions&lt;/em&gt; for those resources...&lt;/li&gt;
+&lt;li&gt;and &lt;em&gt;systems for communicating&lt;/em&gt; between those resources...&lt;/li&gt;
+&lt;li&gt;within an &lt;em&gt;environment&lt;/em&gt;...&lt;/li&gt;
+&lt;li&gt;so that programmers can &lt;em&gt;focus on writing the business logic&lt;/em&gt; that's
+specific to their product&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I'll elaborate on each of these points using examples from
+&lt;a href="https://rubyonrails.org/"&gt;Rails&lt;/a&gt; and from the ultimate framework: the
+&lt;em&gt;operating system&lt;/em&gt;. &lt;/p&gt;
+
+&lt;p&gt;You might wonder, how is an OS a framework? When you look at the list
+of framework responsibilities, you'll notice that the OS handles all
+of them, and it handles them exceedingly well. Briefly: an OS provides
+virtual abstractions for hardware resources so that programmers don't
+have to focus on the details of, say, pushing bytes onto some
+particular disk or managing CPU scheduling. It also provides the
+conventions of a hierarchical filesystem with an addressing system
+consisting of names separated by forward slashes, and these
+conventions provide one way for resources to communicate with each
+other (Process A can write to &lt;code&gt;/foo/bar&lt;/code&gt; while Process B reads from
+it) - if every programmer came up with her own bespoke addressing
+system, it would be a disaster. The OS handles this for us so we can
+focus on application-specific tasks.&lt;/p&gt;
+
+&lt;p&gt;Because operating systems are such successful frameworks we'll look at
+a few of their features in some detail so that we can get a better
+understanding of what good framework design looks like.&lt;/p&gt;
+
+&lt;h3&gt;Coordinating Resources&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;Resources&lt;/em&gt; are the "materials" used by programs to do their work, and
+can be divided into four categories: storage, computation,
+communication, and interfaces. Examples of storage include files,
+databases, and caches. Computation examples include processes,
+threads, actors, background jobs, and core.async processes. For
+communication there are HTTP requests, message queues, and event
+buses. Interfaces typically include keyboard and mouse, plus screens
+and the systems used to display stuff on them: gui toolkits, browsers
+and the DOM, etc.&lt;/p&gt;
+
+&lt;p&gt;Specialized resources are built on top of more general-purpose
+resources. (Some refer to these specialized resources as &lt;em&gt;services&lt;/em&gt; or
+&lt;em&gt;components&lt;/em&gt;.) We start with hardware and build virtual resources on
+top. With storage, the OS starts with disks and memory and creates the
+filesystem as a virtual storage resource on top. Databases like
+Postgres use the filesystem to create another virtual storage resource
+to handle use cases not met by the filesystem. Datomic uses other
+databases like Cassandra or DynamoDB as its storage layer. Browsers
+create their own virtual environments and introduce new resources like
+local storage and cookies.&lt;/p&gt;
+
+&lt;p&gt;For computation, the OS introduces processes and threads as virtual
+resources representing and organizing program execution. Erlang
+creates an environment with a process model that's dramatically
+different from the underlying OS's. Same deal with Clojure's
+&lt;code&gt;core.async&lt;/code&gt;, which introduces the &lt;em&gt;communicating sequential
+processes&lt;/em&gt; computation model. It's a virtual model defined by Clojure
+macros, "compiled" to core clojure, then compiled to JVM bytecode (or
+JavaScript!), which then has to be executed by operating system
+processes.&lt;/p&gt;
+
+&lt;p&gt;Interfaces follow the same pattern: on the visual display side, the OS
+paints to monitors, applications paint to their own virtual canvas,
+browsers are applications which introduce their own resources (the DOM
+and &lt;code&gt;&amp;lt;canvas&amp;gt;&lt;/code&gt;), and React introduces a virtual DOM. Emacs is an
+operating system on top of the operating system, and it provides
+windows and frames.&lt;/p&gt;
+
+&lt;p&gt;Resources manage their own &lt;em&gt;entities&lt;/em&gt;: in a database, entities could
+include tables, rows, triggers, and sequences. Filesystem entities
+include directories and files. A GUI manages windows, menu bars, and
+other components.&lt;/p&gt;
+
+&lt;p&gt;(I realize that this description of &lt;em&gt;resource&lt;/em&gt; is not the kind of
+airtight, axiomatic, comprehensive description that programmers like.
+One shortcoming is that the boundary between resource and application
+is pretty thin: Postgres is an application in its own right, but from
+the perspective of a Rails app it's a resource. Still, hopefully my
+use of &lt;em&gt;resource&lt;/em&gt; is clear enough that you nevertheless understand
+what the f I'm talking about when I talk about resources.)&lt;/p&gt;
+
+&lt;p&gt;Coordinating these resources is inherently complex. Hell, coordinating
+anything is complex. I still remember the first time I got smacked in
+the face with a baseball in little league thanks to a lack of
+coordination. There was also a time period where I, as a child, took
+tae kwon do classes and frequently ended up sitting with my back
+against the wall with my eyes closed in pain because a) my mom for
+some reason refused to buy me an athletic cup and b) I did not possess
+the coordination to otherwise protect myself during sparring.&lt;/p&gt;
+
+&lt;p&gt;When building a product, you have to decide how to create, validate,
+secure, and dispose of resource entities; how to convey entities from
+one resource to another; and how to deal with issues like timing (race
+conditions) and failure handling that arise whenever resources
+interact, all without getting hit in the face. Rails, for instance,
+was designed to coordinate browsers, HTTP servers, and databases. It
+had to convey user input to a database, and also retrieve and render
+database records for display by the user interface, via HTTP requests
+and responses.&lt;/p&gt;
+
+&lt;p&gt;There is no obvious or objectively correct way to coordinate these
+resources. In Rails, HTTP requests would get dispatched to a
+Controller, which was responsible for interacting with a database and
+making data available to a View, which would render HTML that could be
+sent back to the browser.&lt;/p&gt;
+
+&lt;p&gt;You don't &lt;em&gt;have&lt;/em&gt; to coordinate web app resources using the
+Model/View/Controller (MVC) approach Rails uses, but you do have to
+coordinate these resources &lt;em&gt;somehow&lt;/em&gt;. These decisions involve making
+tradeoffs and imposing constraints to achieve a balance of
+extensibility (creating a system generic enough for new resources to
+participate) and power (allowing the system to fully exploit the
+unique features of a specific resource).&lt;/p&gt;
+
+&lt;p&gt;This is a very difficult task even for experienced developers, and the
+choices you make could have negative repercussions that aren't
+apparent until you're heavily invested in them. With Rails, for
+instance, ActiveRecord (AR) provided a good generic abstraction for
+databases, but early on it was very easy to produce extremely
+inefficient SQL, and sometimes very difficult to produce efficient
+SQL. You'd often have to hand-write SQL, eliminating some of the
+benefits of using AR in the first place.&lt;/p&gt;
+
+&lt;p&gt;For complete beginners, the task of making these tradeoffs is
+impossible because doing so requires experience. Beginners won't even
+know that it's necessary to make these decisions. At the same time,
+more experienced developers would prefer to spend their time and
+energy solving more important problems.&lt;/p&gt;
+
+&lt;p&gt;Frameworks make these decisions for us, allowing us to focus on
+business logic, and they do so by introducing &lt;em&gt;communication systems&lt;/em&gt;
+and &lt;em&gt;abstractions&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Resource Abstractions&lt;/h3&gt;
+
+&lt;p&gt;Our software interacts with resources via their &lt;em&gt;abstractions&lt;/em&gt;. I
+think of abstractions as:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the data structures used to represent a resource&lt;/li&gt;
+&lt;li&gt;the set of messages that a resource responds to&lt;/li&gt;
+&lt;li&gt;the mechanisms the resource uses to call your application's code&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(&lt;em&gt;Abstraction&lt;/em&gt; might be a terrible word to use here. Every developer
+over three years old has their own definition, and if mine doesn't
+correspond to yours just cut me a little slack and run with it :)&lt;/p&gt;
+
+&lt;p&gt;Rails exposes a database resource that your application code interacts
+with via the &lt;code&gt;ActiveRecord&lt;/code&gt; abstraction. Tables correspond to classes,
+and rows to objects of that class. This a choice with tradeoffs - rows
+could have been represented as Ruby hashes (a primitive akin to a JSON
+object), which might have made them more portable while making it more
+difficult to concisely express database operations like &lt;code&gt;save&lt;/code&gt; and
+&lt;code&gt;destroy&lt;/code&gt;. The abstraction also responds to &lt;code&gt;find&lt;/code&gt;, &lt;code&gt;create&lt;/code&gt;,
+&lt;code&gt;update&lt;/code&gt;, and &lt;code&gt;destroy&lt;/code&gt;. It calls your application's code via
+lifecycle callback methods like &lt;code&gt;before_validation&lt;/code&gt;. Frameworks add
+value by identifying these lifecycles and providing interfaces for
+them when they're absent from the underlying resource.&lt;/p&gt;
+
+&lt;p&gt;You already know this, but it bears saying: abstractions let us code
+at a higher level. Framework abstractions handle the concerns that are
+specific to resource management, letting us focus on building
+products. Designed well, they enable loose coupling.&lt;/p&gt;
+
+&lt;p&gt;Nothing exemplifies this better than the massively successful &lt;em&gt;file&lt;/em&gt;
+abstraction that the UNIX framework introduced. We're going to look at
+in detail because it embodies design wisdom that can help us
+understand what makes a good framework.&lt;/p&gt;
+
+&lt;p&gt;The core file functions are &lt;code&gt;open&lt;/code&gt;, &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt;, and
+&lt;code&gt;close&lt;/code&gt;. Files are represented as sequential streams of bytes, which
+is just as much a choice as ActiveRecord's choice to use Ruby
+objects. Within processes, open files are represented as &lt;em&gt;file
+descriptors&lt;/em&gt;, which are usually a small integer. The &lt;code&gt;open&lt;/code&gt; function
+takes a path and returns a file descriptor, and &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt;, and
+&lt;code&gt;close&lt;/code&gt; take a file descriptor as an argument to do their work.&lt;/p&gt;
+
+&lt;p&gt;Now here's the amazing magical kicker: &lt;em&gt;file&lt;/em&gt; doesn't have to mean
+&lt;em&gt;file on disk&lt;/em&gt;. Just as Rails implements the ActiveRecord abstraction
+for MySQL and Postgres, the OS implements the file abstraction for
+&lt;strong&gt;pipes&lt;/strong&gt;, terminals, and other resources, meaning that your programs
+can write to them using the same system calls as you'd use to write
+files to disk - indeed, from your program's standpoint, all it knows
+is that it's writing to a file; it doesn't know that the "file" that a
+file descriptor refers to might actually be a pipe.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Exercise for the reader: write a couple paragraphs explaining
+precisely the design choices that enable this degree of loose
+coupling. How can these choices help us in evaluating and designing
+frameworks?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This design is a huge part of UNIX's famed simplicity. It's what lets
+us run this in a shell:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# list files in the current directory and perform a word count on the output&lt;/span&gt;
+ls &lt;span class="p"&gt;|&lt;/span&gt; wc
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The shell interprets this by launching an &lt;code&gt;ls&lt;/code&gt; process. Normally, when
+a process is launched it creates three file descriptors (which,
+remember, represent open files): &lt;code&gt;0&lt;/code&gt; for &lt;code&gt;STDIN&lt;/code&gt;, &lt;code&gt;1&lt;/code&gt; for &lt;code&gt;STDOUT&lt;/code&gt;,
+and &lt;code&gt;2&lt;/code&gt; for &lt;code&gt;STDERR&lt;/code&gt;, and the shell sets each file descriptor to refer
+to your terminal (terminals can be files!! what!?!?). Your shell sees
+the pipe, &lt;code&gt;|&lt;/code&gt;, and sets &lt;code&gt;ls&lt;/code&gt;'s &lt;code&gt;STDOUT&lt;/code&gt; to the pipe's &lt;code&gt;STDIN&lt;/code&gt;, and the
+pipe's &lt;code&gt;STDOUT&lt;/code&gt; to &lt;code&gt;wc&lt;/code&gt;'s &lt;code&gt;STDIN&lt;/code&gt;. The pipe links processes' file
+descriptors, while the processes get to read and write "files" without
+having to know what's actually on the other end. No joke, every time I
+think of this I get a little excited tingle at the base of my
+spine because I am a:&lt;/p&gt;
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/IRsPheErBj8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;This is why file I/O is referred to as &lt;em&gt;the universal I/O model&lt;/em&gt;. I'll
+have more to say about this in the next section, but I share it here
+to illustrate how much more powerful your programming environment can
+be if you find the right abstractions. The file I/O model still
+dominates decades after its introduction, making our lives easier
+&lt;em&gt;without our even having to understand how it actually works&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The canonical first exercise any beginner programmer performs is to
+write a program that prints out, &lt;em&gt;Wassup, homies?&lt;/em&gt;. This program makes
+use of the file model, but the beginner doesn't have to even know that
+such a thing exists. This is what a good framework does. A
+well-designed framework lets you easily get started building simple
+applications, without preventing you building more complicated and
+useful ones as you learn more.&lt;/p&gt;
+
+&lt;p&gt;One final point about abstractions: they provide mechanisms for
+calling your application's code. We saw this a bit earlier with
+ActiveRecord's lifecycle methods. Frameworks will usually provide the
+overall structure for how an application should interact with its
+environment, defining sets of events that you write custom handlers
+for. With ActiveRecord lifecycles, the structure of &lt;code&gt;before_create&lt;/code&gt;,
+&lt;code&gt;create&lt;/code&gt;, &lt;code&gt;after_create&lt;/code&gt; is predetermined, but you can define what
+happens at each step. This pattern is called &lt;em&gt;inversion of control&lt;/em&gt;,
+and many developers consider it a key feature of frameworks.&lt;/p&gt;
+
+&lt;p&gt;With *nix operating systems, you could say that in C programs the
+&lt;code&gt;main&lt;/code&gt; function is a kind of &lt;code&gt;onStart&lt;/code&gt; callback. The OS calls &lt;code&gt;main&lt;/code&gt;,
+and &lt;code&gt;main&lt;/code&gt; tells the OS what instructions should be run. However, the
+OS controls when instructions are actually executed because the OS is
+in charge of scheduling. It's a kind of inversion of control, right? 🤔&lt;/p&gt;
+
+&lt;h3&gt;Communication&lt;/h3&gt;
+
+&lt;p&gt;Frameworks coordinate resources, and (it's almost a tautology to say
+this) coordination requires &lt;em&gt;communication&lt;/em&gt;. Communication is
+&lt;em&gt;hard&lt;/em&gt;. Frameworks make it easier by translating the disparate
+"languages" spoken by resources into one or more common languages that
+are easy to understand and efficient, while also ensuring
+extensibility and composability. Frameworks also do some of the work
+of ensuring resilience. This usually entails:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Establishing naming and addressing conventions&lt;/li&gt;
+&lt;li&gt;Establishing conventions for how to structure content&lt;/li&gt;
+&lt;li&gt;Introducing communication brokers&lt;/li&gt;
+&lt;li&gt;Handling communication failures (the database is down! that file
+doesn't exist!)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One example many people are familiar with is the HTTP stack, a
+"language" used to communicate between browser and server resources:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;HTTP structures content (request headers and request body as text)&lt;/li&gt;
+&lt;li&gt;TCP handles communication failures&lt;/li&gt;
+&lt;li&gt;IP handles addressing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;Conventions&lt;/h4&gt;
+
+&lt;p&gt;The file model is a "common language", and the OS uses device drivers
+to translate between between the file model and whatever local
+language is spoken by hardware devices. It has naming and addressing
+conventions, letting you specify files on the filesystem using
+character strings separated by slashes that it translates to an
+internal inode (a data structure that stores file and directory
+details, like ownership and permissions). We're so used to this that
+it's easy to forget it's a convention; *nix systems could have been
+designed so that you had to refer to files using a number or a
+UUID. The file descriptors I described in the last section are also a
+convention.&lt;/p&gt;
+
+&lt;p&gt;Another convention the file model introduces is to structure content
+as byte streams, as opposed to bit streams, character streams, or xml
+documents. However, bytes are usually too low-level, so the OS
+includes a suite of command line tools that introduce the further
+convention of structuring bytes by interpreting them as characters
+(&lt;code&gt;sed&lt;/code&gt;, &lt;code&gt;awk&lt;/code&gt;, &lt;code&gt;grep&lt;/code&gt;, and friends). More recently, more tools have
+been introduced that interpret text as YAML or JSON. The Clojure world
+has further tools to interpret JSON as transit. My YAML tools can't do
+jack with your JSON files, but because these formats are all expressed
+in terms of lower-level formats, the lower-level tools can still work
+with them. Structure affects composability.&lt;/p&gt;
+
+&lt;p&gt;The file model's simplicity is what allows it to be the "universal I/O
+model." I mean, just imagine if all Linux processes had to communicate
+with XML instead of byte streams! Hoo boy, what a crazy world that
+would be. Having a simple, universal communication system makes it
+extremely easy for new resources to participate without having to be
+directly aware of each other. It allows us to easily compose command
+line tools. It allows one program to write to a log while another
+reads from it. In other words, it enables loose coupling and all the
+attendant benefits.&lt;/p&gt;
+
+&lt;h4&gt;Communication Brokers&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;Globally addressable communication brokers&lt;/em&gt; (like the filesystem, or
+Kafka queues, or databases) are essential to enabling composable
+systems. &lt;em&gt;Global&lt;/em&gt; means that every resource can access
+it. &lt;em&gt;Addressable&lt;/em&gt; means that the broker maintains identifiers for
+entities independently of its clients, and it's possible for clients
+to specify entities using those identifiers. &lt;em&gt;Communication broker&lt;/em&gt;
+means that the system's purpose is to convey data from one resource to
+another, and it has well-defined semantics: a queue has FIFO
+semantics, the file system has update-in-place semantics, etc.&lt;/p&gt;
+
+&lt;p&gt;If Linux had no filesystem and processes were only allowed to
+communicate via pipes, it would be a nightmare. Indirect communication
+is more flexible than direct communication. It supports decoupling
+over time, in that reads and writes don't have to happen
+synchronously. It also allows participants to drop in and out of the
+communication system independently of each other. (By the way, I can't
+think of the name for this concept or some better way to express it,
+and would love feedback here.)&lt;/p&gt;
+
+&lt;p&gt;I think this is the trickiest part of framework design. At the
+beginning of the article I mentioned that developers might end up
+hacking around a framework's constraints, and I think the main
+constraint is often the absence of a communication broker. The
+framework's designers introduce new resources and abstractions, but
+the only way to compose them is through direct communication, and
+sometimes that direct communication is handled magically. (I seem to
+recall that Rails worked with this way, with tight coupling between
+Controller and Views and a lack of options for conveying Controller
+data to other parts of the system). If someone wants to introduce new
+abstractions, they have to untangle all the magic and hook deep into
+the framework's internals, using -- or even patching! -- code that's
+meant to be private.&lt;/p&gt;
+
+&lt;p&gt;I remember running into this with Rails back when MongoDB was
+released; the &lt;em&gt;document database&lt;/em&gt; resource was sufficiently different
+from the &lt;em&gt;relational database resource&lt;/em&gt; that it was pretty much
+impossible for MongoDB to take part in the ActiveRecord abstraction,
+and it was also very difficult to introduce a new data store
+abstraction that would play well with the rest of the Rails ecosystem.&lt;/p&gt;
+
+&lt;p&gt;For a more current example, a frontend framework might identify the
+form as a resource, and create a nice abstraction for it that handles
+things like validation and the submission lifecycle. If the form
+abstraction is written in a framework that has no communication broker
+(like a global state container), then it will be very difficult to
+meet the common use case of using a form to filter rows in a table
+because there's no way for the code that renders table data to access
+the form inputs' values. You might come up with some hack like
+defining handlers for exporting the form's state, but doing this on an
+ad-hoc basis results in confusing and brittle code.&lt;/p&gt;
+
+&lt;p&gt;By contrast, the presence of a communication broker can make life much
+easier. In the Clojure world, the React frameworks
+&lt;a href="https://github.com/Day8/re-frame/"&gt;re-frame&lt;/a&gt; and
+&lt;a href="https://github.com/omcljs/om"&gt;om.next&lt;/a&gt; have embraced global state
+atoms, a kind of communication broker similar to the filesystem (atoms
+are an in-memory storage mechanism). They also both have well defined
+communication protocols. I'm not very familiar with
+&lt;a href="https://redux.js.org/"&gt;Redux&lt;/a&gt; but I've heard tell that it also has
+embraced a global, central state container.&lt;/p&gt;
+
+&lt;p&gt;If you create a form abstraction using re-frame, it's possible to
+track its state in a global state atom. It's further possible to
+establish a naming convention for forms, making it easier for other
+participants to look up the form's data and react to it. (Spoiler
+alert: the framework I've been working on does this!)&lt;/p&gt;
+
+&lt;p&gt;Communication systems are fundamental. Without them, it's difficult to
+build anything but the simplest applications. By providing
+communication systems, frameworks relieve much of the cognitive burden
+of building a program. By establishing communication standards,
+frameworks make it possible for developers to create composable tools,
+tools that benefit everybody who uses that framework. Standards make
+infrastructure possible, and infrastructure enables productivity.&lt;/p&gt;
+
+&lt;p&gt;In this section I focused primarily on the file model because it's
+been so successful and I think we can learn a lot from it. Other
+models include event buses and message queues. I'm not going to write
+about these because I'm not made of words, ok?!?&lt;/p&gt;
+
+&lt;h3&gt;Environments&lt;/h3&gt;
+
+&lt;p&gt;Frameworks are built to coordinate resources within a particular
+&lt;em&gt;environment&lt;/em&gt;. When we talk about desktop apps, web apps, single page
+apps, and mobile apps, we're talking about different
+environments. From the developer's perspective, environments are
+distinguished by the resources that are available, while from the
+user's perspective different environments entail different usage
+patterns and expectations about distribution, availability, licensing,
+and payment.&lt;/p&gt;
+
+&lt;p&gt;As technology advances, new resources become available (the Internet!
+databases! smart phones! powerful browsers! AWS!), new environments
+evolve to combine those resources, and frameworks are created to
+target those environments. This is why we talk about mobile frameworks
+and desktop frameworks and the like.&lt;/p&gt;
+
+&lt;p&gt;One of the reasons I stopped using Rails was because it was a &lt;em&gt;web
+application framework&lt;/em&gt;, but I wanted to build &lt;em&gt;single page
+applications&lt;/em&gt;. At the time (around 2012?), I was learning to use
+Angular and wanted to deploy applications that used it, but it didn't
+really fit with Rails's design.&lt;/p&gt;
+
+&lt;p&gt;And that's OK. Some people write programs for Linux, some people write
+for macOS, some people still write for Windows for some reason (just
+kidding! don't kill me!). A framework is a tool, and tools are built
+for a specific purpose. If you're trying to achieve a purpose the tool
+isn't built for, use a different tool.&lt;/p&gt;
+
+&lt;h2&gt;More Benefits of Using Frameworks&lt;/h2&gt;
+
+&lt;p&gt;So far I've mostly discussed how frameworks bring benefits to the
+individual developer. In this section I'll explain how frameworks
+benefit communities, how they make programming fun, and (perhaps most
+importantly) how they are a great boon for beginners.&lt;/p&gt;
+
+&lt;p&gt;First, to recap, a framework is a set of libraries that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Manages the complexity of coordinating the &lt;em&gt;resources&lt;/em&gt; needed to
+write an application&lt;/li&gt;
+&lt;li&gt;By providing &lt;em&gt;abstractions&lt;/em&gt; for those resources&lt;/li&gt;
+&lt;li&gt;And &lt;em&gt;systems for communicating&lt;/em&gt; between those resources&lt;/li&gt;
+&lt;li&gt;Within an &lt;em&gt;environment&lt;/em&gt;
+&lt;/li&gt;
+&lt;li&gt;So that programmers can focus on writing the business logic that's
+specific to their product&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This alone lifts a huge burden off of developers. In case I haven't
+said it enough, this kind of work is &lt;em&gt;hard&lt;/em&gt;, and if you had to do it
+every time you wanted to make an application it would be frustrating
+an exhausting. Actually, let me rephrase that: I &lt;em&gt;have&lt;/em&gt; had to do this
+work, and it &lt;em&gt;is&lt;/em&gt; frustrating and exhausting. It's why Rails was such
+a godsend when I first encountered it in 2005.&lt;/p&gt;
+
+&lt;h3&gt;Frameworks Bring Community Benefits&lt;/h3&gt;
+
+&lt;p&gt;Clear abstractions and communication systems allow people to share
+modules, plugins, or whatever you want to call framework extensions,
+creating a vibrant ecosystem of reusable components.&lt;/p&gt;
+
+&lt;p&gt;If you accept my assertion that an operating system is a framework,
+then you can consider any program which communicates via one of the
+OS's communication systems (sockets, the file model, etc) to be an
+extension of the framework. Postgres is a framework extension that adds
+an RDBMS resource. statsd is an extension that adds a monitoring
+resource.&lt;/p&gt;
+
+&lt;p&gt;Similarly, Rails makes it possible for developers to identify
+specialized resources and extend the framework to easily support
+them. One of the most popular and powerful is
+&lt;a href="https://github.com/plataformatec/devise"&gt;Devise&lt;/a&gt;, which coordinates
+Rails resources to introduce a new user authentication resource. Just
+as using Postgres is usually preferable to rolling your own database,
+using Devise is usually preferable to rolling your own authentication
+system.&lt;/p&gt;
+
+&lt;p&gt;Would it be possible to create a Devise for Clojure? I don't think
+so. Devise is designed to be database agnostic, but because Clojure
+doesn't really have a go-to framework that anoints or introduces a
+go-to database abstraction, no one can write the equivalent of Devise
+in such a way that it could easily target any RDBMS. Without a
+framework, it's unlikely that someone will be able to write a
+full-featured authentication solution that you can reuse, and if you
+write one it's unlikely others would see much benefit if you shared
+it. I think it's too bad that Clojure is missing out on these kinds of
+ecosystem benefits.&lt;/p&gt;
+
+&lt;p&gt;Another subtler benefit frameworks bring is that they present a
+coherent story for how developers can build applications in your
+language, and that makes your language more attractive. Building an
+application means coordinating resources for the environment you're
+targeting (desktop, mobile, SPA, whatever). If your language has no
+frameworks for a target environment, then learning or using the
+language is much riskier. There's a much higher barrier to building
+products: not only does a dev have to learn the language's syntax
+and paradigms, she has to figure out how to perform the complex task
+of abstracting and coordinating resources using the language's
+paradigms. If your goal is to create a mass-market product, choosing a
+language that doesn't have frameworks for your target environments is
+a risky choice.&lt;/p&gt;
+
+&lt;p&gt;Finally, frameworks become a base layer that you can create tooling
+for. The introduction of the filesystem made it possible for people to
+write tools that easily create and manipulate files. Rails's
+abstractions made it easy to generate code for creating a new database
+table, along with an entire stack - model, view, controller - for
+interacting with it.&lt;/p&gt;
+
+&lt;h3&gt;Frameworks Make Development Fun&lt;/h3&gt;
+
+&lt;p&gt;If you still think frameworks are overkill or more trouble than
+they're worth, believe me I get it. When I switched from Rails to
+Clojure and its "libraries not frameworks" approach, I &lt;em&gt;loved&lt;/em&gt; it. A
+framework felt unnecessary because all the pieces were so simple that
+it was trivial for me to glue them together myself. Also, it was just
+plain fun to solve a problem I was familiar with because it helped me
+learn the language.&lt;/p&gt;
+
+&lt;p&gt;Well, call me a jaded millenial fart, but I don't think that this work
+is fun anymore. I want to build products, not build the infrastructure
+for building products. I want a plugin that will handle the reset
+password process for me. I want an admin panel that I can get working
+in five minutes. Frameworks handle the kind of work that ideally only
+has to be done once. I don't want to have to do this work over and
+over every time I want to make something.&lt;/p&gt;
+
+&lt;p&gt;For me, programming is a creative endeavor. I love making dumb things
+and putting them in front of people to see what will happen. Rails let
+me build (now defunct) sites like phobiatopia.com, where users could
+share what they're afraid of. The site would use their IP address to
+come up with some geo coordinates and use Google Maps to display a
+global fear map. A lot of people were afraid of bears.&lt;/p&gt;
+
+&lt;p&gt;Frameworks let you focus on the fun parts of building an app. They let
+you release an idea, however dumb, more quickly.&lt;/p&gt;
+
+&lt;h3&gt;Frameworks Help Beginners&lt;/h3&gt;
+
+&lt;p&gt;Frameworks help beginners by empowering them to build real,
+honest-to-god running applications that they can show to their friends
+and even make money with, without having to fully understand or even
+be aware of all the technology they're using. Being able to conjure up
+a complete creation, no matter how small or ill-made, is the very
+breath of wonder and delight. (I don't know exactly what this means,
+but I like how it sounds!)&lt;/p&gt;
+
+&lt;p&gt;There's a kind of thinking that says frameworks are bad because they
+allow beginners to make stuff without having to know how it all
+works. ActiveRecord is corrupting the youth, allowing them to build
+apps without even knowing how to pronounce &lt;em&gt;SQL&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;There's another line of thinking that says it's bad to try to make
+things easier for beginners. It's somehow virtuous for people to
+struggle or suffer for the sake of learning.&lt;/p&gt;
+
+&lt;p&gt;Hogwash. Fiddlefaddle. Poppycock. Joy beats suffering every time, and
+making learning more joyful allows more people to reap the benefits of
+whatever tool or product you've created.&lt;/p&gt;
+
+&lt;p&gt;I am a photographer. I have a professional camera, and I know how to
+use it. Some of my photos require a fair amount of technical knowledge
+and specialized equipment:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/assets/images/posts/why-programmers-need-frameworks/tea.jpg" alt="tea"&gt;&lt;/p&gt;
+
+&lt;p&gt;This isn't something you can create with a camera phone, yet somehow
+I'm able to enjoy myself and my art without complaining that
+point-and-shoot cameras exist and that people like them.&lt;/p&gt;
+
+&lt;p&gt;Novices benefit greatly from expert guidance. I don't think you can
+become a master photographer using your phone's camera, but with the
+phone's "guidance" you can take some damn good photos and be proud of
+them. And if you do want to become a master, that kind of positive
+feedback and sense of accomplishment will give you the motivation to
+stick with it and learn the hard stuff. Frameworks provide this
+guidance by creating a safe path around all the quicksand and pit
+traps that you can stumble into when creating an app. Frameworks help
+beginners. This is a feature, not a bug.&lt;/p&gt;
+
+&lt;h2&gt;A Clojure Framework&lt;/h2&gt;
+
+&lt;p&gt;Frameworks are all about managing the complexity of coordinating
+resources. Well, guess what: Managing Complexity is Clojure's middle
+name. Clojure "Managing Complexity" McCarthy-Lisp. Personally, I want
+a single-page app (SPA) framework, and there are many aspects of
+Clojure's design and philosophy that I think will make it possible to
+create one that seriously kicks ass. I'll give just a few examples.&lt;/p&gt;
+
+&lt;p&gt;First, consider how Linux tools like &lt;code&gt;sed&lt;/code&gt; and &lt;code&gt;awk&lt;/code&gt; are
+text-oriented. Developers can add additional structure to text by
+formatting it as JSON or YAML, and those text-processing tools can
+still work the structured text.&lt;/p&gt;
+
+&lt;p&gt;In the same way, Clojure's emphasis on simple data structures means
+that we can create specialized structures to represent forms and ajax
+request, and tools to process those structures. If we define those
+structures in terms of maps and vectors, though, we'll still be able
+to use a vast ecosystem of functions for working with those simpler
+structures. In other words, creating specialized structures does not
+preclude us from using the tools built for simpler structures, and
+this isn't the case for many other languages.&lt;/p&gt;
+
+&lt;p&gt;Second, Clojure's abstraction mechanisms (protocols and multimethods)
+are extremely flexible, making it easy for us to implement
+abstractions for new resources as they become available.&lt;/p&gt;
+
+&lt;p&gt;Third, &lt;em&gt;you can use the same language for the frontend and backend!!!&lt;/em&gt;
+Not only that, Transit allows the two to effortlessly
+communicate. This eliminates an entire class of coordination problems
+that frameworks in other languages have to contend with.&lt;/p&gt;
+
+&lt;p&gt;In my opinion, the Clojurian stance that frameworks are more trouble
+than they're worth is completely backwards: Clojure gives us the
+foundation to build a completely kick-ass framework! One that's simple
+&lt;em&gt;and&lt;/em&gt; easy. One can dream, right?&lt;/p&gt;
+
+&lt;p&gt;My ambition in building a SPA framework is to empower current and
+future Clojure devs to get our ideas into production &lt;em&gt;fast&lt;/em&gt;. I want us
+to be able to spend more time on the hard stuff, the fun stuff, the
+interesting stuff. And I want us to be able to easily ship with
+confidence.&lt;/p&gt;
+
+&lt;p&gt;The framework I'm building is built on top of some truly amazing
+libraries, primarily Integrant, re-frame, and Liberator. Integrant
+introduces a &lt;em&gt;component&lt;/em&gt; abstraction and handles the start/stop
+lifecycle of an application. re-frame provides a filesystem and
+communication broker for the frontend. Liberator introduces a standard
+model for handling HTTP requests.&lt;/p&gt;
+
+&lt;p&gt;If my framework is useful at all it's because the creators of those
+tools have done all the heavy lifting. My framework introduces more
+resources and abstractions specific to creating single-page apps. For
+example, it creates an abstraction for wrapping AJAX requests so that
+you can easily display activity indicators when a request is
+active. It creates a form abstraction that handles all the plumbing of
+handling input changes and dispatching form submission, as well the
+entire form lifecycle of &lt;em&gt;fresh&lt;/em&gt;, &lt;em&gt;dirty&lt;/em&gt;, &lt;em&gt;submitted&lt;/em&gt;, &lt;em&gt;invalid&lt;/em&gt;,
+&lt;em&gt;succeeded&lt;/em&gt;, etc. It imposes some conventions for organizing data.&lt;/p&gt;
+
+&lt;p&gt;As I mentioned, the framework is not quite ready for public
+consumption yet becaause there's still a lot of churn while I work out
+ideas, and because there's basically no documentation, but I hope to
+release it in the near future.&lt;/p&gt;
+
+&lt;p&gt;If you'd like to see a production app that uses the framework,
+however, I invite you to check out &lt;a href="https://gratefulplace.com"&gt;Grateful
+Place&lt;/a&gt;, a community site for people who
+want to support each other in growing resilience, peace, and joy by
+practicing compassion, gratitude, generosity, and other positive
+values. By joining, you're not just helping yourself, you're helping
+others by letting them know that you support them and share their
+values.&lt;/p&gt;
+
+&lt;p&gt;Please click around and look at the snazzy loading animations. And if
+you feel so moved, please do join! I &lt;em&gt;love&lt;/em&gt; getting to interact with
+people in that context of mutual support for shared values. One of the
+only things I care about more than Clojure is helping people develop
+the tools to navigate this crazy-ass world :D&lt;/p&gt;
+
+&lt;p&gt;In the mean time, I'll keep working on getting this framework ready
+for public consumption. Expect another blawg article sharing some
+details on how Grateful Place is implemented. Then, eventually,
+hopefully, an actual announcement for the framework itself :)&lt;/p&gt;
+
+&lt;p&gt;If you don't want to wait for my slow butt, then check out some ofthe
+amazing Clojure tools that already exist:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.luminusweb.net"&gt;Luminus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://book.fulcrologic.com/"&gt;Fulcro&lt;/a&gt; which probably does
+everything I want my framework to, only better&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://github.com/Day8/re-frame/"&gt;re-frame&lt;/a&gt; remains my favorite
+frontend framework&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://github.com/duct-framework/duct"&gt;duct&lt;/a&gt; is great but its docs
+aren't that great yet&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://github.com/coast-framework/coast"&gt;Coast on Clojure&lt;/a&gt;, a full
+stack web framework&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(Sorry if I neglected your amazing Clojure tool!)&lt;/p&gt;
+
+&lt;p&gt;Thanks to the following people who read drafts of this article and
+helped me develop it:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Mark Bastian&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://twitter.com/yogthos"&gt;Dmitri Sotnikov aka @yogthos&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Joe Jackson&lt;/li&gt;
+&lt;li&gt;Sergey Shvets&lt;/li&gt;
+&lt;li&gt;Kenneth Kalmer&lt;/li&gt;
+&lt;li&gt;Sean whose last name I don't know&lt;/li&gt;
+&lt;li&gt;Tom Brooke&lt;/li&gt;
+&lt;li&gt;Patrick whose last name I don't know (update: It's Patrick French!)&lt;/li&gt;
+&lt;li&gt;Fed Reggiardo&lt;/li&gt;
+&lt;li&gt;Vincent Raerek&lt;/li&gt;
+&lt;li&gt;Ernesto de Feria&lt;/li&gt;
+&lt;li&gt;Bobby Towers&lt;/li&gt;
+&lt;li&gt;Chris Oakman&lt;/li&gt;
+&lt;li&gt;The TriClojure meetup&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2019-06-04:/people/buddy-system/</id>
+    <title type="html">Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</title>
+    <published>2019-06-04T13:00:00Z</published>
+    <updated>2019-06-04T13:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/people/buddy-system/"/>
+    <content type="html">&lt;p&gt;One of my work mottos is "support the hell out of each other": helping
+your friends grow and succeed is far more rewarding than chasing after
+the next gold star for yourself. While I was at &lt;a href="https://www.reifyhealth.com/"&gt;Reify
+Health&lt;/a&gt; I was lucky enough to work with
+other devs who had a similar ethos. There were no rock stars, and
+everyone looked out for each other. I'm happy to have gotten to work
+somewhere where I made real, honest-to-god friends :)&lt;/p&gt;
+
+&lt;p&gt;During my final weeks there I collaborated with coworkers on an
+experimental framework for supporting each other in a formal
+context. This framework would let us explore how to be there for each
+other in more meaningful ways while maintaining boundaries. This
+seemed particularly valuable in Reify's mostly-remote
+environment. With their permission, I'm sharing the initial framework
+proposal below:&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;The Buddy System&lt;/h2&gt;
+
+&lt;p&gt;This doc outlines a proposal for a buddy system. The main idea behind the buddy system is for us to support each other by regularly spending time chatting with each other about things beyond whatever story is at hand. Exactly what that looks like will be up to you; this doc includes suggestions for how to have rewarding conversations. First, here are some ground rules:&lt;/p&gt;
+
+&lt;h2&gt;Ground Rules&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;It’s confidential. Whatever you talk about remains between you and your buddy unless you say otherwise. This is meant to provide each other with time and space to speak about what’s going on :D&lt;/li&gt;
+&lt;li&gt;It’s completely voluntary. You don’t have to participate, and if you do participate you can shape it however you want to: the frequency and content of chats is up to you.&lt;/li&gt;
+&lt;li&gt;You can opt out or change buddies whenever you want. If you decide to drop out of the buddy system, it’s totally up to you if you want to explain why, or not. The buddy system is meant to consciously cultivate a space where we can be vulnerable with each other; part of making that safe is setting the expectation that people can opt out without having to explain why.&lt;/li&gt;
+&lt;li&gt;By the same token, in joining the buddy system you accept that your buddy may at some point wish to opt or change buddies, and you commit to try to not take that personally if it happens 👍&lt;/li&gt;
+&lt;li&gt;Every three months we’ll change buddies - this gives us a chance to grow together, and also a chance to keep getting new perspectives by buddying with other folks on the team.&lt;/li&gt;
+&lt;li&gt;There’s no impact on your yearly review. Though “Buddy System” would be a wonderfully Orwellian name for a mandatory chatting initiative.&lt;/li&gt;
+&lt;li&gt;It’s reciprocal. Buddies commit to listening to and sharing with each other. If you feel like you have room to grow with listening or sharing, that’s totally cool - and a good first step is to share that with your buddy :)&lt;/li&gt;
+&lt;li&gt;It’s not hierarchical. Being a Buddy means whole-hearted listening, asking questions, and just being supportive, which is independent of any junior or senior designations.&lt;/li&gt;
+&lt;li&gt;The point is to support each other as human beings, not to meet project objectives :-)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Suggestions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Tell your buddy what you want to get out of the buddy system. Do you want to talk about your career? Your goals at Reify? How to improve our architecture? By letting your buddy know what you’re looking for, you can get all Jerry Maguire and help them help you.&lt;/li&gt;
+&lt;li&gt;Listen your asses off. Avoid the urge to give advice unless asked for it, but instead try to truly understand what your buddy is saying, and try to help them gain clarity.&lt;/li&gt;
+&lt;li&gt;Potential topics include goal-setting and “life at Reify.”
+
+&lt;ul&gt;
+&lt;li&gt;Goal setting: It can be very useful to talk to someone about your broader goals and to have them hold you accountable. Sharing a goal often makes it more meaningful and gives you more motivation to reach it.&lt;/li&gt;
+&lt;li&gt;Life at Reify: We have retros, which are useful, but regular one-on-one conversations also have a place in supporting each other&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;These topic suggestions are not meant to be exhaustive.&lt;/li&gt;
+&lt;li&gt;When asking for feedback, communicate what kind of feedback you want:
+
+&lt;ul&gt;
+&lt;li&gt;A pat on the back&lt;/li&gt;
+&lt;li&gt;High-level feedback&lt;/li&gt;
+&lt;li&gt;Nitty-gritty feedback&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Notes&lt;/h2&gt;
+
+&lt;p&gt;Daniel is acting as facilitator in that he’s organizing discussion about the Buddy System so that we all come to a shared understanding of what it is and what we want to get out of it. However, Daniel isn’t, like, the Buddy System’s owner, and can’t tell you what to do.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;Some reading this might be uncomfortable with the ideas outlined in
+the buddy system - and that's totally ok! A key part of the framework
+is &lt;em&gt;you don't have to buy into it&lt;/em&gt;. But I think it speaks volumes
+about the level of trust and mutual good feeling among the team that
+almost everyone was excited about it while respecting that we're all
+different and not everyone prefers the same way of interacting. On the
+other hand, new hires were especially excited because they felt like
+it would help them acclimate to their new environment. To me, a team
+that is enthusiastic about these ideas is a team that I'd want to work
+with; it's a team that actually likes the idea of relating to each
+other on a real, human level.&lt;/p&gt;
+
+&lt;p&gt;One topic that came up was, how is this different from just being
+friends? Is it really necessary to have a &lt;em&gt;structure&lt;/em&gt; that everyone
+agrees to? Does that bring an element of artifice into friendship? My
+thinking is that structure is a precondition for
+vulnerability. Structure tells us to be extra mindful in how we
+interact with each other, and it provides boundaries (like a clear
+time limit) to protect us from getting overwhelmed. By designating a
+time and place to consciously interact with each other, it also
+resolves the problem of never knowing when is "the right time" to
+bring something up.&lt;/p&gt;
+
+&lt;p&gt;This would be helpful for new hires, sure, but even in my personal
+life I've found that structure is much better at fostering deeper
+interactions than just winging it. Knowing that everyone is "in it"
+together &lt;em&gt;and&lt;/em&gt; that "it" won't last forever provides a solid
+foundation for trust.&lt;/p&gt;
+
+&lt;p&gt;Final note: vulnerability here does &lt;em&gt;not&lt;/em&gt; mean you have to spill your
+guts, emotionally leaking on each other all the time. It &lt;em&gt;does&lt;/em&gt; mean
+feeling safe to express that you're struggling or that you feel
+dissatisfied or hurt in some way.&lt;/p&gt;
+
+&lt;p&gt;What are your thoughts? Have you tried something like this where you
+worked, and how did it go?&lt;/p&gt;
+
+&lt;p&gt;P.S. &lt;a href="https://jobs.braveclojure.com/jobs/17592186046941/data-engineer-architecture-integration-reify-health"&gt;Reify is hiring!&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2017-04-16:/programming/learn-programming-languages-efficiently/</id>
+    <title type="html">Techniques for Efficiently Learning Programming Languages</title>
+    <published>2017-04-16T04:00:00Z</published>
+    <updated>2017-04-16T04:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/learn-programming-languages-efficiently/"/>
+    <content type="html">&lt;p&gt;Learning programming languages is a skill: do it well and you'll
+experience one dopamine hit after another as you master something new;
+do it poorly and you'll feel constantly frustrated and even give
+up. What follows are the best techniques for learning programming
+languages that I've picked up over years of teaching programming by
+&lt;a href="http://www.braveclojure.com/"&gt;writing books&lt;/a&gt; and
+&lt;a href="http://www.flyingmachinestudios.com/programming/the-unofficial-guide-to-rich-hickeys-brain/"&gt;articles&lt;/a&gt;,
+&lt;a href="https://www.youtube.com/watch?v=eRq5UBx6cbA"&gt;doing talks&lt;/a&gt;, and
+running
+&lt;a href="http://www.braveclojure.com/training/"&gt;a training course&lt;/a&gt;. Many of
+these techniques are pulled from books explaining the latest research
+in efficient learning, and you can find those books (along with other
+great programming books) at
+&lt;a href="http://www.communitypicks.com/r/learnprogramming"&gt;Community Picks: Learn Programming&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Test Yourself Constantly to Defeat The Illusion of Competence&lt;/h2&gt;
+
+&lt;p&gt;One of the &lt;em&gt;worst&lt;/em&gt; ways to learn is to re-read or re-watch
+material. This kind of review gives you the &lt;em&gt;feeling&lt;/em&gt; that you
+understand the topic covered because it seems like you're
+understanding the topic effortlessly. Researchers call this &lt;em&gt;the
+illusion of competence&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;A significantly better approach (and one of the best techniques you
+can employ) is to &lt;em&gt;test yourself constantly&lt;/em&gt;. Instead of re-reading
+what a function or class or object is, ask yourself to define these
+concepts or use them in a short program; force yourself to somehow
+demonstrate your understanding. This process often feels
+uncomfortable, but it's much more efficient at forming long term
+memories. You can take this one step further and &lt;em&gt;test yourself before
+you've covered the material&lt;/em&gt; by, for example, attempting exercises
+before reading a chapter. Remarkably, this has also been shown aid
+memory formation.&lt;/p&gt;
+
+&lt;p&gt;The impressive impact that testing has on learning is called &lt;em&gt;the
+testing effect&lt;/em&gt;, and here are some specific ways you can take
+advantage of it:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Before reading a chapter or watching a video, try guessing at what
+you're about to learn and write it down.&lt;/li&gt;
+&lt;li&gt;Try doing a chapter's exercises &lt;em&gt;before&lt;/em&gt; reading the chapter.&lt;/li&gt;
+&lt;li&gt;Always do exercises, even the hard ones. It's OK to give up on an
+exercise and come back to it later (or never, even), but at least
+try it. (More on this in the next section.)&lt;/li&gt;
+&lt;li&gt;Read a short program and try to recreate it without looking at the
+original code. Or, go smaller and do this with a function.&lt;/li&gt;
+&lt;li&gt;Immediately after learning a new concept like objects, classes,
+methods, or higher-order functions, write code that demonstrates
+that concept.&lt;/li&gt;
+&lt;li&gt;Create diagrams that illustrate concepts, both in isolation and how
+they relate to each other.&lt;/li&gt;
+&lt;li&gt;Blog about a concept you just learned. &lt;/li&gt;
+&lt;li&gt;Try explaining the concept to a non-technical friend. (I did this a
+lot when writing &lt;em&gt;Clojure for the Brave and True&lt;/em&gt;; being able to
+explain an idea in layman's terms forces you to understand the idea
+deeply.)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Many of these techniques boil down to &lt;em&gt;write some code!&lt;/em&gt; With
+programming it's easy to believe we're learning a lot just by reading
+because programming is text-heavy and conceptual. But it's also a
+skill, and like any other skill you have to perform it to get
+better. Writing code is the best way to reveal your incorrect
+assumptions about programming. The faster you do that, the faster you
+can make corrections and improve.&lt;/p&gt;
+
+&lt;p&gt;If you'd like to learn more about the testing effect, check out
+&lt;a href="http://www.communitypicks.com/r/learnprogramming/s/17592186047889-make-it-stick-the-science-of-successful-learning"&gt;&lt;em&gt;make it stick: The Science of Successful Learning&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Take Time to Unfocus&lt;/h2&gt;
+
+&lt;p&gt;If you're stuck on a problem or don't understand something you just
+read, try taking a walk or even a shower -- anything to enter a
+relaxed, unfocused state of mind. It probably seems counterintuitive
+that one of the best ways to get unstuck is to stop trying for a
+little while, but it's true.&lt;/p&gt;
+
+&lt;p&gt;The problem is that it's easy for us to put on mental blinders when
+we're focusing hard on a problem. I mean, that's pretty much what
+"focus" means. But by focusing hard, we're exploring only a small
+portion of the solution space. By unfocusing, our unconscious mind is
+able to explore and make connections across vast swaths of our
+experience.&lt;/p&gt;
+
+&lt;p&gt;To me it's like when you're trying to find a destination on a paper
+map (remember those?). You can unconsciously become convinced that the
+city you're trying to reach &lt;em&gt;should be right here!&lt;/em&gt; in the upper-left
+qudrant of the map, so you look at it over and over without
+success. Then you put the map down and take a deep breath and stare at
+nothing for a minute, and when you look at the map again the actual
+location jumps out at you immediately.&lt;/p&gt;
+
+&lt;p&gt;We've all had the experience of having a sudden insight in the shower;
+now you have a slightly better understanding of why that happens, and
+you can employ the technique on purpose. Personally, I will actually
+take a shower if I'm stuck on something, and it's remarkable how well
+the technique works. And how clean I am.&lt;/p&gt;
+
+&lt;p&gt;If you'd like to learn more about the focused and diffuse modes of
+thinking, check out
+&lt;a href="http://www.communitypicks.com/r/learnprogramming/s/17592186047884-a-mind-for-numbers-how-to-excel-at"&gt;A Mind for Numbers: How to Excel at Math and Science (Even If You FLunked Algebra)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Don't Waste Time Being Frustrated&lt;/h2&gt;
+
+&lt;p&gt;Related to the last section: &lt;em&gt;don't waste time being frustrated with
+code&lt;/em&gt;. Frustration leads us into doing stupid things like re-compiling
+a program or refreshing the browser with the hope that &lt;em&gt;this time it
+will be magically different&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Use frustration as a signal that there's a gap in your knowledge. Once
+you realize you're frustrated, it can help to take a step back and
+clearly identify the problem. If you've written some code that's not
+working, explicitly explain to yourself or someone else the result
+that you expected. Use the scientific method and develop a hypothesis
+for what's causing the unexpected behavior. Then test your
+hypothesis. Try again, and if a solution still eludes you, put the
+problem aside and come back to it later.&lt;/p&gt;
+
+&lt;p&gt;I can't tell you how many times I've thrown my laptop in disgust over
+a seemingly unsolvable problem, only to look at it the next day and
+have an obvious solution pop into my head immediately. This happened
+last week, even.&lt;/p&gt;
+
+&lt;h2&gt;Identify Which Programming Language Aspect You're Dealing With&lt;/h2&gt;
+
+&lt;p&gt;Personally, I find it useful to keep in mind that when you're learning
+a programming language, you're actually learning four things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;em&gt;How to write code&lt;/em&gt;: syntax, semantics, and resource management&lt;/li&gt;
+&lt;li&gt;The language's &lt;em&gt;paradigm&lt;/em&gt;: object-oriented, functional, logic, etc.&lt;/li&gt;
+&lt;li&gt;The &lt;em&gt;artifact ecosystem&lt;/em&gt;: how to build and run executables and how
+to use libraries&lt;/li&gt;
+&lt;li&gt;
+&lt;em&gt;Tooling&lt;/em&gt;: editors, compilers, debuggers, linters&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It's easy to get these four facets mixed up, with the unfortunate
+result that when you run into a problem you end up looking in
+completely the wrong place.&lt;/p&gt;
+
+&lt;p&gt;Someone who's completely new to programming, for example, might start
+out by trying to build iOS apps. They might try to get their app
+running on a friend's phone, only to see some message about needing a
+developer certificate or whatever. This is part of the &lt;em&gt;artifact
+ecosystem&lt;/em&gt;, but an inexperienced person might see this as a problem
+with &lt;em&gt;how to write code&lt;/em&gt;. They might look at every line they wrote to
+figure out the problem, when the problem isn't with their code at all.&lt;/p&gt;
+
+&lt;p&gt;I find it easier to learn a language if I tackle each of these aspects
+systematically, and in another blog post I'll present a general list
+of questions that need answering that should help you in learning any
+language.&lt;/p&gt;
+
+&lt;h2&gt;Identify the Purpose, External Model, and Internal Model&lt;/h2&gt;
+
+&lt;p&gt;Whenever you’re learning to use a new tool, its useful to identify its
+&lt;em&gt;purpose&lt;/em&gt;, &lt;em&gt;external model&lt;/em&gt; and &lt;em&gt;internal model&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;When you understand a tool's purpose, your brain gets loaded with
+helpful contextual details that make it easier for you to assimilate
+new knowledge. It's like working on a puzzle: when you're able to look
+at a picture of the completed puzzle, it's a lot easier to fit the
+pieces together. This applies to languages themselves, and language
+libraries.&lt;/p&gt;
+
+&lt;p&gt;A tool's external model is the interface it presents and the way it
+wants you to think about problem solving. Clojure’s external model is
+a Lisp that wants you to think about programming as mostly
+data-centric, immutable transformations. Ansible wants you to think of
+server provisioning in terms of defining the end state, rather than
+defining the steps you should take to get to that state.&lt;/p&gt;
+
+&lt;p&gt;A tool's internal model is how it transforms the inputs to its
+interface into some lower-level abstraction. Clojure transforms Lisp
+into JVM bytecode. Ansible transforms task definitions into shell
+commands. In an ideal world, you wouldn’t have to understand the
+internal model, but in reality it’s almost always helpful to
+understand a tool's internal model because it gives you a unified
+perspective on what might seem like confusing or contradictory
+parts. When the double-helix model of DNA was discovered, for example,
+it helped scientists make sense of higher-level phenonema. My point, of
+course, is that this blog post is one of the greatest scientific
+achievements of all time.&lt;/p&gt;
+
+&lt;p&gt;Tutorials often mix up a tool's external model and internal model in a
+way that’s confusing for learners; it's helpful to be aware of this so
+that you can easily identify when it's causing you frustration.&lt;/p&gt;
+
+&lt;h2&gt;Spaced Repetition Helps You Remember&lt;/h2&gt;
+
+&lt;p&gt;Spaced Repetition been proven to be one of the best ways to encode new
+information in long-term memory. The idea is to quiz yourself at
+ever-increasing time intervals to minimize memory decay using the
+fewest number of repetitions. The Guardian wrote a
+&lt;a href="https://www.theguardian.com/education/2016/jan/23/spaced-repetition-a-hack-to-make-your-brain-store-information"&gt;great introductory article&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Sleep and Exercise&lt;/h2&gt;
+
+&lt;p&gt;Take care of your body! It's more than just a vehicle for your
+brain. If you want to be able to stay focused and learn efficiently,
+getting adequate sleep and exercise beats the pants off caffeine and
+energy drinks.&lt;/p&gt;
+
+&lt;h2&gt;More tips?&lt;/h2&gt;
+
+&lt;p&gt;If you have any useful tips, please leave them in the comments! If
+you'd like more excellent resources on learning to program, check out
+the
+&lt;a href="http://www.communitypicks.com/r/learnprogramming"&gt;Community Picks: Learn Programming&lt;/a&gt;,
+a community-curated collection of the best books for learning
+programming. It includes a wide array of subjects, including
+introductory programming books, books on craftsmanship, and books on
+soft skills and interviews.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2017-03-19:/essays/zen-joker/</id>
+    <title type="html">Zen and the Art of Blowing Things Up</title>
+    <published>2017-03-19T14:00:00Z</published>
+    <updated>2017-03-19T14:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/essays/zen-joker/"/>
+    <content type="html">&lt;p&gt;The Dark Knight came out at the same time that I was becoming intensely interested in Buddhism, and the movie struck me as a kind of extended Buddhist parable, with Bruce Wayne as an icon of the suffering that results from clinging and the Joker as a very fucked up enlightened being. Here are some of my main reasons: (&lt;em&gt;warning: spoilers!&lt;/em&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Suffering and Impermanence&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Buddhism teaches that suffering comes from constantly scrambling for stability in an unstable world. Nothing is permanent, but we strive mightily to hold on to the illusion of permanence, only to suffer when reality once again asserts itself.&lt;/p&gt;
+
+&lt;p&gt;In the scene where Batman is in the interrogation room beating the stuffing out of the Joker, the Joker just laughs and says, "You have nothing! Nothing to threaten me with. Nothing to do with all your strength." And that cuts to the heart of who the Batman is: a person whose reaction to the first shock of impermanence (his parents dying) was to dedicate his life to developing his strength so that he would never experience that pain again. The Batman's entire being is an exercise in doing just one... more... thing... to establish control.&lt;/p&gt;
+
+&lt;p&gt;I mean, who would want to live that life?&lt;/p&gt;
+
+&lt;p&gt;And here's the Joker, ready with the Zen slap: he tells Batman where to find Harvey and his girlfriend Rachel, giving him the illusion of control over who to save. And we know how that turned out: the Joker lied to the caped crusader, telling him Rachel was at one address, but actually Harvey was there. Batman races to save Rachel, only to find find Harvey instead. Nothing to do with all that strength.&lt;/p&gt;
+
+&lt;p&gt;This really hit home for me because, at the time, I was in a relationship with someone that had a chronic illness. I could try to do everything to make her life less painful and more enjoyable, but there was only so much I or anyone could do.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Natural Metaphors and Endless Desire&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;At one point, the Joker says, "I'm just a dog chasing cars, I wouldn't know what to do if I caught one." Or something like that.&lt;/p&gt;
+
+&lt;p&gt;This is a double whammy: "a dog chasing cars" is totally something a zen master would say, but besides that it expresses our human tendency to constantly strive for the next thing. We're all just dog chasing cars, not knowing what to do when catch one. You get a job: now you want a better job. You get a house: now you want a bigger house. Better to just say fuck it, put on some makeup, and start blowing up hospitals.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;No Self&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The Buddhist idea of "no self" is actually somewhat nuanced and I'm purposefully misrepresenting it here, but it would be difficult to argue that the Joker clings to any notion of self in the way that most of us non-enlightened psychopaths do. He gives multiple stories for how he got his scars, revealing the Buddhist truth that our sense of self is just a story we tell ourselves and that no one story is better than any other. He gives up his name and identity to become a fucking clown. And people really hate clowns!&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Interconnectedness&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;One Buddhist teaching is the idea of interconnectedness: that we are all one, but not in the wavy-gravy way your high uncle used to ramble about. My take on the idea is that it's related to &lt;em&gt;no self&lt;/em&gt;: you cannot point to a "you" that is separate from the world you exist in. It's a fallacy to believe your "you" is somehow different from the collection of experiences of the world, so that you are inextricably intertwined with the world. You can't point to one thing outside yourself and say "I am not this," because you are pointing at it you moron, and so in that moment who you are is a guy pointing at that thing, and life is the accumulation of such experiences of things outside of "you."&lt;/p&gt;
+
+&lt;p&gt;ANYWAY I am totally not your high uncle, OK? Point is, the idea of interconnectedness is meant to foster a sense of compassion. You can see that at the end of the movie when the Joker plays his hilarious "blow up the other boat" gag. Two boats full of strangers become enlightened, refusing to do harm to people they haven't even met.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-08-22:/essays/process/</id>
+    <title type="html">My Writing Process</title>
+    <published>2016-08-22T23:00:00Z</published>
+    <updated>2016-08-22T23:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/essays/process/"/>
+    <content type="html">&lt;p&gt;The letter below is a response to an email from a Twitter friend. For
+context: I've written some instructional material that's enjoyed
+success online, including
+&lt;a href="http://braveclojure.com"&gt;&lt;em&gt;Clojure for the Brave and True&lt;/em&gt;&lt;/a&gt; and
+&lt;a href="http://visualmess.com"&gt;&lt;em&gt;Clean Up Your Mess: A Guide to Visual Design for Everyone&lt;/em&gt;&lt;/a&gt;. Robert
+asked me a few questions about my process.&lt;/p&gt;
+
+&lt;p&gt;Hi Robert!&lt;/p&gt;
+
+&lt;p&gt;You're in the unfortunate position of being my permission to write at
+length about my creative process without seeming completely self
+indulgent: someone's actually &lt;em&gt;interested&lt;/em&gt; in listening to me describe
+the chaos between my ears! Be prepared to read way more than you asked
+for.&lt;/p&gt;
+
+&lt;h2&gt;&lt;em&gt;How do you decide who you are writing for?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;This one’s key for me. When I’ve written in the past, I’ve struggled
+with knowing how much or how little to say. I’m curious to learn how
+you deal with that.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;First: I've found it useful to follow the standard advice and pick an
+individual or two and write for them. The argument goes that you'll
+find it much easier to choose words and have a consistent tone, and
+that's proven true for me.&lt;/p&gt;
+
+&lt;p&gt;When I wrote &lt;em&gt;Clean Up Your Mess&lt;/em&gt;, I was one of three programmers
+working in an office full of charming people who did business analysis
+for management consultants, and I wrote the guide for a couple of them
+that I had become friends with. These analysts produced powerpoint
+decks by the barrel, and every single one was ugly. Similarly,
+&lt;em&gt;Clojure for the Brave and True&lt;/em&gt; started as a guide for a couple
+coworkers that I was mentoring.&lt;/p&gt;
+
+&lt;p&gt;However, picking your audience is only half the process. The other
+half is picking &lt;em&gt;who the author is&lt;/em&gt;. I'm going to go on a bit of a
+tangent to explain this.&lt;/p&gt;
+
+&lt;p&gt;When I started writing &lt;em&gt;Clean Up Your Mess&lt;/em&gt;, my personal life was a
+mess. In hopes of making it less messy I had been spending most of my
+free time reading Buddhist literature and listening to lectures by
+Thich Nhat Hanh and Pema Chodron (in fact, my site opens with a Thich
+Nhat Hanh quote). I was spending a great deal of time meditating and
+reflecting. (You're interested in Buddhism too, right?)&lt;/p&gt;
+
+&lt;p&gt;One of the ideas that really grabbed me was that our self-conceptions
+are just stories we tell ourselves with no reality to them. I won't
+belabor the point here; suffice to say that I found it useful and
+powerful to be able to perceive my identity as a construct as
+ephemeral as smoke.&lt;/p&gt;
+
+&lt;p&gt;Around the same time, I started taking improv comedy classes, where I
+would spend two hours a week constantly coming up with new, unique
+characters and living in them for a few minutes at a time. When you're
+sold on the idea that your day-to-day &lt;em&gt;you&lt;/em&gt; is itself just a
+character, improv becomes way easier and more fun. It's also fun to do
+this in real life - like, recently my wife and I were at the grocery
+store and I decided my character was "Super Excited About Carrots
+Guy", and I started shouting "OH MY GAWD JESS CARROTS! THEY HAVE
+CARROTS JESS!  CARROTS!" Everyone was laughing as they escorted me
+out!&lt;/p&gt;
+
+&lt;p&gt;Anyway, during this time of buddhism and improv I was writing &lt;em&gt;Clean
+Up Your Mess&lt;/em&gt; and when I sat down to write I got to play with new
+identities, new characters, and see which was the most fun. It became
+much easier to find words and keep a consistent tone when I decided on
+the author's character.&lt;/p&gt;
+
+&lt;p&gt;So, you mentioned not knowing how much or how little to write. Knowing
+your character helps. In &lt;em&gt;Clojure for the Brave and True&lt;/em&gt;, one of my
+editors would sometimes whittle down sentences to the bone, leaving
+only pure information; I would undo those edits with gusto, adding
+back the shape and texture of the author's voice.&lt;/p&gt;
+
+&lt;p&gt;There's another aspect of writing instructional material, which is
+that 95% of the time you can take more time to explain something. Even
+if you're writing for experienced audiences, at least take the time to
+explain acronyms and jargon.&lt;/p&gt;
+
+&lt;h2&gt;&lt;em&gt;How often and how much do you write?&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;Not enough and not enough! Writing was easiest, however, when I had a
+consistent schedule of writing at least one hour every single day.&lt;/p&gt;
+
+&lt;p&gt;Let me tell you about my garage. My garage is a living f*cking
+nightmare. It's like Cthulhu and the dread of the dark you had as a
+child made disgusting love and produced a horde of horrors that died
+in giant filthy clumps all over. At the beginning of the year I
+suppressed my gag reflex long enough to clean it out with the goal of
+setting up a photo studio, which I did, only to let it sit for three
+months. So three months later I go in there to actually take photos
+and guess what: it's a complete horror show, again!&lt;/p&gt;
+
+&lt;p&gt;If I had only spent time every day or even every week maintaining it,
+I'm sure it would have been much easier to keep clean. If I had
+cleaned it out, all those tiny insect monsters wouldn't have been able
+to breed, there wouldn't have been two dozen spider egg sacs, etc.&lt;/p&gt;
+
+&lt;p&gt;When I don't write consistently it's like that. I have to crawl into
+the nest of &lt;em&gt;no one cares what you write&lt;/em&gt; and &lt;em&gt;this time everyone's
+going to hate it&lt;/em&gt; called my mind and clear it all out before I can
+actually start writing.&lt;/p&gt;
+
+&lt;p&gt;When I write consistently, on the other hand, it's actually quite
+pleasant!&lt;/p&gt;
+
+&lt;p&gt;One more note: much of the writing process is research. Every time I
+find myself struggling to explain something, it's because I don't
+understand it well enough. When that happens I put down the keyboard
+and pull out the pen and notebook. I try to articulate the questions
+that will lead me to understand what I want to explain. I read and I
+draw diagrams and play with words until I feel like I understand the
+concept.&lt;/p&gt;
+
+&lt;p&gt;Becoming aware that, for me, writer's block is a lack of
+understanding, has helped me be much more productive.&lt;/p&gt;
+
+&lt;h2&gt;Collaboration&lt;/h2&gt;
+
+&lt;h3&gt;&lt;em&gt;Who does your drawings?&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;My wife! She's pretty great.&lt;/p&gt;
+
+&lt;h3&gt;&lt;em&gt;Do you have someone who edits for you?&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;I did when I worked with No Starch. They were awesome! &lt;em&gt;Clojure for
+the Brave and True&lt;/em&gt; is much, much better because they kept pushing me
+to write more clearly and explain things more fully. For other
+projects, I'll ask friends to look at drafts.&lt;/p&gt;
+
+&lt;h3&gt;&lt;em&gt;How much does it cost?&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;I paid my wife in carrots. &lt;strong&gt;OH MY GAWD JESS THEY HAVE CARROTS!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;No Starch gets 85% of hard copy sales and 77.5% of ebook sales (or
+something like that).&lt;/p&gt;
+
+&lt;p&gt;I hope this was helpful!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-08-08:/programming/recursion/</id>
+    <title type="html">Understanding Recursion</title>
+    <published>2016-08-08T13:00:00Z</published>
+    <updated>2016-08-08T13:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/recursion/"/>
+    <content type="html">&lt;p&gt;During my &lt;a href="http://www.braveclojure.com/training/"&gt;Clojure training&lt;/a&gt;
+I've found that recursion routinely trips people up. It definitely
+tripped &lt;em&gt;me&lt;/em&gt; up for a long time. I've tried to develop an explanation
+that's clear and intuitive, so if you're still scratching your head
+about recursion, read on!&lt;/p&gt;
+
+&lt;p&gt;A classic recursion example is calculating &lt;em&gt;n&lt;/em&gt; factorial, which is &lt;em&gt;n&lt;/em&gt;
+multiplied by every natural number before &lt;em&gt;n&lt;/em&gt;; 3 factorial is 6
+(3 times 2 times 1), 4 factorial is 24, 5 factorial is 120.&lt;/p&gt;
+
+&lt;p&gt;The code snippet that follows is a typical implementation of
+factorial; if you're reading this, then presumably it's confusing -
+which is great! It means that I haven't written this article for
+nothing.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;factorial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;factorial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What makes this function recursive is that &lt;code&gt;factorial&lt;/code&gt; calls
+itself. That's also what makes the function tricky; the function calls
+itself!?&lt;/p&gt;
+
+&lt;p&gt;We're used to functions calling &lt;em&gt;other&lt;/em&gt; functions to get work
+done. For example, this function uppercases a string and prepends
+&lt;code&gt;"Yo, "&lt;/code&gt; to it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;yoShout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;str&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;"Yo, "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;str&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;toUpperCase&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nx"&gt;yoShout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"gimme a donut"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="c1"&gt;// "Yo, GIMME A DONUT"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this tiny example, &lt;code&gt;yoShout&lt;/code&gt; does its work by using the
+&lt;code&gt;toUpperCase&lt;/code&gt; function. It's easier to understand than a recursive
+function because &lt;code&gt;yoShout&lt;/code&gt; treats &lt;code&gt;toUpperCase&lt;/code&gt; as a black-box
+abstraction. You don't have to tax your brain by loading
+&lt;code&gt;toUpperCase&lt;/code&gt;'s implementation details into your short-term memory.&lt;/p&gt;
+
+&lt;p&gt;Let's re-write &lt;code&gt;factorial&lt;/code&gt; to use function calls this way, with
+function's body calling another function in order to get its work
+done. To calculate 3 factorial, you could write a series of
+functions, &lt;code&gt;factorial_1&lt;/code&gt;, &lt;code&gt;factorial_2&lt;/code&gt;, and &lt;code&gt;factorial_3&lt;/code&gt;, like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;factorial_1&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;factorial_2&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;factorial_1&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;factorial_3&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;factorial_2&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These functions feel safe and comfy. &lt;code&gt;factorial_3&lt;/code&gt; calls
+&lt;code&gt;factorial_2&lt;/code&gt;, something we're completely familiar with, and likewise
+&lt;code&gt;factorial_2&lt;/code&gt; calls &lt;code&gt;factorial_1&lt;/code&gt;. &lt;code&gt;factorial_3&lt;/code&gt; also does not care
+how &lt;code&gt;factorial_2&lt;/code&gt;, just like in the string example.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, these functions are also completely impractical; can
+you imagine writing &lt;code&gt;factorial_1000&lt;/code&gt;? The recursive implementation
+doesn't have this problem.&lt;/p&gt;
+
+&lt;p&gt;My suggestion is to try seeing the recursive implementation from the
+same perspective as the nonrecursive imiplementation. Here's the code
+again:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;factorial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;factorial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can look at this and say, "Oh, if &lt;code&gt;n&lt;/code&gt; isn't 1, then this function
+does its work by calling some black-box function named &lt;code&gt;factorial&lt;/code&gt;
+with the argument &lt;code&gt;n - 1&lt;/code&gt;." You can look at the call to &lt;code&gt;factorial(n -
+1)&lt;/code&gt; as a call to a completely different function - one that just
+happens to have the same name and algorithm.&lt;/p&gt;
+
+&lt;p&gt;That's it! I hope it helps. If you've been confused by recursion, I'd
+love to hear your feedback!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-03-23:/programming/timeless-tools/</id>
+    <title type="html">Timeless Programming Tools</title>
+    <published>2016-03-23T13:00:00Z</published>
+    <updated>2016-03-23T13:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/timeless-tools/"/>
+    <content type="html">&lt;p&gt;I've been programming professionally for a dozen years. Some of what
+I've learned is best forgotten (oh god, Cold Fusion), but there have
+been many tools, techniques, and concepts that continue to be useful
+every day. Here are mine; I'd love to hear what yours are so I can
+experience both the joy of discovery and regret for not learning about
+the tool earlier.&lt;/p&gt;
+
+&lt;h3&gt;Relational Algebra / SQL&lt;/h3&gt;
+
+&lt;p&gt;I feel lucky that, during my fourteenth summer, I apparently had no
+friends and so had nothing better to do than try and slog through
+&lt;a href="http://amzn.to/1RyFQ7z"&gt;a book on MySQL and the now-defunct mSQL&lt;/a&gt;. You
+can see from the reviews that the book "is sketchy, incomplete, and
+almost totally useless." But, it did introduce me to SQL and
+databases. Soon after, I learned relational algebra (the theory
+underlying RDBMSs) and that investment has been one of the best of my
+life. I can't count the number of times a &lt;code&gt;LEFT OUTER JOIN&lt;/code&gt; has saved
+my bacon. Friends be damned!&lt;/p&gt;
+
+&lt;p&gt;Learning relational algebra provided the foundation I needed to move
+easily from MySQL to Oracle and MS SQL Server when I joined
+EnterpriseCo, and in general knowing how to interact with databases
+without a framework or ORM helped me quickly advance career-wise. It's
+why, at 20, I was able to land a contract building a custom site for
+the city of Santa Fe, New Mexico, instead of just cobbling together
+Wordpress and Drupal plugins.&lt;/p&gt;
+
+&lt;p&gt;If you come from Rails or some other framework that handles all the
+database interaction for you, one of the best things you can do for
+your career is to learn relational theory and SQL. Read
+&lt;a href="http://amzn.to/1Rm6WzL"&gt;a book by C. J. Date&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;The Unix Process Model&lt;/h3&gt;
+
+&lt;p&gt;Understanding Unix processes helped me understand what's actually
+happening when I run a program. It's also helped me understand what
+exactly a web server is and what I'm doing when I write a web
+application. The book Advanced Linux Programming has
+&lt;a href="http://advancedlinuxprogramming.com/alp-folder/alp-ch03-processes.pdf"&gt;a chapter on processes for free online&lt;/a&gt;. Actually,
+the whole book is free.&lt;/p&gt;
+
+&lt;p&gt;When you don't know about processes, programming is much harder and
+more mysterious. It's harder to understand performance, and it's
+harder to understand how programs interact with each other. If you
+ever feel a vague sense that you don't really get what's going when
+you run the apps you write, learning the process model will go a long
+way toward clearing things up.&lt;/p&gt;
+
+&lt;h3&gt;Regular Expressions&lt;/h3&gt;
+
+&lt;p&gt;Yeah, yeah, we've all heard the joke: "something something regular
+expressions, then you have two problems." Personally, I don't get it,
+because regular expressions are &lt;em&gt;seriously badass&lt;/em&gt;. I remember going
+through O'Reilly's big fat regex book while I worked from 11pm till
+7am as a night auditor at a hotel when I was 18, and being blown away
+at how powerful they are. To say that we programmers deal with text
+all the time is so obvious, it's not even worth saying. Regular
+expressions are an essential tool,
+&lt;a href="http://regexone.com/"&gt;and here's where you can learn to use them&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Finite State Machines&lt;/h3&gt;
+
+&lt;p&gt;Regular expressions are built as &lt;em&gt;finite state machines&lt;/em&gt;. Here's
+&lt;a href="http://www.gamedev.net/page/resources/_/technical/general-programming/finite-state-machines-and-regular-expressions-r3176"&gt;a great tutorial on FSMs&lt;/a&gt;
+showing how to actually build a regular expression. It's extremely
+cool!&lt;/p&gt;
+
+&lt;p&gt;I think FSMs are covered in computer science 101, but since I only
+went to college for a year and even then I studied works written a
+couple millennia before before the computer revolution, I didn't
+actually learn about them until about six years ago. My colleagues and
+I were having trouble with a mobile app - we needed the initialization
+process to happen in a particular way, and the logic for ensuring that
+was getting pretty tangled.&lt;/p&gt;
+
+&lt;p&gt;Once we took the time to learn about FSMs, though, it was easy to
+express the process as a series of states and transitions. I've since
+found that most tricky UI code can be improved this way. Just a couple
+months ago I was having trouble building a typeahead element from
+scratch with &lt;a href="http://hoplon.io/"&gt;hoplon&lt;/a&gt;. Once I identified that the
+difficulty was in keeping track of all the possible states, it only
+took a few minutes drawing a state machine diagram and I was back on
+track.&lt;/p&gt;
+
+&lt;h3&gt;Emotion Management&lt;/h3&gt;
+
+&lt;p&gt;In my personal life I'm constantly learning about and practicing ways
+to manage emotions. This stems from both my personal aspiration to
+improve the lives of others and from the completely selfish reason
+that it helps me do good work. Emotion management is probably the most
+important meta-skill you can develop. I mean, emotions are at the core
+of who you are as a human being.&lt;/p&gt;
+
+&lt;p&gt;The book &lt;a href="http://amzn.to/1Rm6EZE"&gt;Non-Violent Communication&lt;/a&gt; is an
+excellent resource for dealing with emotions. Also, my friend Alex
+Harms recently wrote
+&lt;a href="http://empathetictechnicalleader.com/"&gt;a book specifically for technical people&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Those are my programming power tools - I hope you find them useful!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-03-22:/programming/brave-clojure/</id>
+    <title type="html">Brave Clojure: Become a Better Programmer</title>
+    <published>2016-03-22T13:00:00Z</published>
+    <updated>2016-03-22T13:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/brave-clojure/"/>
+    <content type="html">&lt;p&gt;Next week week I'm re-launching
+&lt;a href="http://www.braveclojure.com/"&gt;www.braveclojure.com&lt;/a&gt; as &lt;em&gt;Brave
+Clojure&lt;/em&gt;. The site will continue featuring &lt;em&gt;Clojure for the Brave and
+True&lt;/em&gt;, but I'm expanding its scope a bit. Instead of just housing the
+book, the purpose of the site will be to help you and the people you
+cherish &lt;em&gt;become better programmers&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Like many other Clojurists, I fell in love with the language because
+learning it made me a better programmer. I started learning it because
+I was a bit bored and burnt out on the languages and tools I had been
+using. Ruby, Javascript, Objective-C weren't radically different from
+each other, and after using them for many years I felt like I was
+stagnating.&lt;/p&gt;
+
+&lt;p&gt;But Clojure, with its radically different approach to computation (and
+those exotic parentheses) drew me out of my programming funk and made
+it fun to code again. It gave me new tools for thinking about
+software, and a concomitant feeling that I had an unfair advantage
+over my colleagues. So of course the subtitle of &lt;em&gt;Clojure for the
+Brave and True&lt;/em&gt; is &lt;em&gt;learn the ultimate language and become a better
+programmer&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;And, four years since I first encountered Rich Hickey's fractal hair,
+I still find Clojure to be an exceptional tool for becoming a better
+programmer. This is because Clojure is a fantastic tool for exploring
+programming concepts, and the talented community has created
+exceptional libraries for such diverse approaches as
+&lt;a href="https://github.com/rbrush/clara-rules"&gt;forward-chaining rules engines&lt;/a&gt;
+and &lt;a href="https://github.com/aengelberg/loco"&gt;constraint programming&lt;/a&gt; and
+&lt;a href="https://github.com/clojure/core.logic"&gt;logic programming&lt;/a&gt;, just to
+name a few.&lt;/p&gt;
+
+&lt;p&gt;By learning a variety of programming concepts, you become a better
+programmer because you're better able to recognize what kind of
+problem you're working on and apply the right tools. To give just one
+example: when I'm working on complex UI widgets my work is always made
+easier if I model the widget using a finite state machine (FSM) - but
+I had to actually spend time learning what FSMs are and how to use
+them (those of you with comp sci degrees are probably chuckling at
+this).&lt;/p&gt;
+
+&lt;p&gt;You may have started learning Clojure because you heard that
+functional programming, Lisp, and immutability can make your life
+easier, but the fun doesn't stop there! At Brave Clojure, I hope
+you'll continue using the ultimate language to explore the vast and
+infinitely fascinating world of computer programming with me.&lt;/p&gt;
+
+&lt;p&gt;The first topic we'll explore is parallel programming. Here's the
+beginning of an ebook on the topic that I'm nearly finished with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Yes, it would be fair for you to describe my startup as the Google of
+palm reading. I don't know if you know this, but the fortune
+telling industry has no quality control standards. There is no Six
+Sigma of fortune telling. Sometimes it seems like these
+people are just &lt;em&gt;making things up&lt;/em&gt;!&lt;/p&gt;
+
+&lt;p&gt;We can do better. Did I say &lt;em&gt;we&lt;/em&gt;? Yes! I want to you to embark on this
+startup journey with me. Lucky you! My - &lt;em&gt;our&lt;/em&gt; - plan is to &lt;em&gt;disrupt&lt;/em&gt;
+the field with an app that lets a user position their phone so that
+the camera &lt;em&gt;faces&lt;/em&gt; their &lt;em&gt;palm&lt;/em&gt; and takes a picture, then predicts the
+future. I call it: &lt;em&gt;iFacePalm&lt;/em&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And, uh, there's parallel programming in it.&lt;/p&gt;
+
+&lt;p&gt;While I plan on spending most of my time helping you and all of your
+closest friends, enemies, and even frenemies become better programmers
+by writing about these big ideas, I'm also going to spend time
+covering practical Clojure topics like deployment and debugging.&lt;/p&gt;
+
+&lt;p&gt;To make this happen, I'm working a (great) job only two days a week
+and spending the rest of the time on Brave Clojure, so I'll need to
+find a way to derive income from the site. I'm not sure yet what will
+be free and what won't. My dream is to make &lt;em&gt;all&lt;/em&gt; the content
+available online for free. That's what gives me joy, and I think it's
+the best way to have a positive impact. Ideally, I would be supported
+in this endeavor through monthly donations, but I'll likely try
+different approaches over time.&lt;/p&gt;
+
+&lt;p&gt;Finally, I've been putting together two sites to help you up your
+game:
+&lt;a href="http://open-source.braveclojure.com/"&gt;Open Source Clojure Projects&lt;/a&gt;,
+a directory of active projects, and
+&lt;a href="https://clojurework.com/"&gt;Clojure Work&lt;/a&gt;, the first Clojure-only job
+board. The latter is still in beta, and I'm going to officially
+release it and move it to https://jobs.braveclojure.com next week. The
+best way to get better at Clojure is to actually write Clojure, and
+working on real projects (and even getting paid to do so) is a great
+way to do that. Companies who buy job board ads will also be
+supporting me in making more content - hooray!&lt;/p&gt;
+
+&lt;p&gt;If you get excited about learning more programming ideas, or learning
+to develop Clojure programs better, or getting paid cold hard cash to
+write your favorite language, then I cordially invite you to consider
+signing up for my newsletter, where I'll announce every release:&lt;/p&gt;
+
+&lt;form action="http://flyingmachinestudios.us1.list-manage.com/subscribe/post?u=60763b0c4890c24bd055f32e6&amp;amp;amp;id=0b40ffd1e1" class="validate" id="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank"&gt;
+&lt;input class="email" id="mce-EMAIL" name="EMAIL" placeholder="email address" required="" type="email" value=""&gt;&lt;input class="button" id="mc-embedded-subscribe" name="subscribe" type="submit" value="join the mailing list"&gt;
+&lt;/form&gt;
+
+&lt;p&gt;Writing &lt;em&gt;Clojure for the Brave and True&lt;/em&gt; was one of the most rewarding
+experiences of my life in large part because I got to interact with so
+many kind, thoughtful, intelligent people. I look forward to your
+company as I embark on this new &lt;em&gt;chapter&lt;/em&gt; of my journey!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-03-20:/programming/open-source-clojure/</id>
+    <title type="html">A Directory of Open Source Clojure Projects</title>
+    <published>2016-03-20T17:00:00Z</published>
+    <updated>2016-03-20T17:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/open-source-clojure/"/>
+    <content type="html">&lt;p&gt;Every now and again I'll come across a post where someone asks about
+getting involved in open source clojure projects. Because every
+question deserves a single-page app dedicated to its answer, I made
+&lt;a href="http://open-source.braveclojure.com/"&gt;Open Source Clojure Projects&lt;/a&gt;,
+a directory of active projects welcoming new contributors.&lt;/p&gt;
+
+&lt;p&gt;Each project has (or should have) clear instructions on:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Developing the project locally&lt;/li&gt;
+&lt;li&gt;Running tests if there are tests&lt;/li&gt;
+&lt;li&gt;Contributing code (pull request? tests required?)&lt;/li&gt;
+&lt;li&gt;Contacting other devs - slack, mailing list, IRC, etc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also, there's a "beginner-friendly" flag so that new Clojurists can
+easily find projects with tasks that are appropriate for their skill
+level.&lt;/p&gt;
+
+&lt;p&gt;So far, 22 projects have been added, which is awesome. A random
+sampling:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href="http://open-source.braveclojure.com/projects/milestones"&gt;milestones&lt;/a&gt;,
+which generates the best possible schedule from a set of tasks&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://open-source.braveclojure.com/projects/reverie"&gt;reverie&lt;/a&gt;, a
+CMS for power users&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://open-source.braveclojure.com/projects/scheje"&gt;Scheje&lt;/a&gt;, a
+little Scheme on Top of Clojure (!!!)&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://open-source.braveclojure.com/projects/system"&gt;system&lt;/a&gt;, a
+friendly layer on top of Stuart Sierra's component library&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you have an open source project and want people to contribute,
+please &lt;a href="http://open-source.braveclojure.com/projects/new"&gt;add it&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h2&gt;The Stack&lt;/h2&gt;
+
+&lt;p&gt;A few folks have asked me about what tools I used to create the
+site. I'll explain more below but briefly:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The backend is a weird, unholy mess of fantastic classic libraries
+and sideshow code that I keep transplanting from one project to
+another so that I can answer the question &lt;em&gt;what kind of abomination
+will this morph into this time?&lt;/em&gt;. The backend uses Github as a
+database, though, and that's pretty neat.&lt;/li&gt;
+&lt;li&gt;The frontend uses re-frame and includes some form handling code that
+I'm proud of and that's actually worth stealing.&lt;/li&gt;
+&lt;li&gt;Finally, there's also some code for deploying with Ansible that's
+worth stealing.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the time-honored fashion of technical blog posts everywhere, I'll
+now "dive in" and elaborate on each of those bullet points.&lt;/p&gt;
+
+&lt;h3&gt;Backend&lt;/h3&gt;
+
+&lt;p&gt;For the backend, the site uses ring, compojure, liberator, http-kit,
+and the weird set of tools that have accreted in my projects over the
+years. Even though the code footprint for the backend is pretty small,
+it's pretty idiosyncratic, containing handfuls of half-formed ideas I
+keep noodling around with. Hopefully someday soon I'll be able to
+really nail down my approach to backend dev and share it, because it
+&lt;em&gt;does&lt;/em&gt; allow me to write apps quickly.&lt;/p&gt;
+
+&lt;p&gt;One cool part of the site is that it uses a Github repo,
+&lt;a href="https://github.com/braveclojure/open-source-projects"&gt;Open Source Projects&lt;/a&gt;,
+as its database. Browse the &lt;code&gt;projects&lt;/code&gt; directory and you can see every
+project that's listed on the site stored as an EDN file. When the
+backend starts up it reads from Github, and whenever someone posts or
+edits a listing it writes the EDN file using Github's API.&lt;/p&gt;
+
+&lt;p&gt;The nice thing about this approach is that I didn't have to worry
+about standing up a server or keeping backups. And it was just fun to
+code. &lt;a href="https://github.com/braveclojure/open-source/blob/master/src/backend/open_source/db/github.clj"&gt;Here's the source&lt;/a&gt;
+for using Github as a db - I definitely see potential in reusing this
+approach for similar lightweight directory sites.&lt;/p&gt;
+
+&lt;h3&gt;Frontend&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/Day8/re-frame"&gt;re-frame&lt;/a&gt; has a delightful README
+that gracefully introduces you to reactive programming. If you haven't
+read it then stop reading this article and read that instead; I am
+100% confident that it's a better use of your time.&lt;/p&gt;
+
+&lt;p&gt;re-frame is a joy to use, and it's become my go-to tool for frontend
+projects. I've written a fair amount of code
+&lt;a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/components/form_helpers.cljs"&gt;for working with forms&lt;/a&gt;
+and
+&lt;a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/handlers/common.cljs#L13"&gt;submitting values&lt;/a&gt;. This
+code forms a kind of nano-framework on top of re-frame, and it's
+allowed me to speed up the development process from project to
+project. Here's
+&lt;a href="https://github.com/braveclojure/open-source/blob/master/src/frontend/open_source/pub/projects/project_form.cljs"&gt;an example form which uses the form helpers&lt;/a&gt;. If
+you'd like for me to write a detailed explanation of this code, please
+leave a comment letting me know :)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://boot-clj.com/"&gt;Boot&lt;/a&gt; deserves a special mention because it
+makes it so easy to develop ClojureScript apps. With Boot you get live
+reload (every time you change your frontend files, the changes are
+automatically injected into the browser), giving you a
+near-instantaneous feedback cycle that makes development much more
+enjoyable. It's also easy to incorporate &lt;a href="http://sass-lang.com/"&gt;Sass&lt;/a&gt;
+compilation - and your Sass files also get the live reload treatment.&lt;/p&gt;
+
+&lt;p&gt;If you're not using Boot to build your ClojureScript app then chances
+are you're causing yourself undue suffering. And hey, maybe you're
+into that? No judgment. But if you're not, then take the time to learn
+it - it's a great investment in yourself as a Clojure developer.&lt;/p&gt;
+
+&lt;h3&gt;Deployment&lt;/h3&gt;
+
+&lt;p&gt;The
+&lt;a href="https://github.com/braveclojure/open-source/tree/master/infrastructure"&gt;infrastructure&lt;/a&gt;
+directory contains scripts for provisioning and deploying to a server
+with &lt;a href="http://ansible.com/"&gt;Ansible&lt;/a&gt;. It also has a
+&lt;a href="https://www.vagrantup.com/"&gt;Vagrantfile&lt;/a&gt; so that you can stand up a
+test server locally; just run &lt;code&gt;vagrant up&lt;/code&gt; to both create the virtual
+machine and provision it. To deploy, &lt;code&gt;cd&lt;/code&gt; into the &lt;code&gt;infrastructure&lt;/code&gt;
+directory and run &lt;code&gt;./build.sh &amp;amp;&amp;amp; ./deploy-dev.sh&lt;/code&gt;. Those two shell
+scripts are extemely simple, so take a look at them to see what's
+involved in deployment.&lt;/p&gt;
+
+&lt;p&gt;The Ansible configuration is almost completely reusable. You can check
+it out in &lt;code&gt;infrastructure/ansible&lt;/code&gt;. The &lt;code&gt;roles&lt;/code&gt; directory in
+particular has Ansible tasks for creating an nginx server that can run
+Clojure app. It also includes an Upstart script for controlling
+startup/shutdown of your Clojure app (assuming you use Ubuntu).&lt;/p&gt;
+
+&lt;h2&gt;The Future&lt;/h2&gt;
+
+&lt;p&gt;Eventually, I'd like to add more tools for project discovery and for
+showing project stats. @yogthos, for example, suggested incorporating
+a project's stats from github so that users can see how active and
+popular each project is, information that can help them decide which
+project to contribute to.&lt;/p&gt;
+
+&lt;p&gt;Also, I'm in the process of revamping
+&lt;a href="http://braveclojure.com"&gt;braveclojure.com&lt;/a&gt; to include more resources
+for Clojure programmers. The site hovers around 3rd or 4th Google
+result for "Clojure", just below clojure.org and the Wikipedia
+entry. So, it's kind of popular I guess. My hope is that by featuring
+Open Source Clojure Projects, I'll help more new developers get
+involved and also help project maintainers squash some tickets.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2016-03-02:/penguins/not-a-superpredator/</id>
+    <title type="html">Not a Superpredator</title>
+    <published>2016-03-02T05:00:00Z</published>
+    <updated>2016-03-02T05:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/penguins/not-a-superpredator/"/>
+    <content type="html">&lt;p&gt;I'm the son of a Vietnamese emigrant. I grew up in the South, where I
+experienced and witnessed racism. I have black step-siblings and my
+wife is black (naturally, so are my in-laws). As such, I try to
+educate myself about race issues in America. I don't share my thoughts
+much publicly but do want to write more on the subject. In the mean
+time, here's a (slight edited) exchange I had with a friend on
+Facebook about a recent event,
+&lt;a href="https://www.youtube.com/watch?v=LqLfvQfuvsA"&gt;Ashley Williams's protest during a Hillary Clinton speech&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;em&gt;Me:&lt;/em&gt; A room full of white people at a $500/person Hillary Clinton event
+tells young black woman she's being rude and inappropriate for
+demanding Hillary Clinton explain why she supported the system that
+destroyed countless black and latino lives. I think that accurately
+sums up the prevailing attitude toward race in America: black people,
+please don't cause me mild discomfort by bringing my attention to our
+society's racial caste system. It's impolite.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Friend:&lt;/em&gt; Wow. This thing seems like... a really, really huge
+distortion. She [Hillary] actually said: "You’re the first person to
+do that, **and I’m happy to address it."** She offered to talk
+about it. But the demonstrator wasn't there to talk, and wasn't in
+listening mode. Second, what she said, 20 years ago, is that she
+thought 'SuperPredators' exist and should be dealt with. It was a
+popular idea at the time. She did &lt;em&gt;not&lt;/em&gt; say that they were one color
+or another: just that they exist and should be contained. WTF ??? It's
+indisputable that America needs to deal with the legacy of excessive
+force and excessive incarceration against people of color. But if we
+make it sound like any talk about incarcerating anybody, ever, must be
+inherently racist... we've already lost the battle to have serious
+conversations about what non-racially-biased policing would look like.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Me:&lt;/em&gt; Hey man! Thanks for sharing your thoughts. Here are more of
+mine, and I hope they don't come across as combative - I really
+appreciate getting to talk about this stuff with someone as
+thoughtful as you.&lt;/p&gt;
+
+&lt;p&gt;I wasn't actually commenting on Hillary's reaction, but the reactions
+of those in the (almost entirely white) room with her: people hissing
+at her and telling her she's being rude and inappropriate. That's what
+I'm referring to when I say the video reflects the prevailing attitude
+toward race. To me, it's as if the message toward the BLM activist
+[note: I've since learned she actually isn't with Black Lives Matter]
+is, "Excuse me, but you're interrupting the event we paid $500 to
+see. Please take your complaints about the racial caste system, which
+doesn't negatively affect me, elsewhere."&lt;/p&gt;
+
+&lt;p&gt;And it is always "rude" or "inappropriate" or "inconvenient" for those
+topics to be discussed. When Beyonce dances at the Super Bowl, people
+lose their minds: they're just trying to enjoy football, they don't
+want to have to think about the lives of people who aren't like them!
+When another black man or woman gets murdered by police and people
+take to the streets demanding change, they're somehow offensive and
+ungrateful for criticizing law enforcement.&lt;/p&gt;
+
+&lt;p&gt;Most often, the reaction is to denounce the method and ignore the
+message.&lt;/p&gt;
+
+&lt;p&gt;Last year, Bernie Sanders visited Liberty University, and David
+Nasser, a university VP, got some of the biggest applause of the event
+for saying that the problem with the criminal justice system is a "sin
+issue, not a skin issue" - meaning that it was not a political issue,
+but one better addressed by encouraging people to be better or
+something. Same message: stop speaking up, black people.&lt;/p&gt;
+
+&lt;p&gt;So that's what I was meaning to communicate originally. Here are my
+thoughts on Hillary.&lt;/p&gt;
+
+&lt;p&gt;I'm not sure if you're familiar with "dog-whistle" politics, using
+coded language to court the racist vote. At the time, the Democratic
+party was trying to win back the vote of poor, Southern whites who'd
+switched to the Republican party thanks to the republicans' &lt;a href="https://en.wikipedia.org/wiki/Southern_strategy"&gt;Southern
+Strategy&lt;/a&gt;, an effort
+to win those votes by appealing to racist fears and biases.&lt;/p&gt;
+
+&lt;p&gt;Anyway, Democrats had the idea, "hey maybe if we also play on those
+racial fears, we'll get those votes back!" And that's what they
+did. When Hillary and other political/media figures talked about
+"superpredators", it was generally understood to mean "urban" people,
+and that was generally understood to mean black people. So when the
+demonstrator brings this up, she's not saying that "any talk about
+incarcerating anybody, ever" is inherently racist. She had reasons for
+singling out that phrase and using it to call attention to Hillary's
+record. Some might disagree, but I think her reasons were good ones.&lt;/p&gt;
+
+&lt;p&gt;And even if "superpredator" &lt;em&gt;wasn't&lt;/em&gt; meant that way, the result was
+still the crushingly unjust system we have today - and Hillary's
+support helped build that system. Using terms like "superpredator" and
+"bring them to heel" to &lt;em&gt;accidentally&lt;/em&gt; perpetuate a racial caste
+system might even be worse.&lt;/p&gt;
+
+&lt;p&gt;Michelle Alexander, author of The New Jim Crow,
+&lt;a href="http://www.thenation.com/article/hillary-clinton-does-not-deserve-black-peoples-votes/"&gt;writes about it persuasively&lt;/a&gt;. The
+New Jim Crow goes into even greater detail about how mass
+incarceration and the criminal justice system are tools for racial
+control, even if many of the actors in the system (police, lawyers)
+aren't racist.&lt;/p&gt;
+
+&lt;p&gt;I'm a Bernie fan, and I don't have rabid Hillary hatred. If it comes
+down to Hillary versus whichever clown the Republican party decides
+on, I will vote for Hillary. I respect her vast experience and think
+she would do a decent job at pushing for progress. When it comes to
+racial justice, though, I think Bernie has a much better record.&lt;/p&gt;
+
+&lt;p&gt;Most of all, I'm an Ashley Williams fan. It takes courage to do what
+she did. Maybe she wasn't in listening mode (it's hard for me to
+really articulate my thoughts on this. She did give a good pause so
+that HC could speak. And anyway the power was so asymetrical that I
+don't know how to think about it. How do you really try to talk when
+you're being carted off by security?). But I'm glad she did it - it
+brought attention to an under-reported problem, and Hillary did in
+fact end up apologizing. And no damage was done, except perhaps to the
+sense of propriety of a few stuffy rich people.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-12-09:/penguins/job-search-sanity/</id>
+    <title type="html">Announcing Job Search Sanity</title>
+    <published>2015-12-09T16:15:00Z</published>
+    <updated>2015-12-09T16:15:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/penguins/job-search-sanity/"/>
+    <content type="html">&lt;p&gt;One of the least fun experiences in my life was getting fired twice in
+three months back in 2008 when the economy decided to go all &lt;em&gt;YOLO&lt;/em&gt;
+and drive off a cliff with its middle finger waving out the
+window. The first time, I was a wreck. I was in a relationship with
+someone who had a chronic medical condition and the attendant medical
+bills. As the sole money earner, I was pretty bummed! Every day I felt
+dread and panic as I pored over job listings. I made many
+stress-induced mistakes like emailing the same contact twice or
+forgetting phone interviews.&lt;/p&gt;
+
+&lt;p&gt;But somehow I found a job at a startup pretty quickly, only to be
+regrettably let go a couple months later because they were running out
+of money. This time, I did things differently. I took a &lt;em&gt;Getting
+Things Done&lt;/em&gt; inspired approach to the job search. Approaching the 
+search in an organized, methodical way made me feel in control. It
+also gave me confidence that I was making real progress on finding a
+job because I could actually see all the steps I was taking. At the
+end of the day I knew I had done what I could to move forward.&lt;/p&gt;
+
+&lt;p&gt;Today I'm releasing a free web application,
+&lt;a href="https://jobsearchsanity.com"&gt;Job Search Sanity&lt;/a&gt;, to help others do
+the same. It helps you keep track of each job opportunity and the next
+actions you need to do to move forward. It also keeps cover letters
+and interview remindres in place. And one of its best features is that
+it lets you save your job searches on the site so you can keep them
+all in one place instead of visiting dozens of sites every day.&lt;/p&gt;
+
+&lt;p&gt;If you're looking for a job and feel overwhelmed, then
+please give it a try! If you know someone who's looking for a job,
+please send them a link!&lt;/p&gt;
+
+&lt;h2&gt;Personal Notes&lt;/h2&gt;
+
+&lt;p&gt;The main thing that motivated me to create this site was seeing my
+brother struggle with finding employment after graduating with a
+Pharm.D. (doctor of pharmacy) degree last year. After spending a
+decade putting himself through school, he had the modest expectation
+of finding decent-paying, stable work. Instead, he found that the
+pharmacy market had radically changed while he was getting his degree,
+and jobs were scarce.&lt;/p&gt;
+
+&lt;p&gt;I can only imagine how crushing it would feel to commit so much of
+your life (and accumulating large student loan debts) to learning
+profession, only to find that the rules had changed and there was
+actually little demand for your skills. To find that the future you've
+been working toward for so long has vanished, replaced with utter
+uncertainty.&lt;/p&gt;
+
+&lt;p&gt;It was a rough time for him, but thankfully he did eventually find a
+job as a pharmacist. While he was looking, he came to live with me,
+and I was so glad that I was able to help in some way (and that I got
+to spend so much time with him), but part of me wished I could have
+done more.&lt;/p&gt;
+
+&lt;p&gt;Cut to the present day, where my wife has been looking for a better
+job for a while, and I can see the stress affecting her in similar
+ways (though to a much lesser degree, thankfully).&lt;/p&gt;
+
+&lt;p&gt;All of which is to say - I know that looking for a job can be
+incredibly stressful, and I hope that by providing this free app I can
+help people in similar situations. I kind of need to make something
+that I actually accept payments for soon, but for this site I didn't
+want their to be any barriers to signing up and using it. Perhaps I'll
+figure out way to monetize it, but for now I'm proud of the site and
+I'll count it a success if it helps even a dozen people as they find a
+job.&lt;/p&gt;
+
+&lt;h2&gt;Development Notes&lt;/h2&gt;
+
+&lt;p&gt;Job Search Sanity was built using:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href="http://boot-clj.com/"&gt;Boot&lt;/a&gt; build tool. Boot made it easy to
+integrate a Clojure backend, ClojureScript frontend, and Sass
+compilation&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://clojure-liberator.github.io/liberator/"&gt;Liberator&lt;/a&gt;, to
+structure the handling of back-end API calls&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="/programming/datomic-for-five-year-olds/"&gt;Datomic&lt;/a&gt; for the database&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://github.com/Day8/re-frame"&gt;re-frame&lt;/a&gt; as the lightweight
+front-end structure imposed on
+&lt;a href="https://reagent-project.github.io/"&gt;reagent&lt;/a&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I absolutely &lt;em&gt;loved&lt;/em&gt; working on the site because the tools made it so
+much &lt;em&gt;fun&lt;/em&gt;. One of my personal goals was to stretch myself design- and
+UX-wise, and the above programming tools made that possible by making
+it so simple and easy to implement the basic functionality.&lt;/p&gt;
+
+&lt;p&gt;ClojureScript has come incredibly far in the past couple years. A year
+or two ago I looked at it but stuck with Coffeescript because cljs
+looked like a pain in the ass to use, but that isn't the case any
+longer. The only downside here is that, once again, Clojure has
+spoiled me, and I never want to go back to my previous tools.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-11-11:/programming/hey-rubyists-try-clojure/</id>
+    <title type="html">Why Clojure's a Great Next Language for Rubyists</title>
+    <published>2015-11-11T14:00:00Z</published>
+    <updated>2015-11-11T14:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/hey-rubyists-try-clojure/"/>
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;HAVE
+&lt;em&gt;frothing at the mouth&lt;/em&gt;
+YOU
+&lt;em&gt;flailing arms&lt;/em&gt;
+CONSIDERED
+&lt;em&gt;eyes are unfocused and mad&lt;/em&gt;
+LISP
+&lt;em&gt;flipping furniture over&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;— &lt;a href="https://twitter.com/ra/status/661707687386853376"&gt;@ra&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you're a Rubyist itching to learn a new language, then I want to
+convince you (using only a minimum of mouth frothing and chair
+flipping) that Clojure's a great pick for you. Please excuse me if
+this article reeks of the glassy-eyed fanaticism of the true believer,
+but the fact is that I think Clojure is crazy stupid fun to use, and
+intellectually rewarding to boot.&lt;/p&gt;
+
+&lt;p&gt;I fell in love with Ruby back in 2005, and since then only Clojure has
+been able to elicit the same level of affection. I think this is
+because Clojure has the same fundamental attributes that make Ruby so
+appealing: it's &lt;em&gt;simple&lt;/em&gt;, it's &lt;em&gt;powerful&lt;/em&gt;, and above all, it's
+&lt;em&gt;fun&lt;/em&gt;. The rest of this love letter &lt;em&gt;cough&lt;/em&gt; I mean, blog article, is
+about how Ruby and Clojure exhibit these attributes in very different
+ways, and how Clojure's different approach to computation makes it
+fascinating and rewarding to learn.&lt;/p&gt;
+
+&lt;p&gt;My first exposure to Ruby was
+&lt;a href="https://www.youtube.com/watch?v=Gzj723LkRJY"&gt;DHH's whoops-laden Ruby on Rails demo&lt;/a&gt;.
+That video saved me from the Lovecraftian horror that was PHP
+circa 2005. You may have had a similar experience, with Ruby rescuing
+you from C++ or Java or COBOL or whatever.&lt;/p&gt;
+
+&lt;p&gt;It's a vast understatement to say that, compared to PHP, Ruby is
+elegant. Whereas PHP seemed almost to strive for inconsistency, Ruby
+employs only a few, simple ideas: everything is an object, you advance
+your program by sending messagse to objects, and message dispatch is
+governed by a couple easily-understood rules.&lt;/p&gt;
+
+&lt;p&gt;Clojure is also a very simple language. It wouldn't be a stretch to
+say that simplicity is one of the core tenets of the Clojure
+philosophy; its creator, Rich Hickey, has given a number of talks
+elaborating on what it means for something to be simple, including
+&lt;a href="http://www.infoq.com/presentations/Simple-Made-Easy"&gt;Simple Made Easy&lt;/a&gt;
+and
+&lt;a href="https://www.youtube.com/watch?v=VSdnJDO-xdg"&gt;Clojure, Made Simple&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Clojure's simplicity, however, takes a radically different form. In
+Clojure, you primarily care about two things: data and functions. You
+pass data to functions and get new data back. Yes, there's other
+interesting stuff like state management constructs and macros, just as
+there are other interesting aspects of Ruby like modules and
+blocks. But the heart of Clojure is so simple any eighth grade algebra
+student can understand it: hand some value to a function, and it hands
+you a new value back.&lt;/p&gt;
+
+&lt;p&gt;"But wait a minute," you might be thinking, "You can't just pass data
+around like that. Haven't you read POODR? What about encapsulation?
+What if those functions mutate your data?"&lt;/p&gt;
+
+&lt;p&gt;In Clojure, data is &lt;em&gt;immutable&lt;/em&gt;. You can't change existing data, you
+can only derive new data; when you add 3 and 4, you don't change 3 or
+4 to make 7, you derive 7. If this sounds crazypants and impossible to
+work with, all I can do is assure you that it does work (and point you
+to this book I wrote available free online,
+&lt;a href="http://www.braveclojure.com/"&gt;Clojure for the Brave and True&lt;/a&gt; which
+explains how) and hope that your intellectual curiosity will motivate
+you to explore this crazypants paradigm that lots of people seem to
+love. Here's a teaser: many of the problems addressed by
+object-oriented design simply aren't problems in Clojure. You don't
+have to care about inheritance vs. composition because behavior isn't
+chained to data. You don't have to care about data hiding because
+there's no risk that some object somewhere will silently change it.&lt;/p&gt;
+
+&lt;p&gt;As a Rubyist, you know that simplicity buys you power, where power is
+defined as the ability to express computational ideas concisely. For
+example, Ruby's blocks allow you to write anonymous algorithms,
+something that's impossible in C.  Another example: Ruby's simple
+method dispatch scheme makes it easy for you to reason about and
+design robust programs. It lets you easily extend code and buys you
+reuse through multiple inheritance. Most enticingly, it lets you do
+metaprogramming.&lt;/p&gt;
+
+&lt;p&gt;Clojure's simplicity also buys you power. As a Lisp, Clojure employs a
+syntax which just so happens to mirror the internal abstract syntax
+trees that represent Clojure code. I'm going to wave my hands a bit
+here and say that this lets you use &lt;em&gt;macros&lt;/em&gt;, the most powerful
+metaprogramming tool available to any language. In the Ruby community,
+we like to talk about code that writes code; macros take this idea to
+a whole different level. It's not an exaggeration to say that Ruby's
+metaprogramming system provides only a subset of the capability
+provided by Lisp macros.&lt;/p&gt;
+
+&lt;p&gt;Super duper hand wavy, I know, but the point is: if you like how
+powerful Ruby is, you will lose your flipping mind over how powerful
+Clojure is. Macros let you easily implement ideas from all corners of
+computer science. It's not an accident that Clojure has so many
+libraries that let you use different paradigms. There's &lt;em&gt;core.logic&lt;/em&gt;
+for logic programming, &lt;em&gt;instaparse&lt;/em&gt; for building parser generators,
+&lt;em&gt;core.typed&lt;/em&gt; for haskell-ish typed programming, and much more.&lt;/p&gt;
+
+&lt;p&gt;And macros aren't even the coolest part. I'll let you in on a secret:
+macros are the flashy, shiny bait that wild-eyed Clojurists lay out to
+ensnare curious programmers. Nay, even more powerful is Clojure's
+design of &lt;em&gt;programming to abstractions&lt;/em&gt;. This design makes it
+incredibly easy to reuse your code and extend existing code. Of course
+I can't tell you &lt;em&gt;how&lt;/em&gt; in the short space afforded by this digital
+outburst, but you'll grow as a programmer if you learn about it.&lt;/p&gt;
+
+&lt;p&gt;These last two paragraphs also hint at what makes Clojure so dadgum
+fun. First, by learning Clojure you get introduced to one of the most
+loved and respected computational traditions, Lisp and the lambda
+calculus. It also has a clear philosophy, articulated by Rich Hickey,
+that will make you a better programmer. Not only that, other
+programming vistas become more readily accessible.&lt;/p&gt;
+
+&lt;p&gt;Second, Clojure is a joy to write. Here's a quote from Matz (Ruby's
+creator) on his design philosophy:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;By using Ruby, I want to concentrate the things I do, not the
+magical rules of the language, like starting with public void
+something something something to say, "print hello world." I just
+want to say, "print this!" I don't want all the surrounding magic
+keywords. I just want to concentrate on the task. That's the basic
+idea. So I have tried to make Ruby code concise and succinct.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Clojure, likewise, is concise. It lets you focus on solving the
+problem at hand rather than figuring out the magic whatever. People
+are falling in love with Clojure, spending their nights and weekends
+learning it hacking with it, because the experience is its own reward.&lt;/p&gt;
+
+&lt;p&gt;If you're looking to stretch yourself and explore more of what the
+world of programming has to offer, then I recommend Clojure to you
+with all of my crazed heart. Here are some resources for getting
+started:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href="http://yogthos.github.io/ClojureDistilled.html"&gt;Clojure Distilled&lt;/a&gt;,
+a very short overview of the language&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://braveclojure.com"&gt;Clojure for the Brave and True&lt;/a&gt;, my own
+full-length crazypants introductory book&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://amzn.to/1WIxT2Q"&gt;Living Clojure&lt;/a&gt;, an excellent introductory
+book by Carin Meier, someone who BUILDS ROBOTS&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="http://www.purelyfunctional.tv/"&gt;LispCasts&lt;/a&gt; for those of you who
+prefer video&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://github.com/tallesl/Rich-Hickey-fanclub"&gt;The Rich Hickey FanClub&lt;/a&gt;
+lists all his talks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now go out there and start learning some Clojure!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-11-06:/penguins/job-search-beta/</id>
+    <title type="html">Looking for Beta Testers</title>
+    <published>2015-11-06T05:00:00Z</published>
+    <updated>2015-11-06T05:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/penguins/job-search-beta/"/>
+    <content type="html">&lt;p&gt;Over the last couple months I've been working on a web site that helps
+job seekers reduce stress by following a structured, methodical
+process, and the site's ready for some beta testing. If you'd like to
+help out, please
+&lt;a href="https://nonrecursive.wufoo.com/forms/job-search-site-beta/"&gt;sign up for the beta test&lt;/a&gt;!&lt;/p&gt;
+
+&lt;p&gt;This isn't a unicorn-disrupting once-a-generation app, just a simple
+site to help people during a stressful process. For the beta test,
+I'm just looking for feedback on what's broken, what's confusing, and
+what could be useful but isn't implemented.&lt;/p&gt;
+
+&lt;p&gt;Thanks!&lt;/p&gt;
+
+&lt;p&gt;P.S. in case you're wondering, the site's all Clojure, with
+compojure/liberator/datomic on the backend and reagent and re-frame on
+the frontend.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-10-22:/essays/how-come-book/</id>
+    <title type="html">Why I wrote Clojure for the Brave and True</title>
+    <published>2015-10-23T01:00:00Z</published>
+    <updated>2015-10-23T01:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/essays/how-come-book/"/>
+    <content type="html">&lt;p&gt;It seems weird to say that I'm almost painfully filled with
+gratitude for all the good shit in my life, and that that was what
+motivated me to start writing a free programming book, but that's the
+truth.&lt;/p&gt;
+
+&lt;p&gt;Before I started writing
+&lt;a href="http://www.braveclojure.com"&gt;&lt;em&gt;Clojure for the Brave and True&lt;/em&gt;&lt;/a&gt; back
+in 2013, I had been deliberately trying to figure out what I could do
+to improve other people's lives even just a smidge. By that point I
+had been doing a gratitude practice (just spending a few minutes to
+think of three things I was grateful for) regularly for a year and a
+half, and felt that my life was so full with good shit that I felt
+almost obligated to do something for others so that they'd have more
+good shit in their lives.&lt;/p&gt;
+
+&lt;p&gt;"Obligation" might seem strange here, and it's not 100% what I
+mean. It's hard to accurately put the feeling into words. Someday I'd
+like to take the time to do a good job writing about it, but for now -&lt;/p&gt;
+
+&lt;p&gt;My life experiences have instilled in me a belief that kindness and
+generosity are obligations. To take just one experience: for years, I
+witnessed firsthand the kind of suffering that chronic illness can
+inflict on someone. That was just nature doing it's thang, cruel,
+impersonal, implacable. But it was compounded by the constant minor
+(and sometimes major) abuses delivered by people.&lt;/p&gt;
+
+&lt;p&gt;Life is painful enough without humans heaping additional indignities
+on each other. Beyond this baseline of "don't be an asshole"
+(incidentally, that's the central tenet of my personal ethics), I
+think it's imperative to learn to live with kindness, love, and
+generosity. The bleak perspective on this is that the ship is going
+down for all of us, and the only thing we have to hold on to is each
+other. The not-bleak perspective is that we are social creatures,
+wired to find fulfillment in contributing to each others' happiness;
+that our greatest joys are found in human connection.&lt;/p&gt;
+
+&lt;p&gt;Which is why I wrote a programming book featuring hobbit violence,
+man-eating trolls, and mopey teenage vampires!&lt;/p&gt;
+
+&lt;p&gt;Really, though, programming is a huge part of why my life is so full
+of good shit. I grew up living in poverty, and now I make a very
+comfortable living doing an activity that I genuinely enjoy. I have
+great coworkers, good health insurance, I live in a good house and
+have a decent car, and I'm confident I can provide for my family. I
+even have enough free time for hobbies and friends.&lt;/p&gt;
+
+&lt;p&gt;So, I wanted to provide something free to the world to help others
+improve their lives. Learning Clojure has personally made me a much
+better programmer, and I think others can benefit from it just as
+much. In learning Clojure, you learn a new way of thinking about
+programming. It's intellectually rewarding and it has immense
+practical value; it makes your life as a programmer a lot easier.&lt;/p&gt;
+
+&lt;p&gt;Plus, there's something romantic about learning a language that
+carries on a 60-year legacy. Like you're engaging in a tradition that
+extends far beyond you. And it's fun! Clojure feels like something you'd
+want to use in your spare time, for fun, but what's better is that you
+can actually get paid to use it.&lt;/p&gt;
+
+&lt;p&gt;The other main reason I wrote the book was that I needed some way to
+tell the world about the were-Simmons. The danger is real! Wake up,
+sheeple!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/assets/images/posts/how-come-book/weresimmons.png" alt="were-Simmons"&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-10-21:/programming/brave-and-new/</id>
+    <title type="html">Brave and New</title>
+    <published>2015-10-21T16:00:00Z</published>
+    <updated>2015-10-21T16:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/brave-and-new/"/>
+    <content type="html">&lt;p&gt;&lt;em&gt;Clojure for the Brave and True&lt;/em&gt; is now available in print! You can
+use the coupon code ZOMBIEHUGS to get 30% off at
+&lt;a href="https://www.nostarch.com/clojure"&gt;No Starch&lt;/a&gt; (plus you'll get a free
+&lt;a href="https://www.nostarch.com/images/Clojure_Sticker.jpg"&gt;sticker&lt;/a&gt;), or
+buy it from &lt;a href="http://amzn.to/1Sojd8s"&gt;Amazon&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="http://www.braveclojure.com/"&gt;web site&lt;/a&gt; has been updated, too!
+(Don't forget to force refresh.) One of the reasons I went with No
+Starch as a publisher was that they supported the idea of keeping the
+entire book available for free online. It makes me super happy to
+release the professionally-edited, even better book for free. I hope
+it makes you laugh, cry, and give up on object-oriented programming
+forever.&lt;/p&gt;
+
+&lt;p&gt;Writing this book was one of the most ambitious projects of my life,
+and I appreciate all the support I've gotten from friends, family, and
+readers like you. Thank you from the bottom of my crusty heart!&lt;/p&gt;
+
+&lt;p&gt;Is that it, then? Is the journey over? No! It's not! In fact, back in
+April I quit my job in part so that I'd have more time for writing. I
+have some new Clojure articles on reducers and transducers in the
+works, plus I plan to write about web development again and dive into
+fun libraries like &lt;code&gt;core.logic&lt;/code&gt;, &lt;code&gt;clara&lt;/code&gt;, and much more. There's just
+so much cool stuff to learn about!  If you'd like me to let you know
+when they're published then follow me on twitter
+&lt;a href="https://twitter.com/nonrecursive"&gt;@nonrecursive&lt;/a&gt; or join the 1600+
+member mailing list:&lt;/p&gt;
+
+&lt;form action="http://flyingmachinestudios.us1.list-manage.com/subscribe/post?u=60763b0c4890c24bd055f32e6&amp;amp;amp;id=0b40ffd1e1" class="validate" id="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank"&gt;
+&lt;input class="email" id="mce-EMAIL" name="EMAIL" placeholder="email address" required="" type="email" value=""&gt;&lt;input class="button" id="mc-embedded-subscribe" name="subscribe" type="submit" value="Get Updates"&gt;
+&lt;/form&gt;
+
+&lt;p&gt;Lastly, to celebrate the book release, my wife (the book's
+illustrator) put together a
+&lt;a href="https://teechip.com/brave-and-true-release"&gt;t-shirt and mug store&lt;/a&gt;!
+The gear features the dwarf and warpig combo on the book cover :) This
+run only lasts one week - future runs will feature other illustrations
+from the book or from new projects. The money from that will help me
+continue avoiding full-time employment so that I can keep creating
+fun, high-quality Clojure content!&lt;/p&gt;
+
+&lt;p&gt;Thank you, and have fun Clojuring!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/assets/images/posts/brave-and-new/cover.png" alt="Brave and True"&gt;&lt;/p&gt;
+
+&lt;p&gt;[Update] I got asked for a list of the major differences. Here they are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Illustrations!&lt;/li&gt;
+&lt;li&gt;Almost every chapter now has exercises&lt;/li&gt;
+&lt;li&gt;The first macro chapter, Read and Eval, is massively improved. I'm hoping this will gives readers an excellent conceptual foundation for working with macros&lt;/li&gt;
+&lt;li&gt;There's now a joke about melting faces&lt;/li&gt;
+&lt;li&gt;There used to be two Emacs chapters (basic emacs and using Emacs for Clojure dev), now there's just one&lt;/li&gt;
+&lt;li&gt;The concurrency chapter got split into two chapters&lt;/li&gt;
+&lt;li&gt;Appendices on Leiningen and Boot were added&lt;/li&gt;
+&lt;li&gt;The "Do Things" chapter is much friendlier&lt;/li&gt;
+&lt;li&gt;I spend a lot more time explaining some of the more obscure topics, like lazy sequences.&lt;/li&gt;
+&lt;li&gt;Many of the chapters got massive overhauls. The functional programming chapter, for example, was turned completely inside out, and the result is that it's much, much clearer&lt;/li&gt;
+&lt;li&gt;Overall, everything should be clearer&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-10-18:/programming/clojure-applied-review/</id>
+    <title type="html">Review of Clojure Applied</title>
+    <published>2015-10-18T13:00:00Z</published>
+    <updated>2015-10-18T13:00:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/clojure-applied-review/"/>
+    <content type="html">&lt;p&gt;A while back, Clojure community czar and all around good guy
+&lt;a href="http://twitter.com/puredanger"&gt;Alex Miller&lt;/a&gt; asked me to review a beta
+version of his nearly complete book
+&lt;a href="http://amzn.to/1H7Pe3n"&gt;&lt;em&gt;Clojure Applied&lt;/em&gt;&lt;/a&gt;, co-authored with Ben
+Vandgrift. This was great news for me because I was planning on buying
+it, but this way I would get it for free. Delighted, I downloaded my
+free copy, added a "review book" item to my todo list, then merrily
+ignored it until a couple weeks ago when I saw Alex in person.&lt;/p&gt;
+
+&lt;p&gt;"Sorry I haven't gotten around to reviewing your book. I'm super
+excited about it!" I gushed at him guiltily. "What's the final release
+date?" Very politely, he responded, "It's already released." It turns
+out, the resulting dose of healthy embarrassment was all I needed to
+actually get off my ass and read and review the book!&lt;/p&gt;
+
+&lt;p&gt;And I am glad I did, because it's a good one. &lt;em&gt;Clojure Applied&lt;/em&gt; is
+aimed at people who know Clojure basics and want to learn how to write
+idiomatic code and create production applications, and if this
+describes you, then you should &lt;a href="http://amzn.to/1H7Pe3n"&gt;get it&lt;/a&gt;. In
+case you need more convincing, the rest of this post goes on about how
+good the book is.&lt;/p&gt;
+
+&lt;p&gt;What I like most about &lt;em&gt;Clojure Applied&lt;/em&gt; is that it's concise and
+fast-paced. It doesn't hold your hand, blathering on about basic
+details that you learned months ago. At the same time, it's very
+approachable, using straightforward and brisk language. It even has a
+few fun moments (two words: spaghetti tacos). To use a cliche that
+offends my vegetarian sensibilities, it's all meat and no filler,
+which is perfect for programmers who are... uh... hungry for
+knowledge.&lt;/p&gt;
+
+&lt;p&gt;The most valuable parts of the book are the sections on building a
+system and testing. Decomposing a your program into a system of
+interacting components that manage their own state isn't a topic
+covered by beginner books, and it's very helpful. It's easy to write
+programs whose architectures go against Clojure's grain of functional
+programming, immutability, and state management, but &lt;em&gt;Clojure Applied&lt;/em&gt;
+shows you how to do it right. On the testing front, &lt;em&gt;Clojure Applied&lt;/em&gt;
+is nice because it covers some of the latest additions to the testing
+ecosystem, like &lt;code&gt;test.check&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Another nice aspect of the book is that it introduces you to a
+cornucopia of useful standard library and Java functions and
+constructs, like the &lt;code&gt;juxt&lt;/code&gt; function, the &lt;code&gt;reduced&lt;/code&gt; function,
+persistent queues, thread pools with the executor service, etc etc
+etc.&lt;/p&gt;
+
+&lt;p&gt;All in all, it's a good book. If you're looking for a good second book
+on Clojure, then &lt;em&gt;Clojure Applied&lt;/em&gt; is an excellent choice!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-08-18:/programming/to-the-printers/</id>
+    <title type="html">Clojure for the Brave and True Is Off to the Printers!</title>
+    <published>2015-08-18T14:50:00Z</published>
+    <updated>2015-08-18T14:50:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/to-the-printers/"/>
+    <content type="html">&lt;p&gt;Today, my fantastic production editor at No Starch reached out and
+pressed the basketball-sized "RELEASE IT!" button at No Starch
+headquarters, encasing &lt;a href="http://www.braveclojure.com/"&gt;&lt;em&gt;Clojure for the Brave and True&lt;/em&gt;&lt;/a&gt;
+cucumber-infused amber and sending it on its way to the bookeries of
+Melrose Park, Illinois.&lt;/p&gt;
+
+&lt;p&gt;At least, I'm &lt;em&gt;pretty&lt;/em&gt; sure that's what happend. Either way, the book
+is off to the printers! It's done! After two years of working on it,
+it's actually done! Aaaaaah! It'll be available at the beginning of
+September, and you can preorder it from
+&lt;a href="https://www.nostarch.com/clojure"&gt;No Starch&lt;/a&gt; (free ebook included
+with print book) or
+&lt;a href="http://amzn.to/1Sojd8s"&gt;Amazon&lt;/a&gt;.
+(Leanpubbers, you'll be getting the fully-updated ebook by the time the
+book is published.)&lt;/p&gt;
+
+&lt;p&gt;The main work (writing a book) is done, but there's actually still
+more stuff to do. I need to finish rebuilding
+&lt;a href="http://www.braveclojure.com"&gt;the website&lt;/a&gt; to include all the updated
+content and to make it easier to add more content. &lt;em&gt;What?!&lt;/em&gt;, you ask,
+&lt;em&gt;more content?!&lt;/em&gt; Yes indeedy! The book may be finished, but there's
+still so much more to write about! Expect a &lt;em&gt;Sidequests&lt;/em&gt; series by the
+end of the year.&lt;/p&gt;
+
+&lt;p&gt;Thanks for all the pull requests, emails, comments, and other
+feedback. And I don't want to spoil the Acknowledgements section, but
+I want to give my &lt;em&gt;Special Thanks&lt;/em&gt; to Jess Higginbotham, Alan Dipert,
+Bridget Hillyer, Joe Jackson, Pat Shaughnessy, Alex Rothenberg, Thomas
+Newton, Jalil Fanaian, Chris Parker, Christian Lilley, and Mark
+Daggett.&lt;/p&gt;
+
+&lt;p&gt;I hope you're having a great day. I am! Now if you'll excuse me, I'm
+going to go rediscover what it feels like to have free time.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/assets/images/posts/to-the-printers/sock-gnome.png" alt="Sock Gnome"&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-03-24:/programming/brave-and-true-early-access/</id>
+    <title type="html">Brave and True Early Access</title>
+    <published>2015-03-24T14:40:00Z</published>
+    <updated>2015-03-24T14:40:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/brave-and-true-early-access/"/>
+    <content type="html">&lt;p&gt;Guess what! You can now &lt;a href="http://nostarch.com/clojure"&gt;start reading the fully-revised Clojure for the Brave and True through No Starch Press’s early access program&lt;/a&gt;! Use the coupon code ZOMBIEHUGS for 30% off! You’ll get the first four chapters, complete with fun new illustrations and professional editing. The fifth chapter will be up soon, and the final release is scheduled for June 25th. It’s also a way to give feedback (which I will appreciate very much!) before it’s cast in adamantium for printing, or whatever it is you do to books to print them these days. If you’re enjoying the book, I’d love it if you shared this blog post or tweeted about the early access :)&lt;/p&gt;
+
+&lt;p&gt;I’m really happy with how the book has turned out. The No Starch editors have been awesome at helping to improve the clarity of the book, making it even more beginner-friendly. Most of the chapters have seen major rewrites, with significant improvements to the structure and content. I also appreciate all the comments, emails, and pull requests I’ve gotten. It warms the cockles of my heart to receive such generosity.&lt;/p&gt;
+
+&lt;p&gt;I think this book will be useful for Clojure beginners, and I’m especially happy that it will remain available for free online. (I’ll be updating the site with the new book once it’s published, i.e. when I actually have time again for the first time in 2 years :) I’m grateful for all the work the Clojure community has put into creating such a delightful language and useful ecosystem, and I’m glad to make my own little contribution. I hope you enjoy it!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/assets/images/posts/brave-and-true-early-access/cover.jpg" alt="Clojure for the Brave and True"&gt;&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <id>tag:www.flyingmachinestudios.com,2015-02-15:/programming/boot-clj/</id>
+    <title type="html">Boot, the Fancy New Clojure Build Framework</title>
+    <published>2015-02-15T14:18:00Z</published>
+    <updated>2015-02-15T14:18:00Z</updated>
+    <link rel="alternate" href="http://www.flyingmachinestudios.com/programming/boot-clj/"/>
+    <content type="html">&lt;p&gt;Build tools are known to inspire the entire gamut of emotions from
+bored impatience to Homeric rage (I'm looking at you,
+Grunt). Personally, I've never given them much thought; they've always
+seemed like tedious overhead, an unfortunate necessity for getting
+&lt;em&gt;real&lt;/em&gt; work done.&lt;/p&gt;
+
+&lt;p&gt;Recently, though, I've started learning about
+&lt;a href="http://boot-clj.com/"&gt;Boot&lt;/a&gt;, and I've found that build programming
+can actually be interesting. This article will explain Boot's
+underlying concepts and guide you through writing your first Boot
+tasks. If you're interested in using Boot to build projects right this
+second, then check out its
+&lt;a href="https://github.com/boot-clj/boot"&gt;github README&lt;/a&gt; and its
+&lt;a href="https://github.com/boot-clj/boot/wiki"&gt;wiki&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Boot's Abstractions&lt;/h2&gt;
+
+&lt;p&gt;Created by Micha Niskin and Alan Dipert, Boot is a completely
+controversy-free addition to the Clojure tooling landscape. On the
+surface, it's "merely" a convenient way to build Clojure applications
+and run Clojure tasks from the command line. But dig a little deeper
+and you'll see that Boot is like the lisped-up lovechild of Git and
+Unix in that it provides abstractions that make it much more pleasant
+to write code that exists at the intersection of your operating system
+and your application.&lt;/p&gt;
+
+&lt;p&gt;Unix provides abstractions that we're all familiar with to the point
+of taking them for granted. (I mean, would it kill you to take your
+computer out to a nice restaurant once in awhile?) The process
+abstraction allows you to reason about programs as isolated units of
+logic that can be easily composed into a stream-processing pipeline
+through the &lt;code&gt;STDIN&lt;/code&gt; and &lt;code&gt;STDOUT&lt;/code&gt; file descriptors. These abstractions
+make certain kinds of operations, like text processing, very easy.&lt;/p&gt;
+
+&lt;p&gt;Similarly, Boot provides abstractions that make it actually pleasant
+to compose independent operations into the kinds of complex,
+coordinated operations that build tools end up doing, like converting
+Clojurescript into Javascript. Boot's &lt;em&gt;task&lt;/em&gt; abstraction lets you
+easily define units of logic that communicate through &lt;em&gt;filesets&lt;/em&gt;. The
+fileset abstraction keeps track of the evolving build context and it
+provides a well-defined, reliable method of task coordination, as
+opposed to the ill-defined, ad-hoc task coordination which programmers
+have to impose on other build tools.&lt;/p&gt;
+
+&lt;p&gt;That's a lot of high-level description, which hopefully is great for
+when you want to hook someone's attention, which hopefully I have now
+done. But I would be ashamed to leave you with a plateful of
+metaphors. Oh no, dear reader; that was only the appetizer. For the
+rest of this article you will learn what that word salad means by
+building your own Boot tasks. Along the way, you'll discover that
+build tools can actually have a conceptual foundation.&lt;/p&gt;
+
+&lt;h2&gt;Tasks&lt;/h2&gt;
+
+&lt;p&gt;Like make, rake, grunt, and other build tools of yore, Boot lets you
+define &lt;em&gt;tasks&lt;/em&gt;. Tasks are&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;named operations&lt;/li&gt;
+&lt;li&gt;that take command line options&lt;/li&gt;
+&lt;li&gt;dispatched by some intermediary program (make, rake, Boot)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Boot provides the dispatching program, &lt;code&gt;boot&lt;/code&gt;, and a Clojure library
+that makes it easy for you to define named operations and their
+command line options with the &lt;code&gt;deftask&lt;/code&gt; macro. So that you can see
+what all the fuss is about, it's time to create your first
+task. Normally, programming tutorials encourage have you write
+something that prints "Hello World", but I like my examples to have
+real-world utility, so your task is going to print "My pants are on
+fire!", information which is objectively more useful. First,
+&lt;a href="https://github.com/boot-clj/boot#install"&gt;install Boot&lt;/a&gt;, then create
+a new directory named &lt;code&gt;boot-walkthrough&lt;/code&gt;, navigate to that directory,
+and finally create a file named &lt;code&gt;build.boot&lt;/code&gt; and put in this in it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;deftask&lt;/span&gt; &lt;span class="nv"&gt;fire&lt;/span&gt;
+  &lt;span class="s"&gt;"Prints 'My pants are on fire!'"&lt;/span&gt;
+  &lt;span class="p"&gt;[]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;println &lt;/span&gt;&lt;span class="s"&gt;"My pants are on fire!"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now run this task with &lt;code&gt;boot fire&lt;/code&gt;; you should see the message you
+wrote printed to your terminal. This demonstrates two out of the three
+task components - the task is named (&lt;code&gt;fire&lt;/code&gt;) and it's dispatched by
+&lt;code&gt;boot&lt;/code&gt;. This is already super cool – you've essentially created
+a Clojure script, standalone Clojure code that you can easily run from
+the command line. No &lt;code&gt;project.clj&lt;/code&gt; or directory structure or
+namespaces needed!&lt;/p&gt;
+
+&lt;p&gt;Let's extend the example to demonstrate how you'd write command line
+options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;deftask&lt;/span&gt; &lt;span class="nv"&gt;fire&lt;/span&gt;
+  &lt;span class="s"&gt;"Announces that something is on fire"&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;t&lt;/span&gt; &lt;span class="nv"&gt;thing&lt;/span&gt;     &lt;span class="nv"&gt;THING&lt;/span&gt; &lt;span class="nb"&gt;str &lt;/span&gt; &lt;span class="s"&gt;"The thing that's on fire"&lt;/span&gt;
+   &lt;span class="nv"&gt;p&lt;/span&gt; &lt;span class="nv"&gt;pluralize&lt;/span&gt;       &lt;span class="nv"&gt;bool&lt;/span&gt; &lt;span class="s"&gt;"Whether to pluralize"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;verb&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="nv"&gt;pluralize&lt;/span&gt; &lt;span class="s"&gt;"are"&lt;/span&gt; &lt;span class="s"&gt;"is"&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;println &lt;/span&gt;&lt;span class="s"&gt;"My"&lt;/span&gt; &lt;span class="nv"&gt;thing&lt;/span&gt; &lt;span class="nv"&gt;verb&lt;/span&gt; &lt;span class="s"&gt;"on fire!"&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Try running the task like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;boot fire -t heart
+&lt;span class="c"&gt;# =&amp;gt; My heart is on fire!&lt;/span&gt;
+
+boot fire -t logs -p
+&lt;span class="c"&gt;# =&amp;gt; My logs are on fire!&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the first instance, either you're newly in love or you need to be
+rushed to the emergency room. In the second, you are a boy scout
+awkwardly exclaiming your excitement over meeting the requirements for
+a merit badge. In both instances, you were able to easily specify
+options for the task.&lt;/p&gt;
+
+&lt;p&gt;This refinement of the &lt;code&gt;fire&lt;/code&gt; task introduced two command line
+options, &lt;code&gt;thing&lt;/code&gt; and &lt;code&gt;pluralize&lt;/code&gt;. These options are defined using the
+options DSL. In the case of &lt;code&gt;thing&lt;/code&gt;, &lt;code&gt;t&lt;/code&gt; specifies the option's short
+name and &lt;code&gt;thing&lt;/code&gt; specifies the long name. &lt;code&gt;THING&lt;/code&gt; is a little
+complicated, and I'll get to it in a second. &lt;code&gt;str&lt;/code&gt; specifies the
+option's type, and Boot uses that both to validate the argument and
+convert it. &lt;code&gt;"The thing that's on fire"&lt;/code&gt; is the documentation for the
+option. You can view a task's documentation with &lt;code&gt;boot task-name -h&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;boot fire -h
+&lt;span class="c"&gt;# Announces that something is on fire&lt;/span&gt;
+&lt;span class="c"&gt;# &lt;/span&gt;
+&lt;span class="c"&gt;# Options:&lt;/span&gt;
+&lt;span class="c"&gt;#   -h, --help         Print this help info.&lt;/span&gt;
+&lt;span class="c"&gt;#   -t, --thing THING  Set the thing that's on fire to THING.&lt;/span&gt;
+&lt;span class="c"&gt;#   -p, --pluralize    Whether to pluralize&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Pretty groovy! Boot makes it very, very easy to write code that's
+meant to be invoked from the command line.&lt;/p&gt;
+
+&lt;p&gt;Now, about &lt;code&gt;THING&lt;/code&gt;. &lt;code&gt;THING&lt;/code&gt; is an &lt;em&gt;optarg&lt;/em&gt; and it indicates that this
+option expects an argument. You don't have to include an optarg when
+you're defining an option (notice that the &lt;code&gt;pluralize&lt;/code&gt; option has no
+optarg). The optarg doesn't have to correspond to the full name of the
+option; you could replace &lt;code&gt;THING&lt;/code&gt; with &lt;code&gt;BILLY_JOEL&lt;/code&gt; or whatever you
+want and the task would work the same. Finally, you can also designate
+&lt;a href="https://github.com/boot-clj/boot/wiki/Task-Options-DSL#complex-options"&gt;complex options&lt;/a&gt;
+using the optarg. (That link will take you to Boot's documentation on
+the subject.) Basically, complex options allow you to specify that
+option arguments should be treated as as maps, sets, vectors, or even
+nested collections. It's pretty powerful.&lt;/p&gt;
+
+&lt;p&gt;Boot provides you with all the tools you could ask for in building
+command-line interfaces with Clojure. And you've only just started
+learning about it!&lt;/p&gt;
+
+&lt;h2&gt;The REPL&lt;/h2&gt;
+
+&lt;p&gt;Boot comes with a good number of useful built-in tasks, including a
+REPL task; run &lt;code&gt;boot repl&lt;/code&gt; to fire up that puppy. The Boot REPL is
+similar to Leiningen's in that it handles loading your project code so
+that you can play around with it. You might not think this applies to
+the project you've been writing because you've only written tasks, but
+you can actually run tasks in the REPL (I've left out the
+&lt;code&gt;boot.user=&amp;gt;&lt;/code&gt; prompt):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;;; pass arguments as flags&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fire&lt;/span&gt; &lt;span class="s"&gt;"-t"&lt;/span&gt; &lt;span class="s"&gt;"NBA Jam guy"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; My NBA Jam guy is on fire!&lt;/span&gt;
+&lt;span class="c1"&gt;;=&amp;gt; nil&lt;/span&gt;
+
+&lt;span class="c1"&gt;;; or as keywords&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fire&lt;/span&gt; &lt;span class="ss"&gt;:thing&lt;/span&gt; &lt;span class="s"&gt;"NBA Jam guy"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; My NBA Jam guy is on fire!&lt;/span&gt;
+&lt;span class="c1"&gt;;=&amp;gt; nil&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fire&lt;/span&gt; &lt;span class="s"&gt;"-p"&lt;/span&gt; &lt;span class="s"&gt;"-t"&lt;/span&gt; &lt;span class="s"&gt;"NBA Jam guys"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; My NBA Jam guys are on fire!&lt;/span&gt;
+&lt;span class="c1"&gt;;=&amp;gt; nil&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fire&lt;/span&gt; &lt;span class="ss"&gt;:pluralize&lt;/span&gt; &lt;span class="nv"&gt;true&lt;/span&gt; &lt;span class="ss"&gt;:thing&lt;/span&gt; &lt;span class="s"&gt;"NBA Jam guys"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; My NBA Jam guys are on fire!&lt;/span&gt;
+&lt;span class="c1"&gt;;=&amp;gt; nil&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And of course, you can also use &lt;code&gt;deftask&lt;/code&gt; in the REPL – it's just
+Clojure, after all. The takeaway is that Boot lets you interact with
+your tasks as Clojure functions, because that's what they are.&lt;/p&gt;
+
+&lt;h2&gt;Composition and Coordination&lt;/h2&gt;
+
+&lt;p&gt;If what you've seen so far was all that Boot had to offer, it'd be a
+pretty swell tool, though not very different from other build
+tools. One thing that sets Boot apart, though, is how it lets you
+compose tasks. For comparison's sake, here's an example Rake
+invocation (Rake is the premier Ruby build tool):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vg"&gt;rake&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;db:&lt;/span&gt;&lt;span class="vg"&gt;create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;db:&lt;/span&gt;&lt;span class="vg"&gt;migrate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;db:&lt;/span&gt;&lt;span class="vg"&gt;seed&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In case you were wondering, this will create a database, run
+migrations on it, and populate it with seed data when run in a Rails
+project. What's worth noting, however, is that Rake doesn't provide
+any way for these tasks to communicate with each other. Specifying
+multiple tasks is just a convenience, saving you from having to run
+&lt;code&gt;rake db:create; rake db:migrate; rake db:seed&lt;/code&gt;. If you want to access
+the result of Task A within Task B, the build tool doesn't help you;
+you have to manage that coordination yourself. Usually, you'll do this
+by shoving the result of Task A into a special place on the
+filesystem, and then making sure Task B reads that special place.
+This looks like programming with mutable, global variables, and it's
+just as brittle.&lt;/p&gt;
+
+&lt;h2&gt;Handlers and Middleware&lt;/h2&gt;
+
+&lt;p&gt;Boot addresses this problem by treating tasks as &lt;em&gt;middleware
+factories&lt;/em&gt;. If you're familiar with
+&lt;a href="https://github.com/ring-clojure/ring"&gt;Ring&lt;/a&gt;, Boot's tasks work very
+similarly; feel free to skip to the next section.  If you're not
+familiar with the concept of middleware, then allow me to explain!
+First, the term &lt;em&gt;middleware&lt;/em&gt; refers to a set of &lt;em&gt;conventions&lt;/em&gt; that
+programmers adhere to so that they can &lt;em&gt;flexibly create
+domain-specific function pipelines&lt;/em&gt;. That's pretty dense, so let's
+un-dense it. I'll go over the &lt;em&gt;flexible&lt;/em&gt; part in this section, and
+cover &lt;em&gt;domain-specific&lt;/em&gt; in the next.&lt;/p&gt;
+
+&lt;p&gt;To understand how the middleware approach differs from run-of-the-mill
+function composition, here's an example of composing everyday
+functions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;strinc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;comp str &lt;/span&gt;&lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;strinc&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; =&amp;gt; "4"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;There's nothing interesting about this function composition. This
+function composition is so unremarkable that it strains my abilities
+as a writer to try and actually say anything about it. There are two
+functions, each doing its own thing, and now they've been been
+composed into one. Whoop-dee-do!&lt;/p&gt;
+
+&lt;p&gt;Middleware introduce an extra step to function composition, and this
+gives you more flexibility in defining your function
+pipeline. Suppose, in the example above, that you wanted to return &lt;code&gt;"I
+don't like the number X"&lt;/code&gt; for arbitrary numbers, but still return the
+stringified number for everything else. Here's how you could do that:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;whiney-str&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:pre&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="nf"&gt;set?&lt;/span&gt; &lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;)]}&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;rejects&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="s"&gt;"I don't like "&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;whiney-strinc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;comp &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;whiney-str&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;whiney-strinc&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; =&amp;gt; "I don't like 2 :'("&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now let's take it one step further. What if you want to decide whether
+or not to call &lt;code&gt;inc&lt;/code&gt; in the first place? Here's how you could do that:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;whiney-middleware&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;next-handler&lt;/span&gt; &lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:pre&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="nf"&gt;set?&lt;/span&gt; &lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;)]}&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;= &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;; ~1~&lt;/span&gt;
+      &lt;span class="s"&gt;"I'm not going to bother doing anything to that"&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;y&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;next-handler&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;rejects&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="s"&gt;"I don't like "&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt; &lt;span class="s"&gt;" :'("&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;))))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;whiney-strinc&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;whiney-middleware&lt;/span&gt; &lt;span class="nb"&gt;inc &lt;/span&gt;&lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;}))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Here, instead of using &lt;code&gt;comp&lt;/code&gt; to create your function pipeline, you
+pass the next function in the pipeline as the first argument to the
+middleware function. In this case, you're passing &lt;code&gt;inc&lt;/code&gt; as the first
+argument to &lt;code&gt;whiney-middleware&lt;/code&gt;. &lt;code&gt;whiney-middleware&lt;/code&gt; then returns an
+anonymous functions which closes over &lt;code&gt;inc&lt;/code&gt; and has the ability to
+choose whether to call it or not. You can see this at &lt;code&gt;~1~&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;We say that middleware take a &lt;em&gt;handler&lt;/em&gt; as their first argument, and
+return a handler. In the example above, &lt;code&gt;whiney-middleware&lt;/code&gt; takes a
+handler as its first argument, &lt;code&gt;inc&lt;/code&gt; here, and it returns another
+handler, the anonymous function with &lt;code&gt;x&lt;/code&gt; as its only
+argument. Middleware can also take extra arguments, like &lt;code&gt;rejects&lt;/code&gt;,
+that act as configuration. The result is that the handler returned by
+the middleware can behave more flexibly (thanks to configuration) and
+it has more control over the function pipeline (because it can choose
+whether or not to call the next handler).&lt;/p&gt;
+
+&lt;h2&gt;Tasks are Middleware Factories&lt;/h2&gt;
+
+&lt;p&gt;Boot takes this pattern one step further by separating middleware
+configuration from handler creation. First, you create a function
+which takes &lt;em&gt;n&lt;/em&gt; many configuration arguments. This is the &lt;em&gt;middleware
+factory&lt;/em&gt; and it returns a middleware function. The middleware function
+expects one argument, the next handler, and it returns a handler, just
+like in the example above. Here's a whiney middleware factory:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;whiney-middleware-factory&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:pre&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="nf"&gt;set?&lt;/span&gt; &lt;span class="nv"&gt;rejects&lt;/span&gt;&lt;span class="p"&gt;)]}&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;handler&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;= &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="s"&gt;"I'm not going to bother doing anything to that"&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;y&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;handler&lt;/span&gt; &lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+          &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;rejects&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="s"&gt;"I don't like "&lt;/span&gt; &lt;span class="nv"&gt;y&lt;/span&gt; &lt;span class="s"&gt;" :'("&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;str &lt;/span&gt;&lt;span class="nv"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)))))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;whiney-strinc&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nf"&gt;whiney-middleware-factory&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As you can see, it's nearly identical to the previous example. The
+change is that the topmost function, &lt;code&gt;whiney-middleware-factory&lt;/code&gt;, now
+only accepts one argument, &lt;code&gt;rejects&lt;/code&gt;. It returns an anonymous
+function, the middleware, which expects one argument, a handler. The
+rest of the code is the same.&lt;/p&gt;
+
+&lt;p&gt;In Boot, tasks can act as middleware factories. In fact, they usually
+do, I just didn't present them that way above in order to keep things
+simple. To show this, let's split the &lt;code&gt;fire&lt;/code&gt; task into two tasks:
+&lt;code&gt;what&lt;/code&gt; and &lt;code&gt;fire&lt;/code&gt;. &lt;code&gt;what&lt;/code&gt; will let you specify an object and whether
+it's plural, and &lt;code&gt;fire&lt;/code&gt; will announce that it's on fire. This is
+great, modular software engineering because it allows you to add other
+tasks like &lt;code&gt;gnomes&lt;/code&gt;, to announce that a thing is being overrun with
+gnomes, which is just as objectively useful. (Exercise for the reader:
+create the &lt;code&gt;gnome&lt;/code&gt; task.)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;deftask&lt;/span&gt; &lt;span class="nv"&gt;what&lt;/span&gt;
+  &lt;span class="s"&gt;"Specify a thing"&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;t&lt;/span&gt; &lt;span class="nv"&gt;thing&lt;/span&gt;     &lt;span class="nv"&gt;THING&lt;/span&gt; &lt;span class="nb"&gt;str &lt;/span&gt; &lt;span class="s"&gt;"An object"&lt;/span&gt;
+   &lt;span class="nv"&gt;p&lt;/span&gt; &lt;span class="nv"&gt;pluralize&lt;/span&gt;       &lt;span class="nv"&gt;bool&lt;/span&gt; &lt;span class="s"&gt;"Whether to pluralize"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="nv"&gt;middleware&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;next-handler&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="nv"&gt;handler&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;_&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;next-handler&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:thing&lt;/span&gt; &lt;span class="nv"&gt;thing&lt;/span&gt; &lt;span class="ss"&gt;:pluralize&lt;/span&gt; &lt;span class="nv"&gt;pluralize&lt;/span&gt;&lt;span class="p"&gt;}))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;deftask&lt;/span&gt; &lt;span class="nv"&gt;fire&lt;/span&gt;
+  &lt;span class="s"&gt;"Announce a thing is on fire"&lt;/span&gt;
+  &lt;span class="p"&gt;[]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="nv"&gt;middleware&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;next-handler&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fn &lt;/span&gt;&lt;span class="nv"&gt;handler&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;thing-map&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;updated-thing-map&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;next-handler&lt;/span&gt; &lt;span class="nv"&gt;thing-map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="nv"&gt;verb&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:pluralize&lt;/span&gt; &lt;span class="nv"&gt;thing-map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="s"&gt;"are"&lt;/span&gt; &lt;span class="s"&gt;"is"&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;println &lt;/span&gt;&lt;span class="s"&gt;"My"&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:thing&lt;/span&gt; &lt;span class="nv"&gt;thing-map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;verb&lt;/span&gt; &lt;span class="s"&gt;"on fire!"&lt;/span&gt;&lt;span class="p"&gt;)))))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Here's how you'd run this on the command line:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vg"&gt;boot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="vg"&gt;what&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="vg"&gt;t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"pants"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="vg"&gt;p&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="vg"&gt;fire&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And here's how you'd run it in the REPL:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;boot&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;what&lt;/span&gt; &lt;span class="ss"&gt;:thing&lt;/span&gt; &lt;span class="s"&gt;"pants"&lt;/span&gt; &lt;span class="ss"&gt;:pluralize&lt;/span&gt; &lt;span class="nv"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;fire&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Wait a minute, what's that &lt;code&gt;boot&lt;/code&gt; call doing there? In Micha's words,
+"The &lt;code&gt;boot&lt;/code&gt; macro takes care of setup and cleanup (creating the
+initial fileset, stopping servers started by tasks, things like
+that). Tasks are functions so you can call them directly, but if they
+use the fileset they will fail unless you call them via the boot
+macro." Wait a minute, what's a fileset?&lt;/p&gt;
+
+&lt;h2&gt;Filesets&lt;/h2&gt;
+
+&lt;p&gt;I mentioned earlier that middleware are for creating &lt;em&gt;domain-specific&lt;/em&gt;
+function pipelines. All that means is that each handler expects to
+receive domain-specific data, and returns domain-specific data. With
+Ring, for example, each handler expects to receive a &lt;em&gt;request map&lt;/em&gt;
+representing the HTTP request. This might look something like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:server-port&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;
+ &lt;span class="ss"&gt;:request-method&lt;/span&gt; &lt;span class="ss"&gt;:get&lt;/span&gt;
+ &lt;span class="ss"&gt;:scheme&lt;/span&gt; &lt;span class="ss"&gt;:http&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Each handler can choose to modify this request map in some way before
+passing it on to the next handler, say by adding a &lt;code&gt;:params&lt;/code&gt; key with
+a nice Clojure map of all query string and POST parameters. Ring
+handlers return a &lt;em&gt;response map&lt;/em&gt;, which consists of the keys
+&lt;code&gt;:status&lt;/code&gt;, &lt;code&gt;:headers&lt;/code&gt;, and &lt;code&gt;:body&lt;/code&gt;, and once again each handler can
+transform this data in some way before returning it to its parent
+handler.&lt;/p&gt;
+
+&lt;p&gt;In Boot, each handlers receives and returns a
+&lt;a href="https://github.com/boot-clj/boot/wiki/Filesets"&gt;&lt;em&gt;fileset&lt;/em&gt;&lt;/a&gt;.  The
+fileset abstraction gives you a way to treat files on your filesystem
+as immutable data, and this is a great innovation for build tools
+because building projects is so file-centric. For example, your
+project might need to place temporary, intermediary files on the
+filesystem. Usually, with build tools that aren't Boot, these files
+get placed in some specially-named place, say,
+&lt;code&gt;project/target/tmp&lt;/code&gt;. The problem with this is that
+&lt;code&gt;project/target/tmp&lt;/code&gt; is effectively a global variable, and other tasks
+can accidentally muck it up.&lt;/p&gt;
+
+&lt;p&gt;The fileset abstraction works by adding a layer of indirection on top
+of the filesystem. Let's say Task A creates File X and tells the
+fileset to store it. Behind the scenes, the fileset stores the file in
+an anonymous, temporary directory. The fileset then gets passed to
+Task B, and Task B modifies File X and asks the fileset to store the
+result. Behind the scenes, a new file, File Y, is created and stored,
+but File X remains untouched. In Task B, an updated fileset is
+returned. This is the equivalent of doing &lt;code&gt;assoc-in&lt;/code&gt; with a map; Task
+A can still access the original fileset and the files it references.&lt;/p&gt;
+
+&lt;p&gt;The mechanics of working with filesets are all explained in
+&lt;a href="https://github.com/boot-clj/boot/wiki/Filesets"&gt;the fileset wiki&lt;/a&gt;,
+but I hope this gives a good conceptual overview!&lt;/p&gt;
+
+&lt;h2&gt;Everything else&lt;/h2&gt;
+
+&lt;p&gt;The point of this article was to explain the concepts behind
+Boot. However, it also has a bunch of features, like &lt;code&gt;set-env!&lt;/code&gt; and
+&lt;code&gt;task-options!&lt;/code&gt; that make life easier when you're actually using
+it. It does &lt;em&gt;amazing magical things&lt;/em&gt; like &lt;em&gt;providing classpath isolation
+so that you can run multiple projects using one JVM&lt;/em&gt; and &lt;em&gt;letting you
+add new dependencies to your project without having to restart your
+REPL&lt;/em&gt;.  If Boot tickles your fancy, check out its
+&lt;a href="https://github.com/boot-clj/boot"&gt;README&lt;/a&gt; for more info on real-world
+usage. Also, its &lt;a href="https://github.com/boot-clj/boot/wiki"&gt;wiki&lt;/a&gt;
+provides top-notch documentation.&lt;/p&gt;
+
+&lt;p&gt;If you're new to Clojure, then check out
+&lt;a href="http://www.braveclojure.com/"&gt;Clojure for the Brave and True&lt;/a&gt;, an
+introduction to the language written by yours truly. Have fun!&lt;/p&gt;
+</content>
+  </entry>
+</feed>

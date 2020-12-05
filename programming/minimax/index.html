@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>An Exhaustive Explanation of Minimax, a Staple AI Algorithm</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>An Exhaustive Explanation of Minimax, a Staple AI Algorithm</h1>
+          <div class='date'>10 January 2012</div>
+          <h2>Overview</h2>
+          
+          <p>The minimax algorithm is used to determine which moves a computer
+          player makes in games like tic-tac-toe, checkers, othello, and
+          chess. These kinds of games are called games of perfect information
+          because it is possible to see all possible moves. A game like scrabble
+          is not a game of perfect information because there's no way to predict
+          your opponent's moves because you can't see his hand.</p>
+          
+          <p>You can think of the algorithm as similar to the human thought process
+          of saying, "OK, if I make this move, then my opponent can only make
+          two moves, and each of those would let me win. So this is the right
+          move to make."</p>
+          
+          <p>The rest of the article explains how to represent possible moves and
+          evaluate them. An example command-line tic-tac-toe game using Ruby is
+          given.</p>
+          
+          <h2>Representing Moves with the Game Tree Data Structure</h2>
+          
+          <p>Here's an example of a Game Tree for tic-tac-toe:</p>
+          
+          <p><img src="/assets/images/minimax/game-tree.png" alt="game tree"></p>
+          
+          <p>Note that this isn't a full game tree. A full game tree has hundreds
+          of thousands of game states, so that's uh... not really possible to
+          include in an image. Some of the discrepancies between the example
+          above and a fully-drawn game tree include:</p>
+          
+          <ul>
+          <li>The first Game State would show nine moves descending from it, one
+          for each of the empty spaces on its board</li>
+          <li>Similarly, the next level of Game States would show eight moves
+          descending from them, and so on for each Game State</li>
+          </ul>
+          
+          <p>Representing the game as a game tree allows the computer to evaluate
+          each of its current possible moves by determining whether it will
+          ultimately result in a win or a loss. We'll get into how the computer
+          determines this in the next section, Ranking. Before that, though, we
+          need to clearly define the central concepts defining a Game Tree:</p>
+          
+          <ul>
+          <li>The board state. In this case, where the X's and O's are.</li>
+          <li>The current player - the player who will be making the next move.</li>
+          <li>The next available moves. For humans, a move involves placing a game token. For the computer, it's a matter of selecting the next game state. As humans, we never say, "I've selected the next game state", but it's useful to think of it that way in order to understand the minimax algorithm.</li>
+          <li>The game state - the grouping of the three previous concepts.</li>
+          </ul>
+          
+          <p>So, a Game Tree is a structure for organizing all possible (legal)
+          game states by the moves which allow you to transition from one game
+          state to the next. This structure is ideal for allowing the computer
+          to evaluate which moves to make because, by traversing the game tree,
+          a computer can easily "foresee" the outcome of a move and thus
+          "decide" whether to take it.</p>
+          
+          <p>Next we'll go into detail about how to determine whether a move is
+          good or bad.</p>
+          
+          <h2>Ranking Game States</h2>
+          
+          <p>The basic approach is to assign a numerical value to a move based on
+          whether it will result in a win, draw, or loss. We'll begin
+          illustrating this concept by showing how it applies to final game
+          states, then show how to apply it to intermediate game states.</p>
+          
+          <h3>Final Game States</h3>
+          
+          <p>Have a look at this Game Tree:</p>
+          
+          <p><img src="/assets/images/minimax/x-win.png" alt="win"></p>
+          
+          <p>It's X's turn, and X has three possible moves, one of which (the
+          middle one) will lead immediately to victory. It's obvious that an AI
+          should select the winning move. The way we ensure this is to give each
+          move a numerical value based on its board state. Let's use the
+          following rankings:</p>
+          
+          <ul>
+          <li>Win: 1</li>
+          <li>Draw: 0</li>
+          <li>Lose: -1</li>
+          </ul>
+          
+          <p>These rankings are arbitrary. What's important is that winning
+          corresponds to the highest ranking, losing to the lowest, and a draw's
+          between the two.</p>
+          
+          <p>Since the lowest-ranked moves correspond with the worst outcomes and
+          highest-ranked moves correspond with the best outcomes, we should
+          choose the move with the highest value. This is the "max" part of
+          "minimax". Below are some more examples of final game states and their
+          numerical values:</p>
+          
+          <p><img src="/assets/images/minimax/final-states.png" alt="final state"></p>
+          
+          <p>You might be wondering whether or not we should apply different
+          rankings based on the player whose turn it is. For now, let's ignore
+          the question entirely and only view things from X's perspective.</p>
+          
+          <p>Of course, only the most boring game in the world would start out by
+          presenting you with the options of "win immediately" and "don't win
+          immediately." And an algorithm would be useless if it only worked in
+          such a situation. But guess what! Minimax isn't a useless
+          algorithm. Below I'll describe how to determine the ranks of
+          intermediate Game States.</p>
+          
+          <h3>Intermediate Game States</h3>
+          
+          <p>Have another look at this game tree:</p>
+          
+          <p><img src="/assets/images/minimax/x-win-with-rank.png" alt="x win"></p>
+          
+          <p>As you can see, it's X's turn in the top Game State. There are 3
+          possible moves, including a winning move. Since this Game State allows
+          X to win, X should try to get it if possible. This Game State is as
+          good as winning, so its rank should be 1. In general, we can say that
+          the rank of an intermediate Game State where X is the current player
+          should be set to the maximum rank of the available moves.</p>
+          
+          <p>Now have a look at this game tree:</p>
+          
+          <p><img src="/assets/images/minimax/o-win.png" alt="o win"></p>
+          
+          <p>It's O's turn, and there are 5 possible moves, three of which are
+          shown. One of the moves results in an immediate win for O. From X's
+          perspective this Game State is equivalent to a loss, since it allows O
+          to select a move that will cause X to lose. Therefore, its rank should
+          be -1. In general, we can say that the rank of an intermediate Game
+          State where O is the current player should be set to the <em>minimum</em>
+          rank of the available moves. That's what the "mini" in "minimax"
+          refers to.</p>
+          
+          <p>By the way - the above game tree probably looks ridiculous to you. You
+          might say, "Well of course you shouldn't make such a dumb move. Why
+          would anyone give up a win and allow O to win?" Minimax is our way of
+          giving the computer the ability to "know" that it's a dumb move, too.</p>
+          
+          <p>To sum up:</p>
+          
+          <ul>
+          <li>Final Game States are ranked according to whether they're a win,
+          draw, or loss.</li>
+          <li>Intermediate Game States are ranked according to whose turn it is and the available moves.
+          
+          <ul>
+          <li>If it's X's turn, set the rank to that of the <em>maximum</em> move available. In other words, if a move will result in a win, X should take it.</li>
+          <li>If it's O's turn, set the rank to that of the <em>minimum</em> move available. In other words, If a move will result in a loss, X should avoid it.</li>
+          </ul>
+          </li>
+          </ul>
+          
+          <p>And that's the minimax algorithm!</p>
+          
+          <h2>Ruby Example</h2>
+          
+          <p>Below is a Ruby implementation of Tic-Tac-Toe. It has a few
+          limitations - for example, the computer always plays X. This is
+          beacuse it's meant to illustrate the concepts described here.</p>
+          
+          <p>To run it, copy it to something like "tictactoe.rb" and run <code>ruby&#x000A;tictactoe.rb</code>.</p>
+          
+          <p>You can
+          <a href="https://github.com/flyingmachine/minimax-tictactoe">view the repo on github</a>. In
+          the future, I might add Common Lisp and C versions of Tic-Tac-Toe, and
+          I'd welcome versions in other languages as well.</p>
+          <div class="highlight"><pre><span class="c1">#!/usr/bin/env ruby</span>&#x000A;&#x000A;<span class="c1"># This is a pretty naive implementation of Tic-Tac-Toe meant to</span>&#x000A;<span class="c1"># demonstrate the minimax algorithm. Note that it takes awhile to</span>&#x000A;<span class="c1"># start up - 30 seconds on a 2010 mac book air. Also note that the</span>&#x000A;<span class="c1"># Ruby isn't all that great as Ruby, but I don't care as long as it</span>&#x000A;<span class="c1"># illustrates the algorithm well.</span>&#x000A;<span class="c1">#</span>&#x000A;<span class="c1"># You can see that there's a hard-coded assumption that the AI is the</span>&#x000A;<span class="c1"># X player, means that no human will ever be able to win. I'm positive</span>&#x000A;<span class="c1"># that is only a small taste of what is to come, once robots take</span>&#x000A;<span class="c1"># over the world.</span>&#x000A;&#x000A;<span class="k">class</span> <span class="nc">GameState</span>&#x000A;  <span class="kp">attr_accessor</span> <span class="ss">:current_player</span><span class="p">,</span> <span class="ss">:board</span><span class="p">,</span> <span class="ss">:moves</span><span class="p">,</span> <span class="ss">:rank</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">current_player</span><span class="p">,</span> <span class="n">board</span><span class="p">)</span>&#x000A;    <span class="nb">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="n">current_player</span>&#x000A;    <span class="nb">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">board</span>&#x000A;    <span class="nb">self</span><span class="o">.</span><span class="n">moves</span> <span class="o">=</span> <span class="o">[]</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">rank</span>&#x000A;    <span class="vi">@rank</span> <span class="o">||=</span> <span class="n">final_state_rank</span> <span class="o">||</span> <span class="n">intermediate_state_rank</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="c1"># this is only ever called when it's the AI's (the X player) turn</span>&#x000A;  <span class="k">def</span> <span class="nf">next_move</span>&#x000A;    <span class="n">moves</span><span class="o">.</span><span class="n">max</span><span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">|</span> <span class="n">a</span><span class="o">.</span><span class="n">rank</span> <span class="o">&lt;=&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">rank</span> <span class="p">}</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">final_state_rank</span>&#x000A;    <span class="k">if</span> <span class="n">final_state?</span>&#x000A;      <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">draw?</span>&#x000A;      <span class="n">winner</span> <span class="o">==</span> <span class="s2">"X"</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">final_state?</span>&#x000A;    <span class="n">winner</span> <span class="o">||</span> <span class="n">draw?</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">draw?</span>&#x000A;    <span class="n">board</span><span class="o">.</span><span class="n">compact</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">9</span> <span class="o">&amp;&amp;</span> <span class="n">winner</span><span class="o">.</span><span class="n">nil?</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">intermediate_state_rank</span>&#x000A;    <span class="c1"># recursion, baby</span>&#x000A;    <span class="n">ranks</span> <span class="o">=</span> <span class="n">moves</span><span class="o">.</span><span class="n">collect</span><span class="p">{</span> <span class="o">|</span><span class="n">game_state</span><span class="o">|</span> <span class="n">game_state</span><span class="o">.</span><span class="n">rank</span> <span class="p">}</span>&#x000A;    <span class="k">if</span> <span class="n">current_player</span> <span class="o">==</span> <span class="s1">'X'</span>&#x000A;      <span class="n">ranks</span><span class="o">.</span><span class="n">max</span>&#x000A;    <span class="k">else</span>&#x000A;      <span class="n">ranks</span><span class="o">.</span><span class="n">min</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>  &#x000A;&#x000A;  <span class="k">def</span> <span class="nf">winner</span>&#x000A;    <span class="vi">@winner</span> <span class="o">||=</span> <span class="o">[</span>&#x000A;     <span class="c1"># horizontal wins</span>&#x000A;     <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span><span class="p">,</span>&#x000A;     <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">]</span><span class="p">,</span>&#x000A;     <span class="o">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span>&#x000A;&#x000A;     <span class="c1"># vertical wins</span>&#x000A;     <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="o">]</span><span class="p">,</span>&#x000A;     <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="o">]</span><span class="p">,</span>&#x000A;     <span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span>&#x000A;&#x000A;     <span class="c1"># diagonal wins</span>&#x000A;     <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="o">]</span><span class="p">,</span>&#x000A;     <span class="o">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span>&#x000A;    <span class="o">].</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">positions</span><span class="o">|</span>&#x000A;      <span class="p">(</span> <span class="n">board</span><span class="o">[</span><span class="n">positions</span><span class="o">[</span><span class="mi">0</span><span class="o">]]</span> <span class="o">==</span> <span class="n">board</span><span class="o">[</span><span class="n">positions</span><span class="o">[</span><span class="mi">1</span><span class="o">]]</span> <span class="o">&amp;&amp;</span>&#x000A;        <span class="n">board</span><span class="o">[</span><span class="n">positions</span><span class="o">[</span><span class="mi">1</span><span class="o">]]</span> <span class="o">==</span> <span class="n">board</span><span class="o">[</span><span class="n">positions</span><span class="o">[</span><span class="mi">2</span><span class="o">]]</span> <span class="o">&amp;&amp;</span>&#x000A;        <span class="n">board</span><span class="o">[</span><span class="n">positions</span><span class="o">[</span><span class="mi">0</span><span class="o">]]</span> <span class="p">)</span> <span class="o">||</span> <span class="kp">nil</span>&#x000A;    <span class="p">}</span><span class="o">.</span><span class="n">compact</span><span class="o">.</span><span class="n">first</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="k">class</span> <span class="nc">GameTree</span>&#x000A;  <span class="k">def</span> <span class="nf">generate</span>&#x000A;    <span class="n">initial_game_state</span> <span class="o">=</span> <span class="no">GameState</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">'X'</span><span class="p">,</span> <span class="nb">Array</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span>&#x000A;    <span class="n">generate_moves</span><span class="p">(</span><span class="n">initial_game_state</span><span class="p">)</span>&#x000A;    <span class="n">initial_game_state</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">generate_moves</span><span class="p">(</span><span class="n">game_state</span><span class="p">)</span>&#x000A;    <span class="n">next_player</span> <span class="o">=</span> <span class="p">(</span><span class="n">game_state</span><span class="o">.</span><span class="n">current_player</span> <span class="o">==</span> <span class="s1">'X'</span> <span class="p">?</span> <span class="s1">'O'</span> <span class="p">:</span> <span class="s1">'X'</span><span class="p">)</span>&#x000A;    <span class="n">game_state</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">player_at_position</span><span class="p">,</span> <span class="n">position</span><span class="o">|</span>&#x000A;      <span class="k">unless</span> <span class="n">player_at_position</span>&#x000A;        <span class="n">next_board</span> <span class="o">=</span> <span class="n">game_state</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">dup</span>&#x000A;        <span class="n">next_board</span><span class="o">[</span><span class="n">position</span><span class="o">]</span> <span class="o">=</span> <span class="n">game_state</span><span class="o">.</span><span class="n">current_player</span>&#x000A;&#x000A;        <span class="n">next_game_state</span> <span class="o">=</span> <span class="no">GameState</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">next_player</span><span class="p">,</span> <span class="n">next_board</span><span class="p">)</span>&#x000A;        <span class="n">game_state</span><span class="o">.</span><span class="n">moves</span> <span class="o">&lt;&lt;</span> <span class="n">next_game_state</span>&#x000A;        <span class="n">generate_moves</span><span class="p">(</span><span class="n">next_game_state</span><span class="p">)</span>&#x000A;      <span class="k">end</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="k">class</span> <span class="nc">Game</span>&#x000A;  <span class="k">def</span> <span class="nf">initialize</span>&#x000A;    <span class="vi">@game_state</span> <span class="o">=</span> <span class="vi">@initial_game_state</span> <span class="o">=</span> <span class="no">GameTree</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">generate</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">turn</span>&#x000A;    <span class="k">if</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">final_state?</span>&#x000A;      <span class="n">describe_final_game_state</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"Play again? y/n"</span>&#x000A;      <span class="n">answer</span> <span class="o">=</span> <span class="nb">gets</span>&#x000A;      <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">downcase</span><span class="o">.</span><span class="n">strip</span> <span class="o">==</span> <span class="s1">'y'</span>&#x000A;        <span class="vi">@game_state</span> <span class="o">=</span> <span class="vi">@initial_game_state</span>&#x000A;        <span class="n">turn</span>&#x000A;      <span class="k">else</span>&#x000A;        <span class="nb">exit</span>&#x000A;      <span class="k">end</span>&#x000A;    <span class="k">end</span>&#x000A;&#x000A;    <span class="k">if</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">current_player</span> <span class="o">==</span> <span class="s1">'X'</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">==============="</span>&#x000A;      <span class="vi">@game_state</span> <span class="o">=</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">next_move</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"X's move:"</span>&#x000A;      <span class="n">render_board</span>&#x000A;      <span class="n">turn</span>&#x000A;    <span class="k">else</span>&#x000A;      <span class="n">get_human_move</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"The result of your move:"</span>&#x000A;      <span class="n">render_board</span>&#x000A;      <span class="nb">puts</span> <span class="s2">""</span>&#x000A;      <span class="n">turn</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">render_board</span>&#x000A;    <span class="n">output</span> <span class="o">=</span> <span class="s2">""</span>&#x000A;    <span class="mi">0</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">position</span><span class="o">|</span>&#x000A;      <span class="n">output</span> <span class="o">&lt;&lt;</span> <span class="s2">" </span><span class="si">#{</span><span class="vi">@game_state</span><span class="o">.</span><span class="n">board</span><span class="o">[</span><span class="n">position</span><span class="o">]</span> <span class="o">||</span> <span class="n">position</span><span class="si">}</span><span class="s2"> "</span>&#x000A;      <span class="k">case</span> <span class="n">position</span> <span class="o">%</span> <span class="mi">3</span>&#x000A;      <span class="k">when</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="k">then</span> <span class="n">output</span> <span class="o">&lt;&lt;</span> <span class="s2">"|"</span>&#x000A;      <span class="k">when</span> <span class="mi">2</span> <span class="k">then</span> <span class="n">output</span> <span class="o">&lt;&lt;</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">-----------</span><span class="se">\n</span><span class="s2">"</span> <span class="k">unless</span> <span class="n">position</span> <span class="o">==</span> <span class="mi">8</span>&#x000A;      <span class="k">end</span>&#x000A;    <span class="k">end</span>&#x000A;    <span class="nb">puts</span> <span class="n">output</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">get_human_move</span>&#x000A;    <span class="nb">puts</span> <span class="s2">"Enter square # to place your 'O' in:"</span>&#x000A;    <span class="n">position</span> <span class="o">=</span> <span class="nb">gets</span>&#x000A;&#x000A;    <span class="n">move</span> <span class="o">=</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">find</span><span class="p">{</span> <span class="o">|</span><span class="n">game_state</span><span class="o">|</span> <span class="n">game_state</span><span class="o">.</span><span class="n">board</span><span class="o">[</span><span class="n">position</span><span class="o">.</span><span class="n">to_i</span><span class="o">]</span> <span class="o">==</span> <span class="s1">'O'</span> <span class="p">}</span>&#x000A;&#x000A;    <span class="k">if</span> <span class="n">move</span>&#x000A;      <span class="vi">@game_state</span> <span class="o">=</span> <span class="n">move</span>&#x000A;    <span class="k">else</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"That's not a valid move"</span>&#x000A;      <span class="n">get_human_move</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">describe_final_game_state</span>&#x000A;    <span class="k">if</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">draw?</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"It was a draw!"</span>&#x000A;    <span class="k">elsif</span> <span class="vi">@game_state</span><span class="o">.</span><span class="n">winner</span> <span class="o">==</span> <span class="s1">'X'</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"X won!"</span>&#x000A;    <span class="k">else</span>&#x000A;      <span class="nb">puts</span> <span class="s2">"O won!"</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="no">Game</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">turn</span></pre></div>
+          <h2>The End... or Is It???</h2>
+          
+          <p>I hope that explains the algorithm! If anything's unclear, please let
+          me know in the comments below. I'd like for this post to explain the
+          algorithm completely, and I'll use any feedback to revise it.</p>
+          
+          <p>Also, you may have noticed that the algorithm, as written, requires a
+          lot of memory. Tic-Tac-Toe, one of the simplest, most boring games in
+          existence, requires hundreds of thousands of game states in the above,
+          naive Ruby implementation. In the future, I may cover some
+          optimization techniques, like alpha-beta programming. Look for it!</p>
+          
+          <h2>P.S.</h2>
+          
+          <p>My motivation for writing all this came from reading
+          <a href="http://amzn.to/1MyWXUg">Land of Lisp: Learn to Program in Lisp, One Game at a Time!</a>,
+          which introduced me to minimax. It's one of the best programming books
+          I've read: it was fun to read, and I learned a lot :) It's also the
+          only programming book I know of to have <a href="http://landoflisp.com/">its own music
+          video</a>.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

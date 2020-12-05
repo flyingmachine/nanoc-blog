@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Boot, the Fancy New Clojure Build Framework</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Boot, the Fancy New Clojure Build Framework</h1>
+          <div class='date'>15 February 2015</div>
+          <p>Build tools are known to inspire the entire gamut of emotions from
+          bored impatience to Homeric rage (I'm looking at you,
+          Grunt). Personally, I've never given them much thought; they've always
+          seemed like tedious overhead, an unfortunate necessity for getting
+          <em>real</em> work done.</p>
+          
+          <p>Recently, though, I've started learning about
+          <a href="http://boot-clj.com/">Boot</a>, and I've found that build programming
+          can actually be interesting. This article will explain Boot's
+          underlying concepts and guide you through writing your first Boot
+          tasks. If you're interested in using Boot to build projects right this
+          second, then check out its
+          <a href="https://github.com/boot-clj/boot">github README</a> and its
+          <a href="https://github.com/boot-clj/boot/wiki">wiki</a>.</p>
+          
+          <h2>Boot's Abstractions</h2>
+          
+          <p>Created by Micha Niskin and Alan Dipert, Boot is a completely
+          controversy-free addition to the Clojure tooling landscape. On the
+          surface, it's "merely" a convenient way to build Clojure applications
+          and run Clojure tasks from the command line. But dig a little deeper
+          and you'll see that Boot is like the lisped-up lovechild of Git and
+          Unix in that it provides abstractions that make it much more pleasant
+          to write code that exists at the intersection of your operating system
+          and your application.</p>
+          
+          <p>Unix provides abstractions that we're all familiar with to the point
+          of taking them for granted. (I mean, would it kill you to take your
+          computer out to a nice restaurant once in awhile?) The process
+          abstraction allows you to reason about programs as isolated units of
+          logic that can be easily composed into a stream-processing pipeline
+          through the <code>STDIN</code> and <code>STDOUT</code> file descriptors. These abstractions
+          make certain kinds of operations, like text processing, very easy.</p>
+          
+          <p>Similarly, Boot provides abstractions that make it actually pleasant
+          to compose independent operations into the kinds of complex,
+          coordinated operations that build tools end up doing, like converting
+          Clojurescript into Javascript. Boot's <em>task</em> abstraction lets you
+          easily define units of logic that communicate through <em>filesets</em>. The
+          fileset abstraction keeps track of the evolving build context and it
+          provides a well-defined, reliable method of task coordination, as
+          opposed to the ill-defined, ad-hoc task coordination which programmers
+          have to impose on other build tools.</p>
+          
+          <p>That's a lot of high-level description, which hopefully is great for
+          when you want to hook someone's attention, which hopefully I have now
+          done. But I would be ashamed to leave you with a plateful of
+          metaphors. Oh no, dear reader; that was only the appetizer. For the
+          rest of this article you will learn what that word salad means by
+          building your own Boot tasks. Along the way, you'll discover that
+          build tools can actually have a conceptual foundation.</p>
+          
+          <h2>Tasks</h2>
+          
+          <p>Like make, rake, grunt, and other build tools of yore, Boot lets you
+          define <em>tasks</em>. Tasks are</p>
+          
+          <ul>
+          <li>named operations</li>
+          <li>that take command line options</li>
+          <li>dispatched by some intermediary program (make, rake, Boot)</li>
+          </ul>
+          
+          <p>Boot provides the dispatching program, <code>boot</code>, and a Clojure library
+          that makes it easy for you to define named operations and their
+          command line options with the <code>deftask</code> macro. So that you can see
+          what all the fuss is about, it's time to create your first
+          task. Normally, programming tutorials encourage have you write
+          something that prints "Hello World", but I like my examples to have
+          real-world utility, so your task is going to print "My pants are on
+          fire!", information which is objectively more useful. First,
+          <a href="https://github.com/boot-clj/boot#install">install Boot</a>, then create
+          a new directory named <code>boot-walkthrough</code>, navigate to that directory,
+          and finally create a file named <code>build.boot</code> and put in this in it:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">deftask</span> <span class="nv">fire</span>&#x000A;  <span class="s">"Prints 'My pants are on fire!'"</span>&#x000A;  <span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="nb">println </span><span class="s">"My pants are on fire!"</span><span class="p">))</span></pre></div>
+          <p>Now run this task with <code>boot fire</code>; you should see the message you
+          wrote printed to your terminal. This demonstrates two out of the three
+          task components - the task is named (<code>fire</code>) and it's dispatched by
+          <code>boot</code>. This is already super cool – you've essentially created
+          a Clojure script, standalone Clojure code that you can easily run from
+          the command line. No <code>project.clj</code> or directory structure or
+          namespaces needed!</p>
+          
+          <p>Let's extend the example to demonstrate how you'd write command line
+          options:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">deftask</span> <span class="nv">fire</span>&#x000A;  <span class="s">"Announces that something is on fire"</span>&#x000A;  <span class="p">[</span><span class="nv">t</span> <span class="nv">thing</span>     <span class="nv">THING</span> <span class="nb">str </span> <span class="s">"The thing that's on fire"</span>&#x000A;   <span class="nv">p</span> <span class="nv">pluralize</span>       <span class="nv">bool</span> <span class="s">"Whether to pluralize"</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">verb</span> <span class="p">(</span><span class="k">if </span><span class="nv">pluralize</span> <span class="s">"are"</span> <span class="s">"is"</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="nb">println </span><span class="s">"My"</span> <span class="nv">thing</span> <span class="nv">verb</span> <span class="s">"on fire!"</span><span class="p">)))</span></pre></div>
+          <p>Try running the task like so:</p>
+          <div class="highlight"><pre>boot fire -t heart&#x000A;<span class="c"># =&gt; My heart is on fire!</span>&#x000A;&#x000A;boot fire -t logs -p&#x000A;<span class="c"># =&gt; My logs are on fire!</span></pre></div>
+          <p>In the first instance, either you're newly in love or you need to be
+          rushed to the emergency room. In the second, you are a boy scout
+          awkwardly exclaiming your excitement over meeting the requirements for
+          a merit badge. In both instances, you were able to easily specify
+          options for the task.</p>
+          
+          <p>This refinement of the <code>fire</code> task introduced two command line
+          options, <code>thing</code> and <code>pluralize</code>. These options are defined using the
+          options DSL. In the case of <code>thing</code>, <code>t</code> specifies the option's short
+          name and <code>thing</code> specifies the long name. <code>THING</code> is a little
+          complicated, and I'll get to it in a second. <code>str</code> specifies the
+          option's type, and Boot uses that both to validate the argument and
+          convert it. <code>"The thing that's on fire"</code> is the documentation for the
+          option. You can view a task's documentation with <code>boot task-name -h</code>:</p>
+          <div class="highlight"><pre>boot fire -h&#x000A;<span class="c"># Announces that something is on fire</span>&#x000A;<span class="c"># </span>&#x000A;<span class="c"># Options:</span>&#x000A;<span class="c">#   -h, --help         Print this help info.</span>&#x000A;<span class="c">#   -t, --thing THING  Set the thing that's on fire to THING.</span>&#x000A;<span class="c">#   -p, --pluralize    Whether to pluralize</span></pre></div>
+          <p>Pretty groovy! Boot makes it very, very easy to write code that's
+          meant to be invoked from the command line.</p>
+          
+          <p>Now, about <code>THING</code>. <code>THING</code> is an <em>optarg</em> and it indicates that this
+          option expects an argument. You don't have to include an optarg when
+          you're defining an option (notice that the <code>pluralize</code> option has no
+          optarg). The optarg doesn't have to correspond to the full name of the
+          option; you could replace <code>THING</code> with <code>BILLY_JOEL</code> or whatever you
+          want and the task would work the same. Finally, you can also designate
+          <a href="https://github.com/boot-clj/boot/wiki/Task-Options-DSL#complex-options">complex options</a>
+          using the optarg. (That link will take you to Boot's documentation on
+          the subject.) Basically, complex options allow you to specify that
+          option arguments should be treated as as maps, sets, vectors, or even
+          nested collections. It's pretty powerful.</p>
+          
+          <p>Boot provides you with all the tools you could ask for in building
+          command-line interfaces with Clojure. And you've only just started
+          learning about it!</p>
+          
+          <h2>The REPL</h2>
+          
+          <p>Boot comes with a good number of useful built-in tasks, including a
+          REPL task; run <code>boot repl</code> to fire up that puppy. The Boot REPL is
+          similar to Leiningen's in that it handles loading your project code so
+          that you can play around with it. You might not think this applies to
+          the project you've been writing because you've only written tasks, but
+          you can actually run tasks in the REPL (I've left out the
+          <code>boot.user=&gt;</code> prompt):</p>
+          <div class="highlight"><pre><span class="c1">;; pass arguments as flags</span>&#x000A;<span class="p">(</span><span class="nf">fire</span> <span class="s">"-t"</span> <span class="s">"NBA Jam guy"</span><span class="p">)</span>&#x000A;<span class="c1">; My NBA Jam guy is on fire!</span>&#x000A;<span class="c1">;=&gt; nil</span>&#x000A;&#x000A;<span class="c1">;; or as keywords</span>&#x000A;<span class="p">(</span><span class="nf">fire</span> <span class="ss">:thing</span> <span class="s">"NBA Jam guy"</span><span class="p">)</span>&#x000A;<span class="c1">; My NBA Jam guy is on fire!</span>&#x000A;<span class="c1">;=&gt; nil</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">fire</span> <span class="s">"-p"</span> <span class="s">"-t"</span> <span class="s">"NBA Jam guys"</span><span class="p">)</span>&#x000A;<span class="c1">; My NBA Jam guys are on fire!</span>&#x000A;<span class="c1">;=&gt; nil</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">fire</span> <span class="ss">:pluralize</span> <span class="nv">true</span> <span class="ss">:thing</span> <span class="s">"NBA Jam guys"</span><span class="p">)</span>&#x000A;<span class="c1">; My NBA Jam guys are on fire!</span>&#x000A;<span class="c1">;=&gt; nil</span></pre></div>
+          <p>And of course, you can also use <code>deftask</code> in the REPL – it's just
+          Clojure, after all. The takeaway is that Boot lets you interact with
+          your tasks as Clojure functions, because that's what they are.</p>
+          
+          <h2>Composition and Coordination</h2>
+          
+          <p>If what you've seen so far was all that Boot had to offer, it'd be a
+          pretty swell tool, though not very different from other build
+          tools. One thing that sets Boot apart, though, is how it lets you
+          compose tasks. For comparison's sake, here's an example Rake
+          invocation (Rake is the premier Ruby build tool):</p>
+          <div class="highlight"><pre><span class="vg">rake</span><span class="w"> </span><span class="nl">db:</span><span class="vg">create</span><span class="w"> </span><span class="nl">db:</span><span class="vg">migrate</span><span class="w"> </span><span class="nl">db:</span><span class="vg">seed</span></pre></div>
+          <p>In case you were wondering, this will create a database, run
+          migrations on it, and populate it with seed data when run in a Rails
+          project. What's worth noting, however, is that Rake doesn't provide
+          any way for these tasks to communicate with each other. Specifying
+          multiple tasks is just a convenience, saving you from having to run
+          <code>rake db:create; rake db:migrate; rake db:seed</code>. If you want to access
+          the result of Task A within Task B, the build tool doesn't help you;
+          you have to manage that coordination yourself. Usually, you'll do this
+          by shoving the result of Task A into a special place on the
+          filesystem, and then making sure Task B reads that special place.
+          This looks like programming with mutable, global variables, and it's
+          just as brittle.</p>
+          
+          <h2>Handlers and Middleware</h2>
+          
+          <p>Boot addresses this problem by treating tasks as <em>middleware
+          factories</em>. If you're familiar with
+          <a href="https://github.com/ring-clojure/ring">Ring</a>, Boot's tasks work very
+          similarly; feel free to skip to the next section.  If you're not
+          familiar with the concept of middleware, then allow me to explain!
+          First, the term <em>middleware</em> refers to a set of <em>conventions</em> that
+          programmers adhere to so that they can <em>flexibly create
+          domain-specific function pipelines</em>. That's pretty dense, so let's
+          un-dense it. I'll go over the <em>flexible</em> part in this section, and
+          cover <em>domain-specific</em> in the next.</p>
+          
+          <p>To understand how the middleware approach differs from run-of-the-mill
+          function composition, here's an example of composing everyday
+          functions:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">strinc</span> <span class="p">(</span><span class="nb">comp str </span><span class="nv">inc</span><span class="p">))</span>&#x000A;<span class="p">(</span><span class="nf">strinc</span> <span class="mi">3</span><span class="p">)</span>&#x000A;<span class="c1">; =&gt; "4"</span></pre></div>
+          <p>There's nothing interesting about this function composition. This
+          function composition is so unremarkable that it strains my abilities
+          as a writer to try and actually say anything about it. There are two
+          functions, each doing its own thing, and now they've been been
+          composed into one. Whoop-dee-do!</p>
+          
+          <p>Middleware introduce an extra step to function composition, and this
+          gives you more flexibility in defining your function
+          pipeline. Suppose, in the example above, that you wanted to return <code>"I&#x000A;don't like the number X"</code> for arbitrary numbers, but still return the
+          stringified number for everything else. Here's how you could do that:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">whiney-str</span>&#x000A;  <span class="p">[</span><span class="nv">rejects</span><span class="p">]</span>&#x000A;  <span class="p">{</span><span class="ss">:pre</span> <span class="p">[(</span><span class="nf">set?</span> <span class="nv">rejects</span><span class="p">)]}</span>&#x000A;  <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">rejects</span> <span class="nv">x</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nb">str </span><span class="s">"I don't like "</span> <span class="nv">x</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nb">str </span><span class="nv">x</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">whiney-strinc</span> <span class="p">(</span><span class="nb">comp </span><span class="p">(</span><span class="nf">whiney-str</span> <span class="o">#</span><span class="p">{</span><span class="mi">2</span><span class="p">})</span> <span class="nv">inc</span><span class="p">))</span>&#x000A;<span class="p">(</span><span class="nf">whiney-strinc</span> <span class="mi">1</span><span class="p">)</span>&#x000A;<span class="c1">; =&gt; "I don't like 2 :'("</span></pre></div>
+          <p>Now let's take it one step further. What if you want to decide whether
+          or not to call <code>inc</code> in the first place? Here's how you could do that:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">whiney-middleware</span>&#x000A;  <span class="p">[</span><span class="nv">next-handler</span> <span class="nv">rejects</span><span class="p">]</span>&#x000A;  <span class="p">{</span><span class="ss">:pre</span> <span class="p">[(</span><span class="nf">set?</span> <span class="nv">rejects</span><span class="p">)]}</span>&#x000A;  <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">; ~1~</span>&#x000A;      <span class="s">"I'm not going to bother doing anything to that"</span>&#x000A;      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">y</span> <span class="p">(</span><span class="nf">next-handler</span> <span class="nv">x</span><span class="p">)]</span>&#x000A;        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">rejects</span> <span class="nv">y</span><span class="p">)</span>&#x000A;          <span class="p">(</span><span class="nb">str </span><span class="s">"I don't like "</span> <span class="nv">y</span> <span class="s">" :'("</span><span class="p">)</span>&#x000A;          <span class="p">(</span><span class="nb">str </span><span class="nv">y</span><span class="p">))))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">whiney-strinc</span> <span class="p">(</span><span class="nf">whiney-middleware</span> <span class="nb">inc </span><span class="o">#</span><span class="p">{</span><span class="mi">3</span><span class="p">}))</span></pre></div>
+          <p>Here, instead of using <code>comp</code> to create your function pipeline, you
+          pass the next function in the pipeline as the first argument to the
+          middleware function. In this case, you're passing <code>inc</code> as the first
+          argument to <code>whiney-middleware</code>. <code>whiney-middleware</code> then returns an
+          anonymous functions which closes over <code>inc</code> and has the ability to
+          choose whether to call it or not. You can see this at <code>~1~</code>.</p>
+          
+          <p>We say that middleware take a <em>handler</em> as their first argument, and
+          return a handler. In the example above, <code>whiney-middleware</code> takes a
+          handler as its first argument, <code>inc</code> here, and it returns another
+          handler, the anonymous function with <code>x</code> as its only
+          argument. Middleware can also take extra arguments, like <code>rejects</code>,
+          that act as configuration. The result is that the handler returned by
+          the middleware can behave more flexibly (thanks to configuration) and
+          it has more control over the function pipeline (because it can choose
+          whether or not to call the next handler).</p>
+          
+          <h2>Tasks are Middleware Factories</h2>
+          
+          <p>Boot takes this pattern one step further by separating middleware
+          configuration from handler creation. First, you create a function
+          which takes <em>n</em> many configuration arguments. This is the <em>middleware
+          factory</em> and it returns a middleware function. The middleware function
+          expects one argument, the next handler, and it returns a handler, just
+          like in the example above. Here's a whiney middleware factory:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">whiney-middleware-factory</span>&#x000A;  <span class="p">[</span><span class="nv">rejects</span><span class="p">]</span>&#x000A;  <span class="p">{</span><span class="ss">:pre</span> <span class="p">[(</span><span class="nf">set?</span> <span class="nv">rejects</span><span class="p">)]}</span>&#x000A;  <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">handler</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">x</span><span class="p">]</span>&#x000A;      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="mi">1</span><span class="p">)</span>&#x000A;        <span class="s">"I'm not going to bother doing anything to that"</span>&#x000A;        <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">y</span> <span class="p">(</span><span class="nf">handler</span> <span class="nv">x</span><span class="p">)]</span>&#x000A;          <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">rejects</span> <span class="nv">y</span><span class="p">)</span>&#x000A;            <span class="p">(</span><span class="nb">str </span><span class="s">"I don't like "</span> <span class="nv">y</span> <span class="s">" :'("</span><span class="p">)</span>&#x000A;            <span class="p">(</span><span class="nb">str </span><span class="nv">y</span><span class="p">)))))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">whiney-strinc</span> <span class="p">((</span><span class="nf">whiney-middleware-factory</span> <span class="o">#</span><span class="p">{</span><span class="mi">3</span><span class="p">})</span> <span class="nv">inc</span><span class="p">))</span></pre></div>
+          <p>As you can see, it's nearly identical to the previous example. The
+          change is that the topmost function, <code>whiney-middleware-factory</code>, now
+          only accepts one argument, <code>rejects</code>. It returns an anonymous
+          function, the middleware, which expects one argument, a handler. The
+          rest of the code is the same.</p>
+          
+          <p>In Boot, tasks can act as middleware factories. In fact, they usually
+          do, I just didn't present them that way above in order to keep things
+          simple. To show this, let's split the <code>fire</code> task into two tasks:
+          <code>what</code> and <code>fire</code>. <code>what</code> will let you specify an object and whether
+          it's plural, and <code>fire</code> will announce that it's on fire. This is
+          great, modular software engineering because it allows you to add other
+          tasks like <code>gnomes</code>, to announce that a thing is being overrun with
+          gnomes, which is just as objectively useful. (Exercise for the reader:
+          create the <code>gnome</code> task.)</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">deftask</span> <span class="nv">what</span>&#x000A;  <span class="s">"Specify a thing"</span>&#x000A;  <span class="p">[</span><span class="nv">t</span> <span class="nv">thing</span>     <span class="nv">THING</span> <span class="nb">str </span> <span class="s">"An object"</span>&#x000A;   <span class="nv">p</span> <span class="nv">pluralize</span>       <span class="nv">bool</span> <span class="s">"Whether to pluralize"</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">fn </span><span class="nv">middleware</span> <span class="p">[</span><span class="nv">next-handler</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="k">fn </span><span class="nv">handler</span> <span class="p">[</span><span class="nv">_</span><span class="p">]</span>&#x000A;      <span class="p">(</span><span class="nf">next-handler</span> <span class="p">{</span><span class="ss">:thing</span> <span class="nv">thing</span> <span class="ss">:pluralize</span> <span class="nv">pluralize</span><span class="p">}))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="nf">deftask</span> <span class="nv">fire</span>&#x000A;  <span class="s">"Announce a thing is on fire"</span>&#x000A;  <span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="k">fn </span><span class="nv">middleware</span> <span class="p">[</span><span class="nv">next-handler</span><span class="p">]</span>&#x000A;    <span class="p">(</span><span class="k">fn </span><span class="nv">handler</span> <span class="p">[</span><span class="nv">thing-map</span><span class="p">]</span>&#x000A;      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">updated-thing-map</span> <span class="p">(</span><span class="nf">next-handler</span> <span class="nv">thing-map</span><span class="p">)</span>&#x000A;            <span class="nv">verb</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="ss">:pluralize</span> <span class="nv">thing-map</span><span class="p">)</span> <span class="s">"are"</span> <span class="s">"is"</span><span class="p">)]</span>&#x000A;        <span class="p">(</span><span class="nb">println </span><span class="s">"My"</span> <span class="p">(</span><span class="ss">:thing</span> <span class="nv">thing-map</span><span class="p">)</span> <span class="nv">verb</span> <span class="s">"on fire!"</span><span class="p">)))))</span></pre></div>
+          <p>Here's how you'd run this on the command line:</p>
+          <div class="highlight"><pre><span class="vg">boot</span><span class="w"> </span><span class="vg">what</span><span class="w"> </span><span class="o">-</span><span class="vg">t</span><span class="w"> </span><span class="s2">"pants"</span><span class="w"> </span><span class="o">-</span><span class="vg">p</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="vg">fire</span></pre></div>
+          <p>And here's how you'd run it in the REPL:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">boot</span> <span class="p">(</span><span class="nf">what</span> <span class="ss">:thing</span> <span class="s">"pants"</span> <span class="ss">:pluralize</span> <span class="nv">true</span><span class="p">)</span> <span class="p">(</span><span class="nf">fire</span><span class="p">))</span></pre></div>
+          <p>Wait a minute, what's that <code>boot</code> call doing there? In Micha's words,
+          "The <code>boot</code> macro takes care of setup and cleanup (creating the
+          initial fileset, stopping servers started by tasks, things like
+          that). Tasks are functions so you can call them directly, but if they
+          use the fileset they will fail unless you call them via the boot
+          macro." Wait a minute, what's a fileset?</p>
+          
+          <h2>Filesets</h2>
+          
+          <p>I mentioned earlier that middleware are for creating <em>domain-specific</em>
+          function pipelines. All that means is that each handler expects to
+          receive domain-specific data, and returns domain-specific data. With
+          Ring, for example, each handler expects to receive a <em>request map</em>
+          representing the HTTP request. This might look something like:</p>
+          <div class="highlight"><pre><span class="p">{</span><span class="ss">:server-port</span> <span class="mi">80</span>&#x000A; <span class="ss">:request-method</span> <span class="ss">:get</span>&#x000A; <span class="ss">:scheme</span> <span class="ss">:http</span><span class="p">}</span></pre></div>
+          <p>Each handler can choose to modify this request map in some way before
+          passing it on to the next handler, say by adding a <code>:params</code> key with
+          a nice Clojure map of all query string and POST parameters. Ring
+          handlers return a <em>response map</em>, which consists of the keys
+          <code>:status</code>, <code>:headers</code>, and <code>:body</code>, and once again each handler can
+          transform this data in some way before returning it to its parent
+          handler.</p>
+          
+          <p>In Boot, each handlers receives and returns a
+          <a href="https://github.com/boot-clj/boot/wiki/Filesets"><em>fileset</em></a>.  The
+          fileset abstraction gives you a way to treat files on your filesystem
+          as immutable data, and this is a great innovation for build tools
+          because building projects is so file-centric. For example, your
+          project might need to place temporary, intermediary files on the
+          filesystem. Usually, with build tools that aren't Boot, these files
+          get placed in some specially-named place, say,
+          <code>project/target/tmp</code>. The problem with this is that
+          <code>project/target/tmp</code> is effectively a global variable, and other tasks
+          can accidentally muck it up.</p>
+          
+          <p>The fileset abstraction works by adding a layer of indirection on top
+          of the filesystem. Let's say Task A creates File X and tells the
+          fileset to store it. Behind the scenes, the fileset stores the file in
+          an anonymous, temporary directory. The fileset then gets passed to
+          Task B, and Task B modifies File X and asks the fileset to store the
+          result. Behind the scenes, a new file, File Y, is created and stored,
+          but File X remains untouched. In Task B, an updated fileset is
+          returned. This is the equivalent of doing <code>assoc-in</code> with a map; Task
+          A can still access the original fileset and the files it references.</p>
+          
+          <p>The mechanics of working with filesets are all explained in
+          <a href="https://github.com/boot-clj/boot/wiki/Filesets">the fileset wiki</a>,
+          but I hope this gives a good conceptual overview!</p>
+          
+          <h2>Everything else</h2>
+          
+          <p>The point of this article was to explain the concepts behind
+          Boot. However, it also has a bunch of features, like <code>set-env!</code> and
+          <code>task-options!</code> that make life easier when you're actually using
+          it. It does <em>amazing magical things</em> like <em>providing classpath isolation
+          so that you can run multiple projects using one JVM</em> and <em>letting you
+          add new dependencies to your project without having to restart your
+          REPL</em>.  If Boot tickles your fancy, check out its
+          <a href="https://github.com/boot-clj/boot">README</a> for more info on real-world
+          usage. Also, its <a href="https://github.com/boot-clj/boot/wiki">wiki</a>
+          provides top-notch documentation.</p>
+          
+          <p>If you're new to Clojure, then check out
+          <a href="http://www.braveclojure.com/">Clojure for the Brave and True</a>, an
+          introduction to the language written by yours truly. Have fun!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

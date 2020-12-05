@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>How Clojure Babies Are Made: Understanding lein run</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>How Clojure Babies Are Made: Understanding lein run</h1>
+          <div class='date'>18 March 2013</div>
+          <p>Leiningen reminds me a lot of Major Alex Louis Armstrong from
+          Fullmetal Alchemist:</p>
+          
+          <p><img src="/assets/images/posts/leiningen/so-sparkly.png" alt="What artistry!"></p>
+          
+          <ul>
+          <li>They are both manly</li>
+          <li>They are both artistic</li>
+          <li>Sometimes you don't know what the f* they're saying (but it's
+          amazing anyway)</li>
+          <li>Mustaches</li>
+          <li>Sparkles</li>
+          </ul>
+          
+          <p>Though the Strong Arm Alchemist will forever remain inscrutable, we do
+          have some hope in understanding Leiningen better. In this post, we'll
+          peek under Leiningen's lederhosen so that we can begin to learn
+          precisely what it does and how to make effective use of it in
+          developing, testing, running, and deploying Clojure applications.</p>
+          
+          <p>Here's what we'll learn:</p>
+          
+          <ul>
+          <li>How to build and run a Clojure program without Leiningen</li>
+          <li>What happens when you run <code>lein run</code>
+          </li>
+          <li>Basic Leiningen architecture</li>
+          <li>What happens when you run a Leiningen task</li>
+          </ul>
+          
+          <p>In the next post, we'll learn:</p>
+          
+          <ul>
+          <li>How Leiningen avoids waste with a trampoline</li>
+          <li>How Leiningen manages dependencies</li>
+          <li>How to distribute a full application</li>
+          <li>How to distribute a library</li>
+          <li>Other stuff Leiningen does</li>
+          </ul>
+          
+          <p>This post builds on
+          <a href="/programming/how-clojure-babies-are-made-the-java-cycle/">How Clojure Babies Are Made: Compiling and Running a Java Program</a>,
+          so make sure you understand everything in that post first. It doesn't
+          have any pictures of sparkly, sensitive, muscle-bound men though so if
+          that's what you're hoping for you're out of luck. We're here to learn
+          Clojure, dammit, not ogle cartoons!</p>
+          
+          <h2>Brief Overview of Leiningen</h2>
+          
+          <p>Leiningen is the Swiss Army Bazooka of Clojure development. It
+          handles:</p>
+          
+          <ul>
+          <li>
+          <strong>Project compilation.</strong> Your Clojure has to get converted into Java
+          bytecode somehow, and Leiningen automates the process.</li>
+          <li>
+          <strong>Dependency management.</strong> Similar to Ruby's bundler and gemfiles,
+          Leiningen automates the process of resolving and downloading the
+          Java jars your project depends on</li>
+          <li>
+          <strong>Running tasks.</strong> Superficially similar to Ruby's Rake, except that
+          Rake is not very declarative. This could have its own blog post.</li>
+          <li>
+          <strong>Deployment.</strong> Helps with creating Java jars which can be executed
+          and/or incorporated in other projects. Similar to Ruby gems.</li>
+          </ul>
+          
+          <h2>How to Build and Run a Clojure Program Without Leiningen</h2>
+          
+          <p>By understanding how to build and run a Clojure program manually,
+          you'll better understand what Leiningen does to automate the process.
+          We'll be working with the files under <code>leiningen/manual-build</code> which
+          you can get from the
+          <a href="https://github.com/flyingmachine/make-a-clojure-baby">make a clojure baby repo</a>.
+          All path references will be relative to <code>make-a-clojure-baby/leiningen/manual-build</code>.</p>
+          
+          <p>The program we're compiling will make us fluent in the ways of German
+          Love:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">ns </span><span class="nv">learn-a-language.important-phrases</span>&#x000A;  <span class="p">(</span><span class="ss">:gen-class</span><span class="p">))</span>&#x000A;&#x000A;<span class="c1">;; It's time for some German love! </span>&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">german</span>&#x000A;  <span class="p">[[</span><span class="s">"I love you."</span> <span class="s">"Ich liebe dich."</span><span class="p">]</span>&#x000A;   <span class="p">[</span><span class="s">"You make me so happy!"</span> <span class="s">"Du machst mich so glucklich!"</span><span class="p">]</span>&#x000A;   <span class="p">[</span><span class="s">"I miss you."</span> <span class="s">"Ich vermisse dich./Du fehlst mir."</span><span class="p">]</span>&#x000A;   <span class="p">[</span><span class="s">"Pass me the mustard."</span> <span class="s">"Gib mir den Senf."</span><span class="p">]</span>   &#x000A;   <span class="p">[</span><span class="s">"Kiss me!"</span> <span class="s">"Kuss mich!"</span><span class="p">]])</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">-main</span>&#x000A;  <span class="p">[</span><span class="nv">which</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">phrases</span> <span class="p">(</span><span class="nb">get </span><span class="nv">german</span> <span class="p">(</span><span class="nf">Integer.</span> <span class="nv">which</span><span class="p">))]</span>&#x000A;    <span class="p">(</span><span class="nb">println </span><span class="s">"English: "</span> <span class="p">(</span><span class="nb">first </span><span class="nv">phrases</span><span class="p">))</span>&#x000A;    <span class="p">(</span><span class="nb">println </span><span class="s">"German: "</span> <span class="p">(</span><span class="nb">second </span><span class="nv">phrases</span><span class="p">))))</span></pre></div>
+          <p>One important thing to note here is that we included the <code>:gen-class</code>
+          directive in the <code>ns</code> declaration. This tells Clojure to generate a
+          named Java class when it compiles the namespace. Remember that Java
+          requires a <code>public main</code> method within a <code>public</code> class to serve as
+          the entry point for the JVM. Using <code>:gen-class</code> allows us to use
+          <code>learn-a-language.important-phrases/-main</code> as the entry point.</p>
+          
+          <p>Let's go ahead and compile. First, start up a Clojure repl (note that
+          the git repo includes the 1.5.1 release of Clojure as clojure.jar):</p>
+          <div class="highlight"><pre><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="o">.:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span></pre></div>
+          <p>Notice that we specifed the classpath with <code>-cp .:clojure.jar</code>. This
+          does two things:</p>
+          
+          <ul>
+          <li>It allows us to execute the <code>main</code> method in <code>clojure.main</code>
+          similarly to what we saw at the end of
+          <a href="/programming/how-clojure-babies-are-made-the-java-cycle/">the last post</a>
+          </li>
+          <li>It adds the current directory to the classpath so that when you
+          actually start loading Clojure files and compiling namespaces, the
+          Clojure repl can find them. To see what I mean, try starting the
+          repl with <code>java -jar clojure.jar</code> and then running the code below.</li>
+          </ul>
+          
+          <p>You should now have a Clojure repl running in your terminal. Copy and
+          paste the following lines into it:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nb">load </span><span class="s">"learn_a_language/important_phrases"</span><span class="p">)</span>&#x000A;<span class="p">(</span><span class="nf">compile</span> <span class="ss">'learn-a-language.important-phrases</span><span class="p">)</span></pre></div>
+          <p>The first line reads the specified file. The second actually compiles
+          the <code>learn-a-language.important-phrases</code> namespace, generating a
+          boatload of Java class files in the <code>classes/learn_a_language</code>
+          directory:</p>
+          <div class="highlight"><pre><span class="nv">$ </span>ls classes/learn_a_language/&#x000A;important_phrases<span class="nv">$_main</span>.class&#x000A;important_phrases<span class="nv">$fn__19</span>.class&#x000A;important_phrases<span class="nv">$fn__48</span>.class&#x000A;important_phrases<span class="nv">$loading__4910__auto__</span>.class&#x000A;important_phrases.class&#x000A;important_phrases__init.class</pre></div>
+          <p>(I won't go into into detail about the purposes of the various class files,
+          but you can start to learn more about that in
+          <a href="http://clojure.org/compilation">clojure's compilation documentation</a>.)</p>
+          
+          <p>After going through the above steps, you might have a question on your
+          mind grapes: "Where did the <code>classes</code> directory come from?"</p>
+          
+          <p>Oh, gentle-hearted reader. Your dedication to learning has touched my
+          heart. I shall answer your query: Clojure places compiled files under
+          <code>*compile-path*</code>, which is <code>classes</code> by default. Therefore, <code>classes</code>
+          must exist and be accessible from the classpath. You'll notice that
+          there's a <code>classes</code> directory in the git repo with a <code>.gitkeep</code> file
+          in it. Never change, dear, inquisitive reader. Never!</p>
+          
+          <p>Now that we've compiled our Clojure program, let's get it running:</p>
+          <div class="highlight"><pre><span class="err">#</span><span class="w"> </span><span class="vg">Notice</span><span class="w"> </span><span class="vg">that</span><span class="w"> </span><span class="vg">you</span><span class="w"> </span><span class="vg">have</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">provide</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">numerical</span><span class="w"> </span><span class="vg">argument</span>&#x000A;<span class="err">$</span><span class="w"> </span><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="nl">classes:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">learn_a_language</span><span class="o">/</span><span class="vg">important_phrases</span><span class="w"> </span><span class="il">0</span>&#x000A;<span class="nl">English:</span><span class="w">  </span><span class="vg">I</span><span class="w"> </span><span class="vg">love</span><span class="w"> </span><span class="vg">you</span><span class="o">.</span>&#x000A;<span class="nl">German:</span><span class="w">  </span><span class="vg">Ich</span><span class="w"> </span><span class="vg">liebe</span><span class="w"> </span><span class="vg">dich</span><span class="o">.</span>&#x000A;&#x000A;<span class="err">$</span><span class="w"> </span><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="nl">classes:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">learn_a_language</span><span class="o">/</span><span class="vg">important_phrases</span><span class="w"> </span><span class="il">3</span>&#x000A;<span class="nl">English:</span><span class="w">  </span><span class="vg">Pass</span><span class="w"> </span><span class="vg">me</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">mustard</span><span class="o">.</span>&#x000A;<span class="nl">German:</span><span class="w">  </span><span class="vg">Gib</span><span class="w"> </span><span class="vg">mir</span><span class="w"> </span><span class="vg">den</span><span class="w"> </span><span class="vg">Senf</span><span class="o">.</span></pre></div>
+          <p>Success! You are now ready to express your love for Leiningen in its
+          native tongue. I highly recommend you use this program to come up with
+          tweets to send to @technomancy to express your appreciation.</p>
+          
+          <p>But before you do that, notice the classpath. We need to include both
+          the <code>classes</code> directory, because that's where the
+          <code>learn_a_language/important_phrases</code> class files live, and
+          <code>clojure.jar</code>, because the class files generated by <code>compile</code> need to
+          be able to access Clojure class files.</p>
+          
+          <p>To sum up:</p>
+          <div class="highlight"><pre><span class="err">#</span><span class="w"> </span><span class="vg">load</span><span class="w"> </span><span class="vg">clojure</span><span class="w"> </span><span class="vg">repl</span>&#x000A;<span class="err">$</span><span class="w"> </span><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="o">.:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span>&#x000A;<span class="err">#</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">Clojure</span><span class="w"> </span><span class="vg">repl</span>&#x000A;<span class="vg">user</span><span class="o">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="vg">load</span><span class="w"> </span><span class="s2">"learn_a_language/important_phrases"</span><span class="p">)</span>&#x000A;<span class="vg">user</span><span class="o">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="vg">compile</span><span class="w"> </span><span class="c1">'learn-a-language.important-phrases)</span>&#x000A;<span class="err">#</span><span class="w"> </span><span class="vg">back</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">command</span><span class="w"> </span><span class="vg">line</span>&#x000A;<span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="nl">classes:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">learn_a_language</span><span class="o">/</span><span class="vg">important_phrases</span><span class="w"> </span><span class="il">0</span></pre></div>
+          <p>I hope this brief foray into the world of manually building and
+          running a Clojure program has been educational. You can see how it
+          would be burdensome to go through his process over and over again
+          while developing a program. Let's finally bring in our pal Leiningen
+          to automate this process.</p>
+          
+          <h2>How Leiningen Compiles and Runs a Basic Clojure Program</h2>
+          
+          <p>Let's build the "learn a language" program with Leiningen. We have a
+          very basic project at <code>make-a-clojure-baby/leiningen/lein-build</code>.
+          Under that the directory, the file
+          <code>src/learn_a_language/important_phrases.clj</code> is the same as the one
+          listed above.</p>
+          
+          <h3>lein run</h3>
+          
+          <p>Lein automates the build + run process with <code>lein run</code>. Go ahead and
+          try that now:</p>
+          <div class="highlight"><pre><span class="nv">$ </span>lein run 2&#x000A;Compiling learn-a-language.important-phrases&#x000A;English:  I miss you.&#x000A;German:  Ich vermisse dich./Du fehlst mir.</pre></div>
+          <p>You can probably guess what's happening at this point, at least to a
+          degree. Leiningen is compiling <code>important_phrases.clj</code> resulting in a
+          number of Java <code>.class</code> files. We can, in fact, see these class files:</p>
+          <div class="highlight"><pre><span class="nv">$ </span>ls target/classes/learn_a_language&#x000A;important_phrases<span class="nv">$_main</span>.class&#x000A;important_phrases<span class="nv">$loading__4784__auto__</span>.class&#x000A;important_phrases__init.class</pre></div>
+          <p>Leiningen then somehow constructs a classpath such that both Clojure
+          and the "important phrases" classes are accessible by Java. Finally,
+          the <code>-main</code> function is executed.</p>
+          
+          <p>I know what you're thinking at this point, noble reader. You're
+          thinking that the "somehow" in "somehow constructs a classpath" is a
+          particularly un-manly, un-artistic, un-mustached, un-sparkly word,
+          unbefitting an article on Leiningen. And you are absolutely right. To
+          avoid your wrath, let's dig into Leiningen's source code so that we
+          can understand what's going on with complete clarity.</p>
+          
+          <h3>Walking Through "lein run"</h3>
+          
+          <p>To get an idea of where to start, let's run <code>lein run 1</code> again and
+          then run <code>ps | grep lein</code>. The output has been broken up to make more
+          sense (apologies for the goofy highlighting):</p>
+          <div class="highlight"><pre><span class="err">#</span><span class="w"> </span><span class="vg">you</span><span class="w"> </span><span class="vg">can</span><span class="w"> </span><span class="vg">actually</span><span class="w"> </span><span class="vg">copy</span><span class="w"> </span><span class="vg">and</span><span class="w"> </span><span class="vg">paste</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">part</span><span class="w"> </span><span class="vg">after</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">PID</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">try</span><span class="w"> </span><span class="vg">this</span>&#x000A;<span class="err">#</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">your</span><span class="w"> </span><span class="vg">terminal</span>&#x000A;<span class="nl">8420</span><span class="w"> </span><span class="o">/</span><span class="vg">usr</span><span class="o">/</span><span class="vg">bin</span><span class="o">/</span><span class="vg">java</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">client</span><span class="w"> </span><span class="o">-</span><span class="nl">XX:</span><span class="o">+</span><span class="vg">TieredCompilation</span><span class="w">  </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Xbootclasspath</span><span class="o">/</span><span class="nl">a:</span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/.</span><span class="vg">lein</span><span class="o">/</span><span class="vg">self</span><span class="o">-</span><span class="vg">installs</span><span class="o">/</span><span class="vg">leiningen</span><span class="mf">-2.0.0</span><span class="o">-</span><span class="vg">standalone</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dfile</span><span class="o">.</span><span class="vg">encoding</span><span class="o">=</span><span class="vg">UTF</span><span class="il">-8</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dmaven</span><span class="o">.</span><span class="vg">wagon</span><span class="o">.</span><span class="vg">http</span><span class="o">.</span><span class="vg">ssl</span><span class="o">.</span><span class="vg">easy</span><span class="o">=</span><span class="vg">false</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dleiningen</span><span class="o">.</span><span class="vg">original</span><span class="o">.</span><span class="vg">pwd</span><span class="o">=/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dleiningen</span><span class="o">.</span><span class="vg">script</span><span class="o">=/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">bin</span><span class="o">/</span><span class="vg">lein</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">classpath</span><span class="w"> </span><span class="o">:/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/.</span><span class="vg">lein</span><span class="o">/</span><span class="vg">self</span><span class="o">-</span><span class="vg">installs</span><span class="o">/</span><span class="vg">leiningen</span><span class="mf">-2.0.0</span><span class="o">-</span><span class="vg">standalone</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="o">\</span><span class="w"> </span><span class="err">`#</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">entry</span><span class="w"> </span><span class="vg">point</span><span class="err">`</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">m</span><span class="w"> </span><span class="vg">leiningen</span><span class="o">.</span><span class="vg">core</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="vg">run</span><span class="w"> </span><span class="il">1</span>&#x000A;&#x000A;<span class="nl">8432</span><span class="w"> </span><span class="o">/</span><span class="vg">usr</span><span class="o">/</span><span class="vg">bin</span><span class="o">/</span><span class="vg">java</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="err">`#</span><span class="w"> </span><span class="vg">your</span><span class="w"> </span><span class="vg">classpath</span><span class="w"> </span><span class="vg">will</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">different</span><span class="err">`</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">classpath</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="nl">test:</span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="nl">src:</span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="vg">dev</span><span class="o">-</span><span class="nl">resources:</span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="nl">resources:</span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="vg">target</span><span class="o">/</span><span class="nl">classes:</span><span class="o">\</span>&#x000A;<span class="w">    </span><span class="o">/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/.</span><span class="vg">m2</span><span class="o">/</span><span class="vg">repository</span><span class="o">/</span><span class="vg">org</span><span class="o">/</span><span class="vg">clojure</span><span class="o">/</span><span class="vg">clojure</span><span class="o">/</span><span class="mf">1.5.1</span><span class="o">/</span><span class="vg">clojure</span><span class="mf">-1.5.1</span><span class="o">.</span><span class="vg">jar</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="nl">XX:</span><span class="o">+</span><span class="vg">TieredCompilation</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dclojure</span><span class="o">.</span><span class="vg">compile</span><span class="o">.</span><span class="vg">path</span><span class="o">=/</span><span class="vg">Users</span><span class="o">/</span><span class="vg">daniel</span><span class="o">/</span><span class="vg">projects</span><span class="o">/</span><span class="vg">web_sites</span><span class="o">/</span><span class="vg">make</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">clojure</span><span class="o">-</span><span class="vg">baby</span><span class="o">/</span><span class="vg">leiningen</span><span class="o">/</span><span class="vg">lein</span><span class="o">-</span><span class="vg">build</span><span class="o">/</span><span class="vg">target</span><span class="o">/</span><span class="vg">classes</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dlearn</span><span class="o">-</span><span class="vg">a</span><span class="o">-</span><span class="vg">language</span><span class="o">.</span><span class="vg">version</span><span class="o">=</span><span class="mf">0.1.0</span><span class="o">-</span><span class="vg">SNAPSHOT</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dfile</span><span class="o">.</span><span class="vg">encoding</span><span class="o">=</span><span class="vg">UTF</span><span class="il">-8</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">Dclojure</span><span class="o">.</span><span class="vg">debug</span><span class="o">=</span><span class="vg">false</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="o">\</span><span class="w"> </span><span class="err">`#</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">entry</span><span class="w"> </span><span class="vg">point</span><span class="err">`</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="err">`#</span><span class="w"> </span><span class="vg">this</span><span class="w"> </span><span class="vg">next</span><span class="w"> </span><span class="vg">part</span><span class="w"> </span><span class="vg">specifies</span><span class="w"> </span><span class="vg">code</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">evaluated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">Clojure</span><span class="err">`</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">  </span><span class="o">-</span><span class="vg">e</span><span class="w"> </span><span class="p">(</span><span class="vg">do</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">      </span><span class="p">(</span><span class="vg">try</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">       </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">require</span><span class="w"> </span><span class="c1">'learn-a-language.important-phrases) \</span>&#x000A;<span class="w">       </span><span class="p">(</span><span class="vg">catch</span><span class="w"> </span><span class="vg">java</span><span class="o">.</span><span class="vg">io</span><span class="o">.</span><span class="vg">FileNotFoundException</span><span class="w"> </span><span class="vg">___6081__auto__</span><span class="p">))</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">      </span><span class="p">(</span><span class="vg">set!</span><span class="w"> </span><span class="o">*</span><span class="vg">warn</span><span class="o">-</span><span class="vg">on</span><span class="o">-</span><span class="vg">reflection</span><span class="o">*</span><span class="w"> </span><span class="vg">nil</span><span class="p">)</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">      </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">let</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">       </span><span class="p">[</span><span class="vg">v__6079__auto__</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">        </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">resolve</span><span class="w"> </span><span class="c1">'learn-a-language.important-phrases/-main)] \</span>&#x000A;<span class="w">       </span><span class="p">(</span><span class="vg">if</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">        </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">ifn</span><span class="o">?</span><span class="w"> </span><span class="vg">v__6079__auto__</span><span class="p">)</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">        </span><span class="p">(</span><span class="vg">v__6079__auto__</span><span class="w"> </span><span class="s2">"1"</span><span class="p">)</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">        </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">lang</span><span class="o">.</span><span class="vg">Reflector</span><span class="o">/</span><span class="vg">invokeStaticMethod</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">         </span><span class="s2">"learn-a-language.important-phrases"</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">         </span><span class="s2">"main"</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">         </span><span class="p">(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">into</span><span class="o">-</span><span class="vg">array</span><span class="w"> </span><span class="o">\</span>&#x000A;<span class="w">          </span><span class="p">[(</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">core</span><span class="o">/</span><span class="vg">into</span><span class="o">-</span><span class="vg">array</span><span class="w"> </span><span class="vg">java</span><span class="o">.</span><span class="vg">lang</span><span class="o">.</span><span class="vg">String</span><span class="w"> </span><span class="c1">'("1"))])))))</span></pre></div>
+          <p>There are two things happening here. When you first run <code>lein run</code>,
+          then the process with PID 8420 starts. There are a lot of
+          configuration variables that we don't necessarily need to care about.
+          What's essentially happening is we're saying:</p>
+          
+          <ul>
+          <li>Start up the JVM with the leiningen standalone jar on the classpath</li>
+          <li>Use <code>clojure.main</code> as the Java entry point</li>
+          <li>Pass <code>-m leiningen.core.main run 1</code> as arguments to <code>clojure.main</code>
+          </li>
+          </ul>
+          
+          <p>That last step specifies the <em>Clojure</em> entry point, as opposed to the
+          <em>Java</em> entry point. Clojure uses it to load the <code>leiningen.core.main</code>
+          namespace and then execute the <code>-main</code> function within it.
+          <code>leiningen.core.main/-main</code> receives the arguments <code>run 1</code>.</p>
+          
+          <p>We can view Leiningen's <code>leiningen.core.main/-main</code> function
+          <a href="https://github.com/technomancy/leiningen/blob/master/leiningen-core/src/leiningen/core/main.clj#L275">on github</a>:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defn </span><span class="nv">-main</span>&#x000A;  <span class="s">"Command-line entry point."</span>&#x000A;  <span class="p">[</span><span class="o">&amp;</span> <span class="nv">raw-args</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">try</span>&#x000A;    <span class="p">(</span><span class="nf">user/init</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nb">project </span><span class="p">(</span><span class="nf">project/init-project</span>&#x000A;                   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">.exists</span> <span class="p">(</span><span class="nf">io/file</span> <span class="s">"project.clj"</span><span class="p">))</span>&#x000A;                     <span class="p">(</span><span class="nf">project/read</span><span class="p">)</span>&#x000A;                     <span class="p">(</span><span class="nb">assoc </span><span class="p">(</span><span class="nf">project/make</span> <span class="p">(</span><span class="ss">:user</span> <span class="p">(</span><span class="nf">user/profiles</span><span class="p">)))</span>&#x000A;                       <span class="ss">:eval-in</span> <span class="ss">:leiningen</span> <span class="ss">:prep-tasks</span> <span class="p">[])))</span>&#x000A;          <span class="p">[</span><span class="nv">task-name</span> <span class="nv">args</span><span class="p">]</span> <span class="p">(</span><span class="nf">task-args</span> <span class="nv">raw-args</span> <span class="nv">project</span><span class="p">)]</span>&#x000A;      <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="ss">:min-lein-version</span> <span class="nv">project</span><span class="p">)</span> <span class="p">(</span><span class="nf">verify-min-version</span> <span class="nv">project</span><span class="p">))</span>&#x000A;      <span class="p">(</span><span class="nf">configure-http</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nf">warn-chaining</span> <span class="nv">task-name</span> <span class="nv">args</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nf">apply-task</span> <span class="nv">task-name</span> <span class="nb">project </span><span class="nv">args</span><span class="p">))</span>&#x000A;    <span class="p">(</span><span class="nf">catch</span> <span class="nv">Exception</span> <span class="nv">e</span>&#x000A;      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">or </span><span class="nv">*debug*</span> <span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="ss">:exit-code</span> <span class="p">(</span><span class="nf">ex-data</span> <span class="nv">e</span><span class="p">))))</span>&#x000A;        <span class="p">(</span><span class="nf">.printStackTrace</span> <span class="nv">e</span><span class="p">)</span>&#x000A;        <span class="p">(</span><span class="nb">when-not </span><span class="p">(</span><span class="ss">:suppress-msg</span> <span class="p">(</span><span class="nf">ex-data</span> <span class="nv">e</span><span class="p">))</span>&#x000A;          <span class="p">(</span><span class="nb">println </span><span class="p">(</span><span class="nf">.getMessage</span> <span class="nv">e</span><span class="p">))))</span>&#x000A;      <span class="p">(</span><span class="nf">exit</span> <span class="p">(</span><span class="ss">:exit-code</span> <span class="p">(</span><span class="nf">ex-data</span> <span class="nv">e</span><span class="p">)</span> <span class="mi">1</span><span class="p">))))</span>&#x000A;  <span class="p">(</span><span class="nf">exit</span> <span class="mi">0</span><span class="p">))</span></pre></div>
+          <p>Just as we would suspect from the <code>ps</code> output, this is the command
+          line entry point for <code>lein</code>. One of the first things this function
+          does is figure out your project configuration from your <code>project.clj</code>
+          file. Here's ours:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">defproject </span><span class="nv">learn-a-language</span> <span class="s">"0.1.0-SNAPSHOT"</span>&#x000A;  <span class="ss">:description</span> <span class="s">"FIXME: write description"</span>&#x000A;  <span class="ss">:url</span> <span class="s">"http://example.com/FIXME"</span>&#x000A;  <span class="ss">:license</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">"Eclipse Public License"</span>&#x000A;            <span class="ss">:url</span> <span class="s">"http://www.eclipse.org/legal/epl-v10.html"</span><span class="p">}</span>&#x000A;  <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span> <span class="s">"1.5.1"</span><span class="p">]]</span>&#x000A;  <span class="ss">:main</span> <span class="nv">learn-a-language.important-phrases</span><span class="p">)</span></pre></div>
+          <p>The most important line, for our purposes, is</p>
+          <div class="highlight"><pre><span class="ss">:main</span> <span class="nv">learn-a-language.important-phrases</span></pre></div>
+          <p>This tells Leiningen what function to execute when you run <code>lein run</code>.
+          If you specify a namespace without a function, as we do above, then
+          Leiningen defaults to using the <code>-main</code> function.</p>
+          
+          <p>Next, if you look about 2/3 of the way down in the
+          <code>leiningen.core.main/-main</code> function, you'll see the <code>apply-task</code>
+          function being called. This calls <code>resolve-task</code> which eventually
+          resolves to <code>leiningen.run</code>, which you can
+          <a href="https://github.com/technomancy/leiningen/blob/master/src/leiningen/run.clj">also see on github</a>.</p>
+          
+          <p>This is pretty cool — <code>run</code> is just another task from
+          Leiningen's point of view. Wait... did I just say "cool"? I meant
+          <em>MANLY</em> and <em>ARTISTIC</em> and <em>SPARKLY</em>. But yeah, it looks like basic
+          leiningen architecture includes the <code>leiningen.core</code> collection of
+          namespaces, which handle task resolution and application, and plain
+          ol' <code>leiningen</code>, which appears to be mostly a collection of default
+          tasks.</p>
+          
+          <p>Leiningen uses this same mechanism to execute any function in your
+          Clojure project as a task. Bodacious! I recommend checking out
+          <a href="https://github.com/technomancy/leiningen/tree/master/src/leiningen">the code for the other Leiningen tasks</a>.
+          You'll see how they do more than just require and run a single
+          function, but the task-running infrastructure remains the same.</p>
+          
+          <p>Anyway, once the <code>run</code> task has been resolved, it is executed and the
+          result is the second process we saw in the <code>ps | grep lein</code> output
+          above, the process with PID 8432. A sub-process is created to enforce
+          isolation between Leiningen and your project. I won't go into how the
+          command for the sub-process gets constructed, as you can figure that
+          all out from <code>leiningen/run</code>. What's more important is what it
+          actually does. The command loads Clojure and tells it to evaluate the
+          following:</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="nf">do</span>&#x000A;  <span class="p">(</span><span class="nf">try</span>&#x000A;    <span class="p">(</span><span class="nf">clojure.core/require</span> <span class="ss">'learn-a-language.important-phrases</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">catch</span> <span class="nv">java.io.FileNotFoundException</span> <span class="nv">___6081__auto__</span><span class="p">))</span>&#x000A;  <span class="p">(</span><span class="nf">set!</span> <span class="nv">*warn-on-reflection*</span> <span class="nv">nil</span><span class="p">)</span>&#x000A;  <span class="p">(</span><span class="nf">clojure.core/let</span>&#x000A;      <span class="p">[</span><span class="nv">v__6079__auto__</span>&#x000A;       <span class="p">(</span><span class="nf">clojure.core/resolve</span> <span class="ss">'learn-a-language.important-phrases/-main</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="nf">if</span>&#x000A;        <span class="p">(</span><span class="nf">clojure.core/ifn?</span> <span class="nv">v__6079__auto__</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nf">v__6079__auto__</span> <span class="s">"1"</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="nf">clojure.lang.Reflector/invokeStaticMethod</span>&#x000A;       <span class="s">"learn-a-language.important-phrases"</span>&#x000A;       <span class="s">"main"</span>&#x000A;       <span class="p">(</span><span class="nf">clojure.core/into-array</span>&#x000A;        <span class="p">[(</span><span class="nf">clojure.core/into-array</span> <span class="nv">java.lang.String</span> <span class="o">'</span><span class="p">(</span><span class="s">"1"</span><span class="p">))])))))</span></pre></div>
+          <p>You can see how the end result is that
+          <code>learn-a-language.important-phrases/-main</code> gets executed with the
+          argument <code>"1"</code>. One interesting thing to note about this approach is
+          that the <code>:gen-class</code> directive isn't actually needed. In the manual
+          build at the beginning of this article, we needed <code>:gen-class</code> because
+          we were specifying <code>learn-a-language.important-phrases</code> as the JVM
+          entry point. When we use <code>lein run</code>, the entry point is
+          <code>clojure.main</code>. Once Clojure is loaded, we use it to evaluate some
+          code which loads the <code>learn-a-language.important-phrases</code> namespace
+          and then calls the <code>-main</code> function.</p>
+          
+          <h2>Wrapping Things Up</h2>
+          
+          <p>So now we know how Leiningen compiles and runs a basic Clojure
+          program! Can you feel your mustache growing? Can you feel your
+          artistry blooming? Are you feeling just a smidge more sparklier? I
+          sure hope so!</p>
+          
+          <p>Here's everything we covered:</p>
+          
+          <p><strong>Building and running a Clojure program manually:</strong></p>
+          
+          <ul>
+          <li>Load the Clojure repl</li>
+          <li>Load your Clojure code (make sure it includes <code>:gen-class</code>)</li>
+          <li>Compile your Clojure code. By default code gets put in <code>classes</code>
+          directory</li>
+          <li>Run your code, making sure the classpath includes the <code>classes</code>
+          directory and <code>clojure.jar</code>
+          </li>
+          </ul>
+          <div class="highlight"><pre><span class="err">#</span><span class="w"> </span><span class="vg">load</span><span class="w"> </span><span class="vg">clojure</span><span class="w"> </span><span class="vg">repl</span>&#x000A;<span class="err">$</span><span class="w"> </span><span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="o">.:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">clojure</span><span class="o">.</span><span class="vg">main</span>&#x000A;<span class="err">#</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">Clojure</span><span class="w"> </span><span class="vg">repl</span>&#x000A;<span class="vg">user</span><span class="o">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="vg">load</span><span class="w"> </span><span class="s2">"learn_a_language/important_phrases"</span><span class="p">)</span>&#x000A;<span class="vg">user</span><span class="o">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="vg">compile</span><span class="w"> </span><span class="c1">'learn-a-language.important-phrases)</span>&#x000A;<span class="err">#</span><span class="w"> </span><span class="vg">back</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">command</span><span class="w"> </span><span class="vg">line</span>&#x000A;<span class="vg">java</span><span class="w"> </span><span class="o">-</span><span class="vg">cp</span><span class="w"> </span><span class="nl">classes:</span><span class="vg">clojure</span><span class="o">.</span><span class="vg">jar</span><span class="w"> </span><span class="vg">learn_a_language</span><span class="o">/</span><span class="vg">important_phrases</span><span class="w"> </span><span class="il">0</span></pre></div>
+          <p><strong>Building and running a Clojure program with Leiningen:</strong></p>
+          
+          <ul>
+          <li>Run <code>lein run</code>
+          </li>
+          <li>Magic!
+          
+          <ul>
+          <li>Start Java with <code>clojure.main</code> as the entry point</li>
+          <li>Execute the <code>leiningen.core/-main</code> function
+          
+          <ul>
+          <li>Setup project config with <code>project.clj</code>
+          </li>
+          <li>Resolve the task to be run</li>
+          </ul>
+          </li>
+          <li>Run the task
+          
+          <ul>
+          <li>Automagically set the classpath</li>
+          <li>Use <code>clojure.main</code> as the Java entry point</li>
+          <li>Construct some Clojure code to evaluate so that the
+          project's main function gets executed. This happens in a
+          sub-process to enforce isolcation from Leiningen. Check out
+          Leiningen's <code>eval-in-project</code> function for more info.</li>
+          </ul>
+          </li>
+          </ul>
+          </li>
+          </ul>
+          
+          <p>In the next article we'll cover:</p>
+          
+          <ul>
+          <li>How Leiningen avoids waste with a trampoline</li>
+          <li>How Leiningen manages dependencies</li>
+          <li>How to distribute a full application</li>
+          <li>How to distribute a library</li>
+          <li>Manliness</li>
+          </ul>
+          
+          <p>I hope you enjoyed this article. Please do leave me any feedback - I'm
+          always looking for ways to improve my writing!</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

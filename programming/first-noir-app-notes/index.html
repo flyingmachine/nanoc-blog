@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Deeper Into the Land of Lisp: First Contact with Noir</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Deeper Into the Land of Lisp: First Contact with Noir</h1>
+          <div class='date'>25 June 2012</div>
+          <p>Two days ago I got my
+          <a href="http://omgsmackdown.com">first noir app running</a> on Heroku. This post
+          is a mishmash of tips, tricks, processes and opinions on whole
+          experience.</p>
+          
+          <h2>What's noir?</h2>
+          
+          <p><a href="http://webnoir.org/">noir</a> is a really freakin lightweight web
+          framework for <a href="http://clojure.org/">Clojure</a> written by
+          <a href="https://twitter.com/#!/ibdknox">@ibdknox</a>, a.k.a. the dude behind the
+          <a href="http://www.chris-granger.com/2012/06/24/its-playtime/">Light Table IDE</a>
+          that everyone's going nuts about.</p>
+          
+          <h2>I'm not joking, it's really freakin lightweight</h2>
+          
+          <p>I came to noir from Rails, and holy crap noir is tiny by
+          comparison. So far, this is a really good thing because it's made it
+          easy for me to learn. It's actually kind of scary because I've been
+          using Rails for almost seven years and I might know noir better than I
+          know Rails. It's like Rails is the teenage kid that has its own slang
+          and way of dressing and a lot of it is incomprehensible to me and I
+          end up looking like some terribly uncool fuddy duddy who uses terms
+          like "fuddy duddy", and I'm only 27 for the love of Martha.</p>
+          
+          <p>How do I create a Rails template again? Do I have to do anything
+          special to get an engine to use the assets pipeline? For me, Rails
+          development is often a test of my Googling skills. These are the kinds
+          of questions I don't have to ask when using noir, because the answer
+          is always "take your fancy flimdoodles and get the hell off my yard."
+          Actually, the answer is more like "uh, I guess you could build that
+          yourself if you really wanted to."</p>
+          
+          <p>Either way, I really appreciate how bare-bones noir is. But who knows,
+          maybe in a month or two I'll be trolling the clj-noir mailing list
+          insisting that they add jquery integration.</p>
+          
+          <p>@@ Code stuff I did</p>
+          
+          <p>Here's a list of random things I did in my project:</p>
+          
+          <h3>Created a config file</h3>
+          
+          <p>I created a config file to handle global variables. </p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">ns </span><span class="nv">arenaverse.config</span><span class="p">)</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="o">^</span><span class="ss">:dynamic</span> <span class="nv">*aws-credentials*</span> <span class="p">{</span><span class="ss">:secret-key</span> <span class="p">(</span><span class="nf">System/getenv</span> <span class="s">"AWS_SECRET"</span><span class="p">)</span>&#x000A;                                  <span class="ss">:access-key</span> <span class="s">"SECRET!"</span><span class="p">})</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">env</span> <span class="p">(</span><span class="nb">get </span><span class="p">(</span><span class="nf">System/getenv</span><span class="p">)</span> <span class="s">"SERVER_ENV"</span> <span class="s">"dev"</span><span class="p">))</span></pre></div>
+          <p>To get <code>SERVER_ENV</code> into my app on heroku, my Procfile reads as follows:</p>
+          
+          <p><code>web: SERVER_ENV=production lein trampoline run -m arenaverse.server</code></p>
+          
+          <p>The vars were used a few places. For example, <code>env</code> was used to
+          generate the name of the S3 bucket to store images in. I didn't want
+          my prod and dev images mixing.</p>
+          
+          <h3>Put together some code for resizing images and uploading to S3</h3>
+          
+          <p>Below is the real meat of the application. Most if deals with resizing and uploading images. On lines 82 and 101 I use futures, which is pretty fun. Since I'm the only using the admin interface right now, it doesn't matter if an image isn't immediately available. Using futures allowed me to add the "fighters" more quickly. Later on, I might move thumbnail generation and uploading so it happens in the current thread but keep all the other image sizes in a future.</p>
+          
+          <p>Right now it's all still pretty messy but one day I'll clean it up. Yeah.</p>
+          <div class="highlight"><pre><span class="p">(</span><span class="kd">ns </span><span class="nv">arenaverse.models.fighter</span>&#x000A;  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">arenaverse.config</span> <span class="ss">:as</span> <span class="nv">config</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">monger.collection</span> <span class="ss">:as</span> <span class="nv">mc</span><span class="p">]</span>&#x000A;            <span class="p">[</span><span class="nv">arenaverse.lib.aws.s3</span> <span class="ss">:as</span> <span class="nv">s3</span><span class="p">])</span>&#x000A;&#x000A;  <span class="p">(</span><span class="ss">:import</span> <span class="p">[</span><span class="nv">org.bson.types</span> <span class="nv">ObjectId</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="nv">org.imgscalr</span> <span class="nv">Scalr</span> <span class="nv">Scalr$Method</span> <span class="nv">Scalr$Mode</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="nv">javax.imageio</span> <span class="nv">ImageIO</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="nv">java.awt.image</span> <span class="nv">BufferedImageOp</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="nv">java.awt.image</span> <span class="nv">BufferedImage</span><span class="p">]</span>&#x000A;           <span class="p">[</span><span class="nv">org.apache.commons.io</span> <span class="nv">FilenameUtils</span><span class="p">]))</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">*image-versions</span> <span class="p">[[</span><span class="s">"card"</span> <span class="mi">192</span><span class="p">]</span>&#x000A;                      <span class="p">[</span><span class="s">"listing"</span> <span class="mi">64</span><span class="p">]</span>&#x000A;                      <span class="p">[</span><span class="s">"battle"</span> <span class="mi">432</span> <span class="mi">638</span><span class="p">]])</span>&#x000A;&#x000A;<span class="p">(</span><span class="k">def </span><span class="nv">*collection</span> <span class="s">"fighters"</span><span class="p">)</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">image-relative-path</span> <span class="p">[</span><span class="nv">version</span> <span class="p">{</span><span class="ss">:keys</span> <span class="p">[</span><span class="nv">_id</span> <span class="nv">image-extension</span><span class="p">]}]</span>&#x000A;  <span class="p">(</span><span class="nb">str </span><span class="s">"fighters/"</span> <span class="nv">_id</span> <span class="s">"/"</span> <span class="nv">version</span> <span class="s">"."</span> <span class="nv">image-extension</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">image-path</span> <span class="p">[</span><span class="nv">version</span> <span class="nv">record</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">str </span><span class="s">"/"</span> <span class="p">(</span><span class="nf">image-relative-path</span> <span class="nv">version</span> <span class="nv">record</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">bucket-name</span> <span class="p">[]</span>&#x000A;  <span class="p">(</span><span class="nb">str </span><span class="s">"arenaverse-"</span> <span class="p">(</span><span class="nb">name </span><span class="nv">config/env</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">amazon-image-path</span> <span class="p">[</span><span class="nv">version</span> <span class="nv">record</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">str </span><span class="s">"https://s3.amazonaws.com/"</span> <span class="p">(</span><span class="nf">bucket-name</span><span class="p">)</span> <span class="p">(</span><span class="nf">image-path</span> <span class="nv">version</span> <span class="nv">record</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">image-fields</span> <span class="p">[</span><span class="nv">object-id</span> <span class="nv">image-extension</span><span class="p">]</span>&#x000A;  <span class="p">{</span><span class="ss">:_id</span> <span class="nv">object-id</span>&#x000A;   <span class="ss">:image-extension</span> <span class="p">(</span><span class="nf">clojure.string/replace</span> <span class="nv">image-extension</span> <span class="s">"jpeg"</span> <span class="s">"jpg"</span><span class="p">)})</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">save-image</span> <span class="p">[</span><span class="nb">path </span><span class="nv">file</span> <span class="nv">content-type</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">s3/put-object</span> <span class="nv">config/*aws-credentials*</span>&#x000A;                 <span class="p">(</span><span class="nf">bucket-name</span><span class="p">)</span>&#x000A;                 <span class="nv">path</span>&#x000A;                 <span class="nv">file</span>&#x000A;                 <span class="p">{</span><span class="ss">:content-type</span> <span class="nv">content-type</span><span class="p">}</span>&#x000A;                 <span class="o">#</span><span class="p">(</span><span class="nf">.withCannedAcl</span> <span class="nv">%</span> <span class="nv">com.amazonaws.services.s3.model.CannedAccessControlList/PublicRead</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">resize</span>&#x000A;  <span class="p">([</span><span class="nv">image</span> <span class="nv">box</span><span class="p">]</span>&#x000A;     <span class="p">(</span><span class="nf">resize</span> <span class="nv">image</span> <span class="nv">box</span> <span class="nv">box</span><span class="p">))</span>&#x000A;  <span class="p">([</span><span class="nv">image</span> <span class="nv">target-width</span> <span class="nv">target-height</span><span class="p">]</span>&#x000A;     <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">width</span>  <span class="p">(</span><span class="nf">.getWidth</span> <span class="nv">image</span><span class="p">)</span>&#x000A;           <span class="nv">height</span> <span class="p">(</span><span class="nf">.getHeight</span> <span class="nv">image</span><span class="p">)</span>&#x000A;           <span class="nv">fit</span> <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="p">(</span><span class="nb">/ </span><span class="nv">target-width</span> <span class="nv">width</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">target-height</span> <span class="nv">height</span><span class="p">))</span> <span class="nv">Scalr$Mode/FIT_TO_HEIGHT</span> <span class="nv">Scalr$Mode/FIT_TO_WIDTH</span><span class="p">)]</span>&#x000A;       <span class="p">(</span><span class="nf">Scalr/resize</span> <span class="nv">image</span> <span class="nv">Scalr$Method/ULTRA_QUALITY</span> <span class="nv">fit</span> <span class="nv">target-width</span> <span class="nv">target-height</span> <span class="p">(</span><span class="nb">into-array </span><span class="nv">BufferedImageOp</span> <span class="p">[])))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">buffered-image-&gt;input-stream</span> <span class="p">[</span><span class="nv">buffered-image</span> <span class="nv">extension</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">os</span> <span class="p">(</span><span class="nf">java.io.ByteArrayOutputStream.</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="nf">ImageIO/write</span> <span class="nv">buffered-image</span> <span class="nv">extension</span> <span class="nv">os</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">java.io.ByteArrayInputStream.</span> <span class="p">(</span><span class="nf">.toByteArray</span> <span class="nv">os</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn- </span><span class="nv">resize-and-save-image</span> <span class="p">[</span><span class="nv">object-id</span> <span class="nv">file-upload</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="p">(</span><span class="ss">:size</span> <span class="nv">file-upload</span><span class="p">)))</span>&#x000A;    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">extension</span>    <span class="p">(</span><span class="nf">FilenameUtils/getExtension</span> <span class="p">(</span><span class="ss">:filename</span> <span class="nv">file-upload</span><span class="p">))</span>&#x000A;          <span class="nv">content-type</span> <span class="p">(</span><span class="ss">:content-type</span> <span class="nv">file-upload</span><span class="p">)</span>&#x000A;          <span class="nv">file</span>         <span class="p">(</span><span class="ss">:tempfile</span> <span class="nv">file-upload</span><span class="p">)</span>&#x000A;          <span class="nv">img-fields</span>   <span class="p">(</span><span class="nf">image-fields</span> <span class="nv">object-id</span> <span class="nv">extension</span><span class="p">)]</span>&#x000A;      <span class="c1">;; save original</span>&#x000A;      <span class="p">(</span><span class="nf">save-image</span> <span class="p">(</span><span class="nf">image-relative-path</span> <span class="s">"original"</span> <span class="nv">img-fields</span><span class="p">)</span> <span class="nv">file</span> <span class="nv">content-type</span><span class="p">)</span>&#x000A;      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">buff-img</span> <span class="p">(</span><span class="nf">ImageIO/read</span> <span class="nv">file</span><span class="p">)]</span>&#x000A;        <span class="p">(</span><span class="nb">doseq </span><span class="p">[[</span><span class="nv">version</span> <span class="o">&amp;</span> <span class="nv">dim</span><span class="p">]</span> <span class="nv">*image-versions</span><span class="p">]</span>&#x000A;          <span class="p">(</span><span class="nf">save-image</span> <span class="p">(</span><span class="nf">image-relative-path</span> <span class="nv">version</span> <span class="nv">img-fields</span><span class="p">)</span>&#x000A;                      <span class="p">(</span><span class="nf">buffered-image-&gt;input-stream</span> <span class="p">(</span><span class="nb">apply </span><span class="nv">resize</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">buff-img</span> <span class="nv">dim</span><span class="p">))</span> <span class="nv">extension</span><span class="p">)</span>&#x000A;                      <span class="nv">version</span><span class="p">))))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">delete-images</span> <span class="p">[</span><span class="nv">record</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nb">doseq </span><span class="p">[[</span><span class="nv">vname</span><span class="p">]</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">*image-versions</span> <span class="p">[</span><span class="s">"original"</span><span class="p">])]</span>&#x000A;    <span class="p">(</span><span class="nf">s3/delete-object</span> <span class="nv">config/*aws-credentials*</span> <span class="p">(</span><span class="nf">bucket-name</span><span class="p">)</span> <span class="p">(</span><span class="nf">image-relative-path</span> <span class="nv">vname</span> <span class="nv">record</span><span class="p">))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">create</span> <span class="p">[</span><span class="nv">attrs</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">object-id</span> <span class="p">(</span><span class="nf">ObjectId.</span><span class="p">)</span>&#x000A;        <span class="nv">file-upload</span> <span class="p">(</span><span class="ss">:file</span> <span class="nv">attrs</span><span class="p">)</span>&#x000A;        <span class="nv">fields</span> <span class="p">(</span><span class="nf">merge</span>&#x000A;                <span class="p">(</span><span class="nb">dissoc </span><span class="nv">attrs</span> <span class="ss">:file</span><span class="p">)</span>&#x000A;                <span class="p">(</span><span class="nf">image-fields</span> <span class="nv">object-id</span> <span class="p">(</span><span class="nf">FilenameUtils/getExtension</span> <span class="p">(</span><span class="ss">:filename</span> <span class="nv">file-upload</span><span class="p">))))]</span>&#x000A;    <span class="p">(</span><span class="nf">mc/insert</span> <span class="nv">*collection</span> <span class="nv">fields</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">future</span> <span class="p">(</span><span class="nf">resize-and-save-image</span> <span class="nv">object-id</span> <span class="nv">file-upload</span><span class="p">))</span>&#x000A;    <span class="nv">fields</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">image-extension-for-update</span> <span class="p">[</span><span class="nv">attrs</span> <span class="nv">record</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">file-upload</span> <span class="p">(</span><span class="ss">:file</span> <span class="nv">attrs</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not= </span><span class="mi">0</span> <span class="p">(</span><span class="ss">:size</span> <span class="nv">file-upload</span><span class="p">))</span>&#x000A;      <span class="p">(</span><span class="nf">image-fields</span> <span class="s">""</span> <span class="p">(</span><span class="nf">FilenameUtils/getExtension</span> <span class="p">(</span><span class="ss">:filename</span> <span class="nv">file-upload</span><span class="p">)))</span>&#x000A;      <span class="p">(</span><span class="nb">select-keys </span><span class="nv">record</span> <span class="p">[</span><span class="ss">:image-extension</span><span class="p">]))))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">update</span> <span class="p">[</span><span class="nv">attrs</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">_id</span> <span class="p">(</span><span class="ss">:_id</span> <span class="nv">attrs</span><span class="p">)</span>&#x000A;        <span class="nv">bson-id</span> <span class="p">(</span><span class="nf">ObjectId.</span> <span class="nv">_id</span><span class="p">)</span>&#x000A;        <span class="nv">record</span> <span class="p">(</span><span class="nf">mc/find-map-by-id</span> <span class="nv">*collection</span> <span class="nv">bson-id</span><span class="p">)</span>&#x000A;        <span class="nv">updated-fields</span> <span class="p">(</span><span class="nb">dissoc </span><span class="p">(</span><span class="nb">merge </span><span class="nv">record</span>&#x000A;                                      <span class="nv">attrs</span>&#x000A;                                      <span class="p">(</span><span class="nf">image-extension-for-update</span> <span class="nv">attrs</span> <span class="nv">record</span><span class="p">))</span>&#x000A;                               <span class="ss">:_id</span>&#x000A;                               <span class="ss">:file</span><span class="p">)]</span>&#x000A;    <span class="p">(</span><span class="nf">mc/update-by-id</span> <span class="nv">*collection</span> <span class="nv">bson-id</span> <span class="nv">updated-fields</span><span class="p">)</span>&#x000A;    <span class="p">(</span><span class="nf">future</span> <span class="p">(</span><span class="nf">resize-and-save-image</span> <span class="nv">_id</span> <span class="p">(</span><span class="ss">:file</span> <span class="nv">attrs</span><span class="p">)))</span>&#x000A;    <span class="nv">updated-fields</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">destroy</span> <span class="p">[</span><span class="nv">_id</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">delete-images</span> <span class="p">(</span><span class="nf">mc/find-map-by-id</span> <span class="nv">*collection</span> <span class="p">(</span><span class="nf">ObjectId.</span> <span class="nv">_id</span><span class="p">)))</span>&#x000A;  <span class="p">(</span><span class="nf">mc/remove-by-id</span> <span class="nv">*collection</span> <span class="p">(</span><span class="nf">ObjectId.</span> <span class="nv">_id</span><span class="p">)))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">one</span> <span class="p">[</span><span class="o">&amp;</span> <span class="p">[</span><span class="nv">query-doc</span><span class="p">]]</span>&#x000A;  <span class="p">(</span><span class="nf">mc/find-one-as-map</span> <span class="nv">*collection</span> <span class="nv">query-doc</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">all</span> <span class="p">[</span><span class="o">&amp;</span> <span class="p">[</span><span class="nv">query-doc</span><span class="p">]]</span>&#x000A;  <span class="p">(</span><span class="nf">mc/find-maps</span> <span class="nv">*collection</span> <span class="nv">query-doc</span><span class="p">))</span>&#x000A;&#x000A;<span class="p">(</span><span class="kd">defn </span><span class="nv">idstr</span> <span class="p">[</span><span class="nv">record</span><span class="p">]</span>&#x000A;  <span class="p">(</span><span class="nf">.toString</span> <span class="p">(</span><span class="ss">:_id</span> <span class="nv">record</span><span class="p">)))</span></pre></div>
+          <h3>Eyepatches</h3>
+          
+          <p>In the above code I have the variable <code>*image-versions</code>. I wanted to
+          designate that this is a global variable, but clojure yelled at me
+          when I put on earmuffs (<code>*image-versions*</code>). So I'm calling this
+          one-asterisk approach an eyepatch, and I sincerely hope it catches on.</p>
+          
+          <p>h3. Avoiding cyclic load dependency errors when generating URL's</p>
+          
+          <p>I wrote about this in
+          <a href="http://www.flyingmachinestudios.com/programming/global-noir-routes/">my last post</a>.</p>
+          
+          <p>h2. How I did the visual part</p>
+          
+          <p>For the CSS, I used <a href="http://compass-style.org/">compass</a> and
+          <a href="http://susy.oddbird.net/">susy</a>. I know twitter bootstrap is super
+          cool right now, and with good reason, but Susy and Compass are great
+          if you want a grid and a specific look and don't want to undo a ton of
+          bootstrap styles. It's more lightweight. Just like noir! Compass also
+          has great vertical rhythm helpers, which bootstrap doesn't.</p>
+          
+          <p>For the top banner, I initiall used
+          <a href="http://bohemiancoding.com/sketch/">Sketch</a>. This was my first time
+          using Sketch and it was pretty fun to use. There was only one really
+          annoying thing about it (the artboard that wouldn't disappear no
+          matter what), and when the need arises I'd like to try it again.</p>
+          
+          <p>Ultimately I went with Photoshop, because that's what I'm used to. I
+          was able to find a set of paint splatter brushes really quickly which
+          let me create the look I wanted. I also used photoshop for the
+          background of two main images on the <a href="http://omgsmackdown.com/">home
+          page</a>.</p>
+          
+          <p>The background I picked up from "Subtle
+          Patterns":http://subtlepatterns.com/, one of my top 5 design
+          resources.</p>
+          
+          <p>h2. Things I want to do</p>
+          
+          <ul>
+          <li>Testing - this looks like it will be easy but I kept barrelling forward because I wanted to get something up where everyone could see it. Because my site totally needs to be seen by everyone.</li>
+          <li>Persistence vs business logic - I'm not really happy with having database interaction code in the same file as more business logic stuff. Besides that, the db interaction code is largely the same from one model to the next.</li>
+          <li>Move the image processing - this stuff probably belongs in its own library, or at least in a utility file</li>
+          </ul>
+          
+          <p>h2. Never a "d'oh!" moment... Well, maybe a few</p>
+          
+          <p>For the most part, I didn't get hung up on issues that took hours and hours of head scratching to solve. But here are a few things that tripped me up:</p>
+          
+          <ul>
+          <li>Cyclic load dependency - mentioned above</li>
+          <li>Macro evaluation - I still sometimes get tripped up when I expect macro arguments to get evaluated as soon as they're read rather than passed into the macro body somehow. This happened a little bit when writing the url-for-r code</li>
+          <li>AWS bucket issue - I asked a "stupid question":https://groups.google.com/d/msg/clojure-mongodb/WiXQ57MIPNM/K7cLlO-UI50J on the "monger":http://clojuremongodb.info/ mailing list. I was passing a variable into a monger function and got totally mixed up about what the value was. It was a bit difficult to determine the actual value. There are some details under Tips &amp; Tricks, below, on how I figured it out</li>
+          </ul>
+          
+          <p>h2. Compared to Common Lisp</p>
+          
+          <p>I can't help but compare my experience with Clojure and noir to my experience with CL. Overall, Clojure has been much more enjoyable, for the following reasons:</p>
+          
+          <p>h3. People actually use it</p>
+          
+          <p>There are a lot more resources out there on doing practical things with it. I still don't know what I'd use CL for.</p>
+          
+          <p>h3. You have java libraries at your disposal</p>
+          
+          <p>Yep, this really makes a differnce. The AWS and mongodb libraries I used rely on Java libraries, and I used a Java image scaling library directly. It's great to have so much code already written for you.</p>
+          
+          <p>Whereas in common lisp there weren't nearly as many libraries available, and finding them was a chore. One of the reasons I started using Clojure was because the JSON library I was using wouldn't encode lists nested four levels deep, even though the documentation indicated that that should work. And it worked with lists nested three levels deep just fine.</p>
+          
+          <p>h3. CL packaging vs. Leiningen</p>
+          
+          <p>I really don't get Common Lisp packaging. ASDF, quicklisp - I've used them and they work, I think, but it all felt so clunky and incomplete to me, especially coming from Ruby where Bundler and rubygems.org do a great job. CL packaging just feels hacked together. As far as I can tell, you can't even specify the versions of your dependencies. For one of my dependencies, quicklisp pulled in something that was two years old.</p>
+          
+          <p>I'm not trying to disparage quicklisp here. It's just that I don't want to deal with those kinds of problems. I want to make stuff. I don't want to get bogged down in figuring out these byzantine, poorly-documented issues.</p>
+          
+          <p>h3. Syntax</p>
+          
+          <p>I think anyone who tries clojure will agree that the syntax is  superior. At first I was skeptical of the lack of parentheses, but now I can see that that's definitely a big win. Being able to quickly tell, visually, what kind of data structure you're working with is awesome.</p>
+          
+          <p>h2. Tips &amp; Tricks</p>
+          
+          <ul>
+          <li>Cemerick's <a href="http://amzn.to/1MyXhCx">clojure book</a> is the best, hands down. Just get it already.</li>
+          <li>Use IRC - people on #clojure are super freakin helpful</li>
+          <li>People are really great on Twitter, too. I randomly mentioned a couple issues I had, and it was like these magical clojure faeries came and solved my problem for me. Pretty great.</li>
+          <li>Stack Overflow and reddit are good too.</li>
+          <li>When working with noir, you can get a repl by doing <code>lein repl</code> and then starting your app, probably with <code>(-main)</code>. This was very helpful.</li>
+          <li>You can edit jar files directly in emacs if you C-x f whatever.jar</li>
+          <li>You can also tell leiningen to unpack your jar files, though I don't remember how this is done. I'm sure it's in the documentation somewhere</li>
+          <li>Don't be afraid to just mess around. If you're coming from Rails like me the lack of structure might feel unsettling. One way to get over this is to just mess around and enjoy your newfound freedom.</li>
+          </ul>
+          
+          <h2>Thank Yous</h2>
+          
+          <p>Thanks to the following people for helping me:</p>
+          
+          <ul>
+          <li>@trptcolin</li>
+          <li>@michaelklishin</li>
+          <li>@alandipert</li>
+          <li>@technomancy</li>
+          <li>@seancorfield</li>
+          </ul>
+          
+          <h2>What's Next</h2>
+          
+          <p>The next step for OMG! SMACKDOWN!!! is to allow users to create their own "arenas". After that... who knows? Maybe it'll be time to finally bring my game "Hobbit vs. Giant" to life :)</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

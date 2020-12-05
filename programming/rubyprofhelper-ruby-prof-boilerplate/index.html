@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>RubyProfHelper: Reducing ruby-prof Boilerplate</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>RubyProfHelper: Reducing ruby-prof Boilerplate</h1>
+          <div class='date'>02 June 2008</div>
+          <p>This is meant to save me from having to write the same boilerplate profiling code over and over.</p>
+          
+          <p>By default, it creates an HTML graph and saves it to RAILS_ROOT/ruby-prof/profile.html .</p>
+          
+          <p>The method url_path is a convenience method for saving your HTML graph to a location based on the URL used.</p>
+          
+          <p>To use, add the below to lib, then add <code>around_filter RubyProfHelper</code> to whatever controllers you want to profile. Then go to the URL you want to profile and add profile=true to the query string. You should probably ensure that this can't be run by any schmoe in production. Also, you'll probably want to have your SCM ignore the ruby-prof directory.</p>
+          
+          <p>If you want to get more fine grained with your filter, use the following:</p>
+          <div class="highlight"><pre><span class="no">RubyProfHelper</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"output_file_name.html"</span><span class="p">)</span> <span class="k">do</span>&#x000A;  <span class="n">code_to_profile</span><span class="p">(</span><span class="n">here</span><span class="p">)</span>&#x000A;<span class="k">end</span></pre></div>
+          <p>p. When you visit the corresponding URL, <em>leave out</em> profile=true
+          from the query string.</p>
+          
+          <p>This arguably needs to be a plugin, but I find it more
+          straightforward as a /lib addition.</p>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">RubyProfHelper</span>&#x000A;  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>&#x000A;    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>&#x000A;      <span class="k">return</span> <span class="p">(</span><span class="k">yield</span> <span class="n">block</span><span class="p">)</span> <span class="k">unless</span> <span class="n">controller</span><span class="o">.</span><span class="n">params</span><span class="o">[</span><span class="ss">:profile</span><span class="o">]</span> &#x000A;&#x000A;      <span class="c1"># Instead of "profile.html" you can try url_path(controller),</span>&#x000A;      <span class="c1"># which will return a file path based on the url visited</span>&#x000A;      <span class="n">run</span><span class="p">(</span><span class="s2">"profile.html"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>&#x000A;    <span class="k">end</span>&#x000A;&#x000A;    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">output_file_name</span> <span class="o">=</span> <span class="s2">"profile.html"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>&#x000A;      <span class="nb">require</span> <span class="s1">'ruby-prof'</span>&#x000A;      <span class="no">RubyProf</span><span class="o">.</span><span class="n">start</span>&#x000A;&#x000A;      <span class="k">yield</span> <span class="n">block</span>&#x000A;&#x000A;      <span class="n">result</span>                 <span class="o">=</span> <span class="no">RubyProf</span><span class="o">.</span><span class="n">stop</span>&#x000A;      <span class="n">printer</span>                <span class="o">=</span> <span class="no">RubyProf</span><span class="o">::</span><span class="no">GraphHtmlPrinter</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>&#x000A;&#x000A;      <span class="c1"># create directory</span>&#x000A;      <span class="n">dir</span>                    <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">RAILS_ROOT</span><span class="p">,</span> <span class="s2">"ruby-prof"</span><span class="p">)</span>&#x000A;      <span class="no">FileUtils</span><span class="o">.</span><span class="n">mkdir_p</span> <span class="n">dir</span>&#x000A;&#x000A;      <span class="n">file_path</span>              <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir</span><span class="p">,</span> <span class="n">output_file_name</span><span class="p">)</span>&#x000A;      <span class="n">f</span>                      <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">"w+"</span><span class="p">)</span>&#x000A;      <span class="n">printer</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>&#x000A;    <span class="k">end</span>&#x000A;&#x000A;    <span class="c1"># will evaluate to home.html or something like</span>&#x000A;    <span class="c1"># products.html</span>&#x000A;    <span class="c1"># products/2.html</span>&#x000A;    <span class="k">def</span> <span class="nf">url_path</span><span class="p">(</span><span class="n">controller</span><span class="p">)</span>&#x000A;      <span class="k">if</span> <span class="n">controller</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">=~</span> <span class="sr">/\/$|^$/</span>&#x000A;        <span class="s2">"home.html"</span>&#x000A;      <span class="k">else</span>&#x000A;        <span class="n">controller</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">".html"</span>&#x000A;      <span class="k">end</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span></pre></div>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

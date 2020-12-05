@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Aikidoka Prevents Namespace Collisions</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Aikidoka Prevents Namespace Collisions</h1>
+          <div class='date'>10 May 2009</div>
+          <p>Recently I fell victim to the Twitter-Mash / Extlib-DataMapper-Mash
+          <a href="http://blog.zerosum.org/2009/4/17/why-namespaces-are-important">namespace collision</a>. To
+          get around this problem, I've created a new gem,
+          <a href="http://github.com/flyingmachine/aikidoka/tree/master">Aikidoka</a>.</p>
+          
+          <p>Here's what happened when I tried to use Twitter when Extlib had
+          already been loaded:</p>
+          <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'Twitter'</span>&#x000A;<span class="c1"># =&gt; ["Twitter"]</span>&#x000A;<span class="no">Twitter</span><span class="o">::</span><span class="no">Search</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"bokken"</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span>&#x000A;<span class="c1"># SystemStackError: stack level too deep</span></pre></div>
+          <p>Here's what happens when you use Aikidoka:</p>
+          <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'aikidoka'</span>&#x000A;<span class="c1"># =&gt; ["Aikidoka"]</span>&#x000A;<span class="no">Aikidoka</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">"Mash"</span> <span class="o">=&gt;</span> <span class="s2">"Twitter::Mash"</span><span class="p">){</span><span class="nb">require</span> <span class="s1">'twitter'</span><span class="p">}</span>&#x000A;<span class="c1"># =&gt; ["Mash"]</span>&#x000A;<span class="no">Twitter</span><span class="o">::</span><span class="no">Search</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"aikidoka"</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span>&#x000A;<span class="c1"># &lt;Mash completed_in=0.052875 max_id=1754360060 next_page="?page=2&amp;max_id=1754360060&amp;q=aikidoka"&gt;</span></pre></div>
+          <p>It works! What this does is namespace the Mash defined when I require the Twitter gem, so that Mash is now Twitter::Mash. Also, Extlib's Mash is still there, untouched, so you don't need to worry about that. Here's how Aikidoka does its magic:</p>
+          
+          <ul>
+          <li>It temporarily renames existing constants so that they don't get
+          clobbered. In this case, "Mash" is renamed to "AikidokaMash". Right
+          now this only works with top-level constants.</li>
+          <li>It yields to the given block. This block should define the constants
+          you want permanently renamed/namespaced. In this case, we're
+          requiring "twitter", which in turn requires "mash". "mash" defines
+          the constant we want to rename, Mash.</li>
+          <li>It creates modules as necessary to create the namespace. In this
+          case, the module Twitter is already defined so that's used. However,
+          if we wanted to rename "Mash" to "Potatoes::Mash", then a module
+          named "Potatoes" would have been created.</li>
+          <li>It assigns the object referred to by the old constant to its new
+          constant. "Twitter::Mash" now refers to the same object that "Mash"
+          refers to.</li>
+          <li>Old constants are removed to clean up the namespace. The constant
+          "Mash" no longer exists, the object it used to refer to lives on.</li>
+          <li>The constants temporarily renamed in step 1 are now given their
+          original names back. Extlib's "Mash" is no longer "AikidokaMash";
+          it's "Mash" again.</li>
+          </ul>
+          
+          <p>The code is very simple - a total of 67 lines in one file with decent
+          specs - so hopefully it's easy to dig into.</p>
+          
+          <p>Right now Aikidoka is best at nesting an existing top-level constant
+          within another constant of a different name. I haven't tried doing
+          something like <code>Aikidoka.rename("Mash" =&gt; "Mash::Twitter")</code> or
+          <code>Aikidoka.rename("ActiveRecord::Base" =&gt; "ARBase")</code>, and those
+          examples probably wouldn't work.</p>
+          
+          <p>All in all, it does what I want it to and seems to work OK :) You can
+          install it with <code>gem install flyingmachine-aikidoka</code>. If you're
+          wondering about the name, aikido is a martial art designed to resolve
+          conflict harmoniously, and an aikidoka is a student of aikido.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

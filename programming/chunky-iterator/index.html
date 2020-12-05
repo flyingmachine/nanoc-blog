@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>Chunky Iterator: So You Don't have to Load All your AR Objects at Once</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>Chunky Iterator: So You Don't have to Load All your AR Objects at Once</h1>
+          <div class='date'>12 May 2008</div>
+          <p>The following code lets you iterate over large collections of Active
+          Record objects without having to load them all at once, thus reducing
+          memory usage. It's allowed me to run cron jobs which iterate over
+          thousands of records without getting the cron'd process killed for
+          using too much of a system's resources.</p>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">ChunkyIterator</span>&#x000A;  <span class="kp">include</span> <span class="no">Enumerable</span>&#x000A;  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>&#x000A;    <span class="vi">@model_class</span> <span class="o">=</span> <span class="n">model_class</span>&#x000A;    <span class="vi">@chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>&#x000A;    <span class="vi">@options</span> <span class="o">=</span> <span class="n">options</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">each</span>&#x000A;    <span class="n">rows</span> <span class="o">=</span> <span class="vi">@model_class</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="ss">:all</span><span class="p">,</span> <span class="n">merged_options</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>&#x000A;&#x000A;    <span class="k">until</span> <span class="n">model_objects</span><span class="o">.</span><span class="n">empty?</span>&#x000A;      <span class="n">rows</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="o">|</span><span class="n">record</span><span class="o">|</span> <span class="k">yield</span> <span class="n">record</span><span class="p">}</span>&#x000A;      <span class="n">model_objects</span> <span class="o">=</span> <span class="vi">@model_class</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="ss">:all</span><span class="p">,</span> <span class="n">merged_options</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">merged_options</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>&#x000A;    <span class="vi">@options</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>&#x000A;      <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="n">merge_conditions</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="vi">@model_class</span><span class="o">.</span><span class="n">table_name</span><span class="si">}</span><span class="s2">.id &gt; </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>&#x000A;      <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="vi">@chunk_size</span>&#x000A;    <span class="p">)</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">merge_conditions</span><span class="p">(</span><span class="n">added_condition</span><span class="p">)</span>&#x000A;    <span class="n">existing_condition</span> <span class="o">=</span> <span class="vi">@options</span><span class="o">[</span><span class="ss">:conditions</span><span class="o">]</span>&#x000A;    <span class="n">new_condition</span> <span class="o">=</span> <span class="k">case</span> <span class="n">existing_condition</span>&#x000A;    <span class="k">when</span> <span class="kp">nil</span><span class="p">:</span> <span class="n">added_condition</span>&#x000A;    <span class="k">when</span> <span class="nb">String</span><span class="p">:</span> <span class="s2">"(</span><span class="si">#{</span><span class="n">existing_condition</span><span class="si">}</span><span class="s2">) AND (</span><span class="si">#{</span><span class="n">added_condition</span><span class="si">}</span><span class="s2">)"</span>&#x000A;    <span class="k">when</span> <span class="nb">Array</span>&#x000A;      <span class="o">[</span><span class="s2">"(</span><span class="si">#{</span><span class="n">existing_condition</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2">)"</span> <span class="o">+</span>&#x000A;       <span class="s2">" AND (</span><span class="si">#{</span><span class="n">added_condition</span><span class="si">}</span><span class="s2">)"</span><span class="o">]</span> <span class="o">+</span>&#x000A;       <span class="n">existing_condition</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span>&#x000A;&#x000A;<span class="c1"># Example</span>&#x000A;<span class="no">Bacon</span><span class="o">.</span><span class="n">find_all_in_chunks</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="s2">"fresh = TRUE"</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">bacon</span><span class="o">|</span>&#x000A;  <span class="n">bacon</span><span class="o">.</span><span class="n">feed_to_cat</span>&#x000A;<span class="k">end</span></pre></div>
+          <ul>
+          <li>Update: altered code to use ID rather than offset, like Jamis Buck does.</li>
+          <li>Update 2: Fixed merge_conditions per Frank's observation</li>
+          </ul>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

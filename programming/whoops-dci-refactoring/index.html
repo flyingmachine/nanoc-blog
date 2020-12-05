@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    </meta>
+    <title>A Detailed Look at a Small DCI Refactoring in Ruby</title>
+    <link href='/stylesheets/main.css?4' media='screen' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ruthie|Gentium+Book+Basic:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/stylesheets/pygments.css?3' media='screen' rel='stylesheet' type='text/css'>
+    <link href='http://feeds.feedburner.com/FlyingMachineStudios' rel='alternate' type='application/rss+xml'>
+  </head>
+  <body>
+    <header class='top'>
+      <div class='display'>
+        <div class='title'>
+          <a href='/'>Flying Machine Studios</a>
+        </div>
+        <div class='subtitle'>
+          adventures in making stuff with Daniel Higginbotham
+        </div>
+      </div>
+    </header>
+    <div id='document'>
+      <div id='contact'>
+        <ul>
+          <li>
+            <a href='http://twitter.com/nonrecursive'>
+              <i class='fa fa-twitter'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://www.linkedin.com/in/danielhigginbotham'>
+              <i class='fa fa-linkedin'></i>
+            </a>
+          </li>
+          <li>
+            <a href='https://github.com/flyingmachine'>
+              <i class='fa fa-github'></i>
+            </a>
+          </li>
+          <li>
+            <a href='http://feeds.feedburner.com/FlyingMachineStudios'>
+              <i class='fa fa-rss'></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div id='main'>
+        <div class='page' id='content'>
+          <h1>A Detailed Look at a Small DCI Refactoring in Ruby</h1>
+          <div class='date'>30 November 2012</div>
+          <p>UPDATE: this isn't actually DCI! Whoops!</p>
+          
+          <p>In this post I go over a small refactoring to clean up some code in
+          <a href="http://www.whoopsapp.com/">Whoops</a> by implementing the DCI
+          pattern. I'll cover the actual code changes and include my usual
+          hand-wringing about what could be done better.</p>
+          
+          <p>This refactoring was inspired by Jim Gay's book
+          <a href="http://clean-ruby.com/">Clean Ruby</a>. Jim Does an excellent job of
+          concisely explaining what the DCI pattern (data, context, interaction)
+          is, why it's useful, and how you can implement it in Ruby. This post
+          isn't a review of Clean Ruby, but I will say that it's worth the
+          money - it's actually rekindled my enthusiasm for Ruby!</p>
+          
+          <h2>Background</h2>
+          
+          <p>Whoops is a free, open-source Rails engine for logging. It's similar
+          to Airbrake, Errbit, and <a href="http://www.exceptional.io/">Exceptional</a>
+          except that it's not limited to exceptions - you can log any event.</p>
+          
+          <h2>The Original Code and Its Defects</h2>
+          
+          <p>The code that got refactored is concerned with processing new
+          events. You can see the entry point to this use case at lines 18-28
+          here:</p>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">Whoops</span><span class="o">::</span><span class="no">Event</span>&#x000A;  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>&#x000A;  <span class="kp">include</span> <span class="no">FieldNames</span>&#x000A;&#x000A;  <span class="n">belongs_to</span> <span class="ss">:event_group</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">"Whoops::EventGroup"</span><span class="p">,</span> <span class="ss">:index</span><span class="o">=&gt;</span><span class="kp">true</span>&#x000A;&#x000A;  <span class="n">field</span> <span class="ss">:details</span>&#x000A;  <span class="n">field</span> <span class="ss">:keywords</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">String</span>&#x000A;  <span class="n">field</span> <span class="ss">:message</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">String</span>&#x000A;  <span class="n">field</span> <span class="ss">:event_time</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="no">DateTime</span>&#x000A;&#x000A;  <span class="n">index</span><span class="p">(</span><span class="o">[[</span><span class="ss">:event_group_id</span><span class="p">,</span><span class="no">Mongo</span><span class="o">::</span><span class="no">ASCENDING</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="ss">:event_time</span><span class="p">,</span> <span class="no">Mongo</span><span class="o">::</span><span class="no">DESCENDING</span><span class="o">]]</span><span class="p">)</span>&#x000A;&#x000A;  <span class="n">validates_presence_of</span> <span class="ss">:message</span>  &#x000A;&#x000A;  <span class="n">before_save</span> <span class="ss">:set_keywords</span><span class="p">,</span> <span class="ss">:sanitize_details</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">record</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>&#x000A;    <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">with_indifferent_access</span>&#x000A;&#x000A;    <span class="n">event_group_params</span>                    <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="o">*</span><span class="no">Whoops</span><span class="o">::</span><span class="no">EventGroup</span><span class="o">.</span><span class="n">field_names</span><span class="p">)</span>&#x000A;    <span class="n">event_group_params</span><span class="o">[</span><span class="ss">:last_recorded_at</span><span class="o">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:event_time</span><span class="o">]</span>&#x000A;    <span class="n">event_group_params</span>&#x000A;    <span class="n">event_group</span> <span class="o">=</span> <span class="no">Whoops</span><span class="o">::</span><span class="no">EventGroup</span><span class="o">.</span><span class="n">handle_new_event</span><span class="p">(</span><span class="n">event_group_params</span><span class="p">)</span>&#x000A;&#x000A;    <span class="n">event_params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="o">*</span><span class="no">Whoops</span><span class="o">::</span><span class="no">Event</span><span class="o">.</span><span class="n">field_names</span><span class="p">)</span>&#x000A;    <span class="n">event_group</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">event_params</span><span class="p">)</span>&#x000A;  <span class="k">end</span> &#x000A;&#x000A;  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>&#x000A;    <span class="n">conditions</span> <span class="o">=</span> <span class="no">Whoops</span><span class="o">::</span><span class="no">MongoidSearchParser</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">conditions</span>&#x000A;    <span class="n">where</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">set_keywords</span>&#x000A;    <span class="n">keywords_array</span> <span class="o">=</span> <span class="o">[]</span>&#x000A;    <span class="n">keywords_array</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span><span class="o">.</span><span class="n">message</span>&#x000A;    <span class="n">add_details_to_keywords</span><span class="p">(</span><span class="n">keywords_array</span><span class="p">)</span>&#x000A;    <span class="nb">self</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="n">keywords_array</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">sanitize_details</span>&#x000A;    <span class="k">if</span> <span class="n">details</span><span class="o">.</span><span class="n">is_a?</span> <span class="no">Hash</span>&#x000A;      <span class="n">sanitized_details</span> <span class="o">=</span> <span class="p">{}</span>&#x000A;      <span class="n">details</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>&#x000A;        <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/\./</span>&#x000A;          <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/\./</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>&#x000A;        <span class="k">end</span>&#x000A;&#x000A;        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_a?</span> <span class="no">Hash</span>&#x000A;          <span class="n">child_keys</span> <span class="o">=</span> <span class="n">all_keys</span><span class="p">(</span><span class="o">[</span><span class="n">value</span><span class="o">]</span><span class="p">)</span>&#x000A;          <span class="k">if</span> <span class="n">child_keys</span><span class="o">.</span><span class="n">any?</span><span class="p">{</span> <span class="o">|</span><span class="n">child_key</span><span class="o">|</span> <span class="n">child_key</span> <span class="o">=~</span> <span class="sr">/\./</span> <span class="p">}</span> &#x000A;            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_s</span>&#x000A;          <span class="k">end</span>&#x000A;        <span class="k">end</span>&#x000A;&#x000A;        <span class="n">sanitized_details</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>&#x000A;      <span class="k">end</span>&#x000A;&#x000A;      <span class="nb">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">sanitized_details</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">all_keys</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>&#x000A;    <span class="n">keys</span> <span class="o">=</span> <span class="o">[]</span>&#x000A;    <span class="n">values</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">value</span><span class="o">|</span>&#x000A;      <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">is_a?</span> <span class="no">Hash</span>&#x000A;        <span class="n">keys</span> <span class="o">|=</span> <span class="n">value</span><span class="o">.</span><span class="n">keys</span>&#x000A;        <span class="n">keys</span> <span class="o">|=</span> <span class="n">all_keys</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>&#x000A;      <span class="k">end</span>&#x000A;    <span class="k">end</span>&#x000A;    <span class="n">keys</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="kp">private</span>&#x000A;&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">add_details_to_keywords</span><span class="p">(</span><span class="n">keywords_array</span><span class="p">)</span>&#x000A;    <span class="n">flattened</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">flatten</span>&#x000A;    <span class="n">flattened</span> <span class="o">-=</span> <span class="n">details</span><span class="o">.</span><span class="n">keys</span> <span class="k">if</span> <span class="n">details</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:keys</span><span class="p">)</span>&#x000A;&#x000A;    <span class="k">until</span> <span class="n">flattened</span><span class="o">.</span><span class="n">empty?</span>&#x000A;      <span class="n">non_hash</span> <span class="o">=</span> <span class="n">flattened</span><span class="o">.</span><span class="n">select</span><span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="o">!</span><span class="n">i</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Hash</span><span class="p">)</span> <span class="p">}</span>&#x000A;      <span class="n">keywords_array</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">keywords_array</span> <span class="o">|</span> <span class="n">non_hash</span><span class="p">)</span>&#x000A;      <span class="n">flattened</span> <span class="o">-=</span> <span class="n">non_hash</span>&#x000A;&#x000A;      <span class="n">flattened</span><span class="o">.</span><span class="n">collect!</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>&#x000A;        <span class="n">i</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">flatten</span> <span class="o">-</span> <span class="n">i</span><span class="o">.</span><span class="n">keys</span>&#x000A;      <span class="k">end</span><span class="o">.</span><span class="n">flatten!</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span></pre></div>
+          <p>The above <code>record</code> method calls <code>handle_new_event</code> in
+          <code>Whoops::EventGroup</code> (lines 21-41):</p>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">Whoops</span><span class="o">::</span><span class="no">EventGroup</span>&#x000A;  <span class="c1"># notifier responsible for creating identifier from notice details</span>&#x000A;  <span class="kp">include</span> <span class="no">Mongoid</span><span class="o">::</span><span class="no">Document</span>&#x000A;  <span class="kp">include</span> <span class="no">FieldNames</span>&#x000A;&#x000A;  <span class="o">[</span>&#x000A;    <span class="ss">:service</span><span class="p">,</span>&#x000A;    <span class="ss">:environment</span><span class="p">,</span>&#x000A;    <span class="ss">:event_type</span><span class="p">,</span>&#x000A;    <span class="ss">:message</span><span class="p">,</span>&#x000A;    <span class="ss">:event_group_identifier</span><span class="p">,</span>&#x000A;    <span class="ss">:logging_strategy_name</span>&#x000A;  <span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">string_field</span><span class="o">|</span>&#x000A;    <span class="n">field</span> <span class="n">string_field</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">String</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="n">field</span> <span class="ss">:last_recorded_at</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="no">DateTime</span>&#x000A;  <span class="n">field</span> <span class="ss">:archived</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="no">Boolean</span><span class="p">,</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="kp">false</span>&#x000A;  <span class="n">field</span> <span class="ss">:event_count</span><span class="p">,</span> <span class="ss">:type</span> <span class="o">=&gt;</span> <span class="nb">Integer</span><span class="p">,</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="mi">0</span>&#x000A;&#x000A;  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>&#x000A;    <span class="k">def</span> <span class="nf">handle_new_event</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>&#x000A;      <span class="n">identifying_params</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="o">*</span><span class="no">Whoops</span><span class="o">::</span><span class="no">EventGroup</span><span class="o">.</span><span class="n">identifying_fields</span><span class="p">)</span>&#x000A;      <span class="n">event_group</span> <span class="o">=</span> <span class="no">Whoops</span><span class="o">::</span><span class="no">EventGroup</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="ss">:conditions</span> <span class="o">=&gt;</span> <span class="n">identifying_params</span><span class="p">)</span>&#x000A;&#x000A;      <span class="k">if</span> <span class="n">event_group</span>&#x000A;        <span class="n">event_group</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">params</span>&#x000A;      <span class="k">else</span>&#x000A;        <span class="n">event_group</span> <span class="o">=</span> <span class="no">Whoops</span><span class="o">::</span><span class="no">EventGroup</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>&#x000A;      <span class="k">end</span>&#x000A;&#x000A;      <span class="k">if</span> <span class="n">event_group</span><span class="o">.</span><span class="n">valid?</span>&#x000A;        <span class="n">event_group</span><span class="o">.</span><span class="n">send_notifications</span>&#x000A;        <span class="n">event_group</span><span class="o">.</span><span class="n">archived</span> <span class="o">=</span> <span class="kp">false</span>&#x000A;        <span class="n">event_group</span><span class="o">.</span><span class="n">event_count</span> <span class="o">+=</span> <span class="mi">1</span>&#x000A;        <span class="n">event_group</span><span class="o">.</span><span class="n">save</span>&#x000A;      <span class="k">end</span>&#x000A;&#x000A;      <span class="n">event_group</span>&#x000A;    <span class="k">end</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="n">has_many</span> <span class="ss">:events</span><span class="p">,</span> <span class="ss">:class_name</span> <span class="o">=&gt;</span> <span class="s2">"Whoops::Event"</span>&#x000A;&#x000A;  <span class="n">validates_presence_of</span> <span class="ss">:event_group_identifier</span><span class="p">,</span> <span class="ss">:event_type</span><span class="p">,</span> <span class="ss">:service</span><span class="p">,</span> <span class="ss">:message</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">identifying_fields</span>&#x000A;    <span class="n">field_names</span> <span class="o">-</span> <span class="o">[</span><span class="s2">"message"</span><span class="p">,</span> <span class="s2">"last_recorded_at"</span><span class="o">]</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="c1"># @return sorted set of all applicable namespaces</span>&#x000A;  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">services</span>&#x000A;    <span class="n">all</span><span class="o">.</span><span class="n">distinct</span><span class="p">(</span><span class="ss">:service</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">should_send_notifications?</span>&#x000A;    <span class="p">(</span><span class="n">archived</span> <span class="o">||</span> <span class="n">new_record</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">whoops_sender</span>&#x000A;  <span class="k">end</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="nf">send_notifications</span>&#x000A;    <span class="k">return</span> <span class="k">unless</span> <span class="n">should_send_notifications?</span>&#x000A;    <span class="n">matcher</span> <span class="o">=</span> <span class="no">Whoops</span><span class="o">::</span><span class="no">NotificationSubscription</span><span class="o">::</span><span class="no">Matcher</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>&#x000A;    <span class="no">Whoops</span><span class="o">::</span><span class="no">NotificationMailer</span><span class="o">.</span><span class="n">event_notification</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">matcher</span><span class="o">.</span><span class="n">matching_emails</span><span class="p">)</span><span class="o">.</span><span class="n">deliver</span> <span class="k">unless</span> <span class="n">matcher</span><span class="o">.</span><span class="n">matching_emails</span><span class="o">.</span><span class="n">empty?</span>&#x000A;  <span class="k">end</span>&#x000A;<span class="k">end</span></pre></div>
+          <p>I've included the full source of the files to show why this code
+          doesn't belong. See, one of the main ideas in Jim's book is that code
+          becomes unmaintainable when we start overburdening classes with
+          methods that are only needed in specific contexts, or use
+          cases. Additionally, we scatter all the code needed in one context
+          across multiple classes and files rather than keeping it all in one
+          place, creating a cognitive burden.</p>
+          
+          <h3>Violating The Single Responsibility Principle</h3>
+          
+          <p>In this case, the context is "record an event." The code we've added to the <code>Whoops::Event</code> class begins to overburden the class by giving it a new responsibility and requiring that it "know" more about the outside world. Here's what the class is already responsible for, along with what we're adding:</p>
+          
+          <ul>
+          <li>CRUD events</li>
+          <li>Massage event data before persistence</li>
+          <li>
+          <em>NEW</em> Prepare event group data (lines 21-23)</li>
+          <li>
+          <em>NEW</em> Initiate event group handling of new event (line 24)</li>
+          <li>
+          <em>NEW</em> Figure out how to separate event-relevant data from event params (line 27)</li>
+          </ul>
+          
+          <p>In this case, the impact isn't that high because we still don't even
+          have 100 LOC for the entire class. But by continuing to shove code
+          into a class just because a class's data or existing behavior is
+          somehow involved, we transform our classes from usable, focused
+          abstractions into code warehouses. And I really do mean warehouse. You
+          have to start using signage in the form of comments or mixins to find
+          your way around. "Aaah yes, here we are, the email notification
+          section!" or "Oh shit! it looks like someone put the methods for
+          handling user registration at different ends of the file. Let's put
+          those two guys together. There, what a tidy warehouse!"</p>
+          
+          <p>The <code>Whoops::EventGroup</code> class was becoming a code warehouse. Here are
+          the new responsibilities brought on by <code>handle_new_event</code></p>
+          
+          <ul>
+          <li>CRUD event groups</li>
+          <li>validate event groups</li>
+          <li>
+          <em>NEW</em> send a notification on new events</li>
+          <li>
+          <em>NEW</em> figure out whether a notification should be sent (lines 56-58)</li>
+          </ul>
+          
+          <p>This notification code is most definitely not the responsibility of a
+          <code>Whoops::EventGroup</code>. But here it is, because hey, fat model skinny
+          controller.</p>
+          
+          <h3>Spreading Out Related Code</h3>
+          
+          <p>The above two files also show how related code gets spread out. In
+          this case, to understand the full behavior of "handle new event" you
+          have to start in the <code>Whoops::Event</code> file, then go to the
+          <code>Whoops::EventGroup</code> file, then return back to the <code>Whoops::Event</code>
+          file.</p>
+          
+          <h3>Burdening Your Mind Grapes</h3>
+          
+          <p>(For more on mind grapes, see #6 in <a href="http://www.cracked.com/article_15283_the-10-best-moments-from-3Cem3E30-rock3Cem3E.html">this cracked
+          article</a>)</p>
+          
+          <p>As anyone who's dealt with this kind of code can attest, organizing
+          your code this way adds cognitive load. By violating the single
+          responsibility principle, we make it more difficult for ourselves to
+          find the methods we're interested in. The class's name starts to lose
+          its meaning as its conceptual category becomes broader and broader
+          until it becomes useless as an organizational unit. It's like trying
+          to find the latest teen vampire romance novel at a bookstore only to
+          find it in the computer section because the sexy, misunderstood male
+          vampire love interest has an iphone.</p>
+          
+          <p>And everyone knows that having to navigate multiple files in order to
+          understand one use case is a huge pain in the ass. I mean, that's
+          pretty much why Chris Granger is making
+          <a href="http://www.lighttable.com/">Light Table</a>, right?</p>
+          
+          <h2>The Refactoring</h2>
+          
+          <p><a href="https://github.com/flyingmachine/whoops/compare/abc6d496024272e5a596d280bd47c51ba3a3d953...b6943881ddad094543d80528df79cc450e516c9f">This github diff</a>
+          shows all the changes to DCI-ify the code.</p>
+          
+          <p>As you can see, our <code>Whoops::Event</code> and <code>Whoops::EventGroup</code> classes are no longer violating the single responsibility principle. Now when you dig into those classes you no longer have to wade through code that's only tangentially related to the real purpose of those closses. We're no longer burdening our classes with knowledge that they shouldn't have, reducing coupling.</p>
+          
+          <p>Additionally, all of the code related to handling a new event is now
+          in one place, the <code>Whoops::NewEvent</code> class. This makes it much easier
+          to understand completely everything that happens when a new event is
+          handled. Rejoice!</p>
+          
+          <p>I'm not sure how much more to say about the benefits of this
+          refactoring. It feels a lot nicer to me, and it un-does the problems
+          that existed earlier. Hopefully that's evident, but if it's not then
+          please leave a comment or <a href="http://twitter.com/nonrecursive!">tweet me</a></p>
+          
+          <h2>The Promised Hand-Wringing</h2>
+          
+          <p>There are still some things that I'm not completely happy with in
+          <code>Whoops::NewEvent</code>.</p>
+          
+          <p>First, it basically looks one gigantic method that's been split up
+          into tiny methods just so that I could name groups of related code. I
+          don't know that there's much value in that.</p>
+          
+          <p>Second, lines 13-15 look like they need some sort of explanation. It's
+          especially not obvious why I'm setting archived to false.</p>
+          
+          <p>Last, I'm not completely happy with the name NewEvent. If you were new
+          to the project you'd probably ask yourself, "Uh... how is that not
+          Whoops::Event.new?" I also considered "Whoops::NewEventHandler" but I
+          was afraid that would summon Steve Yegge and he'd make me read one of
+          his 10,000 word essays.</p>
+          
+          <p>I'd love to get some thoughts on this! Whether or not this is a
+          reasonable DCI refactoring, I think that DCI is a great tool and
+          something OOP folks should investigate.</p>
+          <p>
+            <a class='twitter-share-button' data-via='nonrecursive' href='https://twitter.com/share'>Tweet</a>
+          </p>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs')
+          </script>
+          <h2>Comments</h2>
+          <div id='disqus_thread'></div>
+          <script>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'flyingmachinestudios'; // required: replace example with your forum shortname
+            
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+          </script>
+        </div>
+      </div>
+      <div id='nav'>
+        <div class='articles'>
+          <h2>Popular Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/the-unofficial-guide-to-rich-hickeys-brain/'>The Unofficial Guide to Rich Hickey's Brain</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/datomic-for-five-year-olds/'>Datomic for Five-Year-Olds</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/how-clojure-babies-are-made-lein-run/'>How Clojure Babies Are Made: Understanding lein run</a>
+            </li>
+          </ol>
+          <h2>Recent Blog Posts</h2>
+          <ol>
+            <li>
+              <a class='title' href='/programming/why-programmers-need-frameworks/'>Frameworks and Why (Clojure) Programmers Need Them</a>
+            </li>
+            <li>
+              <a class='title' href='/people/buddy-system/'>Buddy Systems at Work: a Framework for Rewarding Relationships on Remote Teams</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/learn-programming-languages-efficiently/'>Techniques for Efficiently Learning Programming Languages</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/zen-joker/'>Zen and the Art of Blowing Things Up</a>
+            </li>
+            <li>
+              <a class='title' href='/essays/process/'>My Writing Process</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/recursion/'>Understanding Recursion</a>
+            </li>
+            <li>
+              <a class='title' href='/programming/timeless-tools/'>Timeless Programming Tools</a>
+            </li>
+          </ol>
+        </div>
+        <div class='projects'>
+          <h2>Projects</h2>
+          <ol>
+            <li id='cftbat'>
+              <header>
+                <a href='http://braveclojure.com'>
+                  Clojure for the Brave and True
+                </a>
+                <p>A goofy book for learning Clojure. No functional programming or Java experience required!</p>
+              </header>
+            </li>
+            <li id='cuym'>
+              <header>
+                <a href='http://www.visualmess.com'>
+                  Clean Up Your Mess: a Guide to Visual Design for Everyone
+                </a>
+              </header>
+              <p>
+                This popular guide will help you
+                communicate with conscious skill. It will show you
+                how to create designs that are easy to understand
+                and attractive.
+              </p>
+            </li>
+            <li id='gratefulplace'>
+              <header>
+                <a href='http://gratefulplace.com'>
+                  Grateful Place
+                </a>
+              </header>
+              <p>When we appreciate the good in our lives, the good grows and we have more of it.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-666015-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
