@@ -730,6 +730,7 @@ helped me develop it:
 
 * Mark Bastian
 * [Dmitri Sotnikov aka @yogthos](https://twitter.com/yogthos)
+* Joe Jackson
 * Sergey Shvets
 * Kenneth Kalmer
 * Sean whose last name I don't know
