@@ -11,7 +11,7 @@ summary: "I've re-written jobs.braveclojure.com to create the best possible Cloj
 I've rebuilt Brave Clojure Jobs to make it nearly effortless for companies that
 use Clojure to let developers know they're hiring. I want you to be able to get
 a job listing in front of interested devs in less time than it takes to sing
-Queen's _We Are The Champions_.
+Queen's _We Are the Champions_.
 
 Here's what's new:
 
@@ -101,24 +101,41 @@ deserve public recognition, and I think that's valuable information for job
 seekers, as it's more appealing to work for companies that we know are giving
 back to the community.
 
-The takeaway here is that there are currently some paid benefits, and there are
-some in the works. If you have ideas for what you'd like included in a paid
-subscription, please let me know! My email is 
+If you have ideas for what you'd like included in a paid subscription, please
+let me know! You can reach me by email, daniel@braveclojure.com. You can also
+upvote items on the [product
+roadmap](https://trello.com/b/KLvxGv7u/product-roadmap) if they strike your
+fancy.
 
-At the same time, this site rebuild has come in part from my own spirit of
+The takeaway here is that there are currently some paid benefits, and there are
+some in the works. 
+
+At the same time, this site rebuild has come in large part from my own spirit of
 generosity. I wanted to invest the effort to rebuild the site and switch to
 freemium model because I believe it will help everybody. It's an attempt to
 "grow the pie", as I assume that say at Harvard Business School. I may end up
 making less than before, who knows, but I want to try to contribute more to a
 community that has been so good to me. If you believe that this is a worthwhile
 endeavor and that it will help everybody in the long run, including you, then I
-hope you'll subscribe.
+hope you'll subscribe and help support me in making a great resource for
+everybody.
 
 ## A personal note
 
+Two years ago Nubank invited me to give a talk at the first ever Clojure/South.
+They paid for everything, they flew me down and put me up in a nice hotel and
+even let me get on a stage and talk to people. On purpose! It was one of the
+highlights of my career, and honestly, my life: the memories of that trip -- of
+crashing a bar in São Paulo at like 3am with a bunch of Clojurians and cheering
+as one of us somehow finagled the guitar off the guy who was supposed to be
+singing to sing a couple tunes of their own -- are priceless, and I will cherish
+them for the rest of my life.
 
+That happened because the Clojure community has been very good to me. And it's
+not just late night rabble-rousing; I have a steady income, I continue to enjoy
+the work I do, and I get to work with amazing people, and it's in part because
+y'all have liked the goofy book I wrote
 
-This rewrite with its new model
 
 ## TODOs
 
