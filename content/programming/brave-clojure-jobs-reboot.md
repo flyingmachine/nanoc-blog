@@ -107,38 +107,54 @@ upvote items on the [product
 roadmap](https://trello.com/b/KLvxGv7u/product-roadmap) if they strike your
 fancy.
 
-The takeaway here is that there are currently some paid benefits, and there are
-some in the works. 
+The takeaway here is that there are currently some paid benefits focused on
+increasing your listings' reach, and there are some in the works.
 
-At the same time, this site rebuild has come in large part from my own spirit of
-generosity. I wanted to invest the effort to rebuild the site and switch to
-freemium model because I believe it will help everybody. It's an attempt to
-"grow the pie", as I assume that say at Harvard Business School. I may end up
-making less than before, who knows, but I want to try to contribute more to a
-community that has been so good to me. If you believe that this is a worthwhile
-endeavor and that it will help everybody in the long run, including you, then I
-hope you'll subscribe and help support me in making a great resource for
-everybody.
+At the same time, I wanted to rebuild the site because I value generosity.
+Engaging with others from a spirit of generosity just feels better to me. I
+wanted to invest the effort to make improvements and switch to freemium model
+because I believe it will help everybody. It's an attempt to "grow the pie", as
+I assume they say at Harvard Business School. I may end up making less than
+before, who knows, but I want to try to contribute more to a community that has
+been so good to me. If you believe that this is a worthwhile endeavor and that
+it will help everybody in the long run, including you, then I hope you'll
+subscribe and help support me in making a great resource for everybody.
 
 ## A personal note
 
-Two years ago Nubank invited me to give a talk at the first ever Clojure/South.
-They paid for everything, they flew me down and put me up in a nice hotel and
-even let me get on a stage and talk to people. On purpose! It was one of the
-highlights of my career, and honestly, my life: the memories of that trip -- of
-crashing a bar in São Paulo at like 3am with a bunch of Clojurians and cheering
-as one of us somehow finagled the guitar off the guy who was supposed to be
-singing to sing a couple tunes of their own -- are priceless, and I will cherish
-them for the rest of my life.
+I started working on this rewrite around the same time that the pandemic
+started. The sudden economic uncertainty hit me hard: I was personally ok, but
+so many across the US -- including some of my own friends -- had to grapple with
+now knowing how they would pay for basic necessities.
 
-That happened because the Clojure community has been very good to me. And it's
-not just late night rabble-rousing; I have a steady income, I continue to enjoy
-the work I do, and I get to work with amazing people, and it's in part because
-y'all have liked the goofy book I wrote
+I'm grateful that I had security, and that I could even help others. My life
+hasn't always been like this. I grew up poor. During my earliest years my family
+was on welfare. We were homeless for a time, and lived in government housing for
+years before finally moving into a very modest house. Later, at 18, I was on my
+own, working overnight at a hotel and doing the dance of juggling expenses to
+incur the fewest overdraft fees.
 
+Learning to program gave me access to opportunities that changed my life. Those
+early circumstances are now far behind me, but they've never left me, and I
+continue to feel motivated to do what I can to help others improve their
+conditions. My life got better because of the generosity of others; the tools I
+use daily are the product of labor freely given. I want my labor to prove
+useful, too. I believe in the power of generosity to have a lasting impact on
+others, to benefit them across time in ways we don't even know. It's why I wrote
+my book and insisted on keeping it freely available online: I wanted to make it
+easier for people to learn a skill so that they too could have better
+opportunities. This site is another expression of that desire to help people
+make a good living.
 
-## TODOs
+I continue to receive incredible gifts. Two years ago Nubank invited me to give
+a talk at the first ever Clojure/South. They paid for everything, they flew me
+down and put me up in a nice hotel and even let me get on a stage and talk to
+people. On purpose! It was one of the highlights of my career, and honestly, my
+life: the memories of that trip -- of crashing a bar in São Paulo at like 3am
+with a bunch of Clojurians and cheering as one of us somehow finagled the guitar
+off the guy who was supposed to be singing to sing a couple tunes of their own
+-- are memories I will always cherish.
 
-- mention clojurebridge
-- my personal investment
-- the roadmap
+We do what we can with what we have. I have some programming skills, I sometimes
+have free time, and I hope that this little contribution to the Clojure
+ecosystem helps some people out.
