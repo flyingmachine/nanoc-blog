@@ -6,8 +6,6 @@ categories: programming
 summary: "I've re-written jobs.braveclojure.com to create the best possible Clojure job board."
 ---
 
-# A Better Clojure Job Board
-
 I've rebuilt Brave Clojure Jobs to make it nearly effortless for companies that
 use Clojure to let developers know they're hiring. I want you to be able to get
 a job listing in front of interested devs in less time than it takes to sing
@@ -76,7 +74,7 @@ job board possibly can. My hope is that this massive upgrade, which I've worked
 on for more than a year, will be good for companies, good for devlopers, and
 good for the entire Clojure community.
 
-## Paid benefits
+## Subscription benefits
 
 There are three subscription levels available to companies: $75/month,
 $150/month, and $250/month. Paying for a subscription gives you greater
@@ -95,17 +93,16 @@ moderators first to see if this would be OK; it's just one idea for how I want t
 provide value for subscribers.
 
 Another idea is to include badges or some kind of flair for subscribing
-companies. This will help your company stand out and appear more appealing. For
-example, I want to create a "conference sponsor" badge. Conference sponsors
-deserve public recognition, and I think that's valuable information for job
-seekers, as it's more appealing to work for companies that we know are giving
-back to the community.
+companies to help your company stand out. For example, I want to create a
+"conference sponsor" badge. Conference sponsors deserve public recognition, and
+I think highlighting your contribution is valuable for job seekers, as it's more
+appealing to work for companies that we know are giving back to the community.
 
 If you have ideas for what you'd like included in a paid subscription, please
-let me know! You can reach me by email, daniel@braveclojure.com. You can also
-upvote items on the [product
-roadmap](https://trello.com/b/KLvxGv7u/product-roadmap) if they strike your
-fancy.
+let me know! You can reach me by email,
+[daniel@braveclojure.com](mailto:daniel@braveclojure.com). You can also upvote
+items on the [product roadmap](https://trello.com/b/KLvxGv7u/product-roadmap) if
+they strike your fancy.
 
 The takeaway here is that there are currently some paid benefits focused on
 increasing your listings' reach, and there are some in the works.
@@ -119,42 +116,3 @@ before, who knows, but I want to try to contribute more to a community that has
 been so good to me. If you believe that this is a worthwhile endeavor and that
 it will help everybody in the long run, including you, then I hope you'll
 subscribe and help support me in making a great resource for everybody.
-
-## A personal note
-
-I started working on this rewrite around the same time that the pandemic
-started. The sudden economic uncertainty hit me hard: I was personally ok, but
-so many across the US -- including some of my own friends -- had to grapple with
-now knowing how they would pay for basic necessities.
-
-I'm grateful that I had security, and that I could even help others. My life
-hasn't always been like this. I grew up poor. During my earliest years my family
-was on welfare. We were homeless for a time, and lived in government housing for
-years before finally moving into a very modest house. Later, at 18, I was on my
-own, working overnight at a hotel and doing the dance of juggling expenses to
-incur the fewest overdraft fees.
-
-Learning to program gave me access to opportunities that changed my life. Those
-early circumstances are now far behind me, but they've never left me, and I
-continue to feel motivated to do what I can to help others improve their
-conditions. My life got better because of the generosity of others; the tools I
-use daily are the product of labor freely given. I want my labor to prove
-useful, too. I believe in the power of generosity to have a lasting impact on
-others, to benefit them across time in ways we don't even know. It's why I wrote
-my book and insisted on keeping it freely available online: I wanted to make it
-easier for people to learn a skill so that they too could have better
-opportunities. This site is another expression of that desire to help people
-make a good living.
-
-I continue to receive incredible gifts. Two years ago Nubank invited me to give
-a talk at the first ever Clojure/South. They paid for everything, they flew me
-down and put me up in a nice hotel and even let me get on a stage and talk to
-people. On purpose! It was one of the highlights of my career, and honestly, my
-life: the memories of that trip -- of crashing a bar in São Paulo at like 3am
-with a bunch of Clojurians and cheering as one of us somehow finagled the guitar
-off the guy who was supposed to be singing to sing a couple tunes of their own
--- are memories I will always cherish.
-
-We do what we can with what we have. I have some programming skills, I sometimes
-have free time, and I hope that this little contribution to the Clojure
-ecosystem helps some people out.
