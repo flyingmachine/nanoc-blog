@@ -7,9 +7,9 @@ summary: "I've re-written jobs.braveclojure.com to create the best possible Cloj
 ---
 
 I've rebuilt Brave Clojure Jobs to make it nearly effortless for companies that
-use Clojure to let developers know they're hiring. I want you to be able to get
-a job listing in front of interested devs in less time than it takes to sing
-Queen's _We Are the Champions_.
+use Clojure to let developers know they're hiring. If you're hiring, I want you
+to be able to get a job listing in front of interested devs in less time than it
+takes to sing Queen's _We Are the Champions_.
 
 Here's what's new:
 
@@ -95,8 +95,9 @@ provide value for subscribers.
 Another idea is to include badges or some kind of flair for subscribing
 companies to help your company stand out. For example, I want to create a
 "conference sponsor" badge. Conference sponsors deserve public recognition, and
-I think highlighting your contribution is valuable for job seekers, as it's more
-appealing to work for companies that we know are giving back to the community.
+I think highlighting such contributions is valuable for job seekers, as it's
+more appealing to work for companies that we know are giving back to the
+community.
 
 If you have ideas for what you'd like included in a paid subscription, please
 let me know! You can reach me by email,
@@ -104,15 +105,26 @@ let me know! You can reach me by email,
 items on the [product roadmap](https://trello.com/b/KLvxGv7u/product-roadmap) if
 they strike your fancy.
 
-The takeaway here is that there are currently some paid benefits focused on
-increasing your listings' reach, and there are some in the works.
+The takeaway here is that there are currently some subscription benefits focused
+on increasing your listings' reach, and there are some in the works.
 
-At the same time, I wanted to rebuild the site because I value generosity.
-Engaging with others from a spirit of generosity just feels better to me. I
-wanted to invest the effort to make improvements and switch to freemium model
-because I believe it will help everybody. It's an attempt to "grow the pie", as
-I assume they say at Harvard Business School. I may end up making less than
-before, who knows, but I want to try to contribute more to a community that has
-been so good to me. If you believe that this is a worthwhile endeavor and that
-it will help everybody in the long run, including you, then I hope you'll
-subscribe and help support me in making a great resource for everybody.
+At the same time, I have to be honest that I'm uncertain about the ROI for
+subscribing. I believe that the subscription benefits will provide real value,
+but right now I don't have the data to create a precisely compelling sales pitch
+for just how much better you'll do if you subscribe.
+
+Ultimately, I wanted to rebuild the site because I value generosity. Engaging
+with others from a spirit of generosity just feels better to me. I wanted to
+invest the effort to make improvements and switch to a freemium model because I
+believe it will help everybody.
+
+I may end up making less than before, who knows, but I wanted to try to
+contribute more to a community that has been so good to me. I think I've
+accomplished that. I also want to keep improving the site, and paid
+subscriptions help me do that.
+
+My goal is to reach $2,000 a month in subscriptions. That level of support would
+would be huge for me, and it would make it viable for me to continue investing a
+significant portion of my free time in the site on an ongoing basis. If you
+believe that this is a worthwhile endeavor and that it will help everybody in
+the long run, including you, then I hope you'll subscribe.
